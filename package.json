@@ -1,0 +1,35 @@
+{
+  "name": "wikidata-edit",
+  "version": "1.0.0",
+  "description": "edit Wikidata from Node",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard",
+    "test": "ava",
+    "prepublish": "npm run lint && npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxlath/wikidata-edit.git"
+  },
+  "keywords": [
+    "wikidata",
+    "edit",
+    "API"
+  ],
+  "author": "maxlath",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maxlath/wikidata-edit/issues"
+  },
+  "homepage": "https://github.com/maxlath/wikidata-edit#readme",
+  "devDependencies": {
+    "ava": "^0.18.1",
+    "standard": "^8.6.0"
+  },
+  "dependencies": {
+    "got": "^6.7.1",
+    "wikidata-sdk": "^4.2.4",
+    "wikidata-token": "^2.0.3"
+  }
+}
