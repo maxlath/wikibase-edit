@@ -25,6 +25,7 @@ describe('general', () => {
   it('should have claim functions', (done) => {
     wdEdit(config).claim.should.be.a.Object()
     wdEdit(config).claim.exists.should.be.a.Function()
+    wdEdit(config).claim.add.should.be.a.Function()
     done()
   })
 })
