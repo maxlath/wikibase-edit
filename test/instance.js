@@ -19,7 +19,7 @@ test("customize instance shouldn't replace the instance if no custom wikibaseIns
   t.true(url.startsWith('https://www.wikidata.org'))
 })
 
-test("instance base should be customized if a custom wikibaseInstance is passed", t => {
-  const config = { wikibaseInstance: 'https://hello.bla'}
+test('instance base should be customized if a custom wikibaseInstance is passed', t => {
+  const config = { wikibaseInstance: 'https://hello.bla' }
   t.is(instance(config).base, 'https://hello.bla/w/api.php')
 })
