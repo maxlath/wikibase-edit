@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "standard",
-    "test": "ava",
+    "test": "mocha test/* test/*/*",
     "prepublish": "npm run lint && npm run test",
     "update-properties": "./scripts/update_properties"
   },
@@ -31,9 +31,19 @@
     "wikidata-token": "^2.0.3"
   },
   "devDependencies": {
-    "ava": "^0.18.1",
     "config": "^1.25.1",
+    "mocha": "^3.2.0",
+    "should": "^11.2.0",
     "standard": "^8.6.0",
     "wikidata-cli": "^4.3.1"
+  },
+  "standard": {
+    "ignore": [
+      "dist"
+    ],
+    "globals": [
+      "it",
+      "describe"
+    ]
   }
 }

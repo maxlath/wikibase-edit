@@ -1,27 +1,30 @@
-const test = require('ava')
+require('should')
 const wdEdit = require('..')
 const config = {
   username: 'bla',
   password: 'bla'
 }
 
-test('wikidata-edit should be a function', t => {
-  t.true(typeof wdEdit === 'function')
-})
-
-test('wikidata-edit should throw if not passed a username', t => {
-  t.throws(() => wdEdit({ password: 'bla' }))
-})
-
-test('wikidata-edit should throw if not passed a password', t => {
-  t.throws(() => wdEdit({ username: 'bla' }))
-})
-
-test('wikidata-edit should return an object', t => {
-  t.true(typeof wdEdit(config) === 'object')
-})
-
-test('wikidata-edit object should have claim functions', t => {
-  t.true(typeof wdEdit(config).claim === 'object')
-  t.true(typeof wdEdit(config).claim.checkExistance === 'function')
+describe('general', () => {
+  it('should be a function', (done) => {
+    wdEdit.should.be.a.Function()
+    done()
+  })
+  it('should throw if not passed a username', (done) => {
+    (() => wdEdit({ password: 'bla' })).should.throw()
+    done()
+  })
+  it('should throw if not passed a password', (done) => {
+    (() => wdEdit({ username: 'bla' })).should.throw()
+    done()
+  })
+  it('should return an object', (done) => {
+    wdEdit(config).should.be.an.Object()
+    done()
+  })
+  it('should have claim functions', (done) => {
+    wdEdit(config).claim.should.be.a.Object()
+    wdEdit(config).claim.exists.should.be.a.Function()
+    done()
+  })
 })
