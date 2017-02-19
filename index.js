@@ -4,7 +4,7 @@ module.exports = function (config) {
 
   return {
     claim: {
-      exists: require('./lib/claim/check_existance')(config)
+      exists: require('./lib/claim/exists')(config)
     }
   }
 }
