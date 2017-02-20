@@ -3,6 +3,10 @@ Edit [Wikidata](https://wikidata.org) from [NodeJS](https://nodejs.org)
 
 Status: still many things to implement. [Your help is welcome](#contributing)
 
+[![wikidata](https://raw.githubusercontent.com/maxlath/wikidata-sdk/master/assets/wikidata.jpg)](https://wikidata.org)
+
+[![NPM](https://nodei.co/npm/wikidata-edit.png?stars&downloads&downloadRank)](https://npmjs.com/package/wikidata-edit/) [![NPM](https://nodei.co/npm-dl/wikidata-edit.png?months=6&height=3)](https://npmjs.com/package/wikidata-edit/)
+
 ## Summary
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -58,7 +62,8 @@ const wdEdit = require('wikidata-edit')(config)
 
 ## API
 
-All functions return promises
+All functions return promises.
+See also [Wikidata API documentation](https://www.wikidata.org/w/api.php).
 
 ### Label
 #### set label
