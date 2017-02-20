@@ -10,9 +10,14 @@ Status: still many things to implement. [Your help is welcome](#contributing)
 
   - [Install](#install)
   - [Config](#config)
-  - [Claim](#claim)
-    - [Add](#add)
-    - [Exists](#exists)
+  - [API](#api)
+    - [Label](#label)
+      - [set label](#set-label)
+    - [Claim](#claim)
+      - [add claim](#add-claim)
+      - [check if claim exists](#check-if-claim-exists)
+    - [Reference](#reference)
+      - [add reference](#add-reference)
   - [Development](#development)
   - [Contributing](#contributing)
   - [Donate](#donate)
@@ -48,14 +53,21 @@ const wdEdit = require('wikidata-edit')(config)
 ```
 
 ## API
+### Label
+#### set label
+```js
+// Add the label 'Bac à sable bulgroz' to the Sandbox entity (Q4115189) in French
+wdEdit.label.set('Q4115189', 'fr', 'Bac à sable bulgroz')
+```
+
 ### Claim
-#### Add
+#### add claim
 ```js
 // Add the Twitter username (P2002) 'bulgroz' to the Sandbox entity (Q4115189)
 // Will fail if the claim already exists
 wdEdit.claim.add('Q4115189', 'P2002', 'bulgroz')
 ```
-#### Exists
+#### check if claim exists
 ```js
 // Does the Sandbox entity (Q4115189) already have the Twitter username (P2002) 'bulgroz'?
 wdEdit.claim.exists('Q4115189', 'P2002', 'bulgroz')
@@ -63,7 +75,9 @@ wdEdit.claim.exists('Q4115189', 'P2002', 'bulgroz')
 ```
 
 ### Reference
-#### Add
+
+#### add reference
+
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 const referenceUrl = 'https://example.org/rise-and-box-of-the-holy-sand-box'
