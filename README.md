@@ -18,6 +18,9 @@ Status: still many things to implement. [Your help is welcome](#contributing)
     - [check if claim exists](#check-if-claim-exists)
   - [Reference](#reference)
     - [add reference](#add-reference)
+  - [Entity](#entity)
+    - [edit](#edit)
+    - [create](#create)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Donate](#donate)
@@ -86,6 +89,37 @@ wdEdit.claim.exists('Q4115189', 'P2002', 'bulgroz')
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 const referenceUrl = 'https://example.org/rise-and-box-of-the-holy-sand-box'
 wdEdit.reference.add(claimGuid, referenceUrl)
+```
+
+### Entity
+
+#### edit
+Edit an entity. Labels and descriptions will be set even if there are existing values for the given languages. Claims will be added to the entity existing claims, without checking for duplicates.
+```js
+wdEdit.entity.edit({
+  // Required
+  id: 'Q4115189',
+  // Optional but one of labels, descriptions, or claims must be set
+  labels: { en: 'a new label in English', fr: 'un nouveau label en français' },
+  descriptions: { en: 'a new description', fr: 'une nouvelle description' },
+  claims: {
+    P1775: [ 'Q3576110', 'Q12206942' ]
+    P2002: 'bulgroz'
+  }
+})
+```
+
+#### create
+Create an entity from scratch.
+```js
+wdEdit.entity.create({
+  labels: { en: 'a label', fr: 'un label' },
+  descriptions: { en: 'a new description', fr: 'une nouvelle description' },
+  claims: {
+    P1775: [ 'Q3576110', 'Q12206942' ]
+    P2002: 'bulgroz'
+  }
+})
 ```
 
 ## Development
