@@ -39,7 +39,7 @@ describe('label set', () => {
   // cf https://github.com/mochajs/mocha/issues/2018
   it('should set a label', function (done) {
     this.timeout(20 * 1000)
-    const label = 'Bac à Sable ' + randomString()
+    const label = `Bac à Sable (${randomString()})`
     setLabel(CONFIG)(sandboxEntity, 'fr', label)
     .then(res => {
       res.success.should.equal(1)
