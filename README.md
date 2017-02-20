@@ -47,18 +47,27 @@ const config = {
 const wdEdit = require('wikidata-edit')(config)
 ```
 
-## Claim
-### Add
+## API
+### Claim
+#### Add
 ```js
 // Add the Twitter username (P2002) 'bulgroz' to the Sandbox entity (Q4115189)
 // Will fail if the claim already exists
 wdEdit.claim.add('Q4115189', 'P2002', 'bulgroz')
 ```
-### Exists
+#### Exists
 ```js
 // Does the Sandbox entity (Q4115189) already have the Twitter username (P2002) 'bulgroz'?
 wdEdit.claim.exists('Q4115189', 'P2002', 'bulgroz')
 // => Boolean
+```
+
+### Reference
+#### Add
+```js
+const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+const referenceUrl = 'https://example.org/rise-and-box-of-the-holy-sand-box'
+wdEdit.reference.add(claimGuid, referenceUrl)
 ```
 
 ## Development

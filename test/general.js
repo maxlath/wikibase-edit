@@ -28,4 +28,9 @@ describe('general', () => {
     wdEdit(config).claim.add.should.be.a.Function()
     done()
   })
+  it('should have reference functions', (done) => {
+    wdEdit(config).reference.should.be.a.Object()
+    wdEdit(config).reference.add.should.be.a.Function()
+    done()
+  })
 })

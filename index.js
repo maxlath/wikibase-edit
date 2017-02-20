@@ -6,6 +6,9 @@ module.exports = function (config) {
     claim: {
       add: require('./lib/claim/add')(config),
       exists: require('./lib/claim/exists')(config)
+    },
+    reference: {
+      add: require('./lib/reference/add')(config)
     }
   }
 }
