@@ -1,8 +1,7 @@
 require('should')
 const CONFIG = require('config')
 const addClaim = require('../../lib/claim/add')
-const { randomString } = require('../../lib/tests_utils')
-const entity = 'Q4115189'
+const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 const property = 'P2002'
 
 describe('claim add', () => {
@@ -17,7 +16,7 @@ describe('claim add', () => {
   it('should add a claim', function (done) {
     this.timeout(20 * 1000)
     const value = randomString()
-    addClaim(CONFIG)(entity, property, value)
+    addClaim(CONFIG)(sandboxEntity, property, value)
     .then(res => {
       res.success.should.equal(1)
       done()
@@ -27,7 +26,7 @@ describe('claim add', () => {
   it('should add a claim with a reference if provided', function (done) {
     this.timeout(20 * 1000)
     const value = randomString()
-    addClaim(CONFIG)(entity, property, value, 'Q60856')
+    addClaim(CONFIG)(sandboxEntity, property, value, 'Q60856')
     .then(res => {
       res.success.should.equal(1)
       done()

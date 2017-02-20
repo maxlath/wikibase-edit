@@ -1,6 +1,6 @@
 require('should')
 const exists = require('../../lib/claim/exists')
-const entity = 'Q4115189'
+const { sandboxEntity } = require('../../lib/tests_utils')
 const property = 'P2002'
 const value = 'Zorg'
 
@@ -10,7 +10,8 @@ describe('claim exists', () => {
     exists().should.be.a.Function()
     done()
   })
-  it('add claim should rejected if not passed an entity', done => {
+
+  it('should rejected if not passed an entity', done => {
     exists()()
     .catch(err => {
       err.message.should.equal('invalid entity')
@@ -18,16 +19,16 @@ describe('claim exists', () => {
     })
   })
 
-  it('add claim should rejected if not passed an property', done => {
-    exists()(entity)
+  it('should rejected if not passed a property', done => {
+    exists()(sandboxEntity)
     .catch(err => {
       err.message.should.equal('invalid property')
       done()
     })
   })
 
-  it('add claim should rejected if not passed a value', done => {
-    exists()(entity, property)
+  it('should rejected if not passed a value', done => {
+    exists()(sandboxEntity, property)
     .catch(err => {
       err.message.should.equal('missing value')
       done()
@@ -36,9 +37,9 @@ describe('claim exists', () => {
 
   // Using an non arrow key to customize the timeout
   // cf https://github.com/mochajs/mocha/issues/2018
-  it('check claim existance should return a boolean', function (done) {
+  it('should return a boolean', function (done) {
     this.timeout(20 * 1000)
-    exists()(entity, property, value)
+    exists()(sandboxEntity, property, value)
     .then(res => {
       res.should.be.a.Boolean()
       done()
