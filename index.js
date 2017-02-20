@@ -14,6 +14,7 @@ module.exports = function (config) {
       add: require('./lib/reference/add')(config)
     },
     entity: {
+      create: require('./lib/entity/create')(config),
       edit: require('./lib/entity/edit')(config)
     }
   }

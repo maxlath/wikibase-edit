@@ -40,6 +40,7 @@ describe('general', () => {
   })
   it('should have entity functions', (done) => {
     wdEdit(config).entity.should.be.a.Object()
+    wdEdit(config).entity.create.should.be.a.Function()
     wdEdit(config).entity.edit.should.be.a.Function()
     done()
   })
