@@ -3,6 +3,9 @@ module.exports = function (config) {
   if (!config.password) throw new Error('missing config parameter: password')
 
   return {
+    label: {
+      set: require('./lib/label/set')(config)
+    },
     claim: {
       add: require('./lib/claim/add')(config),
       exists: require('./lib/claim/exists')(config)

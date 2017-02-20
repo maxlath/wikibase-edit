@@ -22,6 +22,11 @@ describe('general', () => {
     wdEdit(config).should.be.an.Object()
     done()
   })
+  it('should have label functions', (done) => {
+    wdEdit(config).label.should.be.a.Object()
+    wdEdit(config).label.set.should.be.a.Function()
+    done()
+  })
   it('should have claim functions', (done) => {
     wdEdit(config).claim.should.be.a.Object()
     wdEdit(config).claim.exists.should.be.a.Function()
