@@ -54,6 +54,9 @@ const wdEdit = require('wikidata-edit')(config)
 ```
 
 ## API
+
+All functions return promises
+
 ### Label
 #### set label
 ```js
