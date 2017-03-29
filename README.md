@@ -53,9 +53,9 @@ const config = {
   password: 'my-wikidata-password',
 
   // Optional
-  userAgent: 'my-project-name/v3.2.5 (https://project.website)',
-  wikibaseInstance: 'https://wb.me' // Defaults to https://www.wikidata.org
-  verbose: true // Defaults to false
+  verbose: true, // Default: false
+  wikibaseInstance: 'https://mywikibase.instance/w/api.php', // Default: https://www.wikidata.org/w/api.php
+  userAgent: 'my-project-name/v3.2.5 (https://project.website)' // Default: `wikidata-edit/${pkg.version} (https://github.com/maxlath/wikidata-edit)`
 }
 const wdEdit = require('wikidata-edit')(config)
 ```

@@ -9,7 +9,7 @@ describe('instance', () => {
       done()
     })
     it('should be customized if a custom wikibaseInstance is passed', (done) => {
-      const config = { wikibaseInstance: 'https://hello.bla' }
+      const config = { wikibaseInstance: 'https://hello.bla/w/api.php' }
       instance(config).base.should.equal('https://hello.bla/w/api.php')
       done()
     })
