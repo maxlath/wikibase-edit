@@ -83,7 +83,7 @@ wdEdit.claim.add('Q4115189', 'P2002', 'bulgroz')
 ```js
 // Does the Sandbox entity (Q4115189) already have the Twitter username (P2002) 'bulgroz'?
 wdEdit.claim.exists('Q4115189', 'P2002', 'bulgroz')
-// => Boolean
+.then(boolean => )
 ```
 
 ### Reference
