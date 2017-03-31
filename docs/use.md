@@ -7,6 +7,7 @@
 
 
 - [Config](#config)
+  - [Custom Wikibase instance](#custom-wikibase-instance)
 - [API](#api)
   - [Label](#label)
     - [set label](#set-label)
