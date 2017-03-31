@@ -36,6 +36,16 @@ const config = {
 const wdEdit = require('wikidata-edit')(config)
 ```
 
+### Custom Wikibase instance
+
+If you use a custom Wikibase instance, additionnally to passing the `wikibaseInstance` option (see above), make sure to re-fetch properties from the associated SPARQL endpoint. Otherwise, you will be stuck with [wikidata.org hard coded properties](https://github.com/maxlath/wikidata-edit/blob/ae13c6d5923edd3c092f25ee76fa141e7777aad0/lib/properties/properties.js).
+```sh
+cd project_folder/node_modules/wikidata-edit
+# Make sure wikidata-cli is installed (especially if you installed wikidata-edit in production mode)
+npm install wikidata-cli
+export SPARQL_ENDPOINT='https://query.mywikibase.instance/sparql'; npm run update-properties
+```
+
 ## API
 
 All functions return promises.
