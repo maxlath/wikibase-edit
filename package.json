@@ -8,7 +8,7 @@
     "test": "mocha test/* test/*/*",
     "prepublish": "npm run lint && npm run test",
     "update-properties": "./scripts/update_properties",
-    "update-toc": "doctoc README.md"
+    "update-toc": "doctoc README.md docs/*.md"
   },
   "repository": {
     "type": "git",
