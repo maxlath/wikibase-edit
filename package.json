@@ -1,6 +1,6 @@
 {
   "name": "wikidata-edit",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Edit Wikidata from NodeJS",
   "main": "index.js",
   "scripts": {
