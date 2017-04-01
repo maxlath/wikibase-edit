@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 1.3.0 - 2017-04-01
+* Added [`claim.remove`]((https://github.com/maxlath/wikidata-edit/blob/master/docs/use.md#remove-claim))
+
 ## 1.2.0 - 2017-02-20
 * Added [`entity.create`]((https://github.com/maxlath/wikidata-edit/blob/master/docs/use.md#set-label))
 * Added [`entity.edit`]((https://github.com/maxlath/wikidata-edit/blob/master/docs/use.md#set-label))
