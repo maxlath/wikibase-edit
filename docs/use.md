@@ -73,6 +73,17 @@ wdEdit.claim.exists('Q4115189', 'P2002', 'bulgroz')
 .then(boolean => )
 ```
 
+#### remove claim
+```js
+// remove one claim
+const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+wdEdit.claim.remove(claimGuid)
+
+// remove several claims
+const claimGuids = [ 'Q4115189$BB467A9A-9123-4D0C-A87A-B7BF7ACD6477', 'Q4115189$D2CC0D8C-187C-40CD-8CF3-F6AAFE1496F4' ]
+wdEdit.claim.remove(claimGuids)
+```
+
 ### Reference
 
 #### add reference

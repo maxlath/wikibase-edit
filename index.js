@@ -8,7 +8,8 @@ module.exports = function (config) {
     },
     claim: {
       add: require('./lib/claim/add')(config),
-      exists: require('./lib/claim/exists')(config)
+      exists: require('./lib/claim/exists')(config),
+      remove: require('./lib/claim/remove')(config)
     },
     reference: {
       add: require('./lib/reference/add')(config)

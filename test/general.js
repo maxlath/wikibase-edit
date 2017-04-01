@@ -31,6 +31,7 @@ describe('general', () => {
     wdEdit(config).claim.should.be.a.Object()
     wdEdit(config).claim.exists.should.be.a.Function()
     wdEdit(config).claim.add.should.be.a.Function()
+    wdEdit(config).claim.remove.should.be.a.Function()
     done()
   })
   it('should have reference functions', (done) => {
