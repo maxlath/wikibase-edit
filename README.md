@@ -50,7 +50,7 @@ We are developing and maintaining tools to work with Wikidata from NodeJS, the b
 * [wikidata-filter](https://github.com/maxlath/wikidata-filter): A command-line tool to filter a Wikidata dump by claim
 * [wikidata-subset-search-engine](https://github.com/inventaire/wikidata-subset-search-engine): Tools to setup an ElasticSearch instance fed with subsets of Wikidata
 * [wikidata-taxonomy](https://github.com/nichtich/wikidata-taxonomy): Command-line tool to extract taxonomies from Wikidata
-* [Other Wikidata external tools](https://www.wikidata.org/wiki/Wikidata:Tools/External_tools):
+* [Other Wikidata external tools](https://www.wikidata.org/wiki/Wikidata:Tools/External_tools)
 
 ## You may also like
 
