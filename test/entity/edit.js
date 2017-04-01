@@ -56,7 +56,7 @@ describe('entity edit', () => {
     })
   })
 
-  // Using an non arrow key to customize the timeout
+  // Using an non arrow function to customize the timeout
   // cf https://github.com/mochajs/mocha/issues/2018
   it('should edit an entity', function (done) {
     this.timeout(5000)

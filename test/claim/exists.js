@@ -36,7 +36,7 @@ describe('claim exists', () => {
     })
   })
 
-  // Using an non arrow key to customize the timeout
+  // Using an non arrow function to customize the timeout
   // cf https://github.com/mochajs/mocha/issues/2018
   it('should return a boolean', function (done) {
     this.timeout(20 * 1000)

@@ -76,5 +76,5 @@ describe('claim add', () => {
 })
 
 // (1)
-// Using an non arrow key to customize the timeout
+// Using an non arrow function to customize the timeout
 // cf https://github.com/mochajs/mocha/issues/2018
