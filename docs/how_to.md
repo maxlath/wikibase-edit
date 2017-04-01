@@ -1,4 +1,4 @@
-# Use
+# How-To
 
 ## Summary
 
@@ -14,6 +14,7 @@
   - [Claim](#claim)
     - [add claim](#add-claim)
     - [check if claim exists](#check-if-claim-exists)
+    - [remove claim](#remove-claim)
   - [Reference](#reference)
     - [add reference](#add-reference)
   - [Entity](#entity)

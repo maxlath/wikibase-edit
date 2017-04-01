@@ -13,7 +13,7 @@ Status: still many things to implement. [Your help is welcome](#contributing)
 
 
 - [Install](#install)
-- [Use](#use)
+- [How-To](#how-to)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Donate](#donate)
@@ -28,8 +28,8 @@ Status: still many things to implement. [Your help is welcome](#contributing)
 npm install --save wikidata-edit
 ```
 
-## Use
-see [Use](docs/use.md) doc
+## How-To
+see [How-to](docs/how_to.md) doc
 
 ## Development
 
