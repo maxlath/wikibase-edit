@@ -28,7 +28,7 @@
   "dependencies": {
     "chalk": "^1.1.3",
     "got": "^6.7.1",
-    "wikidata-sdk": "^5.1.1",
+    "wikidata-sdk": "^5.1.4",
     "wikidata-token": "^2.2.0"
   },
   "devDependencies": {
