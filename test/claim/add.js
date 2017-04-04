@@ -32,4 +32,13 @@ describe('claim add', () => {
       done()
     })
   })
+
+  it('should add a claim with monolingualtext', function (done) {
+    this.timeout(20 * 1000)
+    addClaim(CONFIG)(sandboxEntity, 'P1476', [ 'bulgroz', 'fr' ])
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+  })
 })

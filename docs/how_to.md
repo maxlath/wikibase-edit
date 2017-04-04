@@ -66,6 +66,9 @@ wdEdit.label.set('Q4115189', 'fr', 'Bac à sable bulgroz')
 // Add the Twitter username (P2002) 'bulgroz' to the Sandbox entity (Q4115189)
 // Will fail if the claim already exists
 wdEdit.claim.add('Q4115189', 'P2002', 'bulgroz')
+// Add the title (P1476) 'bulgroz' to the Sandbox entity (Q4115189),
+// which requires to specify in which language this title is (monolingualtext value)
+wdEdit.claim.add('Q4115189', 'P1476', [ 'bulgroz', 'it' ])
 ```
 #### check if claim exists
 ```js
