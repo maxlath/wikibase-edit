@@ -1,10 +1,13 @@
-require('should')
+const should = require('should')
 const CONFIG = require('config')
 const _exists = require('../../lib/claim/exists')
 const exists = _exists(CONFIG)
+const add = require('../../lib/claim/add')(CONFIG)
+const remove = require('../../lib/claim/remove')(CONFIG)
 const { sandboxEntity } = require('../../lib/tests_utils')
 const property = 'P2002'
 const value = 'Zorg'
+const wdk = require('wikidata-sdk')
 
 describe('claim exists', () => {
   it('should be a function', done => {
@@ -39,12 +42,34 @@ describe('claim exists', () => {
 
   // Using an non arrow function to customize the timeout
   // cf https://github.com/mochajs/mocha/issues/2018
-  it('should return a boolean', function (done) {
+  it('should return an array of claim GUIDs if exists', function (done) {
     this.timeout(20 * 1000)
     exists(sandboxEntity, property, value)
-    .then(res => {
-      res.should.be.a.Boolean()
-      done()
+    .then(matchingClaimsGuids => {
+      if (!matchingClaimsGuids) return add(sandboxEntity, property, value)
+    })
+    .then(() => {
+      exists(sandboxEntity, property, value)
+      .then(matchingClaimsGuids => {
+        matchingClaimsGuids.should.be.an.Array()
+        matchingClaimsGuids[0].should.be.an.String()
+        should(wdk.isItemId(matchingClaimsGuids[0].split('$')[0])).be.true()
+        done()
+      })
+    })
+  })
+  it('should return null if there is no claim', function (done) {
+    this.timeout(20 * 1000)
+    exists(sandboxEntity, property, value)
+    .then(matchingClaimsGuids => {
+      if (matchingClaimsGuids) return remove(matchingClaimsGuids)
+    })
+    .then(() => {
+      exists(sandboxEntity, property, value)
+      .then(matchingClaimsGuids => {
+        should(matchingClaimsGuids).not.be.ok()
+        done()
+      })
     })
   })
 })
