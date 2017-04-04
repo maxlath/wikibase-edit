@@ -1,7 +1,8 @@
 require('should')
 const CONFIG = require('config')
 const addClaim = require('../../lib/claim/add')
-const removeClaim = require('../../lib/claim/remove')
+const _removeClaim = require('../../lib/claim/remove')
+const removeClaim = _removeClaim(CONFIG)
 const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 
 const getClaimGuid = () => {
@@ -11,8 +12,8 @@ const getClaimGuid = () => {
 
 describe('claim remove', () => {
   it('should be a function', done => {
+    _removeClaim.should.be.a.Function()
     removeClaim.should.be.a.Function()
-    removeClaim(CONFIG).should.be.a.Function()
     done()
   })
 
@@ -22,7 +23,7 @@ describe('claim remove', () => {
     this.timeout(20 * 1000)
     getClaimGuid()
     .then(guid => {
-      removeClaim(CONFIG)(guid)
+      removeClaim(guid)
       .then(res => {
         res.success.should.equal(1)
         res.claims[0].should.equal(guid)
@@ -35,7 +36,7 @@ describe('claim remove', () => {
     this.timeout(20 * 1000)
     Promise.all([ getClaimGuid(), getClaimGuid() ])
     .then(guids => {
-      removeClaim(CONFIG)(guids)
+      removeClaim(guids)
       .then(res => {
         res.success.should.equal(1)
         res.claims[0].should.equal(guids[0])
