@@ -72,8 +72,15 @@ Special cases:
 ```js
 // Monolingualtext property
 wdEdit.claim.add('Q4115189', 'P1476', [ 'bulgroz', 'it' ])
-// Time property: only year precision is supported yet
+
+// Time property: only year precision is supported yet (PR welcome!)
 wdEdit.claim.add('Q4115189', 'P569', '1802')
+
+// Quantity:
+// pass a single value for a count without a specific unit
+wdEdit.claim.add('Q4115189', 'P1106', 9000)
+// pass an array for a value with a specific unit. Example here to specify minutes (Q7727)
+wdEdit.claim.add('Q4115189', 'P2097', [ 9000, 'Q7727' ] )
 ```
 
 #### check if claim exists
