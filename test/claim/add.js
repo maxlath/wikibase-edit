@@ -27,7 +27,7 @@ describe('claim add', () => {
   it('should add a claim', function (done) {
     this.timeout(20 * 1000)
     const value = randomString()
-    addClaim(sandboxEntity, property, value)
+    checkAndAddClaim(sandboxEntity, property, value)
     .then(res => {
       res.success.should.equal(1)
       done()
@@ -37,7 +37,7 @@ describe('claim add', () => {
   it('should add a claim with a reference if provided', function (done) {
     this.timeout(20 * 1000)
     const value = randomString()
-    addClaim(sandboxEntity, property, value, 'Q60856')
+    checkAndAddClaim(sandboxEntity, property, value, 'Q60856')
     .then(res => {
       res.success.should.equal(1)
       done()
@@ -64,7 +64,7 @@ describe('claim add', () => {
 
   it('should add a claim with a year', function (done) {
     this.timeout(20 * 1000)
-    addClaim(sandboxEntity, 'P569', '1802')
+    checkAndAddClaim(sandboxEntity, 'P569', '1802')
     .then(res => {
       res.success.should.equal(1)
       done()
@@ -73,7 +73,7 @@ describe('claim add', () => {
 
   it('should add a claim with monolingualtext', function (done) {
     this.timeout(20 * 1000)
-    addClaim(sandboxEntity, 'P1476', [ 'bulgroz', 'fr' ])
+    checkAndAddClaim(sandboxEntity, 'P1476', [ 'bulgroz', 'fr' ])
     .then(res => {
       res.success.should.equal(1)
       done()
@@ -82,7 +82,7 @@ describe('claim add', () => {
 
   it('should add a claim with a quantity', function (done) {
     this.timeout(20 * 1000)
-    addClaim(sandboxEntity, 'P1106', 9000)
+    checkAndAddClaim(sandboxEntity, 'P1106', 9000)
     .then(res => {
       res.success.should.equal(1)
       done()
@@ -91,7 +91,7 @@ describe('claim add', () => {
 
   it('should add a claim with a Url', function (done) {
     this.timeout(20 * 1000)
-    addClaim(sandboxEntity, 'P2078', 'https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-claim')
+    checkAndAddClaim(sandboxEntity, 'P2078', 'https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-claim')
     .then(res => {
       res.success.should.equal(1)
       done()
