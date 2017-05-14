@@ -11,6 +11,8 @@
 - [API](#api)
   - [Label](#label)
     - [set label](#set-label)
+  - [Description](#description)
+    - [set description](#set-description)
   - [Claim](#claim)
     - [add claim](#add-claim)
     - [check if claim exists](#check-if-claim-exists)
