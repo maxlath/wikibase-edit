@@ -60,6 +60,13 @@ See also [Wikidata API documentation](https://www.wikidata.org/w/api.php).
 wdEdit.label.set('Q4115189', 'fr', 'Bac à sable bulgroz')
 ```
 
+### Description
+#### set description
+```js
+// Add the description 'description du Bac à sable bulgroz' to the Sandbox entity (Q4115189) in French
+wdEdit.description.set('Q4115189', 'fr', 'description du Bac à sable bulgroz')
+```
+
 ### Claim
 #### add claim
 ```js

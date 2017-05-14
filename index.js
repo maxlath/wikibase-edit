@@ -6,6 +6,9 @@ module.exports = function (config) {
     label: {
       set: require('./lib/label/set')(config)
     },
+    description: {
+      set: require('./lib/description/set')(config)
+    },
     claim: {
       add: require('./lib/claim/add')(config),
       exists: require('./lib/claim/exists')(config),
