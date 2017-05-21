@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 1.5.0 - 2017-05-22
+* Added [`OAuth support`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#config)
+
 ## 1.4.0 - 2017-05-14
 * Added [`description.set`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#set-description)
 
