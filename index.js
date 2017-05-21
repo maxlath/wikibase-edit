@@ -1,6 +1,9 @@
 module.exports = function (config) {
-  if (!config.username) throw new Error('missing config parameter: username')
-  if (!config.password) throw new Error('missing config parameter: password')
+  // Oauth config will be validated by wikidata-token
+  if (!config.oauth) {
+    if (!config.username) throw new Error('missing config parameter: username')
+    if (!config.password) throw new Error('missing config parameter: password')
+  }
 
   return {
     label: {

@@ -28,9 +28,23 @@
 ## Config
 ```js
 const config = {
-  // Required
+  // One authorization mean is required
+
+  // either a username and password
   username: 'my-wikidata-username',
   password: 'my-wikidata-password',
+
+  // or OAuth tokens
+  oauth: {
+    // Obtained at registration
+    // https://www.mediawiki.org/wiki/OAuth/For_Developers#Registration
+    consumer_key: 'your-consumer-token',
+    consumer_secret: 'your-secret-token',
+    // Obtained when the user authorized your service
+    // see https://www.mediawiki.org/wiki/OAuth/For_Developers#Authorization
+    token: 'a-user-token',
+    token_secret: 'a-secret-token'
+  }
 
   // Optional
   verbose: true, // Default: false
@@ -39,6 +53,8 @@ const config = {
 }
 const wdEdit = require('wikidata-edit')(config)
 ```
+
+:warning: If you are going for the OAuth setup, beware of the doc [footnotes](https://www.mediawiki.org/wiki/OAuth/For_Developers#Notes): make sure to use the right URLs before loosing hours at a `invalid signature` error message. You may use this [working implementation](https://github.com/inventaire/inventaire/blob/3dbec5706f414f3359d2437f9e2ca59d9b6b0687/server/controllers/auth/wikidata_oauth.coffee) as reference.
 
 ### Custom Wikibase instance
 
