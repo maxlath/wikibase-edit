@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 1.6.0 - 2017-05-22
+* Allow [`per-function initialization`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#per-function-initialization)
+
 ## 1.5.0 - 2017-05-22
 * Added [`OAuth support`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#config)
 
