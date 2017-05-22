@@ -148,7 +148,7 @@ wdEdit.claim.remove(claimGuids)
 
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
-const referenceUrl = 'https://example.org/rise-and-box-of-the-holy-sand-box'
+const referenceUrl = 'https://example.org/rise-and-fall-of-the-holy-sand-box'
 wdEdit.reference.add(claimGuid, referenceUrl)
 ```
 
