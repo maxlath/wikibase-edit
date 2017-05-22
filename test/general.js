@@ -61,3 +61,10 @@ describe('with oauth', () => {
     done()
   })
 })
+
+describe('per-function initialization', () => {
+  it('should give access to a function without calling the whole initializer', (done) => {
+    wdEdit(credentialConfig, 'claim/add').should.be.a.Function()
+    done()
+  })
+})

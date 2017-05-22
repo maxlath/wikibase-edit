@@ -7,6 +7,7 @@
 
 
 - [Config](#config)
+  - [Per-function initialization](#per-function-initialization)
   - [Custom Wikibase instance](#custom-wikibase-instance)
 - [API](#api)
   - [Label](#label)
@@ -55,6 +56,21 @@ const wdEdit = require('wikidata-edit')(config)
 ```
 
 :warning: If you are going for the OAuth setup, beware of the doc [footnotes](https://www.mediawiki.org/wiki/OAuth/For_Developers#Notes): make sure to use the right URLs before loosing hours at a `invalid signature` error message. You may use this [working implementation](https://github.com/inventaire/inventaire/blob/3dbec5706f414f3359d2437f9e2ca59d9b6b0687/server/controllers/auth/wikidata_oauth.coffee) as reference.
+
+### Per-function initialization
+If you want to use [thos functions](#API) with a different config everytime (which is likely if you are using OAuth), you may prefer to initialize only the functions you need when you need it, to avoid creating all the functions everytime.
+
+So instead of
+```js
+const wdEdit = require('wikidata-edit')(config)
+wdEdit.label.set('Q4115189', 'fr', 'Bac à sable bulgroz')
+```
+you could do
+```js
+const setLabel = require('wikidata-edit')(config, 'label/set')
+setLabel('Q4115189', 'fr', 'Bac à sable bulgroz')
+```
+It will then initialize only this function and the libs it depends on.
 
 ### Custom Wikibase instance
 
