@@ -47,5 +47,8 @@
       "it",
       "describe"
     ]
+  },
+  "engines": {
+    "node": ">= 6.4"
   }
 }
