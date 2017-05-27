@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 1.7.0 - 2017-05-27
+* Added [`claim.update`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#update-claim)
+
 ## 1.6.0 - 2017-05-22
 * Allow [`per-function initialization`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#per-function-initialization)
 

@@ -17,6 +17,7 @@
   - [Claim](#claim)
     - [add claim](#add-claim)
     - [check if claim exists](#check-if-claim-exists)
+    - [update claim](#update-claim)
     - [remove claim](#remove-claim)
   - [Reference](#reference)
     - [add reference](#add-reference)
@@ -130,6 +131,13 @@ wdEdit.claim.add('Q4115189', 'P2097', [ 9000, 'Q7727' ] )
 wdEdit.claim.exists('Q4115189', 'P2002', 'bulgroz')
 .then(boolean => )
 ```
+
+#### update claim
+A function to change the value of an existing claim without having to remove it and while keeping its references and qualifiers.
+```js
+wdEdit.claim.update('Q4115189', 'P2002', 'initial-value', 'new-value')
+```
+It will return a rejected promise if several claims with the same value already exist.
 
 #### remove claim
 ```js
