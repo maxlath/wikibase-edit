@@ -18,6 +18,7 @@ module.exports = function (config, functionPath) {
       claim: {
         add: require('./lib/claim/add')(config),
         exists: require('./lib/claim/exists')(config),
+        update: require('./lib/claim/update')(config),
         remove: require('./lib/claim/remove')(config)
       },
       reference: {
