@@ -12,6 +12,9 @@ module.exports = function (config, functionPath) {
       label: {
         set: require('./lib/label/set')(config)
       },
+      alias: {
+        set: require('./lib/alias/set')(config)
+      },
       description: {
         set: require('./lib/description/set')(config)
       },
