@@ -57,6 +57,7 @@ describe('claim exists', () => {
         done()
       })
     })
+    .catch(done)
   })
   it('should return null if there is no claim', function (done) {
     this.timeout(20 * 1000)
@@ -71,5 +72,6 @@ describe('claim exists', () => {
         done()
       })
     })
+    .catch(done)
   })
 })

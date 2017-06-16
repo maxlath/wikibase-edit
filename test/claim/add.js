@@ -32,6 +32,7 @@ describe('claim add', () => {
       res.success.should.equal(1)
       done()
     })
+    .catch(done)
   })
 
   it('should add a claim with a reference if provided', function (done) {
@@ -42,6 +43,7 @@ describe('claim add', () => {
       res.success.should.equal(1)
       done()
     })
+    .catch(done)
   })
 
   it('should add a claim with an external id', function (done) {
@@ -51,6 +53,7 @@ describe('claim add', () => {
       res.success.should.equal(1)
       done()
     })
+    .catch(done)
   })
 
   it('should add a claim with an wikibase item', function (done) {
@@ -60,6 +63,7 @@ describe('claim add', () => {
       res.success.should.equal(1)
       done()
     })
+    .catch(done)
   })
 
   it('should add a claim with a year', function (done) {
@@ -69,6 +73,7 @@ describe('claim add', () => {
       res.success.should.equal(1)
       done()
     })
+    .catch(done)
   })
 
   it('should add a claim with monolingualtext', function (done) {
@@ -78,6 +83,7 @@ describe('claim add', () => {
       res.success.should.equal(1)
       done()
     })
+    .catch(done)
   })
 
   it('should add a claim with a quantity', function (done) {
@@ -87,6 +93,7 @@ describe('claim add', () => {
       res.success.should.equal(1)
       done()
     })
+    .catch(done)
   })
 
   it('should add a claim with a Url', function (done) {
@@ -96,5 +103,6 @@ describe('claim add', () => {
       res.success.should.equal(1)
       done()
     })
+    .catch(done)
   })
 })

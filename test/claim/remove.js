@@ -30,6 +30,7 @@ describe('claim remove', () => {
         done()
       })
     })
+    .catch(done)
   })
 
   it('should several claims', function (done) {
@@ -44,5 +45,6 @@ describe('claim remove', () => {
         done()
       })
     })
+    .catch(done)
   })
 })

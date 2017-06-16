@@ -46,6 +46,7 @@ describe('claim update', () => {
         done()
       })
     })
+    .catch(done)
   })
 
   it('should keep the references and qualifiers', function (done) {
@@ -60,5 +61,6 @@ describe('claim update', () => {
         done()
       })
     })
+    .catch(done)
   })
 })
