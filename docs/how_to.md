@@ -193,8 +193,14 @@ wdEdit.claim.remove(claimGuids)
 
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
-const referenceUrl = 'https://example.org/rise-and-fall-of-the-holy-sand-box'
-wdEdit.reference.add(claimGuid, referenceUrl)
+# reference url (P854) is 'https://example.org/rise-and-fall-of-the-holy-sand-box'
+wdEdit.reference.add(claimGuid, 'P854', 'https://example.org/rise-and-fall-of-the-holy-sand-box')
+```
+
+```js
+const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+# imported from (P143) the French Wikipedia 'Q8447'
+wdEdit.reference.add(claimGuid, 'P143', 'Q8447')
 ```
 
 ### Entity
