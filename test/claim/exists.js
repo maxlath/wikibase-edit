@@ -22,6 +22,7 @@ describe('claim exists', () => {
       err.message.should.equal('invalid entity')
       done()
     })
+    .catch(done)
   })
 
   it('should rejected if not passed a property', done => {
@@ -30,6 +31,7 @@ describe('claim exists', () => {
       err.message.should.equal('invalid property')
       done()
     })
+    .catch(done)
   })
 
   it('should rejected if not passed a value', done => {
@@ -38,6 +40,7 @@ describe('claim exists', () => {
       err.message.should.equal('missing claim value')
       done()
     })
+    .catch(done)
   })
 
   // Using an non arrow function to customize the timeout

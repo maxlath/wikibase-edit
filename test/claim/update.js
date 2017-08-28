@@ -29,6 +29,7 @@ describe('claim update', () => {
       possibleMessages.includes(err.message).should.be.true()
       done()
     })
+    .catch(done)
   })
 
   // Using an non arrow function to customize the timeout

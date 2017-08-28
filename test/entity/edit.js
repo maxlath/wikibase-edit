@@ -18,6 +18,7 @@ describe('entity edit', () => {
       err.message.should.equal('invalid entity id')
       done()
     })
+    .catch(done)
   })
 
   it('should reject an edit without data', done => {
@@ -27,6 +28,7 @@ describe('entity edit', () => {
       err.message.should.equal('no data was passed')
       done()
     })
+    .catch(done)
   })
 
   it('should reject invalid claims', done => {
@@ -36,6 +38,7 @@ describe('entity edit', () => {
       err.message.should.equal('invalid claim value')
       done()
     })
+    .catch(done)
   })
 
   it('should reject invalid labels', done => {
@@ -45,6 +48,7 @@ describe('entity edit', () => {
       err.message.should.equal('invalid label')
       done()
     })
+    .catch(done)
   })
 
   it('should reject invalid descriptions', done => {
@@ -54,6 +58,7 @@ describe('entity edit', () => {
       err.message.should.equal('invalid description')
       done()
     })
+    .catch(done)
   })
 
   // Using an non arrow function to customize the timeout
@@ -76,5 +81,6 @@ describe('entity edit', () => {
       P1775Claims.includes('Q3576110').should.be.true()
       done()
     })
+    .catch(done)
   })
 })

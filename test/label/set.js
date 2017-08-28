@@ -17,6 +17,7 @@ describe('label set', () => {
       err.message.should.equal('invalid entity')
       done()
     })
+    .catch(done)
   })
 
   it('should rejected if not passed a language', done => {
@@ -25,6 +26,7 @@ describe('label set', () => {
       err.message.should.equal('invalid language')
       done()
     })
+    .catch(done)
   })
 
   it('should rejected if not passed a label', done => {
@@ -33,6 +35,7 @@ describe('label set', () => {
       err.message.should.equal('invalid label')
       done()
     })
+    .catch(done)
   })
 
   // Using an non arrow function to customize the timeout
@@ -45,5 +48,6 @@ describe('label set', () => {
       res.success.should.equal(1)
       done()
     })
+    .catch(done)
   })
 })

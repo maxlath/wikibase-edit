@@ -15,6 +15,7 @@ describe('entity edit', () => {
       err.message.should.equal('invalid claim value')
       done()
     })
+    .catch(done)
   })
 })
 

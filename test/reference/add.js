@@ -21,6 +21,7 @@ describe('claim add', () => {
       err.message.should.equal('missing guid')
       done()
     })
+    .catch(done)
   })
 
   it('should rejected if passed an invalid claim guid', done => {
@@ -29,6 +30,7 @@ describe('claim add', () => {
       err.message.should.equal('invalid guid')
       done()
     })
+    .catch(done)
   })
 
   // (1)
@@ -43,6 +45,7 @@ describe('claim add', () => {
         done()
       })
     })
+    .catch(done)
   })
 
   // (1)
@@ -57,6 +60,7 @@ describe('claim add', () => {
         done()
       })
     })
+    .catch(done)
   })
 
   // (1)
@@ -72,6 +76,7 @@ describe('claim add', () => {
         done()
       })
     })
+    .catch(done)
   })
 })
 
