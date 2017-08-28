@@ -16,8 +16,8 @@ describe('claim exists', () => {
     done()
   })
 
-  it('should rejected if not passed an entity', done => {
-    exists()
+  it('should rejected if not passed an entity', function (done) {
+    exists(null, 'P50', 'Q535')
     .catch(err => {
       err.message.should.equal('invalid entity')
       done()
@@ -25,7 +25,7 @@ describe('claim exists', () => {
   })
 
   it('should rejected if not passed a property', done => {
-    exists(sandboxEntity)
+    exists(sandboxEntity, null, 'Q535')
     .catch(err => {
       err.message.should.equal('invalid property')
       done()
