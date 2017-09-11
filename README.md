@@ -1,8 +1,6 @@
 # Wikidata Edit
 Edit [Wikidata](https://wikidata.org) from [NodeJS](https://nodejs.org)
 
-Status: still many things to implement. [Your help is welcome](#contributing)
-
 [![wikidata](https://raw.githubusercontent.com/maxlath/wikidata-sdk/master/assets/wikidata.jpg)](https://wikidata.org)
 
 [![NPM](https://nodei.co/npm/wikidata-edit.png?stars&downloads&downloadRank)](https://npmjs.com/package/wikidata-edit/) [![NPM](https://nodei.co/npm-dl/wikidata-edit.png?months=6&height=3)](https://npmjs.com/package/wikidata-edit/)
