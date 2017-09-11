@@ -14,6 +14,10 @@
     - [set label](#set-label)
   - [Description](#description)
     - [set description](#set-description)
+  - [Alias](#alias)
+    - [add aliases](#add-aliases)
+    - [remove aliases](#remove-aliases)
+    - [set aliases](#set-aliases)
   - [Claim](#claim)
     - [add claim](#add-claim)
     - [check if claim exists](#check-if-claim-exists)
@@ -100,6 +104,32 @@ wdEdit.label.set('Q4115189', 'fr', 'Bac à sable bulgroz')
 ```js
 // Add the description 'description du Bac à sable bulgroz' to the Sandbox entity (Q4115189) in French
 wdEdit.description.set('Q4115189', 'fr', 'description du Bac à sable bulgroz')
+```
+
+### Alias
+#### add aliases
+```js
+// Add the alias 'foo' to the Sandbox entity (Q4115189) in French
+wdEdit.alias.add('Q4115189', 'fr', 'foo')
+// Add the aliases 'foo' and 'bar'
+wdEdit.alias.add('Q4115189', 'fr', [ 'foo', 'bar' ])
+```
+
+#### remove aliases
+```js
+// Remove the alias 'foo' to the Sandbox entity (Q4115189) in French
+wdEdit.alias.remove('Q4115189', 'fr', 'foo')
+// Remove the aliases 'foo' and 'bar'
+wdEdit.alias.remove('Q4115189', 'fr', [ 'foo', 'bar' ])
+```
+
+#### set aliases
+```js
+// Replace the current list of aliases in French on Sandbox entity (Q4115189) by 'foo'
+wdEdit.alias.set('Q4115189', 'fr', 'foo')
+// Replace the current list of aliases by 'foo' and 'bar'
+// Set the aliases 'foo' and 'bar'
+wdEdit.alias.set('Q4115189', 'fr', [ 'foo', 'bar' ])
 ```
 
 ### Claim
