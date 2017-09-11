@@ -1,6 +1,11 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 1.8.0 - 2017-09-11
+* Added [`alias.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-alias)
+* Added [`alias.remove`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#remove-alias)
+* Added [`alias.set`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#set-alias)
+
 ## 1.7.0 - 2017-05-27
 * Added [`claim.update`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#update-claim)
 
