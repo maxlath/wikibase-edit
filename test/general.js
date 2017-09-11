@@ -24,6 +24,13 @@ describe('general', () => {
     wdEdit(credentialConfig).description.set.should.be.a.Function()
     done()
   })
+  it('should have alias functions', (done) => {
+    wdEdit(credentialConfig).alias.should.be.a.Object()
+    wdEdit(credentialConfig).alias.add.should.be.a.Function()
+    wdEdit(credentialConfig).alias.remove.should.be.a.Function()
+    wdEdit(credentialConfig).alias.set.should.be.a.Function()
+    done()
+  })
   it('should have claim functions', (done) => {
     wdEdit(credentialConfig).claim.should.be.a.Object()
     wdEdit(credentialConfig).claim.exists.should.be.a.Function()
