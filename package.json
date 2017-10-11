@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "standard",
     "test": "mocha test/* test/*/*",
-    "prepublish": "npm run lint && npm run test",
+    "prepublishOnly": "npm run lint && npm test",
     "update-properties": "./scripts/update_properties",
     "update-toc": "doctoc README.md docs/*.md"
   },
