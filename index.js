@@ -1,4 +1,6 @@
 module.exports = function (config, functionPath) {
+  if (typeof config !== 'object') throw new Error('missing config object')
+
   // Oauth config will be validated by wikidata-token
   if (!config.oauth) {
     if (!config.username) throw new Error('missing config parameter: username')
