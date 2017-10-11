@@ -7,6 +7,10 @@ module.exports = function (config, functionPath) {
     if (!config.password) throw new Error('missing config parameter: password')
   }
 
+  // Making sure 'bot' is a boolean
+  config.bot = config.bot != null
+  config.assert = config.bot ? 'bot' : 'user'
+
   if (typeof functionPath === 'string') {
     return require(`./lib/${functionPath}`)(config)
   } else {
