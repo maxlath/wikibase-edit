@@ -9,6 +9,7 @@
 - [Config](#config)
   - [Per-function initialization](#per-function-initialization)
   - [Custom Wikibase instance](#custom-wikibase-instance)
+  - [Bot edits](#bot-edits)
 - [API](#api)
   - [Label](#label)
     - [set label](#set-label)
@@ -85,6 +86,12 @@ cd project_folder/node_modules/wikidata-edit
 # Make sure wikidata-cli is installed (especially if you installed wikidata-edit in production mode)
 npm install wikidata-cli
 export SPARQL_ENDPOINT='https://query.mywikibase.instance/sparql'; npm run update-properties
+```
+
+### Bot edits
+You can mark your edits as made by a [bot account](https://www.wikidata.org/wiki/Wikidata:Bots) by setting `bot=true` in the config object:
+```js
+const wdEdit = require('wikidata-edit')({ username: 'mybotname', password: 'mybotpassword', bot: true })
 ```
 
 ## API
