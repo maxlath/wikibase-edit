@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 1.9.0 - 2017-10-13
+* Added [bot edits](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#bot-edits) support
+
 ## 1.8.0 - 2017-09-11
 * Added [`alias.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-alias)
 * Added [`alias.remove`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#remove-alias)
