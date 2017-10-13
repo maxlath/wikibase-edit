@@ -8,7 +8,7 @@ const property = 'P2002'
 const value = randomString()
 const claimPromise = addClaim(CONFIG)(sandboxEntity, property, value)
 
-describe('claim add', () => {
+describe('reference add', () => {
   it('should be a function', done => {
     addReference.should.be.a.Function()
     addReference(CONFIG).should.be.a.Function()
