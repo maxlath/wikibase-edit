@@ -205,12 +205,16 @@ Edit an entity. Labels and descriptions will be set even if there are existing v
 wdEdit.entity.edit({
   // Required
   id: 'Q4115189',
-  // Optional but one of labels, descriptions, or claims must be set
+  // Optional but one of labels, descriptions, claims, or sitelinks must be set
   labels: { en: 'a new label in English', fr: 'un nouveau label en français' },
   descriptions: { en: 'a new description', fr: 'une nouvelle description' },
   claims: {
     P1775: [ 'Q3576110', 'Q12206942' ],
     P2002: 'bulgroz'
+  },
+  sitelinks: {
+    frwiki: 'eviv bulgroz'
+    eswikisource: 'aviv sal bulgroz',
   }
 })
 ```
