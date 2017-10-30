@@ -76,6 +76,35 @@ describe('claim add', () => {
     .catch(done)
   })
 
+  it('should add a claim with a month', function (done) {
+    this.timeout(20 * 1000)
+    checkAndAddClaim(sandboxEntity, 'P569', '1802-02')
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
+
+  it('should add a claim with a day', function (done) {
+    this.timeout(20 * 1000)
+    checkAndAddClaim(sandboxEntity, 'P569', '1802-02-03')
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
+
+  it('should reject a claim with an invalid time', function (done) {
+    this.timeout(20 * 1000)
+    checkAndAddClaim(sandboxEntity, 'P569', '1802-22-33')
+    .catch(err => {
+      err.message.should.equal('invalid time value')
+      done()
+    })
+  })
+
   it('should add a claim with monolingualtext', function (done) {
     this.timeout(20 * 1000)
     checkAndAddClaim(sandboxEntity, 'P1476', [ 'bulgroz', 'fr' ])

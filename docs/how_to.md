@@ -152,8 +152,10 @@ Special cases:
 // Monolingualtext property
 wdEdit.claim.add('Q4115189', 'P1476', [ 'bulgroz', 'it' ])
 
-// Time property: only year precision is supported yet (PR welcome!)
+// Time property: only year, month, and day precision are supported yet (PR welcome!)
 wdEdit.claim.add('Q4115189', 'P569', '1802')
+wdEdit.claim.add('Q4115189', 'P569', '1802-02')
+wdEdit.claim.add('Q4115189', 'P569', '1802-02-26')
 
 // Quantity:
 // pass a single value for a count without a specific unit
