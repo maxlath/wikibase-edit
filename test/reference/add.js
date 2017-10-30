@@ -33,15 +33,29 @@ describe('reference add', () => {
     .catch(done)
   })
 
-  // (1)
-  it('should rejected if not passed a URL or entity id', function (done) {
+  it('should rejected if not passed a property', function (done) {
     this.timeout(20 * 1000)
     claimPromise
     .then(res => {
       const guid = res.claim.id
-      addReference(CONFIG)(guid)
+      return addReference(CONFIG)(guid)
       .catch(err => {
-        err.message.should.equal('missing reference')
+        err.message.should.equal('missing property')
+        done()
+      })
+    })
+    .catch(done)
+  })
+
+  // (1)
+  it('should rejected if not passed a reference value', function (done) {
+    this.timeout(20 * 1000)
+    claimPromise
+    .then(res => {
+      const guid = res.claim.id
+      addReference(CONFIG)(guid, 'P143')
+      .catch(err => {
+        err.message.should.equal('missing reference value')
         done()
       })
     })
@@ -54,9 +68,9 @@ describe('reference add', () => {
     claimPromise
     .then(res => {
       const guid = res.claim.id
-      addReference(CONFIG)(guid, 'not-a-valid-reference')
+      return addReference(CONFIG)(guid, 'P143', 'not-a-valid-reference')
       .catch(err => {
-        err.message.should.equal('invalid reference')
+        err.message.should.equal('invalid claim value')
         done()
       })
     })
@@ -70,7 +84,7 @@ describe('reference add', () => {
     claimPromise
     .then(res => {
       const guid = res.claim.id
-      addReference(CONFIG)(guid, referenceUrl)
+      return addReference(CONFIG)(guid, 'P854', referenceUrl)
       .then(res => {
         res.success.should.equal(1)
         done()
