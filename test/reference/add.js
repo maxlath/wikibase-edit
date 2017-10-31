@@ -6,7 +6,8 @@ const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 
 const property = 'P2002'
 const value = randomString()
-const claimPromise = addClaim(CONFIG)(sandboxEntity, property, value)
+const claimGuidPromise = addClaim(CONFIG)(sandboxEntity, property, value)
+  .then(res => res.claim.id)
 
 describe('reference add', () => {
   it('should be a function', done => {
@@ -35,9 +36,8 @@ describe('reference add', () => {
 
   it('should rejected if not passed a property', function (done) {
     this.timeout(20 * 1000)
-    claimPromise
-    .then(res => {
-      const guid = res.claim.id
+    claimGuidPromise
+    .then(guid => {
       return addReference(CONFIG)(guid)
       .catch(err => {
         err.message.should.equal('missing property')
@@ -50,10 +50,9 @@ describe('reference add', () => {
   // (1)
   it('should rejected if not passed a reference value', function (done) {
     this.timeout(20 * 1000)
-    claimPromise
-    .then(res => {
-      const guid = res.claim.id
-      addReference(CONFIG)(guid, 'P143')
+    claimGuidPromise
+    .then(guid => {
+      return addReference(CONFIG)(guid, 'P143')
       .catch(err => {
         err.message.should.equal('missing reference value')
         done()
@@ -65,9 +64,8 @@ describe('reference add', () => {
   // (1)
   it('should rejected if passed an invalid reference', function (done) {
     this.timeout(20 * 1000)
-    claimPromise
-    .then(res => {
-      const guid = res.claim.id
+    claimGuidPromise
+    .then(guid => {
       return addReference(CONFIG)(guid, 'P143', 'not-a-valid-reference')
       .catch(err => {
         err.message.should.equal('invalid claim value')
@@ -81,9 +79,8 @@ describe('reference add', () => {
   it('should add a reference', function (done) {
     this.timeout(20 * 1000)
     const referenceUrl = 'https://example.org/rise-and-fall-of-the-holy-sandbox-' + randomString()
-    claimPromise
-    .then(res => {
-      const guid = res.claim.id
+    claimGuidPromise
+    .then(guid => {
       return addReference(CONFIG)(guid, 'P854', referenceUrl)
       .then(res => {
         res.success.should.equal(1)
