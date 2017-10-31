@@ -35,17 +35,6 @@ describe('claim add', () => {
     .catch(done)
   })
 
-  it('should add a claim with a reference if provided', function (done) {
-    this.timeout(20 * 1000)
-    const value = randomString()
-    checkAndAddClaim(sandboxEntity, property, value, 'Q60856')
-    .then(res => {
-      res.success.should.equal(1)
-      done()
-    })
-    .catch(done)
-  })
-
   it('should add a claim with an external id', function (done) {
     this.timeout(20 * 1000)
     checkAndAddClaim(sandboxEntity, 'P600', 'someid')
