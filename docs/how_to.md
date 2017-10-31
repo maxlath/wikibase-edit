@@ -189,26 +189,49 @@ const claimGuids = [ 'Q4115189$BB467A9A-9123-4D0C-A87A-B7BF7ACD6477', 'Q4115189$
 wdEdit.claim.remove(claimGuids)
 ```
 
+### Qualifier
+
+#### add qualifier
+
+```js
+const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+const addQualifier = wdEdit.qualifier.add(CONFIG)
+// entity qualifier
+addQualifier(guid, 'P155', 'Q4115189')
+
+// string qualifier
+addQualifier(guid, 'P1545', '123')
+
+// time qualifier
+addQualifier(guid, 'P580', '1802-02-26')
+
+// quantity qualifier
+addQualifier(guid, 'P2130', 123)
+
+// monolingualtext qualifier
+addQualifier(guid, 'P3132', [ "les sanglots long des violons de l'automne", 'fr' ])
+```
+
 ### Reference
 
 #### add reference
 
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
-# reference url (P854) is 'https://example.org/rise-and-fall-of-the-holy-sand-box'
+// reference url (P854) is 'https://example.org/rise-and-fall-of-the-holy-sand-box'
 wdEdit.reference.add(claimGuid, 'P854', 'https://example.org/rise-and-fall-of-the-holy-sand-box')
 ```
 
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
-# imported from (P143) the French Wikipedia 'Q8447'
+// imported from (P143) the French Wikipedia 'Q8447'
 wdEdit.reference.add(claimGuid, 'P143', 'Q8447')
 ```
 
 #### remove reference
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
-# referenceHash can be either a single hash string or an array of reference hash strings
+// referenceHash can be either a single hash string or an array of reference hash strings
 const referenceHash = '239ef1c81ef0c24611d6d7c294d07036e82c4666'
 wdEdit.reference.add(claimGuid, referenceHash)
 ```
