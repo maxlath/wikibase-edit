@@ -195,32 +195,30 @@ wdEdit.claim.remove(claimGuids)
 
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
-const addQualifier = wdEdit.qualifier.add(config)
 // entity qualifier
-addQualifier(guid, 'P155', 'Q4115189')
+wdEdit.qualifier.add(guid, 'P155', 'Q4115189')
 
 // string qualifier
-addQualifier(guid, 'P1545', '123')
+wdEdit.qualifier.add(guid, 'P1545', '123')
 
 // time qualifier
-addQualifier(guid, 'P580', '1802-02-26')
+wdEdit.qualifier.add(guid, 'P580', '1802-02-26')
 
 // quantity qualifier
-addQualifier(guid, 'P2130', 123)
+wdEdit.qualifier.add(guid, 'P2130', 123)
 
 // monolingualtext qualifier
-addQualifier(guid, 'P3132', [ "les sanglots long des violons de l'automne", 'fr' ])
+wdEdit.qualifier.add(guid, 'P3132', [ "les sanglots long des violons de l'automne", 'fr' ])
 ```
 
 #### update qualifier
 
 ```js
-const updateQualifier = wdEdit.qualifier.add(config)
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 const property = 'P155'
 const oldValue = 'Q4115189'
 const newValue = 'Q4115190'
-updateQualifier(guid, property, oldValue, newValue)
+wdEdit.qualifier.update(guid, property, oldValue, newValue)
 ```
 
 ### Reference
@@ -244,7 +242,7 @@ wdEdit.reference.add(claimGuid, 'P143', 'Q8447')
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 // referenceHash can be either a single hash string or an array of reference hash strings
 const referenceHash = '239ef1c81ef0c24611d6d7c294d07036e82c4666'
-wdEdit.reference.add(claimGuid, referenceHash)
+wdEdit.reference.remove(claimGuid, referenceHash)
 ```
 
 ### Entity
