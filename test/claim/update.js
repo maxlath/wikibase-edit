@@ -1,6 +1,7 @@
 require('should')
 const CONFIG = require('config')
 const addClaim = require('../../lib/claim/add')(CONFIG)
+const addReference = require('../../lib/reference/add')(CONFIG)
 const updateClaim = require('../../lib/claim/update')(CONFIG)
 const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 const wdk = require('wikidata-sdk')
@@ -38,7 +39,7 @@ describe('claim update', () => {
     const newValue = randomString()
     addClaim(sandboxEntity, property, oldValue)
     .then(res1 => {
-      updateClaim(sandboxEntity, 'P2002', oldValue, newValue)
+      return updateClaim(sandboxEntity, 'P2002', oldValue, newValue)
       .then(res2 => {
         res1.claim.id.should.equal(res2.claim.id)
         wdk.simplify.claim(res2.claim).should.equal(newValue)
@@ -54,10 +55,13 @@ describe('claim update', () => {
     const newValue = randomString()
     addClaim(sandboxEntity, property, oldValue, 'Q328')
     .then(res1 => {
-      updateClaim(sandboxEntity, property, oldValue, newValue)
-      .then(res2 => {
-        res1.reference.hash.should.equal(res2.claim.references[0].hash)
-        done()
+      return addReference(res1.claim.id, 'P155', 'Q13406268')
+      .then(refRes => {
+        return updateClaim(sandboxEntity, property, oldValue, newValue)
+        .then(res2 => {
+          refRes.reference.hash.should.equal(res2.claim.references[0].hash)
+          done()
+        })
       })
     })
     .catch(done)
