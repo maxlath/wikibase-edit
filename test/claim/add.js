@@ -122,6 +122,16 @@ describe('claim add', () => {
     .catch(done)
   })
 
+  it('should add a claim with a quantity with a unit', function (done) {
+    this.timeout(20 * 1000)
+    checkAndAddClaim(sandboxEntity, 'P1106', [ 9001, 'Q7727' ])
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
+
   it('should throw when passed an invalid string number', function (done) {
     this.timeout(20 * 1000)
     checkAndAddClaim(sandboxEntity, 'P1106', '900$1')
