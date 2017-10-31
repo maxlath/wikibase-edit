@@ -195,7 +195,7 @@ wdEdit.claim.remove(claimGuids)
 
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
-const addQualifier = wdEdit.qualifier.add(CONFIG)
+const addQualifier = wdEdit.qualifier.add(config)
 // entity qualifier
 addQualifier(guid, 'P155', 'Q4115189')
 
@@ -210,6 +210,17 @@ addQualifier(guid, 'P2130', 123)
 
 // monolingualtext qualifier
 addQualifier(guid, 'P3132', [ "les sanglots long des violons de l'automne", 'fr' ])
+```
+
+#### update qualifier
+
+```js
+const updateQualifier = wdEdit.qualifier.add(config)
+const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+const property = 'P155'
+const oldValue = 'Q4115189'
+const newValue = 'Q4115190'
+updateQualifier(guid, property, oldValue, newValue)
 ```
 
 ### Reference

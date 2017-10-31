@@ -29,7 +29,8 @@ module.exports = function (config, functionPath) {
         remove: require('./lib/claim/remove')(config)
       },
       qualifier: {
-        add: require('./lib/qualifier/add')(config)
+        add: require('./lib/qualifier/add')(config),
+        update: require('./lib/qualifier/update')(config)
       },
       reference: {
         add: require('./lib/reference/add')(config),

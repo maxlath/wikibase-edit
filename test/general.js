@@ -42,6 +42,7 @@ describe('general', () => {
   it('should have qualifier functions', done => {
     wdEdit(credentialConfig).qualifier.should.be.a.Object()
     wdEdit(credentialConfig).qualifier.add.should.be.a.Function()
+    wdEdit(credentialConfig).qualifier.update.should.be.a.Function()
     done()
   })
   it('should have reference functions', done => {
