@@ -1,23 +1,22 @@
 require('should')
 const CONFIG = require('config')
-const addReference = require('../../lib/reference/add')
-const addClaim = require('../../lib/claim/add')
+const addReference = require('../../lib/reference/add')(CONFIG)
+const addClaim = require('../../lib/claim/add')(CONFIG)
 const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 
 const property = 'P2002'
 const value = randomString()
-const claimGuidPromise = addClaim(CONFIG)(sandboxEntity, property, value)
+const claimGuidPromise = addClaim(sandboxEntity, property, value)
   .then(res => res.claim.id)
 
 describe('reference add', () => {
   it('should be a function', done => {
     addReference.should.be.a.Function()
-    addReference(CONFIG).should.be.a.Function()
     done()
   })
 
   it('should rejected if not passed a claim guid', done => {
-    addReference(CONFIG)()
+    addReference()
     .catch(err => {
       err.message.should.equal('missing guid')
       done()
@@ -26,7 +25,7 @@ describe('reference add', () => {
   })
 
   it('should rejected if passed an invalid claim guid', done => {
-    addReference(CONFIG)('some-invalid-guid')
+    addReference('some-invalid-guid')
     .catch(err => {
       err.message.should.equal('invalid guid')
       done()
@@ -38,7 +37,7 @@ describe('reference add', () => {
     this.timeout(20 * 1000)
     claimGuidPromise
     .then(guid => {
-      return addReference(CONFIG)(guid)
+      return addReference(guid)
       .catch(err => {
         err.message.should.equal('missing property')
         done()
@@ -52,7 +51,7 @@ describe('reference add', () => {
     this.timeout(20 * 1000)
     claimGuidPromise
     .then(guid => {
-      return addReference(CONFIG)(guid, 'P143')
+      return addReference(guid, 'P143')
       .catch(err => {
         err.message.should.equal('missing reference value')
         done()
@@ -66,7 +65,7 @@ describe('reference add', () => {
     this.timeout(20 * 1000)
     claimGuidPromise
     .then(guid => {
-      return addReference(CONFIG)(guid, 'P143', 'not-a-valid-reference')
+      return addReference(guid, 'P143', 'not-a-valid-reference')
       .catch(err => {
         err.message.should.equal('invalid entity value')
         done()
@@ -81,7 +80,7 @@ describe('reference add', () => {
     const referenceUrl = 'https://example.org/rise-and-fall-of-the-holy-sandbox-' + randomString()
     claimGuidPromise
     .then(guid => {
-      return addReference(CONFIG)(guid, 'P854', referenceUrl)
+      return addReference(guid, 'P854', referenceUrl)
       .then(res => {
         res.success.should.equal(1)
         done()

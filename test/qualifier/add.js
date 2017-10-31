@@ -1,23 +1,22 @@
 require('should')
 const CONFIG = require('config')
-const addQualifier = require('../../lib/qualifier/add')
-const addClaim = require('../../lib/claim/add')
+const addQualifier = require('../../lib/qualifier/add')(CONFIG)
+const addClaim = require('../../lib/claim/add')(CONFIG)
 const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 
 const property = 'P2002'
 const value = randomString()
-const claimGuidPromise = addClaim(CONFIG)(sandboxEntity, property, value)
+const claimGuidPromise = addClaim(sandboxEntity, property, value)
   .then(res => res.claim.id)
 
 describe('reference add', () => {
   it('should be a function', done => {
     addQualifier.should.be.a.Function()
-    addQualifier(CONFIG).should.be.a.Function()
     done()
   })
 
   it('should rejected if not passed a claim guid', done => {
-    addQualifier(CONFIG)()
+    addQualifier()
     .catch(err => {
       err.message.should.equal('missing guid')
       done()
@@ -26,7 +25,7 @@ describe('reference add', () => {
   })
 
   it('should rejected if passed an invalid claim guid', done => {
-    addQualifier(CONFIG)('some-invalid-guid')
+    addQualifier('some-invalid-guid')
     .catch(err => {
       err.message.should.equal('invalid guid')
       done()
@@ -38,7 +37,7 @@ describe('reference add', () => {
     this.timeout(20 * 1000)
     claimGuidPromise
     .then(guid => {
-      return addQualifier(CONFIG)(guid)
+      return addQualifier(guid)
       .catch(err => {
         err.message.should.equal('missing property')
         done()
@@ -51,7 +50,7 @@ describe('reference add', () => {
     this.timeout(20 * 1000)
     claimGuidPromise
     .then(guid => {
-      return addQualifier(CONFIG)(guid, 'P155')
+      return addQualifier(guid, 'P155')
       .catch(err => {
         err.message.should.equal('missing qualifier value')
         done()
@@ -64,7 +63,7 @@ describe('reference add', () => {
     this.timeout(20 * 1000)
     claimGuidPromise
     .then(guid => {
-      return addQualifier(CONFIG)(guid, 'P155', 'not-a-valid-value')
+      return addQualifier(guid, 'P155', 'not-a-valid-value')
       .catch(err => {
         err.message.should.equal('invalid entity value')
         done()
@@ -77,7 +76,7 @@ describe('reference add', () => {
     this.timeout(20 * 1000)
     claimGuidPromise
     .then(guid => {
-      return addQualifier(CONFIG)(guid, 'P155', 'Q4115189')
+      return addQualifier(guid, 'P155', 'Q4115189')
       .then(res => {
         res.success.should.equal(1)
         done()
@@ -90,7 +89,7 @@ describe('reference add', () => {
     this.timeout(20 * 1000)
     claimGuidPromise
     .then(guid => {
-      return addQualifier(CONFIG)(guid, 'P1545', '123')
+      return addQualifier(guid, 'P1545', '123')
       .then(res => {
         res.success.should.equal(1)
         done()
@@ -103,7 +102,7 @@ describe('reference add', () => {
     this.timeout(20 * 1000)
     claimGuidPromise
     .then(guid => {
-      return addQualifier(CONFIG)(guid, 'P580', '1802-02')
+      return addQualifier(guid, 'P580', '1802-02')
       .then(res => {
         res.success.should.equal(1)
         done()
@@ -116,7 +115,7 @@ describe('reference add', () => {
     this.timeout(20 * 1000)
     claimGuidPromise
     .then(guid => {
-      return addQualifier(CONFIG)(guid, 'P2130', 123)
+      return addQualifier(guid, 'P2130', 123)
       .then(res => {
         res.success.should.equal(1)
         done()
@@ -129,7 +128,7 @@ describe('reference add', () => {
     this.timeout(20 * 1000)
     claimGuidPromise
     .then(guid => {
-      return addQualifier(CONFIG)(guid, 'P3132', [ "les sanglots long des violons de l'automne", 'fr' ])
+      return addQualifier(guid, 'P3132', [ "les sanglots long des violons de l'automne", 'fr' ])
       .then(res => {
         res.success.should.equal(1)
         done()

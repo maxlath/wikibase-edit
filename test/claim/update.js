@@ -1,15 +1,13 @@
 require('should')
 const CONFIG = require('config')
 const addClaim = require('../../lib/claim/add')(CONFIG)
-const _updateClaim = require('../../lib/claim/update')
-const updateClaim = _updateClaim(CONFIG)
+const updateClaim = require('../../lib/claim/update')(CONFIG)
 const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 const wdk = require('wikidata-sdk')
 const property = 'P2002'
 
 describe('claim update', () => {
   it('should be a function', done => {
-    _updateClaim.should.be.a.Function()
     updateClaim.should.be.a.Function()
     done()
   })
@@ -56,7 +54,7 @@ describe('claim update', () => {
     const newValue = randomString()
     addClaim(sandboxEntity, property, oldValue, 'Q328')
     .then(res1 => {
-      updateClaim(sandboxEntity, 'P2002', oldValue, newValue)
+      updateClaim(sandboxEntity, property, oldValue, newValue)
       .then(res2 => {
         res1.reference.hash.should.equal(res2.claim.references[0].hash)
         done()

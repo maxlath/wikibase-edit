@@ -1,16 +1,15 @@
 require('should')
 const CONFIG = require('config')
-const createEntity = require('../../lib/entity/create')
+const createEntity = require('../../lib/entity/create')(CONFIG)
 
 describe('entity edit', () => {
   it('should be a function', done => {
     createEntity.should.be.a.Function()
-    createEntity(CONFIG).should.be.a.Function()
     done()
   })
 
   it('should then use entity.edit validation features', done => {
-    createEntity(CONFIG)({ claims: { P31: 'bla' } })
+    createEntity({ claims: { P31: 'bla' } })
     .catch(err => {
       err.message.should.equal('invalid entity value')
       done()

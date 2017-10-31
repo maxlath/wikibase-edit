@@ -1,18 +1,17 @@
 require('should')
 const CONFIG = require('config')
-const removeAlias = require('../../lib/alias/remove')
+const removeAlias = require('../../lib/alias/remove')(CONFIG)
 const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 const language = 'it'
 
 describe('alias remove', () => {
   it('should be a function', done => {
     removeAlias.should.be.a.Function()
-    removeAlias(CONFIG).should.be.a.Function()
     done()
   })
 
   it('should reject if not passed an entity', done => {
-    removeAlias(CONFIG)()
+    removeAlias()
     .catch(err => {
       err.message.should.equal('invalid entity')
       done()
@@ -21,7 +20,7 @@ describe('alias remove', () => {
   })
 
   it('should reject if not passed a language', done => {
-    removeAlias(CONFIG)(sandboxEntity)
+    removeAlias(sandboxEntity)
     .catch(err => {
       err.message.should.equal('invalid language')
       done()
@@ -30,7 +29,7 @@ describe('alias remove', () => {
   })
 
   it('should reject if not passed an alias', done => {
-    removeAlias(CONFIG)(sandboxEntity, language)
+    removeAlias(sandboxEntity, language)
     .catch(err => {
       err.message.should.equal('empty alias array')
       done()
@@ -44,7 +43,7 @@ describe('alias remove', () => {
     this.timeout(20 * 1000)
     // It's not necessary that the removed alias actually exist
     // so we can just pass a random string and expect Wikidata to deal with it
-    removeAlias(CONFIG)(sandboxEntity, language, randomString(4))
+    removeAlias(sandboxEntity, language, randomString(4))
     .then(res => {
       res.success.should.equal(1)
       done()
@@ -54,7 +53,7 @@ describe('alias remove', () => {
 
   it('should accept multiple aliases as an array of strings', function (done) {
     this.timeout(20 * 1000)
-    removeAlias(CONFIG)(sandboxEntity, language, [ randomString(4), randomString(4) ])
+    removeAlias(sandboxEntity, language, [ randomString(4), randomString(4) ])
     .then(res => {
       res.success.should.equal(1)
       done()
@@ -65,7 +64,7 @@ describe('alias remove', () => {
   it('should remove an alias', function (done) {
     this.timeout(20 * 1000)
     const alias = `Bac à Sable (${randomString()})`
-    removeAlias(CONFIG)(sandboxEntity, 'fr', alias)
+    removeAlias(sandboxEntity, 'fr', alias)
     .then(res => {
       res.success.should.equal(1)
       done()

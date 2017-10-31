@@ -1,18 +1,18 @@
 require('should')
 const CONFIG = require('config')
-const setDescription = require('../../lib/description/set')
+const setDescription = require('../../lib/description/set')(CONFIG)
 const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 const language = 'fr'
 
 describe('description set', () => {
   it('should be a function', done => {
     setDescription.should.be.a.Function()
-    setDescription(CONFIG).should.be.a.Function()
+    setDescription.should.be.a.Function()
     done()
   })
 
   it('should rejected if not passed an entity', done => {
-    setDescription(CONFIG)()
+    setDescription()
     .catch(err => {
       err.message.should.equal('invalid entity')
       done()
@@ -21,7 +21,7 @@ describe('description set', () => {
   })
 
   it('should rejected if not passed a language', done => {
-    setDescription(CONFIG)(sandboxEntity)
+    setDescription(sandboxEntity)
     .catch(err => {
       err.message.should.equal('invalid language')
       done()
@@ -30,7 +30,7 @@ describe('description set', () => {
   })
 
   it('should rejected if not passed a description', done => {
-    setDescription(CONFIG)(sandboxEntity, language)
+    setDescription(sandboxEntity, language)
     .catch(err => {
       err.message.should.equal('invalid description')
       done()
@@ -43,7 +43,7 @@ describe('description set', () => {
   it('should set a description', function (done) {
     this.timeout(20 * 1000)
     const description = `Bac à Sable (${randomString()})`
-    setDescription(CONFIG)(sandboxEntity, 'fr', description)
+    setDescription(sandboxEntity, 'fr', description)
     .then(res => {
       res.success.should.equal(1)
       done()

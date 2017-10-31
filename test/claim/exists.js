@@ -1,7 +1,6 @@
 const should = require('should')
 const CONFIG = require('config')
-const _exists = require('../../lib/claim/exists')
-const exists = _exists(CONFIG)
+const exists = require('../../lib/claim/exists')(CONFIG)
 const add = require('../../lib/claim/add')(CONFIG)
 const remove = require('../../lib/claim/remove')(CONFIG)
 const { sandboxEntity } = require('../../lib/tests_utils')
@@ -11,7 +10,6 @@ const wdk = require('wikidata-sdk')
 
 describe('claim exists', () => {
   it('should be a function', done => {
-    _exists.should.be.a.Function()
     exists.should.be.a.Function()
     done()
   })
@@ -28,7 +26,7 @@ describe('claim exists', () => {
   it('should rejected if not passed a property', done => {
     exists(sandboxEntity, null, 'Q535')
     .catch(err => {
-      err.message.should.equal('invalid property')
+      err.message.should.equal('missing property')
       done()
     })
     .catch(done)

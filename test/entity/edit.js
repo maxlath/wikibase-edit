@@ -1,19 +1,18 @@
 require('should')
 const CONFIG = require('config')
-const editEntity = require('../../lib/entity/edit')
+const editEntity = require('../../lib/entity/edit')(CONFIG)
 const { randomString, sandboxEntity, sandboxDescriptionFr } = require('../../lib/tests_utils')
 const wdk = require('wikidata-sdk')
 
 describe('entity edit', () => {
   it('should be a function', done => {
     editEntity.should.be.a.Function()
-    editEntity(CONFIG).should.be.a.Function()
     done()
   })
 
   it('should reject a missing id', done => {
     editEntity.should.be.a.Function()
-    editEntity(CONFIG)({ claims: { P31: 'bla' } })
+    editEntity({ claims: { P31: 'bla' } })
     .catch(err => {
       err.message.should.equal('invalid entity id')
       done()
@@ -23,7 +22,7 @@ describe('entity edit', () => {
 
   it('should reject an edit without data', done => {
     editEntity.should.be.a.Function()
-    editEntity(CONFIG)({ id: sandboxEntity })
+    editEntity({ id: sandboxEntity })
     .catch(err => {
       err.message.should.equal('no data was passed')
       done()
@@ -33,7 +32,7 @@ describe('entity edit', () => {
 
   it('should reject invalid claims', done => {
     editEntity.should.be.a.Function()
-    editEntity(CONFIG)({ id: sandboxEntity, claims: { P31: 'bla' } })
+    editEntity({ id: sandboxEntity, claims: { P31: 'bla' } })
     .catch(err => {
       err.message.should.equal('invalid entity value')
       done()
@@ -43,7 +42,7 @@ describe('entity edit', () => {
 
   it('should reject invalid labels', done => {
     editEntity.should.be.a.Function()
-    editEntity(CONFIG)({ id: sandboxEntity, labels: { fr: '' } })
+    editEntity({ id: sandboxEntity, labels: { fr: '' } })
     .catch(err => {
       err.message.should.equal('invalid label')
       done()
@@ -53,7 +52,7 @@ describe('entity edit', () => {
 
   it('should reject invalid descriptions', done => {
     editEntity.should.be.a.Function()
-    editEntity(CONFIG)({ id: sandboxEntity, descriptions: { fr: '' } })
+    editEntity({ id: sandboxEntity, descriptions: { fr: '' } })
     .catch(err => {
       err.message.should.equal('invalid description')
       done()
@@ -67,7 +66,7 @@ describe('entity edit', () => {
     this.timeout(5000)
     const label = `Bac à Sable (${randomString()})`
     const description = `${sandboxDescriptionFr} (${randomString()})`
-    editEntity(CONFIG)({
+    editEntity({
       id: sandboxEntity,
       labels: { fr: label },
       descriptions: { fr: description },

@@ -1,7 +1,6 @@
 require('should')
 const CONFIG = require('config')
-const _addClaim = require('../../lib/claim/add')
-const addClaim = _addClaim(CONFIG)
+const addClaim = require('../../lib/claim/add')(CONFIG)
 const exists = require('../../lib/claim/exists')(CONFIG)
 const remove = require('../../lib/claim/remove')(CONFIG)
 const { randomString, sandboxEntity } = require('../../lib/tests_utils')
@@ -17,7 +16,6 @@ const checkAndAddClaim = (subject, property, object) => {
 
 describe('claim add', () => {
   it('should be a function', done => {
-    _addClaim.should.be.a.Function()
     addClaim.should.be.a.Function()
     done()
   })

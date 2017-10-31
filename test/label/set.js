@@ -1,18 +1,17 @@
 require('should')
 const CONFIG = require('config')
-const setLabel = require('../../lib/label/set')
+const setLabel = require('../../lib/label/set')(CONFIG)
 const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 const language = 'fr'
 
 describe('label set', () => {
   it('should be a function', done => {
     setLabel.should.be.a.Function()
-    setLabel(CONFIG).should.be.a.Function()
     done()
   })
 
   it('should rejected if not passed an entity', done => {
-    setLabel(CONFIG)()
+    setLabel()
     .catch(err => {
       err.message.should.equal('invalid entity')
       done()
@@ -21,7 +20,7 @@ describe('label set', () => {
   })
 
   it('should rejected if not passed a language', done => {
-    setLabel(CONFIG)(sandboxEntity)
+    setLabel(sandboxEntity)
     .catch(err => {
       err.message.should.equal('invalid language')
       done()
@@ -30,7 +29,7 @@ describe('label set', () => {
   })
 
   it('should rejected if not passed a label', done => {
-    setLabel(CONFIG)(sandboxEntity, language)
+    setLabel(sandboxEntity, language)
     .catch(err => {
       err.message.should.equal('invalid label')
       done()
@@ -43,7 +42,7 @@ describe('label set', () => {
   it('should set a label', function (done) {
     this.timeout(20 * 1000)
     const label = `Bac à Sable (${randomString()})`
-    setLabel(CONFIG)(sandboxEntity, 'fr', label)
+    setLabel(sandboxEntity, 'fr', label)
     .then(res => {
       res.success.should.equal(1)
       done()
