@@ -35,7 +35,7 @@ describe('entity edit', () => {
     editEntity.should.be.a.Function()
     editEntity(CONFIG)({ id: sandboxEntity, claims: { P31: 'bla' } })
     .catch(err => {
-      err.message.should.equal('invalid claim value')
+      err.message.should.equal('invalid entity value')
       done()
     })
     .catch(done)

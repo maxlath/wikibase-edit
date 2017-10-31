@@ -68,7 +68,7 @@ describe('reference add', () => {
     .then(guid => {
       return addReference(CONFIG)(guid, 'P143', 'not-a-valid-reference')
       .catch(err => {
-        err.message.should.equal('invalid claim value')
+        err.message.should.equal('invalid entity value')
         done()
       })
     })
