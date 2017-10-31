@@ -205,6 +205,14 @@ const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 wdEdit.reference.add(claimGuid, 'P143', 'Q8447')
 ```
 
+#### remove reference
+```js
+const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+# referenceHash can be either a single hash string or an array of reference hash strings
+const referenceHash = '239ef1c81ef0c24611d6d7c294d07036e82c4666'
+wdEdit.reference.add(claimGuid, referenceHash)
+```
+
 ### Entity
 
 #### edit

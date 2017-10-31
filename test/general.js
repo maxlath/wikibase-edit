@@ -42,6 +42,7 @@ describe('general', () => {
   it('should have reference functions', (done) => {
     wdEdit(credentialConfig).reference.should.be.a.Object()
     wdEdit(credentialConfig).reference.add.should.be.a.Function()
+    wdEdit(credentialConfig).reference.remove.should.be.a.Function()
     done()
   })
   it('should have entity functions', (done) => {

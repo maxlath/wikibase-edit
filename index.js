@@ -29,7 +29,8 @@ module.exports = function (config, functionPath) {
         remove: require('./lib/claim/remove')(config)
       },
       reference: {
-        add: require('./lib/reference/add')(config)
+        add: require('./lib/reference/add')(config),
+        remove: require('./lib/reference/remove')(config)
       },
       entity: {
         create: require('./lib/entity/create')(config),
