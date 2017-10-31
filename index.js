@@ -30,7 +30,8 @@ module.exports = function (config, functionPath) {
       },
       qualifier: {
         add: require('./lib/qualifier/add')(config),
-        update: require('./lib/qualifier/update')(config)
+        update: require('./lib/qualifier/update')(config),
+        remove: require('./lib/qualifier/remove')(config)
       },
       reference: {
         add: require('./lib/reference/add')(config),

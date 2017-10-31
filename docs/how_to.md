@@ -221,6 +221,15 @@ const newValue = 'Q4115190'
 wdEdit.qualifier.update(guid, property, oldValue, newValue)
 ```
 
+#### remove qualifier
+
+```js
+const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+// qualifierHash can be either a single hash string or an array of reference hash strings
+const qualifierHash = '239ef1c81ef0c24611d6d7c294d07036e82c4666'
+wdEdit.reference.remove(claimGuid, qualifierHash)
+```
+
 ### Reference
 
 #### add reference
