@@ -82,4 +82,22 @@ describe('entity edit', () => {
     })
     .catch(done)
   })
+
+  it('should edit an entity with qualifiers', function (done) {
+    this.timeout(5000)
+    editEntity({
+      id: sandboxEntity,
+      claims: {
+        P369: {
+          'value': 'Q5111731',
+          'qualifiers': { 'P1545': ['17'], 'P1416': ['Q13406268'] }
+        }
+      }
+    })
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
 })
