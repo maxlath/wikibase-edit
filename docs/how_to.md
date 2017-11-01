@@ -256,7 +256,7 @@ wdEdit.reference.remove(claimGuid, referenceHash)
 
 ### Entity
 
-#### edit
+#### edit entity
 Edit an entity. Labels and descriptions will be set even if there are existing values for the given languages. Claims will be added to the entity existing claims, without checking for duplicates.
 ```js
 wdEdit.entity.edit({
@@ -266,8 +266,19 @@ wdEdit.entity.edit({
   labels: { en: 'a new label in English', fr: 'un nouveau label en français' },
   descriptions: { en: 'a new description', fr: 'une nouvelle description' },
   claims: {
+    // Pass values as an array
     P1775: [ 'Q3576110', 'Q12206942' ],
-    P2002: 'bulgroz'
+    // Or a single value
+    P2002: 'bulgroz',
+    // Or as an array of deep objects to pass qualifiers
+    P369: [
+      { value: 'Q5111731', qualifiers: { P1545: '17', P1416: ['Q13406268'] }},
+      { value: 'Q2622002', qualifiers: { P580: '1789-08-04' } }
+      // Be careful for quantities qualifiers with a unit, make sure to pass
+      // the qualifiers property values as an array so that the quantity array
+      // are correctly interpreted as [ quantity, unit ]
+      { value: 'Q2622002', qualifiers: { P1106: [ [ 9001, 'Q7727'] ] }}
+    ]
   },
   sitelinks: {
     frwiki: 'eviv bulgroz'
@@ -276,15 +287,10 @@ wdEdit.entity.edit({
 })
 ```
 
-#### create
+#### create entity
 Create an entity from scratch.
+The entity data follow the same rules as [`wdEdit.entity.edit`](#edit-entity), simply without the `id`
+
 ```js
-wdEdit.entity.create({
-  labels: { en: 'a label', fr: 'un label' },
-  descriptions: { en: 'a new description', fr: 'une nouvelle description' },
-  claims: {
-    P1775: [ 'Q3576110', 'Q12206942' ],
-    P2002: 'bulgroz'
-  }
-})
+wdEdit.entity.create(entityData)
 ```
