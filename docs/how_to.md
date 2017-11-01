@@ -277,7 +277,7 @@ wdEdit.entity.edit({
     P2002: 'bulgroz',
     // Or as an array of deep objects to pass qualifiers and references
     P369: [
-      { value: 'Q5111731', qualifiers: { P1545: '17', P1416: ['Q13406268'] }},
+      { value: 'Q5111731', qualifiers: { P1545: '17', P1416: [ 'Q13406268', 'Q32844021' ] }},
       { value: 'Q2622002', qualifiers: { P580: '1789-08-04' } }
       { value: 'Q2622002', qualifiers: { P1106: { amount: 9001, unit: 'Q7727' } } }
 

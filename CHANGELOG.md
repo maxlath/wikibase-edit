@@ -5,6 +5,7 @@
 * BREAKING CHANGE: [`reference.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-reference) now expects an explicit reference property
 * BREAKING CHANGE: [`claim.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-claim) now can't be passed a reference: the reference needs to be added separately
 * BREAKING CHANGE: quantity claims with a unit can't be passed as an array of the shape `[ amount, unit ]` anymore, and should instead be passed as an object `{ amount, unit }`
+* BREAKING CHANGE: monolingual text can't be passed as an array of the shape `[ text, language ]` anymore, and should instead be passed as an object `{ text, language }`
 * Added [`reference.remove`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#remove-reference)
 * [`alias.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-alias): time claims now accept month and day precisions
 * Added [`qualifier.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-qualifier)

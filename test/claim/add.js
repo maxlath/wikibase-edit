@@ -94,7 +94,7 @@ describe('claim add', () => {
 
   it('should add a claim with monolingualtext', function (done) {
     this.timeout(20 * 1000)
-    checkAndAddClaim(sandboxEntity, 'P1476', [ 'bulgroz', 'fr' ])
+    checkAndAddClaim(sandboxEntity, 'P1476', { text: 'bulgroz', language: 'fr' })
     .then(res => {
       res.success.should.equal(1)
       done()
