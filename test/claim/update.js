@@ -3,9 +3,9 @@ const CONFIG = require('config')
 const addClaim = require('../../lib/claim/add')(CONFIG)
 const addReference = require('../../lib/reference/add')(CONFIG)
 const updateClaim = require('../../lib/claim/update')(CONFIG)
-const { randomString, sandboxEntity } = require('../../lib/tests_utils')
+const { randomString, sandboxEntity, sandboxStringProp } = require('../../lib/tests_utils')
 const wdk = require('wikidata-sdk')
-const property = 'P2002'
+const property = sandboxStringProp
 
 describe('claim update', () => {
   it('should be a function', done => {
@@ -17,10 +17,10 @@ describe('claim update', () => {
     this.timeout(20 * 1000)
     const oldValue = randomString()
     const newValue = randomString()
-    updateClaim(sandboxEntity, 'P2002', oldValue, newValue)
+    updateClaim(sandboxEntity, sandboxStringProp, oldValue, newValue)
     .catch(err => {
       // Accept both messages as the sandbox entity might have been cleaned
-      // and no pre-existing P2002 claim exist
+      // and no pre-existing P370 claim exist
       const possibleMessages = [
         'no property claims found',
         'no existing claim found for this value'
@@ -39,7 +39,7 @@ describe('claim update', () => {
     const newValue = randomString()
     addClaim(sandboxEntity, property, oldValue)
     .then(res1 => {
-      return updateClaim(sandboxEntity, 'P2002', oldValue, newValue)
+      return updateClaim(sandboxEntity, sandboxStringProp, oldValue, newValue)
       .then(res2 => {
         res1.claim.id.should.equal(res2.claim.id)
         wdk.simplify.claim(res2.claim).should.equal(newValue)

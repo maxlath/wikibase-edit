@@ -2,14 +2,16 @@ require('should')
 const CONFIG = require('config')
 const addQualifier = require('../../lib/qualifier/add')(CONFIG)
 const removeQualifier = require('../../lib/qualifier/remove')(CONFIG)
-const addClaim = require('../../lib/claim/add')(CONFIG)
-const { randomString, sandboxEntity } = require('../../lib/tests_utils')
+const { getClaimPromise } = require('../../lib/tests_utils')
 
-const property = 'P2002'
-const value = randomString()
-const claimPromise = addClaim(sandboxEntity, property, value)
+var claimPromise
 
 describe('qualifier remove', () => {
+  before(function (done) {
+    claimPromise = getClaimPromise()
+    done()
+  })
+
   it('should be a function', done => {
     removeQualifier.should.be.a.Function()
     done()

@@ -4,7 +4,7 @@ const exists = require('../../lib/claim/exists')(CONFIG)
 const add = require('../../lib/claim/add')(CONFIG)
 const remove = require('../../lib/claim/remove')(CONFIG)
 const { sandboxEntity } = require('../../lib/tests_utils')
-const property = 'P2002'
+const property = 'P370'
 const value = 'Zorg'
 const wdk = require('wikidata-sdk')
 

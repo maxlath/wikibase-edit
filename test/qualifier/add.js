@@ -1,15 +1,16 @@
 require('should')
 const CONFIG = require('config')
 const addQualifier = require('../../lib/qualifier/add')(CONFIG)
-const addClaim = require('../../lib/claim/add')(CONFIG)
-const { randomString, sandboxEntity } = require('../../lib/tests_utils')
+const { getClaimGuid } = require('../../lib/tests_utils')
 
-const property = 'P2002'
-const value = randomString()
-const claimGuidPromise = addClaim(sandboxEntity, property, value)
-  .then(res => res.claim.id)
+var claimGuidPromise
 
-describe('reference add', () => {
+describe('qualifier add', () => {
+  before(function (done) {
+    claimGuidPromise = getClaimGuid()
+    done()
+  })
+
   it('should be a function', done => {
     addQualifier.should.be.a.Function()
     done()

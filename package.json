@@ -45,7 +45,9 @@
     ],
     "globals": [
       "it",
-      "describe"
+      "describe",
+      "before",
+      "beforeEach"
     ]
   },
   "engines": {

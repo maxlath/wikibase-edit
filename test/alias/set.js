@@ -7,7 +7,6 @@ const language = 'it'
 describe('alias set', () => {
   it('should be a function', done => {
     setAlias.should.be.a.Function()
-    setAlias.should.be.a.Function()
     done()
   })
 

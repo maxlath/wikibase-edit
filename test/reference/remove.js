@@ -2,14 +2,16 @@ require('should')
 const CONFIG = require('config')
 const addReference = require('../../lib/reference/add')(CONFIG)
 const removeReference = require('../../lib/reference/remove')(CONFIG)
-const addClaim = require('../../lib/claim/add')(CONFIG)
-const { randomString, sandboxEntity } = require('../../lib/tests_utils')
+const { randomString, getClaimPromise } = require('../../lib/tests_utils')
 
-const property = 'P2002'
-const value = randomString()
-const claimPromise = addClaim(sandboxEntity, property, value)
+var claimPromise
 
 describe('reference remove', () => {
+  before(function (done) {
+    claimPromise = getClaimPromise()
+    done()
+  })
+
   it('should be a function', done => {
     removeReference.should.be.a.Function()
     done()

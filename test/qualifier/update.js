@@ -1,17 +1,18 @@
 require('should')
 const CONFIG = require('config')
-const addClaim = require('../../lib/claim/add')(CONFIG)
 const addQualifier = require('../../lib/qualifier/add')(CONFIG)
 const updateQualifier = require('../../lib/qualifier/update')(CONFIG)
-const { randomString, sandboxEntity } = require('../../lib/tests_utils')
+const { getClaimGuid } = require('../../lib/tests_utils')
 const wdk = require('wikidata-sdk')
 
-const property = 'P2002'
-const value = randomString()
-const claimGuidPromise = addClaim(sandboxEntity, property, value)
-  .then(res => res.claim.id)
+var claimGuidPromise
 
 describe('reference update', () => {
+  before(function (done) {
+    claimGuidPromise = getClaimGuid()
+    done()
+  })
+
   it('should be a function', done => {
     updateQualifier.should.be.a.Function()
     done()

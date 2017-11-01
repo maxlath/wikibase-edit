@@ -1,15 +1,28 @@
 require('should')
 const CONFIG = require('config')
-const addClaim = require('../../lib/claim/add')(CONFIG)
 const removeClaim = require('../../lib/claim/remove')(CONFIG)
-const { randomString, sandboxEntity } = require('../../lib/tests_utils')
+const { getClaimGuid } = require('../../lib/tests_utils')
 
-const getClaimGuid = () => {
-  return addClaim(sandboxEntity, 'P2002', randomString())
-  .then(res => res.claim.id)
-}
+var claimGuidA, claimGuidB, claimGuidC
 
 describe('claim remove', () => {
+  before(function (done) {
+    this.timeout(20 * 1000)
+    claimGuidA = getClaimGuid()
+
+    claimGuidA
+    .then(() => {
+      // Wait for the first claim to be created to avoid edit conflicts
+      claimGuidB = getClaimGuid()
+
+      claimGuidB
+      .then(() => {
+        claimGuidC = getClaimGuid()
+        done()
+      })
+    })
+  })
+
   it('should be a function', done => {
     removeClaim.should.be.a.Function()
     done()
@@ -19,9 +32,9 @@ describe('claim remove', () => {
   // cf https://github.com/mochajs/mocha/issues/2018
   it('should remove a claim', function (done) {
     this.timeout(20 * 1000)
-    getClaimGuid()
+    claimGuidA
     .then(guid => {
-      removeClaim(guid)
+      return removeClaim(guid)
       .then(res => {
         res.success.should.equal(1)
         res.claims[0].should.equal(guid)
@@ -33,9 +46,9 @@ describe('claim remove', () => {
 
   it('should several claims', function (done) {
     this.timeout(20 * 1000)
-    Promise.all([ getClaimGuid(), getClaimGuid() ])
+    Promise.all([ claimGuidB, claimGuidC ])
     .then(guids => {
-      removeClaim(guids)
+      return removeClaim(guids)
       .then(res => {
         res.success.should.equal(1)
         res.claims[0].should.equal(guids[0])

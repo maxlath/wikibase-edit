@@ -3,8 +3,8 @@ const CONFIG = require('config')
 const addClaim = require('../../lib/claim/add')(CONFIG)
 const exists = require('../../lib/claim/exists')(CONFIG)
 const remove = require('../../lib/claim/remove')(CONFIG)
-const { randomString, sandboxEntity } = require('../../lib/tests_utils')
-const property = 'P2002'
+const { randomString, sandboxEntity, sandboxStringProp } = require('../../lib/tests_utils')
+const property = sandboxStringProp
 
 const checkAndAddClaim = (subject, property, object) => {
   return exists(subject, property, object)
