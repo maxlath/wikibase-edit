@@ -88,10 +88,10 @@ describe('entity edit', () => {
     editEntity({
       id: sandboxEntity,
       claims: {
-        P369: {
-          'value': 'Q5111731',
-          'qualifiers': { 'P1545': ['17'], 'P1416': ['Q13406268'] }
-        }
+        P369: [
+          { value: 'Q5111731', qualifiers: { P1545: '17', P1416: [ 'Q13406268' ] } },
+          { value: 'Q2622002', qualifiers: { P580: '1789-08-04', P1106: [ [ 9001, 'Q7727' ] ] } }
+        ]
       }
     })
     .then(res => {
