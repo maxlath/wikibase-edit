@@ -6,20 +6,15 @@ Edit [Wikidata](https://wikidata.org) from [NodeJS](https://nodejs.org)
 [![NPM](https://nodei.co/npm/wikidata-edit.png?stars&downloads&downloadRank)](https://npmjs.com/package/wikidata-edit/) [![NPM](https://nodei.co/npm-dl/wikidata-edit.png?months=6&height=3)](https://npmjs.com/package/wikidata-edit/)
 
 ## Summary
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 
 - [Install](#install)
-- [How-To](#how-to)
+- [How-To](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Donate](#donate)
 - [See Also](#see-also)
 - [You may also like](#you-may-also-like)
 - [License](#license)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Install
 ```sh
