@@ -165,8 +165,8 @@ wdEdit.claim.add('Q4115189', 'P569', '1802-02-26')
 // Quantity:
 // pass a single value for a count without a specific unit
 wdEdit.claim.add('Q4115189', 'P1106', 9000)
-// pass an array for a value with a specific unit. Example here to specify minutes (Q7727)
-wdEdit.claim.add('Q4115189', 'P2097', [ 9000, 'Q7727' ] )
+// pass an object for a value with a specific unit. Example here to specify minutes (Q7727)
+wdEdit.claim.add('Q4115189', 'P2097', { amount: 9000, unit: 'Q7727' })
 ```
 
 #### check if claim exists
@@ -279,10 +279,7 @@ wdEdit.entity.edit({
     P369: [
       { value: 'Q5111731', qualifiers: { P1545: '17', P1416: ['Q13406268'] }},
       { value: 'Q2622002', qualifiers: { P580: '1789-08-04' } }
-      // Be careful for quantities qualifiers with a unit, make sure to pass
-      // the qualifiers property values as an array so that the quantity array
-      // are correctly interpreted as [ quantity, unit ]
-      { value: 'Q2622002', qualifiers: { P1106: [ [ 9001, 'Q7727'] ] }}
+      { value: 'Q2622002', qualifiers: { P1106: { amount: 9001, unit: 'Q7727' } } }
 
       # References can be passed as a single record group
       { value: 'Q2622004', references: { P143: 'Q8447' } }

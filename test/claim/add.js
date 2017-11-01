@@ -124,7 +124,7 @@ describe('claim add', () => {
 
   it('should add a claim with a quantity with a unit', function (done) {
     this.timeout(20 * 1000)
-    checkAndAddClaim(sandboxEntity, 'P1106', [ 9001, 'Q7727' ])
+    checkAndAddClaim(sandboxEntity, 'P1106', { amount: 9001, unit: 'Q7727' })
     .then(res => {
       res.success.should.equal(1)
       done()

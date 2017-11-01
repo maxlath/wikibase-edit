@@ -90,7 +90,7 @@ describe('entity edit', () => {
       claims: {
         P369: [
           { value: 'Q5111731', qualifiers: { P1545: '17', P1416: [ 'Q13406268' ] } },
-          { value: 'Q2622002', qualifiers: { P580: '1789-08-04', P1106: [ [ 9001, 'Q7727' ] ] } }
+          { value: 'Q2622002', qualifiers: { P580: '1789-08-04', P1106: { amount: 9001, unit: 'Q7727' } } }
         ]
       }
     })
