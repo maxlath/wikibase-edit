@@ -155,7 +155,11 @@ wdEdit.claim.add('Q4115189', 'P2002', 'bulgroz')
 Special cases:
 ```js
 // Monolingualtext property
-wdEdit.claim.add('Q4115189', 'P1476', [ 'bulgroz', 'it' ])
+wdEdit.claim.add('Q4115189', 'P1476', { text: 'bulgroz', language: 'it' })
+
+// Quantity with a unit
+// Example here with the unit 'minute' (Q7727)
+wdEdit.claim.add('Q4115189', 'P1106', { amount: 9001, unit: 'Q7727' })
 
 // Time property: only year, month, and day precision are supported yet (PR welcome!)
 wdEdit.claim.add('Q4115189', 'P569', '1802')
