@@ -1,6 +1,16 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 2.0.0 - 2017-11-01
+* BREAKING CHANGE: [`reference.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-reference) now expects an explicit reference property
+* BREAKING CHANGE: [`claim.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-claim) now can't be passed a reference: the eference needs to be added separately
+* Added [`reference.remove`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#remove-reference)
+* [`alias.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-alias): time claims now accept month and day precisions
+* Added [`qualifier.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-qualifier)
+* Added [`qualifier.update`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#update-qualifier)
+* Added [`qualifier.remove`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#remove-qualifier)
+* [`entity.edit`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#edit-entity)|[`entity.create`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#create-entity): added support for qualifiers and references
+
 ## 1.9.0 - 2017-10-13
 * Added [bot edits](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#bot-edits) support
 
