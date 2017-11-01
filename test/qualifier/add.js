@@ -116,7 +116,7 @@ describe('qualifier add', () => {
     this.timeout(20 * 1000)
     claimGuidPromise
     .then(guid => {
-      return addQualifier(guid, 'P2130', 123)
+      return addQualifier(guid, 'P2130', { amount: 123, unit: 'Q4916' })
       .then(res => {
         res.success.should.equal(1)
         done()
@@ -129,7 +129,7 @@ describe('qualifier add', () => {
     this.timeout(20 * 1000)
     claimGuidPromise
     .then(guid => {
-      return addQualifier(guid, 'P3132', [ "les sanglots long des violons de l'automne", 'fr' ])
+      return addQualifier(guid, 'P3132', { text: "les sanglots long des violons de l'automne", language: 'fr' })
       .then(res => {
         res.success.should.equal(1)
         done()
