@@ -100,4 +100,25 @@ describe('entity edit', () => {
     })
     .catch(done)
   })
+
+  it('should edit an entity with references', function (done) {
+    this.timeout(5000)
+    editEntity({
+      id: sandboxEntity,
+      claims: {
+        P369: [
+          { value: 'Q5111731', qualifiers: { P369: [ 'Q13406268' ] } },
+          { value: 'Q2622002', references: { P855: 'https://example.org' } }
+        ]
+      }
+    })
+    .then(res => {
+      res.success.should.equal(1)
+      const lastClaim = res.entity.claims.P369.slice(-1)[0]
+      const urlRef = lastClaim.references[0].snaks.P855[0]
+      urlRef.datavalue.value.should.equal('https://example.org')
+      done()
+    })
+    .catch(done)
+  })
 })
