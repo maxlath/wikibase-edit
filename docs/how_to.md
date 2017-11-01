@@ -24,11 +24,16 @@
     - [check if claim exists](#check-if-claim-exists)
     - [update claim](#update-claim)
     - [remove claim](#remove-claim)
+  - [Qualifier](#qualifier)
+    - [add qualifier](#add-qualifier)
+    - [update qualifier](#update-qualifier)
+    - [remove qualifier](#remove-qualifier)
   - [Reference](#reference)
     - [add reference](#add-reference)
+    - [remove reference](#remove-reference)
   - [Entity](#entity)
-    - [edit](#edit)
-    - [create](#create)
+    - [edit entity](#edit-entity)
+    - [create entity](#create-entity)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
