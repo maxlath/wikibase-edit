@@ -101,14 +101,37 @@ describe('entity edit', () => {
     .catch(done)
   })
 
-  it('should edit an entity with references', function (done) {
+  it('should edit an entity with a reference', function (done) {
+    this.timeout(5000)
+    editEntity({
+      id: sandboxEntity,
+      claims: {
+        P369: { value: 'Q2622002', references: { P855: 'https://example.org', P143: 'Q8447' } }
+      }
+    })
+    .then(res => {
+      res.success.should.equal(1)
+      const lastClaim = res.entity.claims.P369.slice(-1)[0]
+      const urlRef = lastClaim.references[0].snaks.P855[0]
+      urlRef.datavalue.value.should.equal('https://example.org')
+      done()
+    })
+    .catch(done)
+  })
+
+  it('should edit an entity with multiple references', function (done) {
     this.timeout(5000)
     editEntity({
       id: sandboxEntity,
       claims: {
         P369: [
-          { value: 'Q5111731', qualifiers: { P369: [ 'Q13406268' ] } },
-          { value: 'Q2622002', references: { P855: 'https://example.org' } }
+          {
+            value: 'Q2622002',
+            references: [
+              { P855: 'https://example.org', P143: 'Q8447' },
+              { P855: 'https://example2.org', P143: 'Q8447' }
+            ]
+          }
         ]
       }
     })

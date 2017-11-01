@@ -270,7 +270,7 @@ wdEdit.entity.edit({
     P1775: [ 'Q3576110', 'Q12206942' ],
     // Or a single value
     P2002: 'bulgroz',
-    // Or as an array of deep objects to pass qualifiers
+    // Or as an array of deep objects to pass qualifiers and references
     P369: [
       { value: 'Q5111731', qualifiers: { P1545: '17', P1416: ['Q13406268'] }},
       { value: 'Q2622002', qualifiers: { P580: '1789-08-04' } }
@@ -278,6 +278,17 @@ wdEdit.entity.edit({
       // the qualifiers property values as an array so that the quantity array
       // are correctly interpreted as [ quantity, unit ]
       { value: 'Q2622002', qualifiers: { P1106: [ [ 9001, 'Q7727'] ] }}
+
+      # References can be passed as a single record group
+      { value: 'Q2622004', references: { P143: 'Q8447' } }
+      # or as multiple records
+      {
+        value: 'Q2622009',
+        references: [
+          { P855: 'https://example.org', P143: 'Q8447' },
+          { P855: 'https://example2.org', P143: 'Q8447' }
+        ]
+      }
     ]
   },
   sitelinks: {
