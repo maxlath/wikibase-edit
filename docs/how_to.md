@@ -285,9 +285,9 @@ wdEdit.entity.edit({
       { value: 'Q2622002', qualifiers: { P580: '1789-08-04' } }
       { value: 'Q2622002', qualifiers: { P1106: { amount: 9001, unit: 'Q7727' } } }
 
-      # References can be passed as a single record group
+      // References can be passed as a single record group
       { value: 'Q2622004', references: { P143: 'Q8447' } }
-      # or as multiple records
+      // or as multiple records
       {
         value: 'Q2622009',
         references: [
