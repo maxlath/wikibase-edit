@@ -204,6 +204,7 @@ wdEdit.claim.remove(claimGuids)
 
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+
 // entity qualifier
 wdEdit.qualifier.add(guid, 'P155', 'Q4115189')
 
@@ -216,8 +217,11 @@ wdEdit.qualifier.add(guid, 'P580', '1802-02-26')
 // quantity qualifier
 wdEdit.qualifier.add(guid, 'P2130', 123)
 
+// quantity qualifier with a unit
+wdEdit.qualifier.add(guid, 'P2130', { amount: 123, unit: 'Q4916' })
+
 // monolingualtext qualifier
-wdEdit.qualifier.add(guid, 'P3132', [ "les sanglots long des violons de l'automne", 'fr' ])
+wdEdit.qualifier.add(guid, 'P3132', { text : "les sanglots long des violons de l'automne", language: 'fr' })
 ```
 
 #### update qualifier
