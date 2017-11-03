@@ -63,7 +63,7 @@ describe('entity edit', () => {
   // Using an non arrow function to customize the timeout
   // cf https://github.com/mochajs/mocha/issues/2018
   it('should edit an entity', function (done) {
-    this.timeout(5000)
+    this.timeout(20000)
     const label = `Bac à Sable (${randomString()})`
     const description = `${sandboxDescriptionFr} (${randomString()})`
     editEntity({
@@ -84,7 +84,7 @@ describe('entity edit', () => {
   })
 
   it('should edit an entity with qualifiers', function (done) {
-    this.timeout(5000)
+    this.timeout(20000)
     editEntity({
       id: sandboxEntity,
       claims: {
@@ -109,7 +109,7 @@ describe('entity edit', () => {
   })
 
   it('should edit an entity with a reference', function (done) {
-    this.timeout(5000)
+    this.timeout(20000)
     editEntity({
       id: sandboxEntity,
       claims: {
@@ -127,7 +127,7 @@ describe('entity edit', () => {
   })
 
   it('should edit an entity with multiple references', function (done) {
-    this.timeout(5000)
+    this.timeout(20000)
     editEntity({
       id: sandboxEntity,
       claims: {
