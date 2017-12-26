@@ -37,7 +37,7 @@
     "mocha": "^3.2.0",
     "should": "^11.2.1",
     "standard": "^9.0.2",
-    "wikidata-cli": "^4.9.0"
+    "wikidata-cli": "^5.7.0"
   },
   "standard": {
     "ignore": [
