@@ -5,7 +5,9 @@ const { getClaimGuid } = require('../../lib/tests_utils')
 
 var claimGuidPromise
 
-describe('qualifier add', () => {
+describe('qualifier add', function () {
+  this.timeout(20 * 1000)
+
   before(function (done) {
     claimGuidPromise = getClaimGuid()
     done()
@@ -34,8 +36,7 @@ describe('qualifier add', () => {
     .catch(done)
   })
 
-  it('should rejected if not passed a property', function (done) {
-    this.timeout(20 * 1000)
+  it('should rejected if not passed a property', done => {
     claimGuidPromise
     .then(guid => {
       return addQualifier(guid)
@@ -47,8 +48,7 @@ describe('qualifier add', () => {
     .catch(done)
   })
 
-  it('should rejected if not passed a value', function (done) {
-    this.timeout(20 * 1000)
+  it('should rejected if not passed a value', done => {
     claimGuidPromise
     .then(guid => {
       return addQualifier(guid, 'P155')
@@ -60,8 +60,7 @@ describe('qualifier add', () => {
     .catch(done)
   })
 
-  it('should rejected if passed an invalid value', function (done) {
-    this.timeout(20 * 1000)
+  it('should rejected if passed an invalid value', done => {
     claimGuidPromise
     .then(guid => {
       return addQualifier(guid, 'P155', 'not-a-valid-value')
@@ -73,8 +72,7 @@ describe('qualifier add', () => {
     .catch(done)
   })
 
-  it('should add an entity qualifier', function (done) {
-    this.timeout(20 * 1000)
+  it('should add an entity qualifier', done => {
     claimGuidPromise
     .then(guid => {
       return addQualifier(guid, 'P155', 'Q4115189')
@@ -86,8 +84,7 @@ describe('qualifier add', () => {
     .catch(done)
   })
 
-  it('should add a string qualifier', function (done) {
-    this.timeout(20 * 1000)
+  it('should add a string qualifier', done => {
     claimGuidPromise
     .then(guid => {
       return addQualifier(guid, 'P1545', '123')
@@ -99,8 +96,7 @@ describe('qualifier add', () => {
     .catch(done)
   })
 
-  it('should add a time qualifier', function (done) {
-    this.timeout(20 * 1000)
+  it('should add a time qualifier', done => {
     claimGuidPromise
     .then(guid => {
       return addQualifier(guid, 'P580', '1802-02')
@@ -112,8 +108,7 @@ describe('qualifier add', () => {
     .catch(done)
   })
 
-  it('should add a quantity qualifier', function (done) {
-    this.timeout(20 * 1000)
+  it('should add a quantity qualifier', done => {
     claimGuidPromise
     .then(guid => {
       return addQualifier(guid, 'P2130', { amount: 123, unit: 'Q4916' })
@@ -125,8 +120,7 @@ describe('qualifier add', () => {
     .catch(done)
   })
 
-  it('should add a monolingualtext qualifier', function (done) {
-    this.timeout(20 * 1000)
+  it('should add a monolingualtext qualifier', done => {
     claimGuidPromise
     .then(guid => {
       return addQualifier(guid, 'P3132', { text: "les sanglots long des violons de l'automne", language: 'fr' })

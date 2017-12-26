@@ -7,7 +7,9 @@ const wdk = require('wikidata-sdk')
 
 var claimGuidPromise
 
-describe('reference update', () => {
+describe('reference update', function () {
+  this.timeout(20 * 1000)
+
   before(function (done) {
     claimGuidPromise = getClaimGuid()
     done()
@@ -18,8 +20,7 @@ describe('reference update', () => {
     done()
   })
 
-  it('should update an entity qualifier', function (done) {
-    this.timeout(20 * 1000)
+  it('should update an entity qualifier', done => {
     claimGuidPromise
     .then(guid => {
       const property = 'P156'
@@ -34,8 +35,7 @@ describe('reference update', () => {
     .catch(done)
   })
 
-  it('should update a string qualifier', function (done) {
-    this.timeout(20 * 1000)
+  it('should update a string qualifier', done => {
     claimGuidPromise
     .then(guid => {
       const property = 'P1545'
@@ -52,8 +52,7 @@ describe('reference update', () => {
     .catch(done)
   })
 
-  it('should update a qualifier with a time value', function (done) {
-    this.timeout(20 * 1000)
+  it('should update a qualifier with a time value', done => {
     claimGuidPromise
     .then(guid => {
       const property = 'P580'
@@ -70,8 +69,7 @@ describe('reference update', () => {
     .catch(done)
   })
 
-  it('should update a quantity qualifier with a unit', function (done) {
-    this.timeout(20 * 1000)
+  it('should update a quantity qualifier with a unit', done => {
     claimGuidPromise
     .then(guid => {
       const property = 'P2130'
@@ -88,8 +86,7 @@ describe('reference update', () => {
     .catch(done)
   })
 
-  it('should update a monolingual text qualifier', function (done) {
-    this.timeout(20 * 1000)
+  it('should update a monolingual text qualifier', done => {
     claimGuidPromise
     .then(guid => {
       const property = 'P3132'

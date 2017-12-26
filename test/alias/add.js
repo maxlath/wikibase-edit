@@ -4,7 +4,9 @@ const addAlias = require('../../lib/alias/add')(CONFIG)
 const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 const language = 'it'
 
-describe('alias add', () => {
+describe('alias add', function () {
+  this.timeout(20 * 1000)
+
   it('should be a function', done => {
     addAlias.should.be.a.Function()
     done()
@@ -37,10 +39,7 @@ describe('alias add', () => {
     .catch(done)
   })
 
-  // Using an non arrow function to customize the timeout
-  // cf https://github.com/mochajs/mocha/issues/2018
-  it('should accept a single alias string', function (done) {
-    this.timeout(20 * 1000)
+  it('should accept a single alias string', done => {
     addAlias(sandboxEntity, language, randomString(4))
     .then(res => {
       res.success.should.equal(1)
@@ -49,8 +48,7 @@ describe('alias add', () => {
     .catch(done)
   })
 
-  it('should accept multiple aliases as an array of strings', function (done) {
-    this.timeout(20 * 1000)
+  it('should accept multiple aliases as an array of strings', done => {
     addAlias(sandboxEntity, language, [ randomString(4), randomString(4) ])
     .then(res => {
       res.success.should.equal(1)
@@ -59,8 +57,7 @@ describe('alias add', () => {
     .catch(done)
   })
 
-  it('should add an alias', function (done) {
-    this.timeout(20 * 1000)
+  it('should add an alias', done => {
     const alias = `Bac à Sable (${randomString()})`
     addAlias(sandboxEntity, 'fr', alias)
     .then(res => {

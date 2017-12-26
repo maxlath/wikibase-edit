@@ -5,7 +5,9 @@ const { randomString, getClaimGuid } = require('../../lib/tests_utils')
 
 var claimGuidPromise
 
-describe('reference add', () => {
+describe('reference add', function () {
+  this.timeout(20 * 1000)
+
   before(function (done) {
     claimGuidPromise = getClaimGuid(done)
     done()
@@ -34,8 +36,7 @@ describe('reference add', () => {
     .catch(done)
   })
 
-  it('should rejected if not passed a property', function (done) {
-    this.timeout(20 * 1000)
+  it('should rejected if not passed a property', done => {
     claimGuidPromise
     .then(guid => {
       return addReference(guid)
@@ -48,8 +49,7 @@ describe('reference add', () => {
   })
 
   // (1)
-  it('should rejected if not passed a reference value', function (done) {
-    this.timeout(20 * 1000)
+  it('should rejected if not passed a reference value', done => {
     claimGuidPromise
     .then(guid => {
       return addReference(guid, 'P143')
@@ -61,9 +61,7 @@ describe('reference add', () => {
     .catch(done)
   })
 
-  // (1)
-  it('should rejected if passed an invalid reference', function (done) {
-    this.timeout(20 * 1000)
+  it('should rejected if passed an invalid reference', done => {
     claimGuidPromise
     .then(guid => {
       return addReference(guid, 'P143', 'not-a-valid-reference')
@@ -75,9 +73,7 @@ describe('reference add', () => {
     .catch(done)
   })
 
-  // (1)
-  it('should add a reference', function (done) {
-    this.timeout(20 * 1000)
+  it('should add a reference', done => {
     const referenceUrl = 'https://example.org/rise-and-fall-of-the-holy-sandbox-' + randomString()
     claimGuidPromise
     .then(guid => {
@@ -90,7 +86,3 @@ describe('reference add', () => {
     .catch(done)
   })
 })
-
-// (1)
-// Using an non arrow function to customize the timeout
-// cf https://github.com/mochajs/mocha/issues/2018

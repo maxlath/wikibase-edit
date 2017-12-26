@@ -6,14 +6,15 @@ const updateClaim = require('../../lib/claim/update')(CONFIG)
 const { randomString, randomNumber, sandboxEntity, sandboxStringProp } = require('../../lib/tests_utils')
 const wdk = require('wikidata-sdk')
 
-describe('claim update', () => {
+describe('claim update', function () {
+  this.timeout(20 * 1000)
+
   it('should be a function', done => {
     updateClaim.should.be.a.Function()
     done()
   })
 
-  it('should reject if old value is missing', function (done) {
-    this.timeout(20 * 1000)
+  it('should reject if old value is missing', done => {
     const oldValue = randomString()
     const newValue = randomString()
     updateClaim(sandboxEntity, sandboxStringProp, oldValue, newValue)
@@ -30,10 +31,7 @@ describe('claim update', () => {
     .catch(done)
   })
 
-  // Using an non arrow function to customize the timeout
-  // cf https://github.com/mochajs/mocha/issues/2018
-  it('should update a claim', function (done) {
-    this.timeout(20 * 1000)
+  it('should update a claim', done => {
     const oldValue = randomString()
     const newValue = randomString()
     addClaim(sandboxEntity, sandboxStringProp, oldValue)
@@ -48,8 +46,7 @@ describe('claim update', () => {
     .catch(done)
   })
 
-  it('should keep the references and qualifiers', function (done) {
-    this.timeout(20 * 1000)
+  it('should keep the references and qualifiers', done => {
     const oldValue = randomString()
     const newValue = randomString()
     addClaim(sandboxEntity, sandboxStringProp, oldValue, 'Q328')
@@ -66,8 +63,7 @@ describe('claim update', () => {
     .catch(done)
   })
 
-  it('should update a monolingual text claim', function (done) {
-    this.timeout(20 * 1000)
+  it('should update a monolingual text claim', done => {
     const property = 'P3132'
     const oldValue = { text: randomString(), language: 'fr' }
     const newValue = { text: randomString(), language: 'de' }
@@ -83,8 +79,7 @@ describe('claim update', () => {
     .catch(done)
   })
 
-  it('should update a quantity claim with a unit', function (done) {
-    this.timeout(20 * 1000)
+  it('should update a quantity claim with a unit', done => {
     const property = 'P2130'
     const oldValue = { amount: randomNumber(3), unit: 'Q4916' }
     const newValue = { amount: randomNumber(3), unit: 'Q4916' }
@@ -100,8 +95,7 @@ describe('claim update', () => {
     .catch(done)
   })
 
-  it('should update a time claim', function (done) {
-    this.timeout(20 * 1000)
+  it('should update a time claim', done => {
     const property = 'P580'
     const oldValue = '0' + randomNumber(3) + '-02-26'
     const newValue = '0' + randomNumber(3) + '-02-26'
@@ -117,8 +111,7 @@ describe('claim update', () => {
     .catch(done)
   })
 
-  it('should update a time claim', function (done) {
-    this.timeout(20 * 1000)
+  it('should update a time claim', done => {
     const property = 'P1545'
     const oldValue = randomString(6)
     const newValue = randomString(6)

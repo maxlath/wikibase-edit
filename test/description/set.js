@@ -4,7 +4,9 @@ const setDescription = require('../../lib/description/set')(CONFIG)
 const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 const language = 'fr'
 
-describe('description set', () => {
+describe('description set', function () {
+  this.timeout(20 * 1000)
+
   it('should be a function', done => {
     setDescription.should.be.a.Function()
     setDescription.should.be.a.Function()
@@ -38,10 +40,7 @@ describe('description set', () => {
     .catch(done)
   })
 
-  // Using an non arrow function to customize the timeout
-  // cf https://github.com/mochajs/mocha/issues/2018
-  it('should set a description', function (done) {
-    this.timeout(20 * 1000)
+  it('should set a description', done => {
     const description = `Bac à Sable (${randomString()})`
     setDescription(sandboxEntity, 'fr', description)
     .then(res => {

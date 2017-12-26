@@ -8,7 +8,9 @@ const property = 'P370'
 const value = 'Zorg'
 const wdk = require('wikidata-sdk')
 
-describe('claim exists', () => {
+describe('claim exists', function () {
+  this.timeout(20 * 1000)
+
   it('should be a function', done => {
     exists.should.be.a.Function()
     done()
@@ -41,10 +43,7 @@ describe('claim exists', () => {
     .catch(done)
   })
 
-  // Using an non arrow function to customize the timeout
-  // cf https://github.com/mochajs/mocha/issues/2018
-  it('should return an array of claim GUIDs if exists', function (done) {
-    this.timeout(20 * 1000)
+  it('should return an array of claim GUIDs if exists', done => {
     exists(sandboxEntity, property, value)
     .then(matchingClaimsGuids => {
       if (!matchingClaimsGuids) return add(sandboxEntity, property, value)
@@ -60,8 +59,7 @@ describe('claim exists', () => {
     })
     .catch(done)
   })
-  it('should return null if there is no claim', function (done) {
-    this.timeout(20 * 1000)
+  it('should return null if there is no claim', done => {
     exists(sandboxEntity, property, value)
     .then(matchingClaimsGuids => {
       if (matchingClaimsGuids) return remove(matchingClaimsGuids)

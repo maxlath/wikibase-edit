@@ -5,9 +5,10 @@ const { getClaimGuid } = require('../../lib/tests_utils')
 
 var claimGuidA, claimGuidB, claimGuidC
 
-describe('claim remove', () => {
-  before(function (done) {
-    this.timeout(20 * 1000)
+describe('claim remove', function () {
+  this.timeout(20 * 1000)
+
+  before(done => {
     claimGuidA = getClaimGuid()
 
     claimGuidA
@@ -30,8 +31,7 @@ describe('claim remove', () => {
 
   // Using an non arrow key to customize the timeout
   // cf https://github.com/mochajs/mocha/issues/2018
-  it('should remove a claim', function (done) {
-    this.timeout(20 * 1000)
+  it('should remove a claim', done => {
     claimGuidA
     .then(guid => {
       return removeClaim(guid)
@@ -44,8 +44,7 @@ describe('claim remove', () => {
     .catch(done)
   })
 
-  it('should several claims', function (done) {
-    this.timeout(20 * 1000)
+  it('should several claims', done => {
     Promise.all([ claimGuidB, claimGuidC ])
     .then(guids => {
       return removeClaim(guids)

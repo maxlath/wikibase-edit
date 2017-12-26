@@ -6,7 +6,9 @@ const { getClaimPromise } = require('../../lib/tests_utils')
 
 var claimPromise
 
-describe('qualifier remove', () => {
+describe('qualifier remove', function () {
+  this.timeout(20 * 1000)
+
   before(function (done) {
     claimPromise = getClaimPromise()
     done()
@@ -17,8 +19,7 @@ describe('qualifier remove', () => {
     done()
   })
 
-  it('should remove a qualifier', function (done) {
-    this.timeout(20 * 1000)
+  it('should remove a qualifier', done => {
     claimPromise
     .then(res => {
       const guid = res.claim.id

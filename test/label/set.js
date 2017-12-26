@@ -4,7 +4,9 @@ const setLabel = require('../../lib/label/set')(CONFIG)
 const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 const language = 'fr'
 
-describe('label set', () => {
+describe('label set', function () {
+  this.timeout(20 * 1000)
+
   it('should be a function', done => {
     setLabel.should.be.a.Function()
     done()
@@ -37,10 +39,7 @@ describe('label set', () => {
     .catch(done)
   })
 
-  // Using an non arrow function to customize the timeout
-  // cf https://github.com/mochajs/mocha/issues/2018
-  it('should set a label', function (done) {
-    this.timeout(20 * 1000)
+  it('should set a label', done => {
     const label = `Bac à Sable (${randomString()})`
     setLabel(sandboxEntity, 'fr', label)
     .then(res => {

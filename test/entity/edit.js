@@ -4,7 +4,9 @@ const editEntity = require('../../lib/entity/edit')(CONFIG)
 const { randomString, sandboxEntity, sandboxDescriptionFr } = require('../../lib/tests_utils')
 const wdk = require('wikidata-sdk')
 
-describe('entity edit', () => {
+describe('entity edit', function () {
+  this.timeout(20 * 1000)
+
   it('should be a function', done => {
     editEntity.should.be.a.Function()
     done()
@@ -60,10 +62,7 @@ describe('entity edit', () => {
     .catch(done)
   })
 
-  // Using an non arrow function to customize the timeout
-  // cf https://github.com/mochajs/mocha/issues/2018
-  it('should edit an entity', function (done) {
-    this.timeout(20000)
+  it('should edit an entity', done => {
     const label = `Bac à Sable (${randomString()})`
     const description = `${sandboxDescriptionFr} (${randomString()})`
     editEntity({
@@ -83,8 +82,7 @@ describe('entity edit', () => {
     .catch(done)
   })
 
-  it('should edit an entity with qualifiers', function (done) {
-    this.timeout(20000)
+  it('should edit an entity with qualifiers', done => {
     editEntity({
       id: sandboxEntity,
       claims: {
@@ -108,8 +106,7 @@ describe('entity edit', () => {
     .catch(done)
   })
 
-  it('should edit an entity with a reference', function (done) {
-    this.timeout(20000)
+  it('should edit an entity with a reference', done => {
     editEntity({
       id: sandboxEntity,
       claims: {
@@ -126,8 +123,7 @@ describe('entity edit', () => {
     .catch(done)
   })
 
-  it('should edit an entity with multiple references', function (done) {
-    this.timeout(20000)
+  it('should edit an entity with multiple references', done => {
     editEntity({
       id: sandboxEntity,
       claims: {

@@ -6,7 +6,9 @@ const { randomString, getClaimPromise } = require('../../lib/tests_utils')
 
 var claimPromise
 
-describe('reference remove', () => {
+describe('reference remove', function () {
+  this.timeout(20 * 1000)
+
   before(function (done) {
     claimPromise = getClaimPromise()
     done()
@@ -17,8 +19,7 @@ describe('reference remove', () => {
     done()
   })
 
-  it('should remove a reference', function (done) {
-    this.timeout(20 * 1000)
+  it('should remove a reference', done => {
     const referenceUrl = 'https://example.org/rise-and-fall-of-the-holy-sandbox-' + randomString()
     claimPromise
     .then(res => {
