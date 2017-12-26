@@ -147,4 +147,45 @@ describe('entity edit', function () {
     })
     .catch(done)
   })
+
+  it('should edit an entity with a monolingual text claim', done => {
+    editEntity({
+      id: sandboxEntity,
+      claims: { P1705: { text: 'Lundeborg', 'language': 'mul' } }
+    })
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
+
+  it('should edit an entity with a quantity claim', done => {
+    editEntity({
+      id: sandboxEntity,
+      claims: { P1106: { amount: 9001, unit: 'Q7727' } }
+    })
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
+
+  it('should edit an entity with a rich value and qualifiers', done => {
+    editEntity({
+      id: sandboxEntity,
+      claims: {
+        P1106: {
+          value: { amount: 9002, unit: 'Q7727' },
+          qualifiers: { P580: '1789-08-04' }
+        }
+      }
+    })
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
 })
