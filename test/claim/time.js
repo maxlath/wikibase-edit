@@ -18,12 +18,28 @@ describe('claim time', function () {
       'precision': 9,
       'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
     })
+    getTimeObject('-2018').should.deepEqual({
+      'time': '-2018-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 9,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
     done()
   })
 
   it('should parse month without precision', function (done) {
     getTimeObject('2018-03').should.deepEqual({
       'time': '+2018-03-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 10,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    getTimeObject('-2018-03').should.deepEqual({
+      'time': '-2018-03-00T00:00:00Z',
       'timezone': 0,
       'before': 0,
       'after': 0,
@@ -42,12 +58,28 @@ describe('claim time', function () {
       'precision': 11,
       'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
     })
+    getTimeObject('-2018-03-03').should.deepEqual({
+      'time': '-2018-03-03T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 11,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
     done()
   })
 
   it('should parse year with precision', function (done) {
     getTimeObject('2018', 9).should.deepEqual({
       'time': '+2018-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 9,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    getTimeObject('-2018', 9).should.deepEqual({
+      'time': '-2018-00-00T00:00:00Z',
       'timezone': 0,
       'before': 0,
       'after': 0,
@@ -66,12 +98,28 @@ describe('claim time', function () {
       'precision': 10,
       'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
     })
+    getTimeObject('-2018-03', 10).should.deepEqual({
+      'time': '-2018-03-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 10,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
     done()
   })
 
   it('should parse day with precision', function (done) {
     getTimeObject('2018-03-03', 11).should.deepEqual({
       'time': '+2018-03-03T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 11,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    getTimeObject('-2018-03-03', 11).should.deepEqual({
+      'time': '-2018-03-03T00:00:00Z',
       'timezone': 0,
       'before': 0,
       'after': 0,
@@ -90,12 +138,28 @@ describe('claim time', function () {
       'precision': 8,
       'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
     })
+    getTimeObject('-2010', 8).should.deepEqual({
+      'time': '-2010-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 8,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
     done()
   })
 
   it('should parse century with precision', function (done) {
     getTimeObject('2100', 7).should.deepEqual({
       'time': '+2100-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 7,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    getTimeObject('-2100', 7).should.deepEqual({
+      'time': '-2100-00-00T00:00:00Z',
       'timezone': 0,
       'before': 0,
       'after': 0,
@@ -124,6 +188,26 @@ describe('claim time', function () {
       'before': 0,
       'after': 0,
       'precision': 5,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse ten thousand years without precision and assume its years', function (done) {
+    getTimeObject('-10000').should.deepEqual({
+      'time': '-10000-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 9,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    getTimeObject('10000').should.deepEqual({
+      'time': '+10000-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 9,
       'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
     })
     done()
