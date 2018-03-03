@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 2.1.0 - 2018-03-03
+* Added support for [more time precisions](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-claim), thank to [Riccardo Magliocchetti](https://github.com/xrmx)'s PR
+
 ## 2.0.0 - 2017-11-01
 * BREAKING CHANGE: [`reference.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-reference) now expects an explicit reference property
 * BREAKING CHANGE: [`claim.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-claim) now can't be passed a reference: the reference needs to be added separately
