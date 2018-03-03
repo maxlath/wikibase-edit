@@ -77,6 +77,15 @@ describe('claim add', function () {
     .catch(done)
   })
 
+  it('should add a time claim with precision', done => {
+    checkAndAddClaim(sandboxEntity, 'P569', { time: '2500000', precision: 4 })
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
+
   it('should reject a claim with an invalid time', done => {
     checkAndAddClaim(sandboxEntity, 'P569', '1802-22-33')
     .catch(err => {
