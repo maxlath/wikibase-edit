@@ -1,0 +1,180 @@
+const should = require('should')
+const time = require('../../lib/claim/get_time_object')
+
+describe('claim time', function () {
+  this.timeout(20 * 1000)
+
+  it('should be a function', done => {
+    time.should.be.a.Function()
+    done()
+  })
+
+  it('should parse year without precision', function (done) {
+    const t = time('2018')
+    t.should.deepEqual({
+      'time': '+2018-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 9,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse month without precision', function (done) {
+    const t = time('2018-03')
+    t.should.deepEqual({
+      'time': '+2018-03-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 10,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse day without precision', function (done) {
+    const t = time('2018-03-03')
+    t.should.deepEqual({
+      'time': '+2018-03-03T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 11,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse year wit precision ', function (done) {
+    const t = time('2018', 9)
+    t.should.deepEqual({
+      'time': '+2018-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 9,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse month with precision', function (done) {
+    const t = time('2018-03', 10)
+    t.should.deepEqual({
+      'time': '+2018-03-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 10,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse day with precision', function (done) {
+    const t = time('2018-03-03', 11)
+    t.should.deepEqual({
+      'time': '+2018-03-03T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 11,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse decade with precision', function (done) {
+    const t = time('2010', 8)
+    t.should.deepEqual({
+      'time': '+2010-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 8,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse century with precision', function (done) {
+    const t = time('2100', 7)
+    t.should.deepEqual({
+      'time': '+2100-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 7,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse millenium with precision', function (done) {
+    const t = time('2000', 6)
+    t.should.deepEqual({
+      'time': '+2000-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 6,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse ten thousand years with precision', function (done) {
+    const t = time('-10000', 5)
+    t.should.deepEqual({
+      'time': '-10000-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 5,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse hundred thousand years with precision', function (done) {
+    const t = time('-2500000', 4)
+    t.should.deepEqual({
+      'time': '-2500000-01-01T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 4,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse million years with precision', function (done) {
+    const t = time('-13798000000', 3)
+    t.should.deepEqual({
+      'time': '-13798000000-01-01T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 3,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse billion years with precision', function (done) {
+    const t = time('-5000000000', 0)
+    t.should.deepEqual({
+      'time': '-5000000000-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 0,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+})
