@@ -161,10 +161,32 @@ wdEdit.claim.add('Q4115189', 'P1476', { text: 'bulgroz', language: 'it' })
 // Example here with the unit 'minute' (Q7727)
 wdEdit.claim.add('Q4115189', 'P1106', { amount: 9001, unit: 'Q7727' })
 
-// Time property: only year, month, and day precision are supported yet (PR welcome!)
-wdEdit.claim.add('Q4115189', 'P569', '1802')
-wdEdit.claim.add('Q4115189', 'P569', '1802-02')
+// Time property
+// day, with implicit precision
 wdEdit.claim.add('Q4115189', 'P569', '1802-02-26')
+// day, with explicit precision
+// cf https://www.wikidata.org/wiki/Help:Dates#Precision
+wdEdit.claim.add('Q4115189', 'P569', { time: '1802-02-26', precision: 11 })
+// month
+wdEdit.claim.add('Q4115189', 'P569', '1802-02')
+wdEdit.claim.add('Q4115189', 'P569', { time: '1802-02', precision: 10 })
+// year
+wdEdit.claim.add('Q4115189', 'P569', '1802')
+wdEdit.claim.add('Q4115189', 'P569', { time: '1802', precision: 9 })
+// decade
+wdEdit.claim.add('Q4115189', 'P569', { time: '1800', precision: 8 })
+// century
+wdEdit.claim.add('Q4115189', 'P569', { time: '1800', precision: 7 })
+// millennium
+wdEdit.claim.add('Q4115189', 'P569', { time: '1000', precision: 6 })
+// ten thousand years
+wdEdit.claim.add('Q4115189', 'P569', { time: '-50000', precision: 5 })
+// hundred thousand years
+wdEdit.claim.add('Q4115189', 'P569', { time: '-100000', precision: 4 })
+// million years
+wdEdit.claim.add('Q4115189', 'P569', { time: '-1000000', precision: 3 })
+// billion years
+wdEdit.claim.add('Q4115189', 'P569', { time: '-13000000000', precision: 0 })
 
 // Quantity:
 // pass a single value for a count without a specific unit

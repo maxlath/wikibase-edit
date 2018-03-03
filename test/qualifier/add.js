@@ -108,6 +108,18 @@ describe('qualifier add', function () {
     .catch(done)
   })
 
+  it('should add a time qualifier with precision', done => {
+    claimGuidPromise
+    .then(guid => {
+      return addQualifier(guid, 'P580', { time: '1802-02', precision: 10 })
+      .then(res => {
+        res.success.should.equal(1)
+        done()
+      })
+    })
+    .catch(done)
+  })
+
   it('should add a quantity qualifier', done => {
     claimGuidPromise
     .then(guid => {
