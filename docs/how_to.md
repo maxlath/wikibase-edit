@@ -235,6 +235,7 @@ wdEdit.qualifier.add(guid, 'P1545', '123')
 
 // time qualifier
 wdEdit.qualifier.add(guid, 'P580', '1802-02-26')
+wdEdit.qualifier.add(guid, 'P580', { time: '1802-02-26', precision: 11 })
 
 // quantity qualifier
 wdEdit.qualifier.add(guid, 'P2130', 123)
