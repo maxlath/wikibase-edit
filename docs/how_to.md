@@ -10,6 +10,7 @@
   - [Per-function initialization](#per-function-initialization)
   - [Custom Wikibase instance](#custom-wikibase-instance)
   - [Bot edits](#bot-edits)
+  - [Edit Summary](#edit-summary)
 - [API](#api)
   - [Label](#label)
     - [set label](#set-label)
@@ -97,6 +98,12 @@ export SPARQL_ENDPOINT='https://query.mywikibase.instance/sparql'; npm run updat
 You can mark your edits as made by a [bot account](https://www.wikidata.org/wiki/Wikidata:Bots) by setting `bot=true` in the config object:
 ```js
 const wdEdit = require('wikidata-edit')({ username: 'mybotname', password: 'mybotpassword', bot: true })
+```
+
+### Edit Summary
+By default, edits are given the summary `#wikidatajs/wikidata-edit`. This can be customized in config:
+```js
+const wdEdit = require('wikidata-edit')({ username, password, summary: 'custom summary' })
 ```
 
 ## API
