@@ -11,7 +11,7 @@ describe('summary', () => {
   it('should add a default summary', done => {
     doSomeEdit(CONFIG)
     .then(summary => {
-      summary.should.endWith('#wikidatajs/wikidata-edit')
+      summary.should.endWith('#wikidatajs/edit')
       done()
     })
     .catch(done)
