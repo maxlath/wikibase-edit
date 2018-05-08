@@ -97,8 +97,8 @@ describe('claim update', function () {
 
   it('should update a time claim', done => {
     const property = 'P580'
-    const oldValue = '0' + randomNumber(3) + '-02-26'
-    const newValue = '0' + randomNumber(3) + '-02-26'
+    const oldValue = '1' + randomNumber(3) + '-02-26'
+    const newValue = '1' + randomNumber(3) + '-02-26'
     addClaim(sandboxEntity, property, oldValue)
     .then(res1 => {
       return updateClaim(sandboxEntity, property, oldValue, newValue)
