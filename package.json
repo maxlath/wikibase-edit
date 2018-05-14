@@ -26,18 +26,18 @@
   },
   "homepage": "https://github.com/maxlath/wikidata-edit#readme",
   "dependencies": {
-    "bluereq": "^2.1.2",
-    "chalk": "^1.1.3",
-    "wikidata-sdk": "^5.1.4",
-    "wikidata-token": "^2.3.3"
+    "bluereq": "^2.1.7",
+    "chalk": "^2.4.1",
+    "wikidata-sdk": "^5.10.1",
+    "wikidata-token": "^2.3.5"
   },
   "devDependencies": {
-    "config": "^1.25.1",
-    "doctoc": "^1.3.0",
-    "mocha": "^3.2.0",
-    "should": "^11.2.1",
-    "standard": "^9.0.2",
-    "wikidata-cli": "^5.7.0"
+    "config": "^1.30.0",
+    "doctoc": "^1.3.1",
+    "mocha": "^5.1.1",
+    "should": "^13.2.1",
+    "standard": "^10.0.3",
+    "wikidata-cli": "^6.0.6"
   },
   "standard": {
     "ignore": [
