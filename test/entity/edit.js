@@ -200,5 +200,4 @@ describe('entity edit', function () {
     })
     .catch(done)
   })
-
 })
