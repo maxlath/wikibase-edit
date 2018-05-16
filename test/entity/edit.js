@@ -188,4 +188,17 @@ describe('entity edit', function () {
     })
     .catch(done)
   })
+
+  it('should edit an entity with a globe coordinate claim', done => {
+    editEntity({
+      id: sandboxEntity,
+      claims: { P626: { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 } }
+    })
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
+
 })
