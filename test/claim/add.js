@@ -155,4 +155,13 @@ describe('claim add', function () {
     })
     .catch(done)
   })
+
+  it('should add a claim with a globe coordinate', done => {
+    checkAndAddClaim(sandboxEntity, 'P626', { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 })
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
 })
