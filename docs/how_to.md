@@ -200,6 +200,10 @@ wdEdit.claim.add('Q4115189', 'P569', { time: '-13000000000', precision: 0 })
 wdEdit.claim.add('Q4115189', 'P1106', 9000)
 // pass an object for a value with a specific unit. Example here to specify minutes (Q7727)
 wdEdit.claim.add('Q4115189', 'P2097', { amount: 9000, unit: 'Q7727' })
+
+// Globe Coordinate:
+// Here with a precision of an arcsecond
+wdEdit.claim.add('Q4115189', 'P626', { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 })
 ```
 
 #### check if claim exists
