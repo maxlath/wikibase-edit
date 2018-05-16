@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 2.3.0 - 2018-05-16
+* Added support for [globe-coordinate](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-claim), thank to [Davide Allavena](https://github.com/DavideAllavena)'s PR
+
 ## 2.2.0 - 2018-05-07
 * Added [edit summaries](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#edit-summary)
 
