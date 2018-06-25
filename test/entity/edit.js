@@ -68,6 +68,7 @@ describe('entity edit', function () {
     editEntity({
       id: sandboxEntity,
       labels: { fr: label },
+      aliases: { fr: `bàs ${randomString()}`, en: [ `sandbox ${randomString()}` ] },
       descriptions: { fr: description },
       claims: { P1775: 'Q3576110' }
     })
