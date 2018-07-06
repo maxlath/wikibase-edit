@@ -28,7 +28,7 @@
   "dependencies": {
     "bluereq": "^2.1.7",
     "chalk": "^2.4.1",
-    "wikidata-sdk": "^5.10.1",
+    "wikidata-sdk": "^5.13.0",
     "wikidata-token": "^2.3.5"
   },
   "devDependencies": {
@@ -37,7 +37,7 @@
     "mocha": "^5.1.1",
     "should": "^13.2.1",
     "standard": "^10.0.3",
-    "wikidata-cli": "^6.0.8"
+    "wikidata-cli": "^6.2.0"
   },
   "standard": {
     "ignore": [
