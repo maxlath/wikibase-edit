@@ -143,4 +143,16 @@ describe('qualifier add', function () {
     })
     .catch(done)
   })
+
+  it('should add a qualifier with a special snaktype', done => {
+    claimGuidPromise
+    .then(guid => {
+      return addQualifier(guid, 'P578', { snaktype: 'novalue' })
+      .then(res => {
+        res.success.should.equal(1)
+        done()
+      })
+    })
+    .catch(done)
+  })
 })
