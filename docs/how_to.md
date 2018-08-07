@@ -204,6 +204,12 @@ wdEdit.claim.add('Q4115189', 'P2097', { amount: 9000, unit: 'Q7727' })
 // Globe Coordinate:
 // Here with a precision of an arcsecond
 wdEdit.claim.add('Q4115189', 'P626', { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 })
+
+// somevalue:
+wdEdit.claim.add('Q4115189', 'P19', { snaktype: 'somevalue' })
+
+// novalue:
+wdEdit.claim.add('Q4115189', 'P27', { snaktype: 'novalue' })
 ```
 
 #### check if claim exists
@@ -211,6 +217,15 @@ wdEdit.claim.add('Q4115189', 'P626', { latitude: 45.758, longitude: 4.84138, pre
 // Does the Sandbox entity (Q4115189) already have the Twitter username (P2002) 'bulgroz'?
 wdEdit.claim.exists('Q4115189', 'P2002', 'bulgroz')
 .then(boolean => )
+```
+
+Special cases:
+```js
+// somevalue:
+wdEdit.claim.exists('Q4115189', 'P19', { snaktype: 'somevalue' })
+
+// novalue:
+wdEdit.claim.exists('Q4115189', 'P27', { snaktype: 'novalue' })
 ```
 
 #### update claim
@@ -256,6 +271,12 @@ wdEdit.qualifier.add(guid, 'P2130', { amount: 123, unit: 'Q4916' })
 
 // monolingualtext qualifier
 wdEdit.qualifier.add(guid, 'P3132', { text : "les sanglots long des violons de l'automne", language: 'fr' })
+
+// somevalue
+wdEdit.qualifier.add(guid, 'P3132', { snaktype : 'somevalue' })
+
+// novalue
+wdEdit.qualifier.add(guid, 'P3132', { snaktype : 'novalue' })
 ```
 
 #### update qualifier
