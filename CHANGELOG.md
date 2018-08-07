@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 2.4.0 - 2018-08-07
+* Added support for `somevalue` and `novalue` [claims](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-claim) and [qualifiers](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-qualifier)
+
 ## 2.3.0 - 2018-05-16
 * Added support for [globe-coordinate](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-claim), thank to [Davide Allavena](https://github.com/DavideAllavena)'s PR
 
