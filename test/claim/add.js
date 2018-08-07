@@ -164,4 +164,22 @@ describe('claim add', function () {
     })
     .catch(done)
   })
+
+  it('should add a claim of snaktype novalue', done => {
+    checkAndAddClaim(sandboxEntity, 'P1106', { snaktype: 'novalue' })
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
+
+  it('should add a claim of snaktype somevalue', done => {
+    checkAndAddClaim(sandboxEntity, 'P1106', { snaktype: 'somevalue' })
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
 })

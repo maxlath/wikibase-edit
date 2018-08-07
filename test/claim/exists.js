@@ -59,6 +59,7 @@ describe('claim exists', function () {
     })
     .catch(done)
   })
+
   it('should return null if there is no claim', done => {
     exists(sandboxEntity, property, value)
     .then(matchingClaimsGuids => {
@@ -70,6 +71,26 @@ describe('claim exists', function () {
         should(matchingClaimsGuids).not.be.ok()
         done()
       })
+    })
+    .catch(done)
+  })
+
+  it('should find a claim with a special snaktype', done => {
+    const novalue = { snaktype: 'novalue' }
+    const novalueClaimExists = () => exists(sandboxEntity, 'P855', novalue)
+    novalueClaimExists()
+    .then(matchingClaimsGuids => {
+      if (matchingClaimsGuids) return remove(matchingClaimsGuids)
+    })
+    .then(novalueClaimExists)
+    .then(matchingClaimsGuids => {
+      should(matchingClaimsGuids).not.be.ok()
+      return add(sandboxEntity, 'P855', novalue)
+    })
+    .then(novalueClaimExists)
+    .then(matchingClaimsGuids => {
+      should(matchingClaimsGuids).be.ok()
+      done()
     })
     .catch(done)
   })
