@@ -369,4 +369,11 @@ The entity data follow the same rules as [`wdEdit.entity.edit`](#edit-entity), s
 
 ```js
 wdEdit.entity.create(entityData)
+.then(res => {
+  // extracting our data using destructuring assignment
+  // cf https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Object_destructuring
+  const { entity } = res
+  const { id, labels, descriptions, aliases, claims, sitelinks } = entity
+  console.log('created entity id', id)
+})
 ```
