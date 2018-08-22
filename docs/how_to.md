@@ -235,6 +235,13 @@ wdEdit.claim.update('Q4115189', 'P2002', 'initial-value', 'new-value')
 ```
 It will return a rejected promise if several claims with the same value already exist.
 
+It can also be used for rich values such as `globecoordinate` claims:
+```js
+const oldValue = { latitude: 18.65, longitude: 226.2, precision: 0.01, globe: "http://www.wikidata.org/entity/Q111" }
+const newValue = { latitude: 18.65, longitude: 226.2, precision: 0.01, globe: "http://www.wikidata.org/entity/Q313" }
+wdEdit.claim.update('Q4115189', 'P2002', oldValue, newValue)
+```
+
 #### remove claim
 ```js
 // remove one claim

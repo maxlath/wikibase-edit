@@ -126,4 +126,20 @@ describe('claim update', function () {
     })
     .catch(done)
   })
+
+  it('should update a globecoordinate claim', done => {
+    const property = 'P626'
+    const oldValue = { latitude: 18.65, longitude: 226.2, precision: 0.01, globe: 'http://www.wikidata.org/entity/Q111' }
+    const newValue = { latitude: 18.65, longitude: 226.2, precision: 0.01, globe: 'http://www.wikidata.org/entity/Q112' }
+    addClaim(sandboxEntity, property, oldValue)
+    .then(res1 => {
+      return updateClaim(sandboxEntity, property, oldValue, newValue)
+      .then(res2 => {
+        res1.claim.id.should.equal(res2.claim.id)
+        res2.claim.mainsnak.datavalue.globe.should.equal('http://www.wikidata.org/entity/Q112')
+        done()
+      })
+    })
+    .catch(done)
+  })
 })
