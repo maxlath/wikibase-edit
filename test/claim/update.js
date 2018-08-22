@@ -136,7 +136,7 @@ describe('claim update', function () {
       return updateClaim(sandboxEntity, property, oldValue, newValue)
       .then(res2 => {
         res1.claim.id.should.equal(res2.claim.id)
-        res2.claim.mainsnak.datavalue.globe.should.equal('http://www.wikidata.org/entity/Q112')
+        res2.claim.mainsnak.datavalue.value.globe.should.equal('http://www.wikidata.org/entity/Q112')
         done()
       })
     })
