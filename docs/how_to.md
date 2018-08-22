@@ -24,6 +24,8 @@
     - [add claim](#add-claim)
     - [check if claim exists](#check-if-claim-exists)
     - [update claim](#update-claim)
+      - [find claim to update by value](#find-claim-to-update-by-value)
+      - [find claim to update by claim GUID](#find-claim-to-update-by-claim-guid)
     - [remove claim](#remove-claim)
   - [Qualifier](#qualifier)
     - [add qualifier](#add-qualifier)
@@ -230,6 +232,8 @@ wdEdit.claim.exists('Q4115189', 'P27', { snaktype: 'novalue' })
 
 #### update claim
 A function to change the value of an existing claim without having to remove it and while keeping its references and qualifiers.
+
+##### find claim to update by value
 ```js
 wdEdit.claim.update('Q4115189', 'P2002', 'initial-value', 'new-value')
 ```
@@ -240,6 +244,13 @@ It can also be used for rich values such as `globecoordinate` claims:
 const oldValue = { latitude: 18.65, longitude: 226.2, precision: 0.01, globe: "http://www.wikidata.org/entity/Q111" }
 const newValue = { latitude: 18.65, longitude: 226.2, precision: 0.01, globe: "http://www.wikidata.org/entity/Q313" }
 wdEdit.claim.update('Q4115189', 'P2002', oldValue, newValue)
+```
+
+##### find claim to update by claim GUID
+Instead of passing the old value, you can pass the claim GUID
+```js
+const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+wdEdit.claim.update(claimGuid, 'new-value')
 ```
 
 #### remove claim

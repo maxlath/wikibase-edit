@@ -142,4 +142,21 @@ describe('claim update', function () {
     })
     .catch(done)
   })
+
+
+  it('should update a claim from a guid', done => {
+    const property = 'P370'
+    const oldValue = randomString(6)
+    const newValue = randomString(6)
+    addClaim(sandboxEntity, property, oldValue)
+    .then(res1 => {
+      return updateClaim(res1.claim.id, newValue)
+      .then(res2 => {
+        res1.claim.id.should.equal(res2.claim.id)
+        wdk.simplify.claim(res2.claim).should.equal(newValue)
+        done()
+      })
+    })
+    .catch(done)
+  })
 })
