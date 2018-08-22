@@ -3,7 +3,7 @@ const CONFIG = require('config')
 const addClaim = require('../../lib/claim/add')(CONFIG)
 const addReference = require('../../lib/reference/add')(CONFIG)
 const updateClaim = require('../../lib/claim/update')(CONFIG)
-const { randomString, randomNumber, sandboxEntity, sandboxStringProp } = require('../../lib/tests_utils')
+const { randomString, randomNumber, sandboxEntity, sandboxStringProp, undesiredRes } = require('../../lib/tests_utils')
 const wdk = require('wikidata-sdk')
 
 describe('claim update', function () {
@@ -42,6 +42,23 @@ describe('claim update', function () {
         wdk.simplify.claim(res2.claim).should.equal(newValue)
         done()
       })
+    })
+    .catch(done)
+  })
+
+  it('should reject claim updates from values when several claims match', done => {
+    const oldValue = randomString()
+    const newValue = randomString()
+    addClaim(sandboxEntity, sandboxStringProp, oldValue)
+    .then(res1 => {
+      const options = { allowDuplicates: true }
+      return addClaim(sandboxEntity, sandboxStringProp, oldValue, options)
+    })
+    .then(res2 => updateClaim(sandboxEntity, sandboxStringProp, oldValue, newValue))
+    .then(undesiredRes(done))
+    .catch(err => {
+      err.message.should.equal('snak not found: too many matching snaks')
+      done()
     })
     .catch(done)
   })
