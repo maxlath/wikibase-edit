@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 2.5.0 - 2018-08-07
+* Added support for `globecoordinate` claims to [`claim.update`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#update-claim)
+
 ## 2.4.0 - 2018-08-07
 * Added support for `somevalue` and `novalue` [claims](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-claim) and [qualifiers](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#add-qualifier)
 
