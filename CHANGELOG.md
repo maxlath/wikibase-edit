@@ -1,7 +1,10 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
-## 2.5.0 - 2018-08-07
+## 2.6.0 - 2018-08-22
+* [`claim.update`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#update-claim) can now also [accepts a claim GUID](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#find-claim-to-update-by-claim-guid), instead of an entity id, a property, and a value
+
+## 2.5.0 - 2018-08-22
 * Added support for `globecoordinate` claims to [`claim.update`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#update-claim)
 
 ## 2.4.0 - 2018-08-07
