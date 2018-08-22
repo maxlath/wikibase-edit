@@ -159,6 +159,8 @@ wdEdit.alias.set('Q4115189', 'fr', [ 'foo', 'bar' ])
 // Add the Twitter username (P2002) 'bulgroz' to the Sandbox entity (Q4115189)
 // Will fail if the claim already exists
 wdEdit.claim.add('Q4115189', 'P2002', 'bulgroz')
+// Unless an `allowDuplicates=true` flag is passed
+wdEdit.claim.add('Q4115189', 'P2002', 'bulgroz', { allowDuplicates: true })
 
 ```
 Special cases:
