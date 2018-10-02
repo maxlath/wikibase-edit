@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 2.7.0 - 2018-10-02
+* [`claim.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#update-claim): added an `allowDuplicates` flag to force add when a claim with the same value already exists
+
 ## 2.6.0 - 2018-08-22
 * [`claim.update`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#update-claim) can now also [accepts a claim GUID](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#find-claim-to-update-by-claim-guid), instead of an entity id, a property, and a value
 
