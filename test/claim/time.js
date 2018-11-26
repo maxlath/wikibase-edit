@@ -129,6 +129,66 @@ describe('claim time', function () {
     done()
   })
 
+  it('should parse hour with precision', function (done) {
+    getTimeObject('2018-03-03T11:00:00Z', 12).should.deepEqual({
+      'time': '+2018-03-03T11:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 12,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    getTimeObject('-2018-03-03T11:00:00Z', 12).should.deepEqual({
+      'time': '-2018-03-03T11:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 12,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse minute with precision', function (done) {
+    getTimeObject('2018-03-03T11:22:00Z', 13).should.deepEqual({
+      'time': '+2018-03-03T11:22:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 13,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    getTimeObject('-2018-03-03T11:22:00Z', 13).should.deepEqual({
+      'time': '-2018-03-03T11:22:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 13,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
+  it('should parse second with precision', function (done) {
+    getTimeObject('2018-03-03T11:22:33Z', 14).should.deepEqual({
+      'time': '+2018-03-03T11:22:33Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 14,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    getTimeObject('-2018-03-03T11:22:33Z', 14).should.deepEqual({
+      'time': '-2018-03-03T11:22:33Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 14,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
+
   it('should parse decade with precision', function (done) {
     getTimeObject('2010', 8).should.deepEqual({
       'time': '+2010-00-00T00:00:00Z',

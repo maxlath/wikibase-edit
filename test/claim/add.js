@@ -51,7 +51,7 @@ describe('claim add', function () {
   })
 
   it('should add a claim with a year', done => {
-    checkAndAddClaim(sandboxEntity, 'P569', '1802')
+    checkAndAddClaim(sandboxEntity, 'P578', '1802')
     .then(res => {
       res.success.should.equal(1)
       done()
@@ -60,7 +60,7 @@ describe('claim add', function () {
   })
 
   it('should add a claim with a month', done => {
-    checkAndAddClaim(sandboxEntity, 'P569', '1802-02')
+    checkAndAddClaim(sandboxEntity, 'P578', '1802-02')
     .then(res => {
       res.success.should.equal(1)
       done()
@@ -69,7 +69,7 @@ describe('claim add', function () {
   })
 
   it('should add a claim with a day', done => {
-    checkAndAddClaim(sandboxEntity, 'P569', '1802-02-03')
+    checkAndAddClaim(sandboxEntity, 'P578', '1802-02-03')
     .then(res => {
       res.success.should.equal(1)
       done()
@@ -77,17 +77,35 @@ describe('claim add', function () {
     .catch(done)
   })
 
-  it('should add a time claim with precision', done => {
-    checkAndAddClaim(sandboxEntity, 'P569', { time: '2500000', precision: 4 })
+  it('should add a time claim with a low precision', done => {
+    checkAndAddClaim(sandboxEntity, 'P578', { time: '2500000', precision: 4 })
     .then(res => {
       res.success.should.equal(1)
       done()
     })
     .catch(done)
   })
+
+  // Not implemented by the Wikidata API
+  // it('should add a time claim with a high precision', done => {
+  //   checkAndAddClaim(sandboxEntity, 'P578', { time: '1802-02-04T11:22:33Z', precision: 14 })
+  //   .then(res => {
+  //     res.success.should.equal(1)
+  //     done()
+  //   })
+  //   .catch(done)
+  // })
 
   it('should reject a claim with an invalid time', done => {
-    checkAndAddClaim(sandboxEntity, 'P569', '1802-22-33')
+    checkAndAddClaim(sandboxEntity, 'P578', '1802-22-33')
+    .catch(err => {
+      err.message.should.equal('invalid time value')
+      done()
+    })
+  })
+
+  it('should reject a claim with an invalid time (2)', done => {
+    checkAndAddClaim(sandboxEntity, 'P578', '1802-02-04T11')
     .catch(err => {
       err.message.should.equal('invalid time value')
       done()
