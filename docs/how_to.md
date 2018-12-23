@@ -362,22 +362,19 @@ wdEdit.entity.edit({
     P1775: [ 'Q3576110', 'Q12206942' ],
     // Or a single value
     P2002: 'bulgroz',
-    // Or an object
+    // Or a rich value object
     P2093: { text: 'Author Authorson', language: 'en' },
-    // Or an array of objects and/or string values
-    P1106: [
-      "42",
-      { amount: 9001, unit: 'Q7727' }
-    },
+    // Or even an array of mixed simple values and rich object values
+    P1106: [ 42, { amount: 9001, unit: 'Q7727' } ]
     // Add qualifiers and references to value objects
     P369: [
-      // Qualifier values can also be passed in different forms
-      { 
-        value: 'Q5111731', 
-        qualifiers: { 
+      // Qualifier values can also be passed in those different forms
+      {
+        value: 'Q5111731',
+        qualifiers: {
           P580: '1789-08-04'
           P1416: [ 'Q13406268', 'Q32844021' ],
-          P1106: { value: 7 }
+          P1106: { amount: 9001, unit: 'Q7727' }
         }
       },
       // References can be passed as a single record group
