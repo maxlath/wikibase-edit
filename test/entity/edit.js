@@ -201,4 +201,19 @@ describe('entity edit', function () {
     })
     .catch(done)
   })
+
+  it('should edit an entity with special snaktypes', done => {
+    editEntity({
+      id: sandboxEntity,
+      claims: {
+        P369: { snaktype: 'somevalue' },
+        P626: { snaktype: 'novalue' }
+      }
+    })
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
 })

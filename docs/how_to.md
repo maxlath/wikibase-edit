@@ -366,6 +366,8 @@ wdEdit.entity.edit({
     P2093: { text: 'Author Authorson', language: 'en' },
     // Or even an array of mixed simple values and rich object values
     P1106: [ 42, { amount: 9001, unit: 'Q7727' } ]
+    // Add statements with special snaktypes ('novalue' or 'somevalue')
+    P626: { snaktype: 'somevalue' }
     // Add qualifiers and references to value objects
     P369: [
       // Qualifier values can also be passed in those different forms
