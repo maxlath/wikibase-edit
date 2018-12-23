@@ -200,4 +200,17 @@ describe('claim add', function () {
     })
     .catch(done)
   })
+
+  it('should accept an object interface', done => {
+    addClaim({
+      id: sandboxEntity,
+      property: sandboxStringProp,
+      value: randomString()
+    })
+    .then(res => {
+      res.success.should.equal(1)
+      done()
+    })
+    .catch(done)
+  })
 })
