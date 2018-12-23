@@ -350,21 +350,36 @@ Edit an entity. Labels and descriptions will be set even if there are existing v
 wdEdit.entity.edit({
   // Required
   id: 'Q4115189',
-  // Optional but one of labels, descriptions, claims, or sitelinks must be set
+  // Optional but one of labels, descriptions, aliases, claims, or sitelinks must be set
   labels: { en: 'a new label in English', fr: 'un nouveau label en français' },
   descriptions: { en: 'a new description', fr: 'une nouvelle description' },
+  aliases: {
+    en: [ 'aka', 'also known as' ], // Pass aliases as an array
+    fr: 'pseudonyme'                // Or a single value
+  },
   claims: {
     // Pass values as an array
     P1775: [ 'Q3576110', 'Q12206942' ],
     // Or a single value
     P2002: 'bulgroz',
-    // Or as an array of deep objects to pass qualifiers and references
+    // Or an object
+    P2093: { text: 'Author Authorson', language: 'en' },
+    // Or an array of objects and/or string values
+    P1106: [
+      "42",
+      { amount: 9001, unit: 'Q7727' }
+    },
+    // Add qualifiers and references to value objects
     P369: [
-      { value: 'Q5111731', qualifiers: { P1545: '17', P1416: [ 'Q13406268', 'Q32844021' ] }},
-      { value: 'Q2622002', qualifiers: { P580: '1789-08-04' } },
-      { value: 'Q2622002', qualifiers: { P1106: { amount: 9001, unit: 'Q7727' } } },
-      { value: 'Q2622002', qualifiers: { P2093: { text: 'Author Authorson', language: 'en' } } },
-
+      // Qualifier values can also be passed in different forms
+      { 
+        value: 'Q5111731', 
+        qualifiers: { 
+          P580: '1789-08-04'
+          P1416: [ 'Q13406268', 'Q32844021' ],
+          P1106: { value: 7 }
+        }
+      },
       // References can be passed as a single record group
       { value: 'Q2622004', references: { P143: 'Q8447' } },
       // or as multiple records
