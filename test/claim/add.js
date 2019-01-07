@@ -6,12 +6,12 @@ const remove = require('../../lib/claim/remove')(CONFIG)
 const { randomString, sandboxEntity, sandboxStringProp } = require('../../lib/tests_utils')
 const property = sandboxStringProp
 
-const checkAndAddClaim = (subject, property, object) => {
-  return exists(subject, property, object)
+const checkAndAddClaim = (subject, property, value) => {
+  return exists(subject, property, value)
   .then(matchingClaimsGuids => {
     if (matchingClaimsGuids) return remove(matchingClaimsGuids)
   })
-  .then(() => addClaim(subject, property, object))
+  .then(() => addClaim(subject, property, value))
 }
 
 describe('claim add', function () {
