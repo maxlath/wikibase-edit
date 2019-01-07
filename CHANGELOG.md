@@ -1,6 +1,10 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 2.8.0 - 2019-01-07
+* [`entity.edit`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#edit-entity)|[`entity.create`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#create-entity): add support for special snaktypes
+* [`entity.edit`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#edit-entity)|[`entity.create`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#create-entity): add support for special ranks
+
 ## 2.7.0 - 2018-10-02
 * [`claim.add`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#update-claim): added an `allowDuplicates` flag to force add when a claim with the same value already exists
 
