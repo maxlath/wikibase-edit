@@ -212,6 +212,27 @@ describe('entity edit', function () {
     })
     .then(res => {
       res.success.should.equal(1)
+      res.entity.claims.P369.slice(-1)[0].mainsnak.snaktype.should.equal('somevalue')
+      res.entity.claims.P626.slice(-1)[0].mainsnak.snaktype.should.equal('novalue')
+      done()
+    })
+    .catch(done)
+  })
+
+  it('should edit an entity with special rank', done => {
+    editEntity({
+      id: sandboxEntity,
+      claims: {
+        P369: { rank: 'deprecated', snaktype: 'somevalue' },
+        P6089: { rank: 'preferred', value: 123 }
+      }
+    })
+    .then(res => {
+      res.success.should.equal(1)
+      res.entity.claims.P369.slice(-1)[0].rank.should.equal('deprecated')
+      res.entity.claims.P369.slice(-1)[0].mainsnak.snaktype.should.equal('somevalue')
+      res.entity.claims.P6089.slice(-1)[0].rank.should.equal('preferred')
+      res.entity.claims.P6089.slice(-1)[0].mainsnak.datavalue.value.amount.should.equal('+123')
       done()
     })
     .catch(done)

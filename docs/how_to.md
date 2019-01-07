@@ -368,6 +368,8 @@ wdEdit.entity.edit({
     P1106: [ 42, { amount: 9001, unit: 'Q7727' } ]
     // Add statements with special snaktypes ('novalue' or 'somevalue')
     P626: { snaktype: 'somevalue' }
+    // or special rank (Default: 'normal'. Possible values: 'preferred' or 'deprecated')
+    P6089: { rank: 'preferred', value: 123 }
     // Add qualifiers and references to value objects
     P369: [
       // Qualifier values can also be passed in those different forms
