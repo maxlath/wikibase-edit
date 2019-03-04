@@ -1,12 +1,14 @@
 require('should')
 const CONFIG = Object.assign({}, require('config'), {
-  wikibaseInstance: 'https://test.wikidata.org/w/api.php'
+  wikibaseInstance: 'https://test.wikidata.org/w/api.php',
+  // Override what might have been defined on the require('config') object
+  API: null
 })
 const createEntity = require('../../lib/entity/create')(CONFIG)
 const { randomString } = require('../../lib/tests_utils')
 const wdk = require('wikidata-sdk')
 
-describe('entity edit', function () {
+describe('entity create', function () {
   this.timeout(20 * 1000)
 
   it('should be a function', done => {
