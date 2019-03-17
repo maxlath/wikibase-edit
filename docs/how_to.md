@@ -391,6 +391,10 @@ wdEdit.entity.edit({
           { P855: 'https://example2.org', P143: 'Q8447' }
         ]
       }
+    ],
+    P855: [
+      // Remove an existing claim
+      { id: 'Q4115189$afc56f6c-4e91-c89d-e287-d5691aeb063a', remove: true }
     ]
   },
   sitelinks: {

@@ -237,4 +237,27 @@ describe('entity edit', function () {
     })
     .catch(done)
   })
+
+  it('should be able to remove a claim', done => {
+    editEntity({
+      id: sandboxEntity,
+      claims: { P369: sandboxEntity }
+    })
+    .then(res => {
+      const guid = res.entity.claims.P369.slice(-1)[0].id
+      editEntity({
+        id: sandboxEntity,
+        claims: { P369: { id: guid, remove: true } }
+      })
+      .then(res => {
+        res.success.should.equal(1)
+        const propClaims = res.entity.claims.P369
+        if (propClaims) {
+          const guids = propClaims.map(claim => claim.id)
+          guids.includes(guid).should.be.false()
+        }
+        done()
+      })
+    })
+  })
 })
