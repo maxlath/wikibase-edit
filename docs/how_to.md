@@ -36,6 +36,8 @@
     - [remove reference](#remove-reference)
   - [Entity](#entity)
     - [edit entity](#edit-entity)
+      - [incremental mode](#incremental-mode)
+      - [reset mode](#reset-mode)
     - [create entity](#create-entity)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -345,7 +347,10 @@ wdEdit.reference.remove(claimGuid, referenceHash)
 ### Entity
 
 #### edit entity
-Make many edits on an entity at once. Every piece of data that isn't included in the passed object will stay untouched: only values with a `remove` flag will be removed.
+Make many edits on an entity at once.
+
+##### incremental mode
+By default, every piece of data that isn't included in the passed object will stay untouched: only values with a `remove` flag will be removed.
 
 ```js
 wdEdit.entity.edit({
@@ -422,6 +427,19 @@ wdEdit.entity.edit({
   sitelinks: {
     frwiki: 'eviv bulgroz'
     eswikisource: 'aviv sal bulgroz',
+  }
+})
+```
+
+##### reset mode
+If the entity you are editing requires a big cleanup, instead of adding a `remove` flag to all the elements that needs to be removed, you can set the `clear` flag to `true`, which will **delete all the entity data** before adding the specified data:
+```js
+// Remove ALL the labels, descriptions, aliases, claims, and sitelinks, and set the English label to 'Sandbox'
+wdEdit.entity.edit({
+  id: 'Q4115189',
+  clear: true,
+  labels: {
+    en: 'Sandbox'
   }
 })
 ```
