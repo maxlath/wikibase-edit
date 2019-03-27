@@ -260,4 +260,32 @@ describe('entity edit', function () {
       })
     })
   })
+
+  it('should be able to remove a label, description, or alias', done => {
+    editEntity({
+      id: sandboxEntity,
+      labels: { la: 'foo' },
+      descriptions: { la: 'foo' },
+      aliases: { la: 'foo' }
+    })
+    .then(res => {
+      editEntity({
+        id: sandboxEntity,
+        labels: { la: { value: 'foo', remove: true } },
+        descriptions: { la: { value: 'foo', remove: true } },
+        aliases: { la: { value: 'foo', remove: true } }
+      })
+      .then(res => {
+        res.success.should.equal(1)
+        should(res.entity.labels.la).not.be.ok()
+        should(res.entity.descriptions.la).not.be.ok()
+        if (res.entity.aliases.la != null) {
+          res.entity.aliases.la.forEach(alias => {
+            alias.value.should.not.equal('foo')
+          })
+        }
+        done()
+      })
+    })
+  })
 })

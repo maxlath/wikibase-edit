@@ -345,17 +345,39 @@ wdEdit.reference.remove(claimGuid, referenceHash)
 ### Entity
 
 #### edit entity
-Edit an entity. Labels and descriptions will be set even if there are existing values for the given languages. Claims will be added to the entity existing claims, without checking for duplicates.
+Make many edits on an entity at once. Every piece of data that isn't included in the passed object will stay untouched: only values with a `remove` flag will be removed.
+
 ```js
 wdEdit.entity.edit({
   // Required
   id: 'Q4115189',
-  // Optional but one of labels, descriptions, aliases, claims, or sitelinks must be set
-  labels: { en: 'a new label in English', fr: 'un nouveau label en français' },
-  descriptions: { en: 'a new description', fr: 'une nouvelle description' },
+  // All the rest is optional but one of labels, descriptions, aliases, claims, or sitelinks must be set
+  labels: {
+    // Set a label
+    en: 'a new label in English',
+    // Remove a label
+    fr: { value: 'le label en français', remove: true }
+  },
+  descriptions: {
+    // Set a description
+    en: 'a new description',
+    // Remove a description
+    fr: { value: 'la description en français', remove: true }
+  },
   aliases: {
-    en: [ 'aka', 'also known as' ], // Pass aliases as an array
-    fr: 'pseudonyme'                // Or a single value
+    // Pass aliases as an array
+    en: [ 'foo', 'bar' ],
+    // Or a single value
+    de: 'buzz,
+    // Remove an alias
+    fr: { value: 'bla', remove: true }
+    // Add some aliases and remove others
+    es: [
+      // Will be added
+      'ola',
+      // Will be removed
+      { value: 'alo', remove: true }
+    ]
   },
   claims: {
     // Pass values as an array
