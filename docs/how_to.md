@@ -425,8 +425,10 @@ wdEdit.entity.edit({
     ]
   },
   sitelinks: {
+    // Set a sitelink
     frwiki: 'eviv bulgroz'
-    eswikisource: 'aviv sal bulgroz',
+    // Remove a sitelink
+    eswikisource: { value: 'aviv sal bulgroz', remove: true },
   }
 })
 ```

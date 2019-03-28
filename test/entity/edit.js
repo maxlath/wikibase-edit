@@ -245,7 +245,7 @@ describe('entity edit', function () {
     })
     .then(res => {
       const guid = res.entity.claims.P369.slice(-1)[0].id
-      editEntity({
+      return editEntity({
         id: sandboxEntity,
         claims: { P369: { id: guid, remove: true } }
       })
@@ -259,6 +259,7 @@ describe('entity edit', function () {
         done()
       })
     })
+    .catch(done)
   })
 
   it('should be able to remove a label, description, or alias', done => {
@@ -269,7 +270,7 @@ describe('entity edit', function () {
       aliases: { la: 'foo' }
     })
     .then(res => {
-      editEntity({
+      return editEntity({
         id: sandboxEntity,
         labels: { la: { value: 'foo', remove: true } },
         descriptions: { la: { value: 'foo', remove: true } },
@@ -287,5 +288,26 @@ describe('entity edit', function () {
         done()
       })
     })
+    .catch(done)
+  })
+
+  it('should be able to add and remove a sitelink', done => {
+    const frwikinews = 'Évènements du 16 novembre 2018'
+    editEntity({
+      id: sandboxEntity,
+      sitelinks: { frwikinews }
+    })
+    .then(res => {
+      res.entity.sitelinks.frwikinews.title.should.equal(frwikinews)
+      return editEntity({
+        id: sandboxEntity,
+        sitelinks: { frwikinews: { value: frwikinews, remove: true } }
+      })
+      .then(res => {
+        should(res.entity.sitelinks.frwikinews).not.be.ok()
+        done()
+      })
+    })
+    .catch(done)
   })
 })
