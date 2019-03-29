@@ -224,6 +224,7 @@ describe('entity edit', function () {
       id: sandboxEntity,
       claims: {
         P369: { rank: 'deprecated', snaktype: 'somevalue' },
+        P626: { rank: 'deprecated', latitude: 0.1, longitude: 0.1, precision: 1 / 360 },
         P6089: { rank: 'preferred', value: 123 }
       }
     })
@@ -231,6 +232,10 @@ describe('entity edit', function () {
       res.success.should.equal(1)
       res.entity.claims.P369.slice(-1)[0].rank.should.equal('deprecated')
       res.entity.claims.P369.slice(-1)[0].mainsnak.snaktype.should.equal('somevalue')
+      res.entity.claims.P626.slice(-1)[0].rank.should.equal('deprecated')
+      res.entity.claims.P626.slice(-1)[0].mainsnak.datavalue.value.latitude.should.equal(0.1)
+      res.entity.claims.P626.slice(-1)[0].mainsnak.datavalue.value.longitude.should.equal(0.1)
+      res.entity.claims.P626.slice(-1)[0].mainsnak.datavalue.value.precision.should.equal(0.0027777777777778)
       res.entity.claims.P6089.slice(-1)[0].rank.should.equal('preferred')
       res.entity.claims.P6089.slice(-1)[0].mainsnak.datavalue.value.amount.should.equal('+123')
       done()
