@@ -315,4 +315,26 @@ describe('entity edit', function () {
     })
     .catch(done)
   })
+
+  it('should edit the existing claim when passed an id', done => {
+    editEntity({
+      id: sandboxEntity,
+      claims: { P370: 'ABC' }
+    })
+    .then(res => {
+      const claim = res.entity.claims.P370.slice(-1)[0]
+      return editEntity({
+        id: sandboxEntity,
+        claims: { P370: { id: claim.id, value: 'DEF', rank: 'preferred' } }
+      })
+      .then(res => {
+        const updatedClaim = res.entity.claims.P370.find(propClaim => propClaim.id === claim.id)
+        console.log('updatedClaim', updatedClaim)
+        updatedClaim.mainsnak.datavalue.value.should.equal('DEF')
+        updatedClaim.rank.should.equal('preferred')
+        done()
+      })
+    })
+    .catch(done)
+  })
 })
