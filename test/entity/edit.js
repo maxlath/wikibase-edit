@@ -1,4 +1,4 @@
-require('should')
+const should = require('should')
 const CONFIG = require('config')
 const editEntity = require('../../lib/entity/edit')(CONFIG)
 const { randomString, sandboxEntity, sandboxDescriptionFr } = require('../../lib/tests_utils')
