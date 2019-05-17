@@ -268,18 +268,21 @@ describe('entity edit', function () {
   })
 
   it('should be able to remove a label, description, or alias', done => {
+    const label = randomString()
+    const description = randomString()
+    const alias = randomString()
     editEntity({
       id: sandboxEntity,
-      labels: { la: 'foo' },
-      descriptions: { la: 'foo' },
-      aliases: { la: 'foo' }
+      labels: { la: label },
+      descriptions: { la: description },
+      aliases: { la: alias }
     })
     .then(res => {
       return editEntity({
         id: sandboxEntity,
-        labels: { la: { value: 'foo', remove: true } },
-        descriptions: { la: { value: 'foo', remove: true } },
-        aliases: { la: { value: 'foo', remove: true } }
+        labels: { la: { value: label, remove: true } },
+        descriptions: { la: { value: description, remove: true } },
+        aliases: { la: { value: alias, remove: true } }
       })
       .then(res => {
         res.success.should.equal(1)
