@@ -350,7 +350,7 @@ wdEdit.reference.remove(claimGuid, referenceHash)
 Make many edits on an entity at once.
 
 ##### incremental mode
-By default, every piece of data that isn't included in the passed object will stay untouched: only values with a `remove` flag will be removed.
+By default, every label, description, claim, or sitelink that isn't included in the passed object will stay untouched: only those with a `remove` flag will be removed. Beware that this isn't true for qualifiers and references, which can be removed by just being omitted (see P1114 example below).
 
 ```js
 wdEdit.entity.edit({
@@ -373,7 +373,7 @@ wdEdit.entity.edit({
     // Pass aliases as an array
     en: [ 'foo', 'bar' ],
     // Or a single value
-    de: 'buzz,
+    de: 'buzz',
     // Remove an alias
     fr: { value: 'bla', remove: true }
     // Add some aliases and remove others
@@ -419,7 +419,11 @@ wdEdit.entity.edit({
         ]
       }
     ],
-    P855: [
+    P1114: [
+      // Edit an existing claim
+      // /!\ Beware that while editing an existing claim,
+      //     anything omitted (rank, qualifiers, or references) will be omitted!!
+      { id: 'Q4115189$BC5F4F72-5B49-4991-AB0F-5CC8D4AAB99A', value: 123 }
       // Remove an existing claim
       { id: 'Q4115189$afc56f6c-4e91-c89d-e287-d5691aeb063a', remove: true }
     ]
