@@ -34,7 +34,7 @@ describe('description set', function () {
   it('should rejected if not passed a description', done => {
     setDescription(sandboxEntity, language)
     .catch(err => {
-      err.message.should.equal('invalid description')
+      err.message.should.equal('missing description')
       done()
     })
     .catch(done)

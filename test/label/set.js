@@ -33,7 +33,7 @@ describe('label set', function () {
   it('should rejected if not passed a label', done => {
     setLabel(sandboxEntity, language)
     .catch(err => {
-      err.message.should.equal('invalid label')
+      err.message.should.equal('missing label')
       done()
     })
     .catch(done)
