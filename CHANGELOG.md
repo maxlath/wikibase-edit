@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 2.9.0 - 2019-05-17
+* [`entity.edit`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#edit-entity): allow to remove labels, descriptions, aliases, claims, or sitelinks
+
 ## 2.8.0 - 2019-01-07
 * [`entity.edit`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#edit-entity)|[`entity.create`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#create-entity): add support for special snaktypes
 * [`entity.edit`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#edit-entity)|[`entity.create`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#create-entity): add support for special ranks
