@@ -128,6 +128,26 @@ describe('entity edit', function () {
     .catch(done)
   })
 
+  it('should edit an entity with a qualifier with a special snaktype', done => {
+    const qualifiers = {
+      P571: { snaktype: 'somevalue' }
+    }
+    editEntity({
+      id: sandboxEntity,
+      claims: {
+        P516: [ { value: 'Q54173', qualifiers } ]
+      }
+    })
+    .then(res => {
+      res.success.should.equal(1)
+      const lastClaim = res.entity.claims.P516.slice(-1)[0]
+      const qualifier = lastClaim.qualifiers.P571[0]
+      qualifier.snaktype.should.equal('somevalue')
+      done()
+    })
+    .catch(done)
+  })
+
   it('should edit an entity with a reference', done => {
     editEntity({
       id: sandboxEntity,
