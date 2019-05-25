@@ -148,6 +148,27 @@ describe('entity edit', function () {
     .catch(done)
   })
 
+  it('should edit an entity with a time qualifier', done => {
+    const qualifiers = {
+      P571: { value: '2019-04-01T00:00:00.000Z' }
+    }
+    editEntity({
+      id: sandboxEntity,
+      claims: {
+        P516: [ { value: 'Q54173', qualifiers } ]
+      }
+    })
+    .then(res => {
+      res.success.should.equal(1)
+      const lastClaim = res.entity.claims.P516.slice(-1)[0]
+      const qualifier = lastClaim.qualifiers.P571[0]
+      qualifier.datavalue.value.time.should.equal('+2019-04-01T00:00:00Z')
+      qualifier.datavalue.value.precision.should.equal(11)
+      done()
+    })
+    .catch(done)
+  })
+
   it('should edit an entity with a reference', done => {
     editEntity({
       id: sandboxEntity,
