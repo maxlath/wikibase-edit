@@ -107,6 +107,27 @@ describe('entity edit', function () {
     .catch(done)
   })
 
+  it('should edit an entity with rich qualifier', done => {
+    const qualifiers = {
+      P2109: [ { value: { amount: 100, unit: 'Q6982035' } } ]
+    }
+    editEntity({
+      id: sandboxEntity,
+      claims: {
+        P516: [ { value: 'Q54173', qualifiers } ]
+      }
+    })
+    .then(res => {
+      res.success.should.equal(1)
+      const lastClaim = res.entity.claims.P516.slice(-1)[0]
+      const qualifier = lastClaim.qualifiers.P2109[0]
+      qualifier.datavalue.value.amount.should.equal('+100')
+      qualifier.datavalue.value.unit.should.equal('http://www.wikidata.org/entity/Q6982035')
+      done()
+    })
+    .catch(done)
+  })
+
   it('should edit an entity with a reference', done => {
     editEntity({
       id: sandboxEntity,
