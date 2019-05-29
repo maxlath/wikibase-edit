@@ -85,4 +85,17 @@ describe('reference add', function () {
     })
     .catch(done)
   })
+
+  it('should add a reference with a special snaktype', done => {
+    claimGuidPromise
+    .then(guid => {
+      return addReference(guid, 'P369', { snaktype: 'somevalue' })
+      .then(res => {
+        res.success.should.equal(1)
+        res.reference.snaks.P369[0].snaktype.should.equal('somevalue')
+        done()
+      })
+    })
+    .catch(done)
+  })
 })

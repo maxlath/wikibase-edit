@@ -339,6 +339,8 @@ wdEdit.reference.add(claimGuid, 'P854', 'https://example.org/rise-and-fall-of-th
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 // imported from (P143) the French Wikipedia 'Q8447'
 wdEdit.reference.add(claimGuid, 'P143', 'Q8447')
+// imported from (P143) we don't know where
+wdEdit.reference.add(claimGuid, 'P143', { snaktype : 'somevalue' })
 ```
 
 #### remove reference

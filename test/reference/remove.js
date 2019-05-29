@@ -36,4 +36,21 @@ describe('reference remove', function () {
     })
     .catch(done)
   })
+
+  it('should add a reference with a special snaktype', done => {
+    claimGuidPromise
+    .then(guid => {
+      return addReference(guid, 'P369', { snaktype: 'somevalue' })
+      .then(res => {
+        res.success.should.equal(1)
+        const { hash: referenceHash } = res.reference
+        return removeReference(guid, referenceHash)
+        .then(res => {
+          res.success.should.equal(1)
+          done()
+        })
+      })
+    })
+    .catch(done)
+  })
 })
