@@ -309,6 +309,11 @@ const property = 'P155'
 const oldValue = 'Q4115189'
 const newValue = 'Q4115190'
 wdEdit.qualifier.update(guid, property, oldValue, newValue)
+
+// somevalue
+wdEdit.qualifier.update(guid, property, oldValue, { snaktype : 'somevalue' })
+// novalue
+wdEdit.qualifier.update(guid, property, oldValue, { snaktype : 'novalue' })
 ```
 
 #### remove qualifier

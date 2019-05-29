@@ -108,4 +108,21 @@ describe('reference update', function () {
     })
     .catch(done)
   })
+
+  it('should update a qualifier with a special snaktype', done => {
+    const novalue = { snaktype: 'novalue' }
+    const somevalue = { snaktype: 'somevalue' }
+    claimGuidPromise
+    .then(guid => {
+      return addQualifier(guid, 'P2440', novalue)
+      .then(res => updateQualifier(guid, 'P2440', novalue, somevalue))
+      .then(res => {
+        res.success.should.equal(1)
+        const qualifier = res.claim.qualifiers.P2440.slice(-1)[0]
+        qualifier.snaktype.should.equal('somevalue')
+        done()
+      })
+    })
+    .catch(done)
+  })
 })

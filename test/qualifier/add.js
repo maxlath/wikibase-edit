@@ -150,6 +150,8 @@ describe('qualifier add', function () {
       return addQualifier(guid, 'P578', { snaktype: 'novalue' })
       .then(res => {
         res.success.should.equal(1)
+        const qualifier = res.claim.qualifiers.P578.slice(-1)[0]
+        qualifier.snaktype.should.equal('novalue')
         done()
       })
     })
