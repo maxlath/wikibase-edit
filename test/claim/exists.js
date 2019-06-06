@@ -6,7 +6,7 @@ const remove = require('../../lib/claim/remove')(CONFIG)
 const { sandboxEntity } = require('../../lib/tests_utils')
 const property = 'P370'
 const value = 'Zorg'
-const wdk = require('wikidata-sdk')
+const { isItemId } = require('wikibase-sdk')
 
 describe('claim exists', function () {
   this.timeout(20 * 1000)
@@ -53,7 +53,7 @@ describe('claim exists', function () {
       .then(matchingClaimsGuids => {
         matchingClaimsGuids.should.be.an.Array()
         matchingClaimsGuids[0].should.be.an.String()
-        should(wdk.isItemId(matchingClaimsGuids[0].split('$')[0])).be.true()
+        should(isItemId(matchingClaimsGuids[0].split('$')[0])).be.true()
         done()
       })
     })

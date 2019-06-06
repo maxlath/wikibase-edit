@@ -2,7 +2,7 @@ const should = require('should')
 const CONFIG = require('config')
 const editEntity = require('../../lib/entity/edit')(CONFIG)
 const { randomString, sandboxEntity, sandboxDescriptionFr } = require('../../lib/tests_utils')
-const wdk = require('wikidata-sdk')
+const { propertyClaims: simplifyPropertyClaims } = require('wikibase-sdk').simplify
 
 describe('entity edit', function () {
   this.timeout(20 * 1000)
@@ -76,7 +76,7 @@ describe('entity edit', function () {
       res.success.should.equal(1)
       res.entity.labels.fr.value.should.equal(label)
       res.entity.descriptions.fr.value.should.equal(description)
-      const P1775Claims = wdk.simplifyPropertyClaims(res.entity.claims.P1775)
+      const P1775Claims = simplifyPropertyClaims(res.entity.claims.P1775)
       P1775Claims.includes('Q3576110').should.be.true()
       done()
     })

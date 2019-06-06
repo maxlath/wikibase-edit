@@ -3,7 +3,7 @@ const CONFIG = require('config')
 const addQualifier = require('../../lib/qualifier/add')(CONFIG)
 const updateQualifier = require('../../lib/qualifier/update')(CONFIG)
 const { getClaimGuid, sandboxEntity, secondSandboxEntity } = require('../../lib/tests_utils')
-const wdk = require('wikidata-sdk')
+const { simplifyClaim } = require('wikibase-sdk')
 
 var claimGuidPromise
 
@@ -28,7 +28,7 @@ describe('reference update', function () {
       .then(res => updateQualifier(guid, property, sandboxEntity, secondSandboxEntity))
       .then(res => {
         res.success.should.equal(1)
-        wdk.simplifyClaim(res.claim.qualifiers[property][0]).should.equal(secondSandboxEntity)
+        simplifyClaim(res.claim.qualifiers[property][0]).should.equal(secondSandboxEntity)
         done()
       })
     })
@@ -45,7 +45,7 @@ describe('reference update', function () {
       .then(res => updateQualifier(guid, property, stringA, stringB))
       .then(res => {
         res.success.should.equal(1)
-        wdk.simplifyClaim(res.claim.qualifiers[property][0]).should.equal(stringB)
+        simplifyClaim(res.claim.qualifiers[property][0]).should.equal(stringB)
         done()
       })
     })
@@ -62,7 +62,7 @@ describe('reference update', function () {
       .then(res => updateQualifier(guid, property, timeA, timeB))
       .then(res => {
         res.success.should.equal(1)
-        wdk.simplifyClaim(res.claim.qualifiers[property][0]).should.equal('1802-02-27T00:00:00.000Z')
+        simplifyClaim(res.claim.qualifiers[property][0]).should.equal('1802-02-27T00:00:00.000Z')
         done()
       })
     })
@@ -79,7 +79,7 @@ describe('reference update', function () {
       .then(res => updateQualifier(guid, property, quantityA, quantityB))
       .then(res => {
         res.success.should.equal(1)
-        wdk.simplifyClaim(res.claim.qualifiers[property][0]).should.equal(quantityB.amount)
+        simplifyClaim(res.claim.qualifiers[property][0]).should.equal(quantityB.amount)
         done()
       })
     })
@@ -102,7 +102,7 @@ describe('reference update', function () {
       .then(res => updateQualifier(guid, property, textA, textB))
       .then(res => {
         res.success.should.equal(1)
-        wdk.simplifyClaim(res.claim.qualifiers[property][0]).should.equal(textB.text)
+        simplifyClaim(res.claim.qualifiers[property][0]).should.equal(textB.text)
         done()
       })
     })

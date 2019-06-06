@@ -4,7 +4,7 @@ const addClaim = require('../../lib/claim/add')(CONFIG)
 const addReference = require('../../lib/reference/add')(CONFIG)
 const updateClaim = require('../../lib/claim/update')(CONFIG)
 const { randomString, randomNumber, sandboxEntity, sandboxStringProp, undesiredRes } = require('../../lib/tests_utils')
-const wdk = require('wikidata-sdk')
+const { simplify } = require('wikibase-sdk')
 
 describe('claim update', function () {
   this.timeout(20 * 1000)
@@ -39,7 +39,7 @@ describe('claim update', function () {
       return updateClaim(sandboxEntity, sandboxStringProp, oldValue, newValue)
       .then(res2 => {
         res1.claim.id.should.equal(res2.claim.id)
-        wdk.simplify.claim(res2.claim).should.equal(newValue)
+        simplify.claim(res2.claim).should.equal(newValue)
         done()
       })
     })
@@ -89,7 +89,7 @@ describe('claim update', function () {
       return updateClaim(sandboxEntity, 'P3132', oldValue, newValue)
       .then(res2 => {
         res1.claim.id.should.equal(res2.claim.id)
-        wdk.simplify.claim(res2.claim).should.equal(newValue.text)
+        simplify.claim(res2.claim).should.equal(newValue.text)
         done()
       })
     })
@@ -105,7 +105,7 @@ describe('claim update', function () {
       return updateClaim(sandboxEntity, property, oldValue, newValue)
       .then(res2 => {
         res1.claim.id.should.equal(res2.claim.id)
-        wdk.simplify.claim(res2.claim).should.equal(newValue.amount)
+        simplify.claim(res2.claim).should.equal(newValue.amount)
         done()
       })
     })
@@ -121,7 +121,7 @@ describe('claim update', function () {
       return updateClaim(sandboxEntity, property, oldValue, newValue)
       .then(res2 => {
         res1.claim.id.should.equal(res2.claim.id)
-        wdk.simplify.claim(res2.claim).split('T')[0].should.equal(newValue)
+        simplify.claim(res2.claim).split('T')[0].should.equal(newValue)
         done()
       })
     })
@@ -137,7 +137,7 @@ describe('claim update', function () {
       return updateClaim(sandboxEntity, property, oldValue, newValue)
       .then(res2 => {
         res1.claim.id.should.equal(res2.claim.id)
-        wdk.simplify.claim(res2.claim).should.equal(newValue)
+        simplify.claim(res2.claim).should.equal(newValue)
         done()
       })
     })
@@ -176,7 +176,7 @@ describe('claim update', function () {
       return updateClaim(res1.claim.id, newValue)
       .then(res2 => {
         res1.claim.id.should.equal(res2.claim.id)
-        wdk.simplify.claim(res2.claim).should.equal(newValue)
+        simplify.claim(res2.claim).should.equal(newValue)
         done()
       })
     })

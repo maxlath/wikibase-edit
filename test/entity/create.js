@@ -6,7 +6,7 @@ const CONFIG = Object.assign({}, require('config'), {
 })
 const createEntity = require('../../lib/entity/create')(CONFIG)
 const { randomString } = require('../../lib/tests_utils')
-const wdk = require('wikidata-sdk')
+const { isItemId, simplify } = require('wikibase-sdk')
 
 describe('entity create', function () {
   this.timeout(20 * 1000)
@@ -36,10 +36,10 @@ describe('entity create', function () {
     })
     .then(res => {
       res.success.should.equal(1)
-      wdk.isItemId(res.entity.id).should.be.true()
+      isItemId(res.entity.id).should.be.true()
       res.entity.labels.en.value.should.equal(label)
       res.entity.descriptions.fr.value.should.equal(description)
-      wdk.simplify.claim(res.entity.claims.P17[0]).should.equal('Q166376')
+      simplify.claim(res.entity.claims.P17[0]).should.equal('Q166376')
       done()
     })
     .catch(done)

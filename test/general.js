@@ -1,6 +1,10 @@
 require('should')
 const wdEdit = require('..')
+const instance = 'https://www.wikidata.org'
+const sparqlEndpoint = 'https://query.wikidata.org/sparql'
 const credentialConfig = {
+  instance,
+  sparqlEndpoint,
   username: 'bla',
   password: 'bla'
 }
@@ -60,20 +64,27 @@ describe('general', () => {
   })
 })
 
+describe('instance', () => {
+  it('should throw if not passed an instance', done => {
+    (() => wdEdit({ oauth: {} })).should.throw('missing config parameter: instance')
+    done()
+  })
+})
+
 describe('with credentials', () => {
   it('should throw if not passed a username', done => {
-    (() => wdEdit({ password: 'bla' })).should.throw()
+    (() => wdEdit({ instance, password: 'bla' })).should.throw()
     done()
   })
   it('should throw if not passed a password', done => {
-    (() => wdEdit({ username: 'bla' })).should.throw()
+    (() => wdEdit({ instance, username: 'bla' })).should.throw()
     done()
   })
 })
 
 describe('with oauth', () => {
   it('should not throw if passed an oauth object', done => {
-    (() => wdEdit({ oauth: {} })).should.not.throw()
+    (() => wdEdit({ instance, sparqlEndpoint, oauth: {} })).should.not.throw()
     done()
   })
 })

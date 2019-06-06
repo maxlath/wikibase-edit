@@ -3,8 +3,6 @@ const { randomString, sandboxEntity } = require('../lib/tests_utils')
 const CONFIG = require('config')
 const AddAlias = require('../lib/alias/add')
 const language = 'it'
-const wdk = require('wikidata-sdk')
-const getLastRev = wdk.getRevisions(sandboxEntity, { limit: 1 })
 const breq = require('bluereq')
 
 describe('summary', () => {
@@ -36,6 +34,8 @@ describe('summary', () => {
 
 const doSomeEdit = config => {
   const addAlias = AddAlias(config)
+  const wbk = require('wikibase-sdk')(config)
+  const getLastRev = wbk.getRevisions(sandboxEntity, { limit: 1 })
   return addAlias(sandboxEntity, language, randomString(4))
   .then(res => breq.get(getLastRev).get('body'))
   .then(res => Object.values(res.query.pages)[0].revisions[0].comment)
