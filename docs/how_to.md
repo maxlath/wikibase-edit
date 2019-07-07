@@ -39,6 +39,8 @@
       - [incremental mode](#incremental-mode)
       - [reset mode](#reset-mode)
     - [create entity](#create-entity)
+      - [create item](#create-item)
+      - [create property](#create-property)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -458,16 +460,25 @@ wdEdit.entity.edit({
 ```
 
 #### create entity
-Create an entity from scratch.
-The entity data follow the same rules as [`wdEdit.entity.edit`](#edit-entity), simply without the `id`
+##### create item
+Create an [item](https://www.wikidata.org/wiki/Wikidata:Glossary#Item) from scratch.
+The item data follow the same rules as [`wdEdit.entity.edit`](#edit-entity), simply without the `id`
 
 ```js
-wdEdit.entity.create(entityData)
+wdEdit.entity.create({ type: 'item', labels, descriptions, aliases, claims, sitelinks })
 .then(res => {
-  // extracting our data using destructuring assignment
-  // cf https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Object_destructuring
   const { entity } = res
-  const { id, labels, descriptions, aliases, claims, sitelinks } = entity
-  console.log('created entity id', id)
+  console.log('created item id', entity.id)
+})
+```
+
+##### create property
+Creating a [property](https://www.wikidata.org/wiki/Wikidata:Glossary#Property) is just like creating an item, but with a `type=property` and a `datatype`
+
+```js
+wdEdit.entity.create({ type: 'property', datatype: 'string', labels, descriptions, aliases, claims })
+.then(res => {
+  const { entity } = res
+  console.log('created property id', entity.id)
 })
 ```
