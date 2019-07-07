@@ -1,20 +1,13 @@
 require('should')
-const CONFIG = require('config')
-const addQualifier = require('../../lib/qualifier/add')(CONFIG)
-const { getClaimGuid } = require('../../lib/tests_utils')
+const addQualifier = require('../../lib/qualifier/add')
+const { getClaimGuid } = require('../utils')
 
 var claimGuidPromise
 
-describe('qualifier add', function () {
-  this.timeout(20 * 1000)
+describe('qualifier add', () => {
 
   before(function (done) {
     claimGuidPromise = getClaimGuid()
-    done()
-  })
-
-  it('should be a function', done => {
-    addQualifier.should.be.a.Function()
     done()
   })
 

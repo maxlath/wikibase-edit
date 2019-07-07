@@ -10,10 +10,6 @@ const credentialConfig = {
 }
 
 describe('general', () => {
-  it('should be a function', done => {
-    wdEdit.should.be.a.Function()
-    done()
-  })
   it('should return an object', done => {
     wdEdit(credentialConfig).should.be.an.Object()
     done()
@@ -37,7 +33,6 @@ describe('general', () => {
   })
   it('should have claim functions', done => {
     wdEdit(credentialConfig).claim.should.be.a.Object()
-    wdEdit(credentialConfig).claim.exists.should.be.a.Function()
     wdEdit(credentialConfig).claim.add.should.be.a.Function()
     wdEdit(credentialConfig).claim.update.should.be.a.Function()
     wdEdit(credentialConfig).claim.remove.should.be.a.Function()

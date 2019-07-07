@@ -1,14 +1,7 @@
 require('should')
 const getTimeObject = require('../../lib/claim/get_time_object')
 
-describe('claim time', function () {
-  this.timeout(20 * 1000)
-
-  it('should be a function', done => {
-    getTimeObject.should.be.a.Function()
-    done()
-  })
-
+describe('claim time', () => {
   it('should parse year without precision', function (done) {
     getTimeObject('2018').should.deepEqual({
       'time': '+2018-00-00T00:00:00Z',

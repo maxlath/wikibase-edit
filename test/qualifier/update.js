@@ -1,22 +1,15 @@
 require('should')
-const CONFIG = require('config')
-const addQualifier = require('../../lib/qualifier/add')(CONFIG)
-const updateQualifier = require('../../lib/qualifier/update')(CONFIG)
-const { getClaimGuid, sandboxEntity, secondSandboxEntity } = require('../../lib/tests_utils')
+const addQualifier = require('../../lib/qualifier/add')
+const updateQualifier = require('../../lib/qualifier/update')
+const { getClaimGuid, sandboxEntity, secondSandboxEntity } = require('../utils')
 const { simplifyClaim } = require('wikibase-sdk')
 
 var claimGuidPromise
 
-describe('reference update', function () {
-  this.timeout(20 * 1000)
+describe('reference update', () => {
 
   before(function (done) {
     claimGuidPromise = getClaimGuid()
-    done()
-  })
-
-  it('should be a function', done => {
-    updateQualifier.should.be.a.Function()
     done()
   })
 

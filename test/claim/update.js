@@ -1,18 +1,11 @@
 require('should')
-const CONFIG = require('config')
-const addClaim = require('../../lib/claim/add')(CONFIG)
-const addReference = require('../../lib/reference/add')(CONFIG)
-const updateClaim = require('../../lib/claim/update')(CONFIG)
-const { randomString, randomNumber, sandboxEntity, sandboxStringProp, undesiredRes } = require('../../lib/tests_utils')
+const addClaim = require('../../lib/claim/add')
+const addReference = require('../../lib/reference/add')
+const updateClaim = require('../../lib/claim/update')
+const { randomString, randomNumber, sandboxEntity, sandboxStringProp, undesiredRes } = require('../utils')
 const { simplify } = require('wikibase-sdk')
 
-describe('claim update', function () {
-  this.timeout(20 * 1000)
-
-  it('should be a function', done => {
-    updateClaim.should.be.a.Function()
-    done()
-  })
+describe('claim update', () => {
 
   it('should reject if old value is missing', done => {
     const oldValue = randomString()

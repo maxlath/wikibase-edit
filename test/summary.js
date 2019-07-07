@@ -1,6 +1,5 @@
 require('should')
 const { randomString, sandboxEntity } = require('../lib/tests_utils')
-const CONFIG = require('config')
 const AddAlias = require('../lib/alias/add')
 const language = 'it'
 const breq = require('bluereq')

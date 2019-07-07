@@ -1,52 +1,43 @@
 require('should')
-const CONFIG = require('config')
-const setDescription = require('../../lib/description/set')(CONFIG)
-const { randomString, sandboxEntity } = require('../../lib/tests_utils')
 const language = 'fr'
+const setDescription = require('../../lib/description/set')
+const { randomString, sandboxEntity } = require('../utils')
 
-describe('description set', function () {
-  this.timeout(20 * 1000)
-
-  it('should be a function', done => {
-    setDescription.should.be.a.Function()
-    setDescription.should.be.a.Function()
-    done()
-  })
-
-  it('should rejected if not passed an entity', done => {
-    setDescription()
-    .catch(err => {
+describe('description', () => {
+  it('should throw if not passed an entity', done => {
+    try{
+      setDescription({})
+    } catch (err) {
       err.message.should.equal('invalid entity')
       done()
-    })
-    .catch(done)
+    }
   })
 
-  it('should rejected if not passed a language', done => {
-    setDescription(sandboxEntity)
-    .catch(err => {
+  it('should throw if not passed a language', done => {
+    try{
+      setDescription({ id: sandboxEntity })
+    } catch (err) {
       err.message.should.equal('invalid language')
       done()
-    })
-    .catch(done)
+    }
   })
 
-  it('should rejected if not passed a description', done => {
-    setDescription(sandboxEntity, language)
-    .catch(err => {
+  it('should throw if not passed a description', done => {
+    try{
+      setDescription({ id: sandboxEntity, language })
+    } catch (err) {
       err.message.should.equal('missing description')
       done()
-    })
-    .catch(done)
+    }
   })
 
-  it('should set a description', done => {
-    const description = `Bac à Sable (${randomString()})`
-    setDescription(sandboxEntity, 'fr', description)
-    .then(res => {
-      res.success.should.equal(1)
-      done()
-    })
-    .catch(done)
+  it('should return an action and data', done => {
+    const value = `Bac à Sable (${randomString()})`
+    const { action, data } = setDescription({ id: sandboxEntity, language, value })
+    action.should.equal('wbsetdescription')
+    data.id.should.equal(sandboxEntity)
+    data.language.should.equal(language)
+    data.value.should.equal(value)
+    done()
   })
 })
