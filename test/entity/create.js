@@ -1,20 +1,18 @@
 require('should')
 const createEntity = require('../../lib/entity/create')
-const { randomString } = require('../utils')
+const { randomString, properties } = require('../utils')
 
 describe('entity create', () => {
   it('should set the action to wbeditentity', done => {
-    createEntity({ labels: { fr: 'foo' } }).action.should.equal('wbeditentity')
+    const params = { labels: { fr: 'foo' } }
+    createEntity(params, properties).action.should.equal('wbeditentity')
     done()
   })
 
   it('should then use entity.edit validation features', done => {
-    try {
-      createEntity({ claims: { P31: 'bla' } })
-    } catch (err) {
-      err.message.should.equal('invalid entity value')
-      done()
-    }
+    const params = { claims: { P31: 'bla' } }
+    createEntity.bind(null, params, properties).should.throw('invalid entity value')
+    done()
   })
 
   it('should format an item', done => {
@@ -22,12 +20,13 @@ describe('entity create', () => {
     const description = randomString()
     const frAlias = randomString()
     const enAlias = randomString()
-    const { data } = createEntity({
+    const params = {
       labels: { en: label },
       aliases: { fr: frAlias, en: [ enAlias ] },
       descriptions: { fr: description },
       claims: { P17: 'Q166376' }
-    })
+    }
+    const { data } = createEntity(params, properties)
     data.new.should.equal('item')
     JSON.parse(data.data).should.deepEqual({
       labels: { en: { language: 'en', value: label } },
@@ -59,30 +58,25 @@ describe('entity create', () => {
   })
 
   it('should reject a property creation without type', done => {
-    try {
-      createEntity({ datatype: 'string' })
-    } catch (err) {
-      err.message.should.equal("an item can't have a datatype")
-      done()
-    }
+    createEntity.bind(null, { datatype: 'string' }, properties)
+    .should.throw("an item can't have a datatype")
+    done()
   })
 
   it('should reject a property creation without datatype', done => {
-    try {
-      createEntity({ type: 'property' })
-    } catch (err) {
-      err.message.should.equal('missing property datatype')
-      done()
-    }
+    createEntity.bind(null, { type: 'property' }, properties)
+    .should.throw('missing property datatype')
+    done()
   })
 
   it('should create a property', done => {
     const label = `wikidata-edit entity.create property test (${randomString()})`
-    const { data } = createEntity({
+    const params = {
       type: 'property',
       datatype: 'string',
-      labels: { en: label },
-    })
+      labels: { en: label }
+    }
+    const { data } = createEntity(params, properties)
     data.new.should.equal('property')
     JSON.parse(data.data).should.deepEqual({
       datatype: 'string',

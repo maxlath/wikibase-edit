@@ -1,10 +1,8 @@
 require('should')
 const wdEdit = require('..')
 const instance = 'https://www.wikidata.org'
-const sparqlEndpoint = 'https://query.wikidata.org/sparql'
 const credentialConfig = {
   instance,
-  sparqlEndpoint,
   username: 'bla',
   password: 'bla'
 }
@@ -79,7 +77,7 @@ describe('with credentials', () => {
 
 describe('with oauth', () => {
   it('should not throw if passed an oauth object', done => {
-    (() => wdEdit({ instance, sparqlEndpoint, oauth: {} })).should.not.throw()
+    (() => wdEdit({ instance, oauth: {} })).should.not.throw()
     done()
   })
 })

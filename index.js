@@ -39,9 +39,9 @@ module.exports = function (config, functionPath) {
     //   add: requestWrapper('reference/add'),
     //   remove: requestWrapper('reference/remove')
     // },
-    // entity: {
-    //   create: requestWrapper('entity/create'),
-    //   edit: requestWrapper('entity/edit')
-    // }
+    entity: {
+      create: requestWrapper('entity/create'),
+      edit: requestWrapper('entity/edit')
+    }
   }
 }

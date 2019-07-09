@@ -5,30 +5,18 @@ const language = 'it'
 
 describe('alias add', () => {
   it('should reject if not passed an entity', done => {
-    try {
-      addAlias({})
-    } catch (err) {
-      err.message.should.equal('invalid entity')
-      done()
-    }
+    addAlias.bind(null, {}).should.throw('invalid entity')
+    done()
   })
 
   it('should reject if not passed a language', done => {
-    try {
-      addAlias({ id: sandboxEntity })
-    } catch (err) {
-      err.message.should.equal('invalid language')
-      done()
-    }
+    addAlias.bind(null, { id: sandboxEntity }).should.throw('invalid language')
+    done()
   })
 
   it('should reject if not passed an alias', done => {
-    try {
-      addAlias({ id: sandboxEntity, language })
-    } catch (err) {
-      err.message.should.equal('empty alias array')
-      done()
-    }
+    addAlias.bind(null, { id: sandboxEntity, language }).should.throw('empty alias array')
+    done()
   })
 
   it('should accept a single alias string', done => {

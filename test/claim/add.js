@@ -1,16 +1,19 @@
 require('should')
 const addClaim = require('../../lib/claim/add')
-const { randomString, sandboxEntity: id, sandboxStringProp } = require('../utils')
-const property = sandboxStringProp
+const {
+  randomString,
+  sandboxEntity: id,
+  sandboxStringProp: property,
+  properties
+} = require('../utils')
 
 describe('claim add', () => {
   it('should set the action to wbcreateclaim', done => {
     addClaim({
       id,
       property: 'P600',
-      datatype: 'ExternalId',
       value: 'someid'
-    })
+    }, properties)
     .action.should.equal('wbcreateclaim')
     done()
   })
@@ -19,9 +22,8 @@ describe('claim add', () => {
     addClaim({
       id,
       property: 'P600',
-      datatype: 'ExternalId',
       value: 'someid'
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P600',
@@ -35,9 +37,8 @@ describe('claim add', () => {
     addClaim({
       id,
       property: 'P50',
-      datatype: 'WikibaseItem',
       value: 'Q627323'
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P50',
@@ -51,9 +52,8 @@ describe('claim add', () => {
     addClaim({
       id,
       property: 'P578',
-      datatype: 'Time',
       value: '1802'
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P578',
@@ -67,9 +67,8 @@ describe('claim add', () => {
     addClaim({
       id,
       property: 'P578',
-      datatype: 'Time',
       value: '1802-02'
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P578',
@@ -83,9 +82,8 @@ describe('claim add', () => {
     addClaim({
       id,
       property: 'P578',
-      datatype: 'Time',
       value: '1802-02-03'
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P578',
@@ -99,9 +97,8 @@ describe('claim add', () => {
     addClaim({
       id,
       property: 'P578',
-      datatype: 'Time',
       value: { time: '2500000', precision: 4 }
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P578',
@@ -116,9 +113,8 @@ describe('claim add', () => {
   //   addClaim({
   //     id,
   //     property: 'P578',
-  //     datatype: 'Time',
   //     value: { time: '1802-02-04T11:22:33Z', precision: 14 }
-  //   })
+  //   }, properties)
   //   .data.should.deepEqual({
   //     entity: id,
   //     property: 'P578',
@@ -129,40 +125,23 @@ describe('claim add', () => {
   // })
 
   it('should reject a claim with an invalid time', done => {
-    try {
-      addClaim({
-        id,
-        property: 'P578',
-        datatype: 'Time',
-        value: '1802-22-33'
-      })
-    } catch (err) {
-      err.message.should.equal('invalid time value')
-      done()
-    }
+    const params = { id, property: 'P578', value: '1802-22-33' }
+    addClaim.bind(null, params, properties).should.throw('invalid time value')
+    done()
   })
 
   it('should reject a claim with an invalid time (2)', done => {
-    try {
-      addClaim({
-        id,
-        property: 'P578',
-        datatype: 'Time',
-        value: '1802-02-04T11'
-      })
-    } catch (err) {
-      err.message.should.equal('invalid time value')
-      done()
-    }
+    const params = { id, property: 'P578', value: '1802-02-04T11' }
+    addClaim.bind(null, params, properties).should.throw('invalid time value')
+    done()
   })
 
   it('should return formatted data for monolingualtext', done => {
     addClaim({
       id,
       property: 'P1476',
-      datatype: 'Monolingualtext',
       value: { text: 'bulgroz', language: 'fr' }
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P1476',
@@ -176,9 +155,8 @@ describe('claim add', () => {
     addClaim({
       id,
       property: 'P1106',
-      datatype: 'Quantity',
       value: 9000
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P1106',
@@ -192,9 +170,8 @@ describe('claim add', () => {
     addClaim({
       id,
       property: 'P1106',
-      datatype: 'Quantity',
       value: '9001'
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P1106',
@@ -208,9 +185,8 @@ describe('claim add', () => {
     addClaim({
       id,
       property: 'P1106',
-      datatype: 'Quantity',
       value: { amount: 9001, unit: 'Q7727' }
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P1106',
@@ -224,9 +200,8 @@ describe('claim add', () => {
     addClaim({
       id,
       property: 'P1106',
-      datatype: 'Quantity',
       value: -9002
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P1106',
@@ -237,26 +212,17 @@ describe('claim add', () => {
   })
 
   it('should throw when passed an invalid string number', done => {
-    try {
-      addClaim({
-        id,
-        property: 'P1106',
-        datatype: 'Quantity',
-        value: '900$1'
-      })
-    } catch (err) {
-      err.message.should.equal('invalid string number: 900$1')
-      done()
-    }
+    const params = { id, property: 'P1106', value: '900$1' }
+    addClaim.bind(null, params, properties).should.throw('invalid string number: 900$1')
+    done()
   })
 
   it('should return formatted data for a Url', done => {
     addClaim({
       id,
       property: 'P2078',
-      datatype: 'Url',
       value: 'http://foo.bar'
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P2078',
@@ -270,9 +236,8 @@ describe('claim add', () => {
     addClaim({
       id,
       property: 'P626',
-      datatype: 'GlobeCoordinate',
       value: { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 }
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P626',
@@ -286,9 +251,8 @@ describe('claim add', () => {
     addClaim({
       id,
       property: 'P1106',
-      datatype: 'Quantity',
       value: { snaktype: 'novalue' }
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P1106',
@@ -301,9 +265,8 @@ describe('claim add', () => {
     addClaim({
       id,
       property: 'P1106',
-      datatype: 'Quantity',
       value: { snaktype: 'somevalue' }
-    })
+    }, properties)
     .data.should.deepEqual({
       entity: id,
       property: 'P1106',

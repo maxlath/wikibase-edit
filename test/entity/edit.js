@@ -1,55 +1,41 @@
 const should = require('should')
 const editEntity = require('../../lib/entity/edit')
-const { randomString, sandboxEntity: id, sandboxDescriptionFr } = require('../utils')
+const { randomString, sandboxEntity: id, sandboxDescriptionFr, properties } = require('../utils')
 
 describe('entity edit', () => {
   it('should reject a missing id', done => {
-    try {
-      editEntity({ claims: { P31: 'bla' } })
-    } catch (err) {
-      err.message.should.equal('invalid entity id')
-      done()
-    }
+    const params = { claims: { P31: 'bla' } }
+    editEntity.bind(null, params, properties).should.throw('invalid entity id')
+    done()
   })
 
   it('should reject an edit without data', done => {
-    try {
-      editEntity({ id })
-    } catch (err) {
-      err.message.should.equal('no data was passed')
-      done()
-    }
+    const params = { id }
+    editEntity.bind(null, params, properties).should.throw('no data was passed')
+    done()
   })
 
   it('should reject invalid claims', done => {
-    try {
-      editEntity({ id, claims: { P31: 'bla' } })
-    } catch (err) {
-      err.message.should.equal('invalid entity value')
-      done()
-    }
+    const params = { id, claims: { P31: 'bla' } }
+    editEntity.bind(null, params, properties).should.throw('invalid entity value')
+    done()
   })
 
   it('should reject invalid labels', done => {
-    try {
-      editEntity({ id, labels: { fr: '' } })
-    } catch (err) {
-      err.message.should.equal('invalid label')
-      done()
-    }
+    const params = { id, labels: { fr: '' } }
+    editEntity.bind(null, params, properties).should.throw('invalid label')
+    done()
   })
 
   it('should reject invalid descriptions', done => {
-    try {
-      editEntity({ id, descriptions: { fr: '' } })
-    } catch (err) {
-      err.message.should.equal('invalid description')
-      done()
-    }
+    const params = { id, descriptions: { fr: '' } }
+    editEntity.bind(null, params, properties).should.throw('invalid description')
+    done()
   })
 
   it('should set the action to wbeditentity', done => {
-    editEntity({ id, labels: { fr: 'foo' } }).action.should.equal('wbeditentity')
+    const params = { id, labels: { fr: 'foo' } }
+    editEntity(params, properties).action.should.equal('wbeditentity')
     done()
   })
 
@@ -64,7 +50,7 @@ describe('entity edit', () => {
       aliases: { fr: frAlias, en: [ enAlias ] },
       descriptions: { fr: description },
       claims: { P1775: 'Q3576110' }
-    })
+    }, properties)
     data.id.should.equal(id)
     JSON.parse(data.data).should.deepEqual({
       labels: {
@@ -116,7 +102,7 @@ describe('entity edit', () => {
           }
         ]
       }
-    })
+    }, properties)
     JSON.parse(data.data).claims.P369.should.deepEqual([
       {
         rank: 'normal',
@@ -213,7 +199,7 @@ describe('entity edit', () => {
       claims: {
         P516: [ { value: 'Q54173', qualifiers } ]
       }
-    })
+    }, properties)
     JSON.parse(data.data).claims.P516[0].qualifiers.P2109[0].should.deepEqual({
       property: 'P2109',
       snaktype: 'value',
@@ -237,7 +223,7 @@ describe('entity edit', () => {
       claims: {
         P516: [ { value: 'Q54173', qualifiers } ]
       }
-    })
+    }, properties)
     JSON.parse(data.data).claims.P516[0].qualifiers.P571[0].should.deepEqual({
       property: 'P571',
       snaktype: 'somevalue'
@@ -254,7 +240,7 @@ describe('entity edit', () => {
       claims: {
         P516: [ { value: 'Q54173', qualifiers } ]
       }
-    })
+    }, properties)
     JSON.parse(data.data).claims.P516[0].qualifiers.P571[0].should.deepEqual({
       property: 'P571',
       snaktype: 'value',
@@ -283,7 +269,7 @@ describe('entity edit', () => {
       claims: {
         P369: { value: 'Q2622002', references: reference }
       }
-    })
+    }, properties)
     JSON.parse(data.data).claims.P369[0].references[0].snaks.should.deepEqual([
       {
         property: 'P855',
@@ -314,7 +300,7 @@ describe('entity edit', () => {
       claims: {
         P369: { value: 'Q2622002', references: [ reference ] }
       }
-    })
+    }, properties)
     JSON.parse(data.data).claims.P369[0].references[0].snaks[0]
     .datavalue.value.should.equal('https://example.org')
     done()

@@ -5,30 +5,19 @@ const { randomString, sandboxEntity } = require('../utils')
 
 describe('description', () => {
   it('should throw if not passed an entity', done => {
-    try{
-      setDescription({})
-    } catch (err) {
-      err.message.should.equal('invalid entity')
-      done()
-    }
+    setDescription.bind(null, {}).should.throw('invalid entity')
+    done()
   })
 
   it('should throw if not passed a language', done => {
-    try{
-      setDescription({ id: sandboxEntity })
-    } catch (err) {
-      err.message.should.equal('invalid language')
-      done()
-    }
+    setDescription.bind(null, { id: sandboxEntity }).should.throw('invalid language')
+    done()
   })
 
   it('should throw if not passed a description', done => {
-    try{
-      setDescription({ id: sandboxEntity, language })
-    } catch (err) {
-      err.message.should.equal('missing description')
-      done()
-    }
+    setDescription.bind(null, { id: sandboxEntity, language })
+    .should.throw('missing description')
+    done()
   })
 
   it('should return an action and data', done => {

@@ -7,7 +7,6 @@
     "lint": "standard",
     "test": "mocha test/* test/*/* --timeout 10000",
     "prepublishOnly": "npm run lint && npm test",
-    "update-properties": "./scripts/update_properties",
     "update-toc": "doctoc docs/*.md"
   },
   "repository": {
@@ -29,7 +28,7 @@
   "dependencies": {
     "bluereq": "^2.1.7",
     "chalk": "^2.4.1",
-    "wikibase-sdk": "^7.0.7",
+    "wikibase-sdk": "^7.0.9",
     "wikibase-token": "^3.0.4"
   },
   "devDependencies": {
@@ -37,8 +36,7 @@
     "doctoc": "^1.3.1",
     "mocha": "^5.1.1",
     "should": "^13.2.1",
-    "standard": "^10.0.3",
-    "wikidata-cli": "^6.2.0"
+    "standard": "^10.0.3"
   },
   "standard": {
     "ignore": [

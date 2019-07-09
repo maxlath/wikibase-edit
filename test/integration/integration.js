@@ -1,7 +1,7 @@
 require('should')
 const CONFIG = require('config')
-const wbEdit = require('..')(CONFIG)
-const { randomString, sandboxEntity: id } = require('./utils')
+const wbEdit = require('../..')(CONFIG)
+const { randomString, sandboxEntity: id } = require('../utils')
 const language = 'fr'
 
 describe('integration', function () {
