@@ -1,4 +1,5 @@
 module.exports = {
+  instance: 'http://localhost:8181',
   username: 'your-wikidata-username',
   password: 'your-wikidata-password',
   verbose: 2

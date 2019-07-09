@@ -1,11 +1,11 @@
-const parseEndpoints = require('./lib/parse_endpoints')
+const parseInstance = require('./lib/parse_instance')
 const requestWrapper = require('./lib/request_wrapper')
 
 module.exports = function (config, functionPath) {
   if (typeof config !== 'object') throw new Error('missing config object')
 
-  const { instance, sparqlEndpoint } = parseEndpoints(config)
-  config.wbk = require('wikibase-sdk')({ instance, sparqlEndpoint })
+  const instance = parseInstance(config)
+  config.wbk = require('wikibase-sdk')({ instance })
 
   // Oauth config will be validated by wikidata-token
   if (!config.oauth) {

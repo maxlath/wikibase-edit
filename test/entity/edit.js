@@ -40,10 +40,10 @@ describe('entity edit', () => {
   })
 
   it('should return formatted data', done => {
-    const label = `Bac à Sable (${randomString()})`
-    const description = `${sandboxDescriptionFr} (${randomString()})`
-    const frAlias = `bàs ${randomString()}`
-    const enAlias = `sandbox ${randomString()}`
+    const label = randomString()
+    const description = randomString()
+    const frAlias = randomString()
+    const enAlias = randomString()
     var { data } = editEntity({
       id,
       labels: { fr: label },

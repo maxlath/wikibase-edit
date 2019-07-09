@@ -1,8 +1,8 @@
 require('should')
 const config = require('config')
 const wbEdit = require('../..')(config)
-const { randomString, sandboxEntity: id } = require('../utils')
-const { createProperty } = require('./utils')
+const { randomString } = require('../utils')
+const { getPropertyByDatatype, getSandboxItem } = require('./utils')
 const language = 'fr'
 
 describe('integration', function () {
@@ -11,11 +11,14 @@ describe('integration', function () {
   describe('label', () => {
     describe('set', () => {
       it('should set a label', done => {
-        const value = `Bac à Sable (${randomString()})`
-        wbEdit.label.set(config, { id, language, value })
-        .then(res => {
-          res.success.should.equal(1)
-          done()
+        getSandboxItem()
+        .then(id => {
+          const value = `Bac à Sable (${randomString()})`
+          return wbEdit.label.set(config, { id, language, value })
+          .then(res => {
+            res.success.should.equal(1)
+            done()
+          })
         })
         .catch(done)
       })
@@ -25,11 +28,14 @@ describe('integration', function () {
   describe('description', () => {
     describe('set', () => {
       it('should set a description', done => {
-        const value = `Bac à Sable (${randomString()})`
-        wbEdit.description.set(config, { id, language, value })
-        .then(res => {
-          res.success.should.equal(1)
-          done()
+        getSandboxItem()
+        .then(id => {
+          const value = `Bac à Sable (${randomString()})`
+          return wbEdit.description.set(config, { id, language, value })
+          .then(res => {
+            res.success.should.equal(1)
+            done()
+          })
         })
         .catch(done)
       })
@@ -39,11 +45,14 @@ describe('integration', function () {
   describe('alias', () => {
     describe('set', () => {
       it('should set an alias', done => {
-        const value = randomString(4)
-        wbEdit.alias.set(config, { id, language, value })
-        .then(res => {
-          res.success.should.equal(1)
-          done()
+        getSandboxItem()
+        .then(id => {
+          const value = randomString(4)
+          return wbEdit.alias.set(config, { id, language, value })
+          .then(res => {
+            res.success.should.equal(1)
+            done()
+          })
         })
         .catch(done)
       })
@@ -51,11 +60,14 @@ describe('integration', function () {
 
     describe('add', () => {
       it('should add an alias', done => {
-        const value = randomString(4)
-        wbEdit.alias.add(config, { id, language, value })
-        .then(res => {
-          res.success.should.equal(1)
-          done()
+        getSandboxItem()
+        .then(id => {
+          const value = randomString(4)
+          return wbEdit.alias.add(config, { id, language, value })
+          .then(res => {
+            res.success.should.equal(1)
+            done()
+          })
         })
         .catch(done)
       })
@@ -63,11 +75,14 @@ describe('integration', function () {
 
     describe('remove', () => {
       it('should remove an alias', done => {
-        const value = randomString(4)
-        wbEdit.alias.remove(config, { id, language, value })
-        .then(res => {
-          res.success.should.equal(1)
-          done()
+        getSandboxItem()
+        .then(id => {
+          const value = randomString(4)
+          return wbEdit.alias.remove(config, { id, language, value })
+          .then(res => {
+            res.success.should.equal(1)
+            done()
+          })
         })
         .catch(done)
       })
@@ -77,12 +92,17 @@ describe('integration', function () {
   describe('claim', () => {
     describe('add', () => {
       it('should add a claim', done => {
-        const value = randomString(4)
-        const property = 'P600'
-        wbEdit.claim.add(config, { id, property, value })
-        .then(res => {
-          res.success.should.equal(1)
-          done()
+        Promise.all([
+          getSandboxItem(),
+          getPropertyByDatatype('string')
+        ])
+        .then(([ qid, pid ]) => {
+          const value = randomString(4)
+          return wbEdit.claim.add(config, { id: qid, property: pid, value })
+          .then(res => {
+            res.success.should.equal(1)
+            done()
+          })
         })
         .catch(done)
       })
@@ -93,9 +113,9 @@ describe('integration', function () {
     describe('create', () => {
       it('should create an item', done => {
         Promise.all([
-          createProperty('string'),
-          createProperty('external-id'),
-          createProperty('url')
+          getPropertyByDatatype('string'),
+          getPropertyByDatatype('external-id'),
+          getPropertyByDatatype('url')
         ])
         .then(([pidA, pidB, pidC]) => {
           const claims = {}
@@ -110,7 +130,6 @@ describe('integration', function () {
             claims
           })
           .then(res => {
-            console.log('res', JSON.stringify(res, null, 2))
             res.success.should.equal(1)
             done()
           })

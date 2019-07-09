@@ -23,8 +23,7 @@ const fixtures = {
   secondSandboxEntity: 'Q13406268',
   guid: 'Q4115189$3A8AA34F-0DEF-4803-AA8E-39D9EFD4DEAF',
   guid2: 'Q4115189$3A8AA34F-0DAB-4803-AA8E-39D9EFD4DEAF',
-  sandboxStringProp: 'P370',
-  sandboxDescriptionFr: "Bac à sable pour amuser les contributeurs (laisser une description ici pour qu'on le retrouve)"
+  sandboxStringProp: 'P370'
 }
 
 const properties = {
