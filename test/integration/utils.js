@@ -8,10 +8,7 @@ const createProperty = (datatype = 'string') => {
     datatype,
     labels: { en: randomString(4) }
   })
-  .then(res => {
-    console.log('res', res)
-    return res.entity.id
-  })
+  .then(res => res.entity.id)
 }
 
 module.exports = { createProperty }
