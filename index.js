@@ -27,12 +27,10 @@ module.exports = function (config, functionPath) {
     },
     claim: {
       add: requestWrapper('claim/add'),
-      // update: requestWrapper('claim/update'),
       remove: requestWrapper('claim/remove')
     },
     qualifier: {
       add: requestWrapper('qualifier/add'),
-    //   update: requestWrapper('qualifier/update'),
       remove: requestWrapper('qualifier/remove')
     },
     reference: {
