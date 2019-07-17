@@ -1,153 +1,105 @@
 require('should')
 const addQualifier = require('../../lib/qualifier/add')
-const { getClaimGuid } = require('../utils')
-
-var claimGuidPromise
+const { randomString, sandboxEntity: id, guid, properties } = require('../utils')
 
 describe('qualifier add', () => {
-
-  before(function (done) {
-    claimGuidPromise = getClaimGuid()
+  it('should rejected if not passed a claim guid', done => {
+    addQualifier.bind(null, {}).should.throw('missing guid')
     done()
   })
 
-  it('should rejected if not passed a claim guid', done => {
-    addQualifier()
-    .catch(err => {
-      err.message.should.equal('missing guid')
-      done()
-    })
-    .catch(done)
-  })
-
   it('should rejected if passed an invalid claim guid', done => {
-    addQualifier('some-invalid-guid')
-    .catch(err => {
-      err.message.should.equal('invalid guid')
-      done()
-    })
-    .catch(done)
+    const params = { guid: 'some-invalid-guid' }
+    addQualifier.bind(null, params, properties).should.throw('invalid guid')
+    done()
   })
 
   it('should rejected if not passed a property', done => {
-    claimGuidPromise
-    .then(guid => {
-      return addQualifier(guid)
-      .catch(err => {
-        err.message.should.equal('missing property')
-        done()
-      })
-    })
-    .catch(done)
+    const params = { guid }
+    addQualifier.bind(null, params, properties).should.throw('missing property')
+    done()
   })
 
   it('should rejected if not passed a value', done => {
-    claimGuidPromise
-    .then(guid => {
-      return addQualifier(guid, 'P155')
-      .catch(err => {
-        err.message.should.equal('missing qualifier value')
-        done()
-      })
-    })
-    .catch(done)
+    const params = { guid, property: 'P155' }
+    addQualifier.bind(null, params, properties).should.throw('missing qualifier value')
+    done()
   })
 
   it('should rejected if passed an invalid value', done => {
-    claimGuidPromise
-    .then(guid => {
-      return addQualifier(guid, 'P155', 'not-a-valid-value')
-      .catch(err => {
-        err.message.should.equal('invalid entity value')
-        done()
-      })
-    })
-    .catch(done)
+    const params = { guid, property: 'P155', value: 'not-a-valid-value' }
+    addQualifier.bind(null, params, properties).should.throw('invalid entity value')
+    done()
   })
 
-  it('should add an entity qualifier', done => {
-    claimGuidPromise
-    .then(guid => {
-      return addQualifier(guid, 'P155', 'Q4115189')
-      .then(res => {
-        res.success.should.equal(1)
-        done()
-      })
-    })
-    .catch(done)
+  it('should set the action to wbsetreference', done => {
+    const params = { guid, property: 'P155', value: 'Q123' }
+    addQualifier(params, properties).action.should.equal('wbsetqualifier')
+    done()
   })
 
-  it('should add a string qualifier', done => {
-    claimGuidPromise
-    .then(guid => {
-      return addQualifier(guid, 'P1545', '123')
-      .then(res => {
-        res.success.should.equal(1)
-        done()
-      })
+  it('should format the data for a string', done => {
+    const params = { guid, property: 'P1545', value: '123' }
+    addQualifier(params, properties).data.should.deepEqual({
+      claim: guid,
+      property: 'P1545',
+      snaktype: 'value',
+      value: '"123"'
     })
-    .catch(done)
+    done()
   })
 
   it('should add a time qualifier', done => {
-    claimGuidPromise
-    .then(guid => {
-      return addQualifier(guid, 'P580', '1802-02')
-      .then(res => {
-        res.success.should.equal(1)
-        done()
-      })
+    const params = { guid, property: 'P580', value: '1802-02' }
+    addQualifier(params, properties).data.should.deepEqual({
+      claim: guid,
+      property: 'P580',
+      snaktype: 'value',
+      value: '{"time":"+1802-02-00T00:00:00Z","timezone":0,"before":0,"after":0,"precision":10,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}'
     })
-    .catch(done)
+    done()
   })
 
   it('should add a time qualifier with precision', done => {
-    claimGuidPromise
-    .then(guid => {
-      return addQualifier(guid, 'P578', { time: '1802-02', precision: 10 })
-      .then(res => {
-        res.success.should.equal(1)
-        done()
-      })
+    const params = { guid, property: 'P580', value: { time: '1802-02', precision: 10 } }
+    addQualifier(params, properties).data.should.deepEqual({
+      claim: guid,
+      property: 'P580',
+      snaktype: 'value',
+      value: '{"time":"+1802-02-00T00:00:00Z","timezone":0,"before":0,"after":0,"precision":10,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}'
     })
-    .catch(done)
+    done()
   })
 
   it('should add a quantity qualifier', done => {
-    claimGuidPromise
-    .then(guid => {
-      return addQualifier(guid, 'P2130', { amount: 123, unit: 'Q4916' })
-      .then(res => {
-        res.success.should.equal(1)
-        done()
-      })
+    const params = { guid, property: 'P2130', value: { amount: 123, unit: 'Q4916' } }
+    addQualifier(params, properties).data.should.deepEqual({
+      claim: guid,
+      property: 'P2130',
+      snaktype: 'value',
+      value: '{"amount":"+123","unit":"http://www.wikidata.org/entity/Q4916"}'
     })
-    .catch(done)
+    done()
   })
 
   it('should add a monolingualtext qualifier', done => {
-    claimGuidPromise
-    .then(guid => {
-      return addQualifier(guid, 'P3132', { text: "les sanglots long des violons de l'automne", language: 'fr' })
-      .then(res => {
-        res.success.should.equal(1)
-        done()
-      })
+    const params = { guid, property: 'P3132', value: { text: 'foo', language: 'fr' } }
+    addQualifier(params, properties).data.should.deepEqual({
+      claim: guid,
+      property: 'P3132',
+      snaktype: 'value',
+      value: '{"text":"foo","language":"fr"}'
     })
-    .catch(done)
+    done()
   })
 
   it('should add a qualifier with a special snaktype', done => {
-    claimGuidPromise
-    .then(guid => {
-      return addQualifier(guid, 'P578', { snaktype: 'novalue' })
-      .then(res => {
-        res.success.should.equal(1)
-        const qualifier = res.claim.qualifiers.P578.slice(-1)[0]
-        qualifier.snaktype.should.equal('novalue')
-        done()
-      })
+    const params = { guid, property: 'P578', value: { snaktype: 'novalue' } }
+    addQualifier(params, properties).data.should.deepEqual({
+      claim: guid,
+      property: 'P578',
+      snaktype: 'novalue'
     })
-    .catch(done)
+    done()
   })
 })
