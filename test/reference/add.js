@@ -37,7 +37,7 @@ describe('reference add', () => {
     done()
   })
 
-  it('should format the data for wbsetreference', done => {
+  it('should format the data for a url', done => {
     const params = { guid, property: 'P854', value: 'http://foo.bar' }
     addReference(params, properties).data.should.deepEqual({
       statement: guid,

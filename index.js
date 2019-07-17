@@ -35,10 +35,10 @@ module.exports = function (config, functionPath) {
     //   update: requestWrapper('qualifier/update'),
       remove: requestWrapper('qualifier/remove')
     },
-    // reference: {
-    //   add: requestWrapper('reference/add'),
-    //   remove: requestWrapper('reference/remove')
-    // },
+    reference: {
+      add: requestWrapper('reference/add'),
+      remove: requestWrapper('reference/remove')
+    },
     entity: {
       create: requestWrapper('entity/create'),
       edit: requestWrapper('entity/edit')
