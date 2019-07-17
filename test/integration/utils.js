@@ -1,6 +1,7 @@
 const config = require('config')
 const wbEdit = require('../..')(config)
 const { randomString } = require('../utils')
+const getSandboxProperty = require('./get_sandbox_property')
 
 const createEntity = (data = {}) => {
   data.labels = data.labels || { en: randomString(4) }
@@ -12,14 +13,7 @@ const createEntity = (data = {}) => {
   })
 }
 
-const properties = {}
-
-const getPropertyByDatatype = datatype => {
-  properties[datatype] = properties[datatype] || createEntity({ type: 'property', datatype })
-  return properties[datatype]
-}
-
 var sandboxItem
 const getSandboxItem = () => sandboxItem = sandboxItem || createEntity()
 
-module.exports = { getPropertyByDatatype, getSandboxItem }
+module.exports = { getSandboxItem, getSandboxProperty }

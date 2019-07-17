@@ -2,7 +2,7 @@ require('should')
 const config = require('config')
 const wbEdit = require('../..')(config)
 const { randomString } = require('../utils')
-const { getPropertyByDatatype, getSandboxItem } = require('./utils')
+const { getSandboxProperty, getSandboxItem } = require('./utils')
 const language = 'fr'
 
 describe('integration', function () {
@@ -94,7 +94,7 @@ describe('integration', function () {
       it('should add a claim', done => {
         Promise.all([
           getSandboxItem(),
-          getPropertyByDatatype('string')
+          getSandboxProperty('string')
         ])
         .then(([ qid, pid ]) => {
           const value = randomString(4)
@@ -113,9 +113,9 @@ describe('integration', function () {
     describe('create', () => {
       it('should create an item', done => {
         Promise.all([
-          getPropertyByDatatype('string'),
-          getPropertyByDatatype('external-id'),
-          getPropertyByDatatype('url')
+          getSandboxProperty('string'),
+          getSandboxProperty('external-id'),
+          getSandboxProperty('url')
         ])
         .then(([pidA, pidB, pidC]) => {
           const claims = {}
