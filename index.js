@@ -33,7 +33,7 @@ module.exports = function (config, functionPath) {
     qualifier: {
       add: requestWrapper('qualifier/add'),
     //   update: requestWrapper('qualifier/update'),
-    //   remove: requestWrapper('qualifier/remove')
+      remove: requestWrapper('qualifier/remove')
     },
     // reference: {
     //   add: requestWrapper('reference/add'),
