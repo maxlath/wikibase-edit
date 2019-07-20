@@ -53,4 +53,20 @@ describe('credentials', function () {
     .should.throw('credentials should either be oauth tokens or a username and password')
     done()
   })
+
+  it('should re-generate credentials when re-using a pre-existing credentials object', done => {
+    const wbEdit = WBEdit({ instance })
+    const creds = Object.assign({}, credentials)
+    wbEdit.entity.create(params(), { credentials: creds })
+    .then(() => {
+        creds.username = 'foo'
+      return wbEdit.entity.create(params(), { credentials: creds })
+    })
+    .then(undesiredRes(done))
+    .catch(err => {
+      err.body.error.code.should.equal('assertuserfailed')
+      done()
+    })
+    .catch(done)
+  })
 })
