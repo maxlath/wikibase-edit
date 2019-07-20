@@ -37,7 +37,7 @@ const findOnWikibase = pseudoPropertyId => {
 
 const createProperty = datatype => {
   const pseudoPropertyId = getPseudoPropertyId(datatype)
-  return wbEdit.entity.create(config, {
+  return wbEdit.entity.create({
     type: 'property',
     datatype,
     labels: {

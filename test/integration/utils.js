@@ -5,7 +5,7 @@ const getSandboxProperty = require('./get_sandbox_property')
 
 const createEntity = (data = {}) => {
   data.labels = data.labels || { en: randomString(4) }
-  return wbEdit.entity.create(config, data)
+  return wbEdit.entity.create(data)
   .then(res => {
     const { entity } = res
     console.log(`created ${entity.type}`, entity.id, data.datatype || '')

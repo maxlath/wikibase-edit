@@ -37,9 +37,10 @@ const doSomeEdit = config => {
   ])
   .then(([ id, property ]) => {
     const value = randomString(4)
-    return wbEdit.claim.add(config, { id, property, value })
+    return wbEdit.claim.add({ id, property, value })
     .then(res => {
-      const wbk = require('wikibase-sdk')(config)
+      const { instance } = config
+      const wbk = require('wikibase-sdk')({ instance })
       const url = wbk.getRevisions(`Item:${id}`, { limit: 1 })
       return breq.get(url).get('body')
     })

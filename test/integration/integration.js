@@ -14,7 +14,7 @@ describe('integration', function () {
         getSandboxItem()
         .then(id => {
           const value = `Bac à Sable (${randomString()})`
-          return wbEdit.label.set(config, { id, language, value })
+          return wbEdit.label.set({ id, language, value })
           .then(res => {
             res.success.should.equal(1)
             done()
@@ -31,7 +31,7 @@ describe('integration', function () {
         getSandboxItem()
         .then(id => {
           const value = `Bac à Sable (${randomString()})`
-          return wbEdit.description.set(config, { id, language, value })
+          return wbEdit.description.set({ id, language, value })
           .then(res => {
             res.success.should.equal(1)
             done()
@@ -48,7 +48,7 @@ describe('integration', function () {
         getSandboxItem()
         .then(id => {
           const value = randomString(4)
-          return wbEdit.alias.set(config, { id, language, value })
+          return wbEdit.alias.set({ id, language, value })
           .then(res => {
             res.success.should.equal(1)
             done()
@@ -63,7 +63,7 @@ describe('integration', function () {
         getSandboxItem()
         .then(id => {
           const value = randomString(4)
-          return wbEdit.alias.add(config, { id, language, value })
+          return wbEdit.alias.add({ id, language, value })
           .then(res => {
             res.success.should.equal(1)
             done()
@@ -78,7 +78,7 @@ describe('integration', function () {
         getSandboxItem()
         .then(id => {
           const value = randomString(4)
-          return wbEdit.alias.remove(config, { id, language, value })
+          return wbEdit.alias.remove({ id, language, value })
           .then(res => {
             res.success.should.equal(1)
             done()
@@ -98,7 +98,7 @@ describe('integration', function () {
         ])
         .then(([ qid, pid ]) => {
           const value = randomString(4)
-          return wbEdit.claim.add(config, { id: qid, property: pid, value })
+          return wbEdit.claim.add({ id: qid, property: pid, value })
           .then(res => {
             res.success.should.equal(1)
             done()
@@ -122,7 +122,7 @@ describe('integration', function () {
           claims[pidA] = { value: randomString(4), qualifiers: {}, references: {} }
           claims[pidA].qualifiers[pidB] = randomString(4)
           claims[pidA].references[pidC] = 'http://foo.bar'
-          return wbEdit.entity.create(config, {
+          return wbEdit.entity.create({
             type: 'item',
             labels: { en: randomString(4) },
             description: { en: randomString(4) },
