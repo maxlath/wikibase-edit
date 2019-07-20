@@ -16,4 +16,10 @@ const createEntity = (data = {}) => {
 var sandboxItem
 const getSandboxItem = () => sandboxItem = sandboxItem || createEntity()
 
-module.exports = { getSandboxItem, getSandboxProperty }
+// A function to quickly fail when a test gets an undesired positive answer
+const undesiredRes = done => res => {
+  console.warn(res, 'undesired positive res')
+  done(new Error('.then function was expected not to be called'))
+}
+
+module.exports = { getSandboxItem, getSandboxProperty, undesiredRes }

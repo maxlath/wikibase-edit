@@ -4,18 +4,7 @@ const getClaimPromise = () => {
 }
 
 const helpers = {
-  randomString: () => Math.random().toString(36).slice(2, 10),
-
-  randomNumber: (lenght = 2) => Math.trunc(Math.random() * Math.pow(10, lenght)),
-
-
-  getClaimGuid: () => getClaimPromise().then(res => res.claim.id),
-  // A function to quickly fail when a test gets an undesired positive answer
-
-  undesiredRes: done => res => {
-    console.warn(res, 'undesired positive res')
-    done(new Error('.then function was expected not to be called'))
-  }
+  randomString: () => Math.random().toString(36).slice(2, 10)
 }
 
 const fixtures = {

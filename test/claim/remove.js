@@ -1,6 +1,6 @@
 require('should')
 const removeClaim = require('../../lib/claim/remove')
-const { getClaimGuid, guid, guid2 } = require('../utils')
+const { guid, guid2 } = require('../utils')
 
 describe('claim remove', () => {
   it('should set the action to wbremoveclaims', done => {
