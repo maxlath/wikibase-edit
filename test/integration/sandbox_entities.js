@@ -5,7 +5,7 @@ const getSandboxProperty = require('./get_sandbox_property')
 const breq = require('bluereq')
 
 const createEntity = (data = {}) => {
-  data.labels = data.labels || { en: randomString(4) }
+  data.labels = data.labels || { en: randomString() }
   console.log('data', data)
   return wbEdit.entity.create(data)
   .then(res => {

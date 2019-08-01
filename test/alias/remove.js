@@ -22,13 +22,13 @@ describe('alias remove', () => {
   it('should accept a single alias string', done => {
     // It's not necessary that the removed alias actually exist
     // so we can just pass a random string and expect Wikidata to deal with it
-    const value = randomString(4)
+    const value = randomString()
     const { action, data } = removeAlias({ id: sandboxEntity, language, value })
     done()
   })
 
   it('should accept multiple aliases as an array of strings', done => {
-    const value = [ randomString(4), randomString(4) ]
+    const value = [ randomString(), randomString() ]
     const { action, data } = removeAlias({ id: sandboxEntity, language, value })
     done()
   })

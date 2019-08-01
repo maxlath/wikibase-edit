@@ -3,7 +3,7 @@ const { instance, credentials } = require('config')
 const WBEdit = require('../..')
 const { randomString } = require('../utils')
 const { undesiredRes } = require('./utils')
-const params = () => ({ labels: { en: randomString(4) } })
+const params = () => ({ labels: { en: randomString() } })
 
 describe('credentials', function () {
   this.timeout(20 * 1000)

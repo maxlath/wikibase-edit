@@ -49,7 +49,7 @@ describe('primitives', function () {
       it('should set an alias', done => {
         getSandboxItemId()
         .then(id => {
-          const value = randomString(4)
+          const value = randomString()
           return wbEdit.alias.set({ id, language, value })
           .then(res => {
             res.success.should.equal(1)
@@ -64,7 +64,7 @@ describe('primitives', function () {
       it('should add an alias', done => {
         getSandboxItemId()
         .then(id => {
-          const value = randomString(4)
+          const value = randomString()
           return wbEdit.alias.add({ id, language, value })
           .then(res => {
             res.success.should.equal(1)
@@ -79,7 +79,7 @@ describe('primitives', function () {
       it('should remove an alias', done => {
         getSandboxItemId()
         .then(id => {
-          const value = randomString(4)
+          const value = randomString()
           return wbEdit.alias.remove({ id, language, value })
           .then(res => {
             res.success.should.equal(1)
@@ -99,7 +99,7 @@ describe('primitives', function () {
           getSandboxPropertyId('string')
         ])
         .then(([ qid, pid ]) => {
-          const value = randomString(4)
+          const value = randomString()
           return wbEdit.claim.add({ id: qid, property: pid, value })
           .then(res => {
             res.success.should.equal(1)
@@ -125,14 +125,14 @@ describe('primitives', function () {
         ])
         .then(([pidA, pidB, pidC]) => {
           const claims = {}
-          claims[pidA] = { value: randomString(4), qualifiers: {}, references: {} }
-          claims[pidA].qualifiers[pidB] = randomString(4)
+          claims[pidA] = { value: randomString(), qualifiers: {}, references: {} }
+          claims[pidA].qualifiers[pidB] = randomString()
           claims[pidA].references[pidC] = 'http://foo.bar'
           return wbEdit.entity.create({
             type: 'item',
-            labels: { en: randomString(4) },
-            description: { en: randomString(4) },
-            aliases: { en: randomString(4) },
+            labels: { en: randomString() },
+            description: { en: randomString() },
+            aliases: { en: randomString() },
             claims
           })
           .then(res => {

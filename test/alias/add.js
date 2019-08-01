@@ -20,13 +20,13 @@ describe('alias add', () => {
   })
 
   it('should accept a single alias string', done => {
-    const value = randomString(4)
+    const value = randomString()
     const { action, data } = addAlias({ id: sandboxEntity, language, value })
     done()
   })
 
   it('should accept multiple aliases as an array of strings', done => {
-    const value = [ randomString(4), randomString(4) ]
+    const value = [ randomString(), randomString() ]
     const { action, data } = addAlias({ id: sandboxEntity, language, value })
     done()
   })

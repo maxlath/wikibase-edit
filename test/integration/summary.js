@@ -37,7 +37,7 @@ const doSomeEdit = config => {
     getSandboxPropertyId('string')
   ])
   .then(([ id, property ]) => {
-    const value = randomString(4)
+    const value = randomString()
     return wbEdit.claim.add({ id, property, value })
     .then(res => {
       const { instance } = config
