@@ -1,5 +1,6 @@
 const parseInstance = require('./lib/parse_instance')
 const requestWrapper = require('./lib/request_wrapper')
+const bundleWrapper = require('./lib/bundle_wrapper')
 const error_ = require('./lib/error')
 const { name, version, homepage } = require('./package.json')
 
@@ -8,7 +9,9 @@ module.exports = (initConfig = {}) => {
 
   initConfig.userAgent = initConfig.userAgent || `${name}/v${version} (${homepage})`
 
-  return {
+  // Primitives: sync functions that return an { action, params } object
+  //             passed to request.post by requestWrapper
+  const API = {
     label: {
       set: requestWrapper('label/set', initConfig)
     },
@@ -38,4 +41,9 @@ module.exports = (initConfig = {}) => {
       edit: requestWrapper('entity/edit', initConfig)
     }
   }
+
+  // Bundles: async functions that make use of the primitives to offer more sophisticated behaviors
+  API.claim.update = bundleWrapper('claim/update', initConfig, API)
+
+  return API
 }
