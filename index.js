@@ -7,6 +7,12 @@ module.exports = function (config, functionPath) {
     if (!config.password) throw new Error('missing config parameter: password')
   }
 
+  // set properties, if provided
+  if( 'customProperties' in config ) {
+    const { setProperties } = require( './lib/properties/find_datatype' );
+    setProperties( config.customProperties );
+  }
+
   if (typeof functionPath === 'string') {
     return require(`./lib/${functionPath}`)(config)
   } else {

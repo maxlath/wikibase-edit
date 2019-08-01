@@ -67,6 +67,9 @@ const config = {
   verbose: true, // Default: false
   wikibaseInstance: 'https://mywikibase.instance/w/api.php', // Default: https://www.wikidata.org/w/api.php
   userAgent: 'my-project-name/v3.2.5 (https://project.website)' // Default: `wikidata-edit/${pkg.version} (https://github.com/maxlath/wikidata-edit)`
+  customProperties: {   // Default: see /lib/properties/properties.js
+    id: { label: 'label', 'type': 'WikibaseItem' },
+  }
 }
 const wdEdit = require('wikidata-edit')(config)
 ```
@@ -90,7 +93,12 @@ It will then initialize only this function and the libs it depends on.
 
 ### Custom Wikibase instance
 
-If you use a custom Wikibase instance, additionally to passing the `wikibaseInstance` option (see above), make sure to re-fetch properties from the associated SPARQL endpoint. Otherwise, you will be stuck with [wikidata.org hard coded properties](https://github.com/maxlath/wikidata-edit/blob/ae13c6d5923edd3c092f25ee76fa141e7777aad0/lib/properties/properties.js).
+If you use a custom Wikibase instance, additionally to passing the `wikibaseInstance` option (see above), make sure that the library has access to the respective properties. There are two ways to change the used set of properties: 
+1. at runtime via config.customProperties
+2. or re-fetch the properties from the associated SPARQL endpoint.
+
+Otherwise, you will be stuck with [wikidata.org hard coded properties](https://github.com/maxlath/wikidata-edit/blob/ae13c6d5923edd3c092f25ee76fa141e7777aad0/lib/properties/properties.js).
+
 ```sh
 cd project_folder/node_modules/wikidata-edit
 # Make sure wikidata-cli is installed (especially if you installed wikidata-edit in production mode)
