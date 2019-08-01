@@ -3,39 +3,39 @@ const requestWrapper = require('./lib/request_wrapper')
 const error_ = require('./lib/error')
 const { name, version, homepage } = require('./package.json')
 
-module.exports = (config = {}) => {
-  if (!config || typeof config !== 'object') error_.new('missing config object', { config })
+module.exports = (initConfig = {}) => {
+  if (!initConfig || typeof initConfig !== 'object') error_.new('missing init config object', { initConfig })
 
-  config.userAgent = config.userAgent || `${name}/v${version} (${homepage})`
+  initConfig.userAgent = initConfig.userAgent || `${name}/v${version} (${homepage})`
 
   return {
     label: {
-      set: requestWrapper('label/set', config)
+      set: requestWrapper('label/set', initConfig)
     },
     description: {
-      set: requestWrapper('description/set', config)
+      set: requestWrapper('description/set', initConfig)
     },
     alias: {
-      set: requestWrapper('alias/set', config),
-      add: requestWrapper('alias/add', config),
-      remove: requestWrapper('alias/remove', config)
+      set: requestWrapper('alias/set', initConfig),
+      add: requestWrapper('alias/add', initConfig),
+      remove: requestWrapper('alias/remove', initConfig)
     },
     claim: {
-      add: requestWrapper('claim/add', config),
-      set: requestWrapper('claim/set', config),
-      remove: requestWrapper('claim/remove', config)
+      add: requestWrapper('claim/add', initConfig),
+      set: requestWrapper('claim/set', initConfig),
+      remove: requestWrapper('claim/remove', initConfig)
     },
     qualifier: {
-      add: requestWrapper('qualifier/add', config),
-      remove: requestWrapper('qualifier/remove', config)
+      add: requestWrapper('qualifier/add', initConfig),
+      remove: requestWrapper('qualifier/remove', initConfig)
     },
     reference: {
-      add: requestWrapper('reference/add', config),
-      remove: requestWrapper('reference/remove', config)
+      add: requestWrapper('reference/add', initConfig),
+      remove: requestWrapper('reference/remove', initConfig)
     },
     entity: {
-      create: requestWrapper('entity/create', config),
-      edit: requestWrapper('entity/edit', config)
+      create: requestWrapper('entity/create', initConfig),
+      edit: requestWrapper('entity/edit', initConfig)
     }
   }
 }
