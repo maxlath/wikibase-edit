@@ -1,12 +1,7 @@
 const { instance } = require('config')
 const breq = require('bluereq')
 const { yellow, grey } = require('chalk')
-
-const delay = delayMs => {
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, delayMs)
-  })
-}
+const { delay } = require('./utils')
 
 module.exports = () => {
   const wait = () => {

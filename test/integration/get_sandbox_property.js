@@ -5,14 +5,15 @@ const breq = require('bluereq')
 const wbEdit = require('../..')(config)
 
 module.exports = datatype => {
-  return getPropertyId(datatype)
-  .then(propertyId => {
-    sandboxProperties[datatype] = propertyId
-    return propertyId
+  if (!datatype) throw new Error('missing datatype')
+  return getProperty(datatype)
+  .then(property => {
+    sandboxProperties[datatype] = property
+    return property
   })
 }
 
-const getPropertyId = datatype => {
+const getProperty = datatype => {
   const pseudoPropertyId = getPseudoPropertyId(datatype)
 
   const cachedPropertyId = sandboxProperties[pseudoPropertyId]
@@ -31,7 +32,7 @@ const findOnWikibase = pseudoPropertyId => {
   return breq.get(url)
   .then(res => {
     const firstWbResult = res.body.search[0]
-    if (firstWbResult) return firstWbResult.id
+    if (firstWbResult) return firstWbResult
   })
 }
 
@@ -44,7 +45,7 @@ const createProperty = datatype => {
       en: pseudoPropertyId
     }
   })
-  .then(res => res.entity.id)
+  .then(res => res.entity)
 }
 
 const getPseudoPropertyId = datatype => `${datatype} sandbox property`

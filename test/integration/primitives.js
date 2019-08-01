@@ -2,16 +2,18 @@ require('should')
 const config = require('config')
 const wbEdit = require('../..')(config)
 const { randomString } = require('../utils')
-const { getSandboxProperty, getSandboxItem } = require('./utils')
+const { getSandboxPropertyId, getSandboxItemId } = require('./sandbox_entities')
 const language = 'fr'
+const { isGuid } = require('wikibase-sdk')
 
-describe('integration', function () {
+describe('primitives', function () {
   this.timeout(20 * 1000)
+  before('wait for instance', require('./wait_for_instance'))
 
   describe('label', () => {
     describe('set', () => {
       it('should set a label', done => {
-        getSandboxItem()
+        getSandboxItemId()
         .then(id => {
           const value = `Bac à Sable (${randomString()})`
           return wbEdit.label.set({ id, language, value })
@@ -28,7 +30,7 @@ describe('integration', function () {
   describe('description', () => {
     describe('set', () => {
       it('should set a description', done => {
-        getSandboxItem()
+        getSandboxItemId()
         .then(id => {
           const value = `Bac à Sable (${randomString()})`
           return wbEdit.description.set({ id, language, value })
@@ -45,7 +47,7 @@ describe('integration', function () {
   describe('alias', () => {
     describe('set', () => {
       it('should set an alias', done => {
-        getSandboxItem()
+        getSandboxItemId()
         .then(id => {
           const value = randomString(4)
           return wbEdit.alias.set({ id, language, value })
@@ -60,7 +62,7 @@ describe('integration', function () {
 
     describe('add', () => {
       it('should add an alias', done => {
-        getSandboxItem()
+        getSandboxItemId()
         .then(id => {
           const value = randomString(4)
           return wbEdit.alias.add({ id, language, value })
@@ -75,7 +77,7 @@ describe('integration', function () {
 
     describe('remove', () => {
       it('should remove an alias', done => {
-        getSandboxItem()
+        getSandboxItemId()
         .then(id => {
           const value = randomString(4)
           return wbEdit.alias.remove({ id, language, value })
@@ -93,14 +95,18 @@ describe('integration', function () {
     describe('add', () => {
       it('should add a claim', done => {
         Promise.all([
-          getSandboxItem(),
-          getSandboxProperty('string')
+          getSandboxItemId(),
+          getSandboxPropertyId('string')
         ])
         .then(([ qid, pid ]) => {
           const value = randomString(4)
           return wbEdit.claim.add({ id: qid, property: pid, value })
           .then(res => {
             res.success.should.equal(1)
+            isGuid(res.claim.id).should.be.true()
+            res.claim.rank.should.equal('normal')
+            res.claim.mainsnak.snaktype.should.equal('value')
+            res.claim.mainsnak.datavalue.value.should.equal(value)
             done()
           })
         })
@@ -113,9 +119,9 @@ describe('integration', function () {
     describe('create', () => {
       it('should create an item', done => {
         Promise.all([
-          getSandboxProperty('string'),
-          getSandboxProperty('external-id'),
-          getSandboxProperty('url')
+          getSandboxPropertyId('string'),
+          getSandboxPropertyId('external-id'),
+          getSandboxPropertyId('url')
         ])
         .then(([pidA, pidB, pidC]) => {
           const claims = {}

@@ -2,7 +2,7 @@ require('should')
 const config = require('config')
 const wbEdit = require('../..')(config)
 const { randomString } = require('../utils')
-const { getSandboxItem, getSandboxProperty } = require('./utils')
+const { getSandboxItemId, getSandboxPropertyId } = require('./sandbox_entities')
 const breq = require('bluereq')
 
 describe('summary', function () {
@@ -33,8 +33,8 @@ describe('summary', function () {
 
 const doSomeEdit = config => {
   return Promise.all([
-    getSandboxItem(),
-    getSandboxProperty('string')
+    getSandboxItemId(),
+    getSandboxPropertyId('string')
   ])
   .then(([ id, property ]) => {
     const value = randomString(4)
