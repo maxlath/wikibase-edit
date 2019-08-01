@@ -1,12 +1,13 @@
 require('should')
 const { instance, credentials } = require('config')
 const WBEdit = require('../..')
-const { randomString, } = require('../utils')
+const { randomString } = require('../utils')
 const { undesiredRes } = require('./utils')
 const params = () => ({ labels: { en: randomString(4) } })
 
 describe('credentials', function () {
   this.timeout(20 * 1000)
+  before('wait for instance', require('./wait_for_instance'))
 
   it('should accept config at initialization', done => {
     const wbEdit = WBEdit({ instance, credentials })
@@ -59,7 +60,7 @@ describe('credentials', function () {
     const creds = Object.assign({}, credentials)
     wbEdit.entity.create(params(), { credentials: creds })
     .then(() => {
-        creds.username = 'foo'
+      creds.username = 'foo'
       return wbEdit.entity.create(params(), { credentials: creds })
     })
     .then(undesiredRes(done))

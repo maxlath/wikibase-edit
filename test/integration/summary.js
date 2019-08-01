@@ -7,6 +7,7 @@ const breq = require('bluereq')
 
 describe('summary', function () {
   this.timeout(20 * 1000)
+  before('wait for instance', require('./wait_for_instance'))
 
   it('should add a default summary', done => {
     doSomeEdit(config)

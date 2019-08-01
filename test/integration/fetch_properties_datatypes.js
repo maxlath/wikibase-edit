@@ -6,6 +6,7 @@ const fetchPropertiesDatatypes = require('../../lib/properties/fetch_properties_
 
 describe('fetch properties datatypes', function () {
   this.timeout(20 * 1000)
+  before('wait for instance', require('./wait_for_instance'))
 
   it('should fetch a property datatype', done => {
     createProperty('wikibase-item')
