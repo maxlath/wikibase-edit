@@ -22,6 +22,7 @@ module.exports = (config = {}) => {
     },
     claim: {
       add: requestWrapper('claim/add', config),
+      set: requestWrapper('claim/set', config),
       remove: requestWrapper('claim/remove', config)
     },
     qualifier: {

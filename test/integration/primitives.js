@@ -2,7 +2,7 @@ require('should')
 const config = require('config')
 const wbEdit = require('../..')(config)
 const { randomString } = require('../utils')
-const { getSandboxPropertyId, getSandboxItemId } = require('./sandbox_entities')
+const { getSandboxPropertyId, getSandboxItemId, getSandboxClaim } = require('./sandbox_entities')
 const language = 'fr'
 const { isGuid } = require('wikibase-sdk')
 
@@ -106,6 +106,22 @@ describe('primitives', function () {
             isGuid(res.claim.id).should.be.true()
             res.claim.rank.should.equal('normal')
             res.claim.mainsnak.snaktype.should.equal('value')
+            res.claim.mainsnak.datavalue.value.should.equal(value)
+            done()
+          })
+        })
+        .catch(done)
+      })
+    })
+
+    describe('set', () => {
+      it('should set a claim', done => {
+        getSandboxClaim()
+        .then(claim => {
+          const { property } = claim.mainsnak
+          const value = randomString()
+          return wbEdit.claim.set({ guid: claim.id, property, value })
+          .then(res => {
             res.claim.mainsnak.datavalue.value.should.equal(value)
             done()
           })
