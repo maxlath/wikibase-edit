@@ -1,4 +1,12 @@
+const projectRoot = process.cwd()
+const projectRelativeRequire = relativePath => require(`${projectRoot}/${relativePath}`)
+
 module.exports = {
+  // A function to be able to make project root relative requires
+  // ex: __.require('test/integration/utils/utils')
+  '__': { require: projectRelativeRequire },
+
+  // initConfig
   instance: 'http://localhost:8181',
   verbose: 2,
   credentials: {

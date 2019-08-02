@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "lint": "standard",
-    "test": "mocha test/* test/*/* --timeout 10000",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "mocha test/unit/*.js test/unit/*/*.js",
+    "test:integration": "mocha test/integration/*.js test/integration/*/*.js",
     "prepublishOnly": "npm run lint && npm test",
     "update-toc": "doctoc docs/*.md"
   },

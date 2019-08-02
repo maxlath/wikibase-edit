@@ -1,13 +1,14 @@
 require('should')
 const config = require('config')
-const wbEdit = require('../..')(config)
-const { randomString } = require('../utils')
-const { getSandboxItemId, getSandboxPropertyId } = require('./sandbox_entities')
+const { __ } = config
+const wbEdit = __.require('.')(config)
+const { randomString } = require('../unit/utils')
+const { getSandboxItemId, getSandboxPropertyId } = __.require('test/integration/utils/sandbox_entities')
 const breq = require('bluereq')
 
 describe('summary', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('./wait_for_instance'))
+  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
   it('should add a default summary', done => {
     doSomeEdit(config)

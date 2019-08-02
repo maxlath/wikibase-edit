@@ -1,13 +1,13 @@
 require('should')
-const { instance, credentials } = require('config')
-const WBEdit = require('../..')
-const { randomString } = require('../utils')
-const { undesiredRes } = require('./utils')
+const { __, instance, credentials } = require('config')
+const WBEdit = __.require('.')
+const { randomString } = __.require('test/unit/utils')
+const { undesiredRes } = require('./utils/utils')
 const params = () => ({ labels: { en: randomString() } })
 
 describe('credentials', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('./wait_for_instance'))
+  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
   it('should accept config at initialization', done => {
     const wbEdit = WBEdit({ instance, credentials })

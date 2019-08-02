@@ -1,15 +1,18 @@
 require('should')
 const config = require('config')
-const wbEdit = require('../..')(config)
-const { createProperty } = require('./utils')
-const fetchPropertiesDatatypes = require('../../lib/properties/fetch_properties_datatypes')
+const { __ } = config
+const { getSandboxPropertyId } = __.require('test/integration/utils/sandbox_entities')
+const fetchPropertiesDatatypes = __.require('lib/properties/fetch_properties_datatypes')
+const { validateAndEnrichConfig } = __.require('lib/wrappers_utils')
+// Set config.wbk
+validateAndEnrichConfig(config)
 
 describe('fetch properties datatypes', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('./wait_for_instance'))
+  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
   it('should fetch a property datatype', done => {
-    createProperty('wikibase-item')
+    getSandboxPropertyId('wikibase-item')
     .then(propertyId => {
       return fetchPropertiesDatatypes(config, [ propertyId ])
       .then(() => {
