@@ -40,6 +40,10 @@ module.exports = function (config, functionPath) {
       entity: {
         create: require('./lib/entity/create')(config),
         edit: require('./lib/entity/edit')(config)
+      },
+      property: {
+        create: require('./lib/property/create')(config),
+        edit: require('./lib/property/edit')(config)
       }
     }
   }
