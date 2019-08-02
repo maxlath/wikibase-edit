@@ -1,11 +1,12 @@
 require('should')
 const config = require('config')
 const { __ } = config
-const updateClaim = __.require('.')(config).claim.update
-const editEntity = __.require('.')(config).entity.edit
+const wbEdit = __.require('.')(config)
+const updateClaim = wbEdit.claim.update
+const editEntity = wbEdit.entity.edit
 const { undesiredRes } = __.require('test/integration/utils/utils')
 const { getSandboxItemId, getSandboxPropertyId, addClaim } = __.require('test/integration/utils/sandbox_entities')
-const { randomString } = __.require('test/unit/utils')
+const { randomString, randomNumber } = __.require('test/unit/utils')
 const { simplify } = require('wikibase-sdk')
 
 describe('claim update', function () {
@@ -21,7 +22,7 @@ describe('claim update', function () {
         return updateClaim({ id, property, oldValue, newValue })
         .then(res => {
           res.claim.id.should.equal(guid)
-          res.claim.mainsnak.datavalue.value.should.equal(newValue)
+          simplify.claim(res.claim).should.equal(newValue)
           done()
         })
       })
@@ -71,7 +72,7 @@ describe('claim update', function () {
       const oldValue = randomString()
       const newValue = randomString()
       addClaim('string', oldValue)
-      .then(({ property, guid }) => {
+      .then(({ guid, property }) => {
         return updateClaim({ guid, property, newValue })
         .then(res => {
           res.claim.id.should.equal(guid)
@@ -97,7 +98,7 @@ describe('claim update', function () {
         const claim = { value: oldValue, qualifiers: {}, references: {} }
         claim.qualifiers[property] = qualifierValue
         claim.references[property] = referenceValue
-        const data = { id, claims: {}}
+        const data = { id, claims: {} }
         data.claims[property] = claim
         return editEntity(data)
         .then(resA => {
@@ -112,6 +113,82 @@ describe('claim update', function () {
             simplifiedClaim.references[0][property][0].should.equal(referenceValue)
             done()
           })
+        })
+      })
+      .catch(done)
+    })
+
+    it('should update a monolingual text claim', done => {
+      const oldValue = { text: randomString(), language: 'fr' }
+      const newValue = { text: randomString(), language: 'de' }
+      addClaim('monolingualtext', oldValue)
+      .then(({ guid, property }) => {
+        return updateClaim({ guid, property, newValue })
+        .then(res => {
+          res.claim.id.should.equal(guid)
+          simplify.claim(res.claim, { keepRichValues: true }).should.deepEqual(newValue)
+          done()
+        })
+      })
+      .catch(done)
+    })
+
+    it('should update a quantity claim with a unit', done => {
+      const oldValue = { amount: randomNumber(), unit: 'Q1' }
+      const newValue = { amount: randomNumber(), unit: 'Q2' }
+      addClaim('quantity', oldValue)
+      .then(({ guid, property }) => {
+        return updateClaim({ guid, property, newValue })
+        .then(res => {
+          res.claim.id.should.equal(guid)
+          simplify.claim(res.claim, { keepRichValues: true }).should.deepEqual(newValue)
+          done()
+        })
+      })
+      .catch(done)
+    })
+
+    it('should update a time claim', done => {
+      const oldYear = 1000 + randomNumber(3)
+      const newYear = 1000 + randomNumber(3)
+      const oldValue = `${oldYear}-02-26`
+      const newValue = `${newYear}-10-25`
+      addClaim('time', oldValue)
+      .then(({ guid, property }) => {
+        return updateClaim({ guid, property, newValue })
+        .then(res => {
+          res.claim.id.should.equal(guid)
+          simplify.claim(res.claim).split('T')[0].should.equal(newValue)
+          done()
+        })
+      })
+      .catch(done)
+    })
+
+    it('should update a globe-coordinate claim', done => {
+      const oldValue = {
+        latitude: randomNumber(2),
+        longitude: randomNumber(2),
+        precision: 0.01,
+        globe: 'http://www.wikidata.org/entity/Q111'
+      }
+      const newValue = {
+        latitude: randomNumber(2),
+        longitude: randomNumber(2),
+        precision: 0.01,
+        globe: 'http://www.wikidata.org/entity/Q112'
+      }
+      addClaim('globe-coordinate', oldValue)
+      .then(({ guid, property }) => {
+        return updateClaim({ guid, property, newValue })
+        .then(res => {
+          res.claim.id.should.equal(guid)
+          const { value } = res.claim.mainsnak.datavalue
+          value.latitude.should.equal(newValue.latitude)
+          value.longitude.should.equal(newValue.longitude)
+          value.precision.should.equal(newValue.precision)
+          value.globe.should.equal(newValue.globe)
+          done()
         })
       })
       .catch(done)

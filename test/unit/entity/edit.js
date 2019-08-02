@@ -1,42 +1,43 @@
 require('should')
-const { __ } = require('config')
-const editEntity = __.require('lib/entity/edit')
+const { __, instance } = require('config')
 const { randomString, sandboxEntity: id, properties } = __.require('test/unit/utils')
+const _editEntity = __.require('lib/entity/edit')
+const editEntity = params => _editEntity(params, properties, instance)
 
 describe('entity edit', () => {
   it('should reject a missing id', done => {
     const params = { claims: { P31: 'bla' } }
-    editEntity.bind(null, params, properties).should.throw('invalid entity id')
+    editEntity.bind(null, params).should.throw('invalid entity id')
     done()
   })
 
   it('should reject an edit without data', done => {
     const params = { id }
-    editEntity.bind(null, params, properties).should.throw('no data was passed')
+    editEntity.bind(null, params).should.throw('no data was passed')
     done()
   })
 
   it('should reject invalid claims', done => {
     const params = { id, claims: { P31: 'bla' } }
-    editEntity.bind(null, params, properties).should.throw('invalid entity value')
+    editEntity.bind(null, params).should.throw('invalid entity value')
     done()
   })
 
   it('should reject invalid labels', done => {
     const params = { id, labels: { fr: '' } }
-    editEntity.bind(null, params, properties).should.throw('invalid label')
+    editEntity.bind(null, params).should.throw('invalid label')
     done()
   })
 
   it('should reject invalid descriptions', done => {
     const params = { id, descriptions: { fr: '' } }
-    editEntity.bind(null, params, properties).should.throw('invalid description')
+    editEntity.bind(null, params).should.throw('invalid description')
     done()
   })
 
   it('should set the action to wbeditentity', done => {
     const params = { id, labels: { fr: 'foo' } }
-    editEntity(params, properties).action.should.equal('wbeditentity')
+    editEntity(params).action.should.equal('wbeditentity')
     done()
   })
 
@@ -51,7 +52,7 @@ describe('entity edit', () => {
       aliases: { fr: frAlias, en: [ enAlias ] },
       descriptions: { fr: description },
       claims: { P1775: 'Q3576110' }
-    }, properties)
+    })
     data.id.should.equal(id)
     JSON.parse(data.data).should.deepEqual({
       labels: {
@@ -103,7 +104,7 @@ describe('entity edit', () => {
           }
         ]
       }
-    }, properties)
+    })
     JSON.parse(data.data).claims.P369.should.deepEqual([
       {
         rank: 'normal',
@@ -171,7 +172,7 @@ describe('entity edit', () => {
               snaktype: 'value',
               datavalue: {
                 type: 'quantity',
-                value: { amount: '+9001', unit: 'http://www.wikidata.org/entity/Q7727' }
+                value: { amount: '+9001', unit: `${instance}/entity/Q7727` }
               }
             }
           ],
@@ -200,7 +201,7 @@ describe('entity edit', () => {
       claims: {
         P516: [ { value: 'Q54173', qualifiers } ]
       }
-    }, properties)
+    })
     JSON.parse(data.data).claims.P516[0].qualifiers.P2109[0].should.deepEqual({
       property: 'P2109',
       snaktype: 'value',
@@ -208,7 +209,7 @@ describe('entity edit', () => {
         type: 'quantity',
         value: {
           amount: '+100',
-          unit: 'http://www.wikidata.org/entity/Q6982035'
+          unit: `${instance}/entity/Q6982035`
         }
       }
     })
@@ -224,7 +225,7 @@ describe('entity edit', () => {
       claims: {
         P516: [ { value: 'Q54173', qualifiers } ]
       }
-    }, properties)
+    })
     JSON.parse(data.data).claims.P516[0].qualifiers.P571[0].should.deepEqual({
       property: 'P571',
       snaktype: 'somevalue'
@@ -241,7 +242,7 @@ describe('entity edit', () => {
       claims: {
         P516: [ { value: 'Q54173', qualifiers } ]
       }
-    }, properties)
+    })
     JSON.parse(data.data).claims.P516[0].qualifiers.P571[0].should.deepEqual({
       property: 'P571',
       snaktype: 'value',
@@ -270,7 +271,7 @@ describe('entity edit', () => {
       claims: {
         P369: { value: 'Q2622002', references: reference }
       }
-    }, properties)
+    })
     JSON.parse(data.data).claims.P369[0].references[0].snaks.should.deepEqual([
       {
         property: 'P855',
@@ -301,7 +302,7 @@ describe('entity edit', () => {
       claims: {
         P369: { value: 'Q2622002', references: [ reference ] }
       }
-    }, properties)
+    })
     JSON.parse(data.data).claims.P369[0].references[0].snaks[0]
     .datavalue.value.should.equal('https://example.org')
     done()

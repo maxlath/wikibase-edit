@@ -1,5 +1,5 @@
 require('should')
-const { __ } = require('config')
+const { __, instance } = require('config')
 const addClaim = __.require('lib/claim/add')
 const { sandboxEntity: id, properties } = __.require('test/unit/utils')
 
@@ -177,17 +177,17 @@ describe('claim add', () => {
     done()
   })
 
-  it('should return formatted data for a quantity with a unit', done => {
+  it('should return formatted data for a quantity with an item-defined unit', done => {
     addClaim({
       id,
       property: 'P1106',
       value: { amount: 9001, unit: 'Q7727' }
-    }, properties)
+    }, properties, instance)
     .data.should.deepEqual({
       entity: id,
       property: 'P1106',
       snaktype: 'value',
-      value: '{"amount":"+9001","unit":"http://www.wikidata.org/entity/Q7727"}'
+      value: `{"amount":"+9001","unit":"${instance}/entity/Q7727"}`
     })
     done()
   })

@@ -15,8 +15,8 @@ describe('parseInstance', () => {
     const configB = { instance: apiEndpoint }
     parseInstance(configA)
     parseInstance(configB)
-    configA.instance.should.equal(apiEndpoint)
-    configB.instance.should.equal(apiEndpoint)
+    configA.instance.should.equal(instance)
+    configB.instance.should.equal(instance)
     done()
   })
 })
