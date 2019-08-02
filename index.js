@@ -1,4 +1,3 @@
-const parseInstance = require('./lib/parse_instance')
 const requestWrapper = require('./lib/request_wrapper')
 const bundleWrapper = require('./lib/bundle_wrapper')
 const error_ = require('./lib/error')
