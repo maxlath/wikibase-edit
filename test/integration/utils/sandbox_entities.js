@@ -24,16 +24,10 @@ const getSandboxItem = () => {
   return sandboxItem
 }
 
-const getId = entity => entity.id
-
 const getRefreshedEntity = id => {
   const url = config.wbk.getEntities({ ids: id })
   return breq.get(url).then(res => res.entities[id])
 }
-
-const getSandboxItemId = () => getSandboxItem().then(getId)
-
-const getSandboxPropertyId = datatype => getSandboxProperty(datatype).then(getId)
 
 var claim
 const getSandboxClaim = (datatype = 'string') => {
@@ -67,6 +61,11 @@ const addClaim = (datatype, value) => {
   })
 }
 
+const getSandboxItemId = () => getSandboxItem().then(getId)
+const getSandboxPropertyId = datatype => getSandboxProperty(datatype).then(getId)
+const getSandboxClaimId = () => getSandboxClaim().then(getId)
+const getId = obj => obj.id
+
 module.exports = {
   getSandboxItem,
   getSandboxProperty,
@@ -74,5 +73,6 @@ module.exports = {
   getSandboxPropertyId,
   getRefreshedEntity,
   getSandboxClaim,
+  getSandboxClaimId,
   addClaim
 }
