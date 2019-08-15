@@ -1,7 +1,7 @@
 {
-  "name": "wikidata-edit",
+  "name": "wikibase-edit",
   "version": "2.9.3",
-  "description": "Edit Wikidata from NodeJS",
+  "description": "Edit Wikibase from NodeJS",
   "main": "index.js",
   "scripts": {
     "lint": "standard",
@@ -13,20 +13,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maxlath/wikidata-edit.git"
+    "url": "git+https://github.com/maxlath/wikibase-edit.git"
   },
   "keywords": [
-    "wikidata",
     "wikibase",
+    "wikidata",
+    "write",
+    "update",
     "edit",
     "API"
   ],
   "author": "maxlath",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/maxlath/wikidata-edit/issues"
+    "url": "https://github.com/maxlath/wikibase-edit/issues"
   },
-  "homepage": "https://github.com/maxlath/wikidata-edit",
+  "homepage": "https://github.com/maxlath/wikibase-edit",
   "dependencies": {
     "bluereq": "^2.1.7",
     "chalk": "^2.4.1",
