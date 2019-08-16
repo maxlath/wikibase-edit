@@ -5,7 +5,8 @@ const wbEdit = __.require('.')(config)
 const updateClaim = wbEdit.claim.update
 const editEntity = wbEdit.entity.edit
 const { undesiredRes } = __.require('test/integration/utils/utils')
-const { getSandboxItemId, getSandboxPropertyId, addClaim } = __.require('test/integration/utils/sandbox_entities')
+const { getSandboxItemId, getSandboxPropertyId } = __.require('test/integration/utils/sandbox_entities')
+const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
 const { randomString, randomNumber } = __.require('test/unit/utils')
 const { simplify } = require('wikibase-sdk')
 

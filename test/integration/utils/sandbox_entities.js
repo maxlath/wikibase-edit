@@ -48,19 +48,6 @@ const getSandboxClaim = (datatype = 'string') => {
   })
 }
 
-const addClaim = (datatype, value) => {
-  return Promise.all([
-    getSandboxItemId(),
-    getSandboxPropertyId(datatype)
-  ])
-  .then(([ id, property ]) => {
-    return wbEdit.claim.add({ id, property, value })
-    .then((res) => {
-      return { id, property, value, guid: res.claim.id }
-    })
-  })
-}
-
 const getSandboxItemId = () => getSandboxItem().then(getId)
 const getSandboxPropertyId = datatype => getSandboxProperty(datatype).then(getId)
 const getSandboxClaimId = () => getSandboxClaim().then(getId)
@@ -73,6 +60,5 @@ module.exports = {
   getSandboxPropertyId,
   getRefreshedEntity,
   getSandboxClaim,
-  getSandboxClaimId,
-  addClaim
+  getSandboxClaimId
 }
