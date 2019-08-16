@@ -39,7 +39,7 @@ const doSomeEdit = config => {
   ])
   .then(([ id, property ]) => {
     const value = randomString()
-    return wbEdit.claim.add({ id, property, value })
+    return wbEdit.claim.create({ id, property, value })
     .then(res => {
       const { instance } = config
       const wbk = require('wikibase-sdk')({ instance })

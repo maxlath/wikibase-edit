@@ -40,7 +40,7 @@ const getSandboxClaim = (datatype = 'string') => {
   .then(([ item, propertyId ]) => {
     const propertyClaims = item.claims[propertyId]
     if (propertyClaims) return propertyClaims[0]
-    return wbEdit.claim.add({ id: item.id, property: propertyId, value: randomString() })
+    return wbEdit.claim.create({ id: item.id, property: propertyId, value: randomString() })
     .then(res => {
       claim = res.claim
       return claim
