@@ -1,11 +1,11 @@
 require('should')
 const { __, instance } = require('config')
-const addClaim = __.require('lib/claim/add')
+const createClaim = __.require('lib/claim/create')
 const { sandboxEntity: id, properties } = __.require('test/unit/utils')
 
-describe('claim add', () => {
+describe('claim create', () => {
   it('should set the action to wbcreateclaim', done => {
-    addClaim({
+    createClaim({
       id,
       property: 'P600',
       value: 'someid'
@@ -15,7 +15,7 @@ describe('claim add', () => {
   })
 
   it('should return formatted data for an external id', done => {
-    addClaim({
+    createClaim({
       id,
       property: 'P600',
       value: 'someid'
@@ -30,7 +30,7 @@ describe('claim add', () => {
   })
 
   it('should return formatted data for a wikibase item', done => {
-    addClaim({
+    createClaim({
       id,
       property: 'P50',
       value: 'Q627323'
@@ -45,7 +45,7 @@ describe('claim add', () => {
   })
 
   it('should return formatted data for a year', done => {
-    addClaim({
+    createClaim({
       id,
       property: 'P578',
       value: '1802'
@@ -60,7 +60,7 @@ describe('claim add', () => {
   })
 
   it('should return formatted data for a month', done => {
-    addClaim({
+    createClaim({
       id,
       property: 'P578',
       value: '1802-02'
@@ -75,7 +75,7 @@ describe('claim add', () => {
   })
 
   it('should return formatted data for a day', done => {
-    addClaim({
+    createClaim({
       id,
       property: 'P578',
       value: '1802-02-03'
@@ -89,8 +89,8 @@ describe('claim add', () => {
     done()
   })
 
-  it('should add a time claim with a low precision', done => {
-    addClaim({
+  it('should create a time claim with a low precision', done => {
+    createClaim({
       id,
       property: 'P578',
       value: { time: '2500000', precision: 4 }
@@ -105,8 +105,8 @@ describe('claim add', () => {
   })
 
   // Not implemented by the Wikidata API
-  // it('should add a time claim with a high precision', done => {
-  //   addClaim({
+  // it('should create a time claim with a high precision', done => {
+  //   createClaim({
   //     id,
   //     property: 'P578',
   //     value: { time: '1802-02-04T11:22:33Z', precision: 14 }
@@ -122,18 +122,18 @@ describe('claim add', () => {
 
   it('should reject a claim with an invalid time', done => {
     const params = { id, property: 'P578', value: '1802-22-33' }
-    addClaim.bind(null, params, properties).should.throw('invalid time value')
+    createClaim.bind(null, params, properties).should.throw('invalid time value')
     done()
   })
 
   it('should reject a claim with an invalid time (2)', done => {
     const params = { id, property: 'P578', value: '1802-02-04T11' }
-    addClaim.bind(null, params, properties).should.throw('invalid time value')
+    createClaim.bind(null, params, properties).should.throw('invalid time value')
     done()
   })
 
   it('should return formatted data for monolingualtext', done => {
-    addClaim({
+    createClaim({
       id,
       property: 'P1476',
       value: { text: 'bulgroz', language: 'fr' }
@@ -148,7 +148,7 @@ describe('claim add', () => {
   })
 
   it('should return formatted data for a quantity', done => {
-    addClaim({
+    createClaim({
       id,
       property: 'P1106',
       value: 9000
@@ -163,7 +163,7 @@ describe('claim add', () => {
   })
 
   it('should return formatted data for a quantity passed as a string', done => {
-    addClaim({
+    createClaim({
       id,
       property: 'P1106',
       value: '9001'
@@ -178,7 +178,7 @@ describe('claim add', () => {
   })
 
   it('should return formatted data for a quantity with an item-defined unit', done => {
-    addClaim({
+    createClaim({
       id,
       property: 'P1106',
       value: { amount: 9001, unit: 'Q7727' }
@@ -193,7 +193,7 @@ describe('claim add', () => {
   })
 
   it('should return formatted data for a negative amount', done => {
-    addClaim({
+    createClaim({
       id,
       property: 'P1106',
       value: -9002
@@ -209,12 +209,12 @@ describe('claim add', () => {
 
   it('should throw when passed an invalid string number', done => {
     const params = { id, property: 'P1106', value: '900$1' }
-    addClaim.bind(null, params, properties).should.throw('invalid string number')
+    createClaim.bind(null, params, properties).should.throw('invalid string number')
     done()
   })
 
   it('should return formatted data for a Url', done => {
-    addClaim({
+    createClaim({
       id,
       property: 'P2078',
       value: 'http://foo.bar'
@@ -229,7 +229,7 @@ describe('claim add', () => {
   })
 
   it('should return formatted data for a globe coordinate', done => {
-    addClaim({
+    createClaim({
       id,
       property: 'P626',
       value: { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 }
@@ -243,8 +243,8 @@ describe('claim add', () => {
     done()
   })
 
-  it('should add a claim of snaktype novalue', done => {
-    addClaim({
+  it('should create a claim of snaktype novalue', done => {
+    createClaim({
       id,
       property: 'P1106',
       value: { snaktype: 'novalue' }
@@ -257,8 +257,8 @@ describe('claim add', () => {
     done()
   })
 
-  it('should add a claim of snaktype somevalue', done => {
-    addClaim({
+  it('should create a claim of snaktype somevalue', done => {
+    createClaim({
       id,
       property: 'P1106',
       value: { snaktype: 'somevalue' }

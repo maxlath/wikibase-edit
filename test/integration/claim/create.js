@@ -6,18 +6,18 @@ const { randomString } = __.require('test/unit/utils')
 const { getSandboxPropertyId, getSandboxItemId } = __.require('test/integration/utils/sandbox_entities')
 const { isGuid } = require('wikibase-sdk')
 
-describe('claim add', function () {
+describe('claim create', function () {
   this.timeout(20 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
-  it('should add a claim', done => {
+  it('should create a claim', done => {
     Promise.all([
       getSandboxItemId(),
       getSandboxPropertyId('string')
     ])
     .then(([ qid, pid ]) => {
       const value = randomString()
-      return wbEdit.claim.add({ id: qid, property: pid, value })
+      return wbEdit.claim.create({ id: qid, property: pid, value })
       .then(res => {
         res.success.should.equal(1)
         isGuid(res.claim.id).should.be.true()

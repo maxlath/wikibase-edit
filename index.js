@@ -23,16 +23,16 @@ module.exports = (initConfig = {}) => {
       remove: requestWrapper('alias/remove', initConfig)
     },
     claim: {
-      add: requestWrapper('claim/add', initConfig),
+      create: requestWrapper('claim/create', initConfig),
       set: requestWrapper('claim/set', initConfig),
       remove: requestWrapper('claim/remove', initConfig)
     },
     qualifier: {
-      add: requestWrapper('qualifier/add', initConfig),
+      set: requestWrapper('qualifier/set', initConfig),
       remove: requestWrapper('qualifier/remove', initConfig)
     },
     reference: {
-      add: requestWrapper('reference/add', initConfig),
+      set: requestWrapper('reference/set', initConfig),
       remove: requestWrapper('reference/remove', initConfig)
     },
     entity: {
