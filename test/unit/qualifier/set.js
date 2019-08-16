@@ -1,6 +1,6 @@
 require('should')
 const { __, instance } = require('config')
-const { guid, properties } = __.require('test/unit/utils')
+const { guid, hash, properties } = __.require('test/unit/utils')
 const _setQualifier = __.require('lib/qualifier/set')
 const setQualifier = params => _setQualifier(params, properties, instance)
 
@@ -31,6 +31,18 @@ describe('qualifier set', () => {
   it('should rejected if passed an invalid value', done => {
     const params = { guid, property: 'P155', value: 'not-a-valid-value' }
     setQualifier.bind(null, params).should.throw('invalid entity value')
+    done()
+  })
+
+  it('should rejected if passed an hash', done => {
+    const params = { guid, hash: 'foo', property: 'P155', value: 'Q123' }
+    setQualifier.bind(null, params).should.throw('invalid hash')
+    done()
+  })
+
+  it('should set the hash', done => {
+    const params = { guid, hash, property: 'P155', value: 'Q123' }
+    setQualifier(params).data.snakhash.should.equal(hash)
     done()
   })
 
