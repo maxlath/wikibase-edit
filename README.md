@@ -20,7 +20,7 @@ This project has received a [Wikimedia Project Grant](https://meta.wikimedia.org
 
 - [Install](#install)
 - [How-To](https://github.com/maxlath/wikibase-edit/blob/master/docs/how_to.md)
-- [Development](#development)
+- [Development setup](https://github.com/maxlath/wikibase-edit/blob/master/docs/development_setup.md)
 - [Contributing](#contributing)
 - [Donate](#donate)
 - [See Also](#see-also)
@@ -36,8 +36,7 @@ npm install wikibase-edit
 see [How-to](docs/how_to.md) doc
 
 ## Development
-
-To run the tests, make sure to create a `config/local.js` overriding `config/default.js` with your Wikibase credentials
+see [Development](docs/development.md) doc
 
 ## Contributing
 
