@@ -1,44 +1,47 @@
 {
-  "name": "wikidata-edit",
+  "name": "wikibase-edit",
   "version": "2.9.3",
-  "description": "Edit Wikidata from NodeJS",
+  "description": "Edit Wikibase from NodeJS",
   "main": "index.js",
   "scripts": {
     "lint": "standard",
-    "test": "mocha test/* test/*/* --timeout 10000",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "mocha test/unit/*.js test/unit/*/*.js",
+    "test:integration": "mocha test/integration/*.js test/integration/*/*.js",
     "prepublishOnly": "npm run lint && npm test",
-    "update-properties": "./scripts/update_properties",
     "update-toc": "doctoc docs/*.md"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maxlath/wikidata-edit.git"
+    "url": "git+https://github.com/maxlath/wikibase-edit.git"
   },
   "keywords": [
-    "wikidata",
     "wikibase",
+    "wikidata",
+    "write",
+    "update",
     "edit",
     "API"
   ],
   "author": "maxlath",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/maxlath/wikidata-edit/issues"
+    "url": "https://github.com/maxlath/wikibase-edit/issues"
   },
-  "homepage": "https://github.com/maxlath/wikidata-edit#readme",
+  "homepage": "https://github.com/maxlath/wikibase-edit",
   "dependencies": {
     "bluereq": "^2.1.7",
     "chalk": "^2.4.1",
-    "wikidata-sdk": "^6.3.0",
-    "wikidata-token": "^2.3.5"
+    "wikibase-sdk": "^7.0.13",
+    "wikibase-token": "^3.0.4"
   },
   "devDependencies": {
     "config": "^1.30.0",
     "doctoc": "^1.3.1",
+    "git-hooks": "^1.1.10",
     "mocha": "^5.1.1",
     "should": "^13.2.1",
-    "standard": "^10.0.3",
-    "wikidata-cli": "^6.2.0"
+    "standard": "^10.0.3"
   },
   "standard": {
     "ignore": [
