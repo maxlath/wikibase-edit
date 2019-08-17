@@ -1,5 +1,5 @@
-# Wikidata Edit
-Edit [Wikibase](https://wikiba.se) from [NodeJS](https://nodejs.org). That can be [Wikidata](https://www.wikidata.org), or whatever Wikibase instance you have.
+# Wikibase Edit
+Edit [Wikibase](https://wikiba.se) from [NodeJS](https://nodejs.org). That can be [Wikidata](https://www.wikidata.org) or whatever Wikibase instance you have.
 
 This project has received a [Wikimedia Project Grant](https://meta.wikimedia.org/wiki/Grants:Project/WikidataJS).
 

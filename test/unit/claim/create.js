@@ -104,7 +104,7 @@ describe('claim create', () => {
     done()
   })
 
-  // Not implemented by the Wikidata API
+  // Not implemented by the Wikibase API
   // it('should create a time claim with a high precision', done => {
   //   createClaim({
   //     id,

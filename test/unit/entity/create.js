@@ -18,7 +18,7 @@ describe('entity create', () => {
   })
 
   it('should format an item', done => {
-    const label = `wikidata-edit entity.create test (${randomString()})`
+    const label = randomString()
     const description = randomString()
     const frAlias = randomString()
     const enAlias = randomString()
@@ -72,7 +72,7 @@ describe('entity create', () => {
   })
 
   it('should create a property', done => {
-    const label = `wikidata-edit entity.create property test (${randomString()})`
+    const label = randomString()
     const params = {
       type: 'property',
       datatype: 'string',

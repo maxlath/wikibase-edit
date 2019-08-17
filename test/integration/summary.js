@@ -6,7 +6,7 @@ const WBEdit = __.require('.')
 const { randomString } = require('../unit/utils')
 const breq = require('bluereq')
 const params = () => ({ labels: { en: randomString() } })
-const toolSignature = '#wikidatajs/edit'
+const toolSignature = '#wikibasejs/edit'
 
 describe('summary', function () {
   this.timeout(20 * 1000)
