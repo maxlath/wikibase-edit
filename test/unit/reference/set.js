@@ -22,7 +22,7 @@ describe('reference set', () => {
 
   it('should rejected if not passed a reference value', done => {
     setReference.bind(null, { guid, property: 'P143' }, properties)
-    .should.throw('missing reference value')
+    .should.throw('missing snak value')
     done()
   })
 

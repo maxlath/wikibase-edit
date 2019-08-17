@@ -24,7 +24,7 @@ describe('qualifier set', () => {
 
   it('should rejected if not passed a value', done => {
     const params = { guid, property: 'P155' }
-    setQualifier.bind(null, params).should.throw('missing qualifier value')
+    setQualifier.bind(null, params).should.throw('missing snak value')
     done()
   })
 
