@@ -4,7 +4,7 @@ const wbEdit = __.require('.')(config)
 const { randomString } = __.require('test/unit/utils')
 const getSandboxProperty = require('./get_sandbox_property')
 const breq = require('bluereq')
-const { validateAndEnrichConfig } = __.require('lib/wrappers_utils')
+const validateAndEnrichConfig = __.require('lib/validate_and_enrich_config')
 // Set config.wbk
 validateAndEnrichConfig(config)
 

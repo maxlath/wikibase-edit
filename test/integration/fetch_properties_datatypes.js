@@ -3,7 +3,7 @@ const config = require('config')
 const { __ } = config
 const { getSandboxPropertyId } = __.require('test/integration/utils/sandbox_entities')
 const fetchPropertiesDatatypes = __.require('lib/properties/fetch_properties_datatypes')
-const { validateAndEnrichConfig } = __.require('lib/wrappers_utils')
+const validateAndEnrichConfig = __.require('lib/validate_and_enrich_config')
 // Set config.wbk
 validateAndEnrichConfig(config)
 
