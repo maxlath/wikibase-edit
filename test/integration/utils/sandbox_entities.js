@@ -18,10 +18,10 @@ const createEntity = (data = {}) => {
   })
 }
 
-var sandboxItem
+var sandboxItemPromise
 const getSandboxItem = () => {
-  sandboxItem = sandboxItem || createEntity()
-  return sandboxItem
+  sandboxItemPromise = sandboxItemPromise || createEntity()
+  return sandboxItemPromise
 }
 
 const getRefreshedEntity = id => {
@@ -29,11 +29,11 @@ const getRefreshedEntity = id => {
   return breq.get(url).then(res => res.entities[id])
 }
 
-var claim
+var claimPromise
 const getSandboxClaim = (datatype = 'string') => {
-  if (claim) return Promise.resolve(claim)
+  if (claimPromise) return claimPromise
 
-  return Promise.all([
+  claimPromise = Promise.all([
     getSandboxItem(),
     getSandboxPropertyId(datatype)
   ])
@@ -41,11 +41,10 @@ const getSandboxClaim = (datatype = 'string') => {
     const propertyClaims = item.claims[propertyId]
     if (propertyClaims) return propertyClaims[0]
     return wbEdit.claim.create({ id: item.id, property: propertyId, value: randomString() })
-    .then(res => {
-      claim = res.claim
-      return claim
-    })
+    .then(res => res.claim)
   })
+
+  return claimPromise
 }
 
 const getSandboxItemId = () => getSandboxItem().then(getId)

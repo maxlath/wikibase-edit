@@ -19,7 +19,7 @@ const addClaim = (datatype, value) => {
 const addQualifier = (datatype, value) => {
   return Promise.all([
     getSandboxClaimId(),
-    getSandboxPropertyId('string')
+    getSandboxPropertyId(datatype)
   ])
   .then(([ guid, property ]) => {
     return wbEdit.qualifier.set({ guid, property, value })

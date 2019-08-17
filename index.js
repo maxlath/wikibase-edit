@@ -43,6 +43,7 @@ module.exports = (initConfig = {}) => {
 
   // Bundles: async functions that make use of the primitives to offer more sophisticated behaviors
   API.claim.update = bundleWrapper('claim/update', initConfig, API)
+  API.qualifier.update = bundleWrapper('qualifier/update', initConfig, API)
 
   return API
 }
