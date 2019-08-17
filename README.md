@@ -1,7 +1,7 @@
 # Wikidata Edit
-Edit [Wikidata](https://wikidata.org) from [NodeJS](https://nodejs.org)
+Edit [Wikibase](https://wikiba.se) from [NodeJS](https://nodejs.org). That can be [Wikidata](https://www.wikidata.org), or whatever Wikibase instance you have.
 
-This project is [funded by a Wikimedia Project Grant](https://meta.wikimedia.org/wiki/Grants:Project/WikidataJS).
+This project has received a [Wikimedia Project Grant](https://meta.wikimedia.org/wiki/Grants:Project/WikidataJS).
 
 <div align="center">
   <a href="https://wikiba.se"><img height="150" src="https://raw.githubusercontent.com/maxlath/wikibase-sdk/master/assets/wikibase.png" alt="wikibase"></a>
@@ -19,7 +19,7 @@ This project is [funded by a Wikimedia Project Grant](https://meta.wikimedia.org
 ## Summary
 
 - [Install](#install)
-- [How-To](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md)
+- [How-To](https://github.com/maxlath/wikibase-edit/blob/master/docs/how_to.md)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Donate](#donate)
@@ -29,7 +29,7 @@ This project is [funded by a Wikimedia Project Grant](https://meta.wikimedia.org
 
 ## Install
 ```sh
-npm install --save wikidata-edit
+npm install wikibase-edit
 ```
 
 ## How-To
@@ -37,20 +37,20 @@ see [How-to](docs/how_to.md) doc
 
 ## Development
 
-To run the tests, make sure to create a `config/local.js` overriding `config/default.js` with your Wikidata username and password
+To run the tests, make sure to create a `config/local.js` overriding `config/default.js` with your Wikibase credentials
 
 ## Contributing
 
 Code contributions and propositions are very welcome, here are some design constraints you should be aware of:
-* `wikidata-edit` focuses on exposing Wikidata write operations. Features about getting and parsing data should rather go to [`wikidata-sdk`](https://github.com/maxlath/wikidata-sdk)
+* `wikibase-edit` focuses on exposing Wikibase write operations. Features about getting and parsing data should rather go to [`wikibase-sdk`](https://github.com/maxlath/wikibase-sdk)
 
 ## Donate
 
-We are developing and maintaining tools to work with Wikidata from NodeJS, the browser, or simply the command line, with quality and ease of use at heart. Any donation will be interpreted as a "please keep going, your work is very much needed and awesome. PS: love". [Donate](https://liberapay.com/WikidataJS)
+We are developing and maintaining tools to work with Wikibase from NodeJS, the browser, or simply the command line, with quality and ease of use at heart. Any donation will be interpreted as a "please keep going, your work is very much needed and awesome. PS: love". [Donate](https://liberapay.com/WikidataJS)
 
 ## See Also
-* [wikidata-sdk](https://github.com/maxlath/wikidata-sdk): a javascript tool suite to query and work with wikidata data, heavily used by wikidata-cli
-* [wikidata-cli](https://github.com/maxlath/wikidata-cli): The command-line interface to Wikidata
+* [wikibase-sdk](https://github.com/maxlath/wikibase-sdk): a javascript tool suite to query and work with any Wikibase data, heavily used by wikibase-edit and wikibase-cli
+* [wikibase-cli](https://github.com/maxlath/wikibase-cli): The friendly command-line interface to Wikibase
 * [wikidata-filter](https://github.com/maxlath/wikidata-filter): A command-line tool to filter a Wikidata dump by claim
 * [wikidata-subset-search-engine](https://github.com/inventaire/wikidata-subset-search-engine): Tools to setup an ElasticSearch instance fed with subsets of Wikidata
 * [wikidata-taxonomy](https://github.com/nichtich/wikidata-taxonomy): Command-line tool to extract taxonomies from Wikidata
