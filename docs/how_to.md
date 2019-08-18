@@ -187,7 +187,7 @@ wdEdit.alias.set({
 ### Claim
 #### add claim
 ```js
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P2002',
   value: 'bulgroz'
@@ -197,7 +197,7 @@ wdEdit.claim.add({
 Special cases:
 ```js
 // Monolingualtext property
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P1476',
   value: { text: 'bulgroz', language: 'it' }
@@ -205,7 +205,7 @@ wdEdit.claim.add({
 
 // Quantity with a unit
 // Example here with the unit 'minute' (Q7727)
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P1106',
   value: { amount: 9001, unit: 'Q7727' }
@@ -213,7 +213,7 @@ wdEdit.claim.add({
 
 // Time property
 // day, with implicit precision
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: '1802-02-26'
@@ -221,82 +221,82 @@ wdEdit.claim.add({
 
 // day, with explicit precision
 // cf https://www.wikidata.org/wiki/Help:Dates#Precision
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '1802-02-26', precision: 11 }
 })
 
 // month
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: '1802-02'
 })
 
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '1802-02', precision: 10 }
 })
 
 // year
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: '1802'
 })
 
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '1802', precision: 9 }
 })
 
 // decade
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '1800', precision: 8 }
 })
 
 // century
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '1800', precision: 7 }
 })
 
 // millennium
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '1000', precision: 6 }
 })
 
 // ten thousand years
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '-50000', precision: 5 }
 })
 
 // hundred thousand years
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '-100000', precision: 4 }
 })
 
 // million years
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '-1000000', precision: 3 }
 })
 
 // billion years
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '-13000000000', precision: 0 }
@@ -304,14 +304,14 @@ wdEdit.claim.add({
 
 // Quantity:
 // pass a single value for a count without a specific unit
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P1106',
   value: 9000
 })
 
 // pass an object for a value with a specific unit. Example here to specify minutes (Q7727)
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P2097',
   value: { amount: 9000, unit: 'Q7727' }
@@ -319,21 +319,21 @@ wdEdit.claim.add({
 
 // Globe Coordinate:
 // Here with a precision of an arcsecond
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P626',
   value: { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 }
 })
 
 // somevalue:
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P19',
   value: { snaktype: 'somevalue' }
 })
 
 // novalue:
-wdEdit.claim.add({
+wdEdit.claim.create({
   id: 'Q4115189',
   property: 'P27',
   value: { snaktype: 'novalue' }
