@@ -399,61 +399,61 @@ wdEdit.claim.remove({ guid: claimGuids })
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 
 // entity qualifier
-wdEdit.qualifier.add({
+wdEdit.qualifier.set({
   guid: claimGuid,
   property: 'P155',
   value: 'Q4115189'
 })
 
 // string qualifier
-wdEdit.qualifier.add({
+wdEdit.qualifier.set({
   guid: claimGuid,
   property: 'P1545',
   value: '123'
 })
 
 // time qualifier
-wdEdit.qualifier.add({
+wdEdit.qualifier.set({
   guid: claimGuid,
   property: 'P580',
   value: '1802-02-26'
 })
-wdEdit.qualifier.add({
+wdEdit.qualifier.set({
   guid: claimGuid,
   property: 'P580',
   value: { time: '1802-02-26', precision: 11 }
 })
 
 // quantity qualifier
-wdEdit.qualifier.add({
+wdEdit.qualifier.set({
   guid: claimGuid,
   property: 'P2130',
   value: 13
 })
 
 // quantity qualifier with a unit
-wdEdit.qualifier.add({
+wdEdit.qualifier.set({
   guid: claimGuid,
   property: 'P2130',
   value: { amount: 123, unit: 'Q4916' }
 })
 
 // monolingualtext qualifier
-wdEdit.qualifier.add({
+wdEdit.qualifier.set({
   guid: claimGuid,
   property: 'P3132',
   value: { text : "les sanglots long des violons de l'automne", language: 'fr' }
 })
 
 // somevalue
-wdEdit.qualifier.add({
+wdEdit.qualifier.set({
   guid: claimGuid,
   property: 'P3132',
   value: { snaktype : 'somevalue' }
 })
 
 // novalue
-wdEdit.qualifier.add({
+wdEdit.qualifier.set({
   guid: claimGuid,
   property: 'P3132',
   value: { snaktype : 'novalue' }
