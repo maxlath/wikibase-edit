@@ -104,7 +104,7 @@ wdEdit.label.set({ id, language, value }, requestConfig)
 ```
 
 Rules:
-* All parameters can either be set at in `generalConfig` or `requestConfig`, except `userAgent` which can only be set in `generalConfig`
+* All parameters can either be set in `generalConfig` or `requestConfig`, except `userAgent` which can only be set in `generalConfig`
 * Credentials must not be defined on both `generalConfig` and `requestConfig`
 
 ### OAuth setup tip
