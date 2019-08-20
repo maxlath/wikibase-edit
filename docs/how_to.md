@@ -406,7 +406,11 @@ wdEdit.qualifier.add({
 })
 
 // string qualifier
-wdEdit.qualifier.add({ guid: claimGuid, 'P1545', '123')
+wdEdit.qualifier.add({
+  guid: claimGuid,
+  property: 'P1545',
+  value: '123'
+})
 
 // time qualifier
 wdEdit.qualifier.add({
