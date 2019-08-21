@@ -10,7 +10,7 @@ This project has received a [Wikimedia Project Grant](https://meta.wikimedia.org
   <a href="https://wikidata.org"><img src="https://raw.githubusercontent.com/maxlath/wikibase-sdk/master/assets/wikidata.jpg" alt="wikidata"></a>
 </div>
 
-[![NPM](https://nodei.co/npm/wikibase-sdk.png?stars&downloads&downloadRank)](https://npmjs.com/package/wikibase-edit/)
+[![NPM](https://nodei.co/npm/wikibase-edit.png?stars&downloads&downloadRank)](https://npmjs.com/package/wikibase-edit/)
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Node](https://img.shields.io/badge/node-%3E=%20v6.4.0-brightgreen.svg)](http://nodejs.org)
