@@ -37,7 +37,8 @@ module.exports = (initConfig = {}) => {
     },
     entity: {
       create: requestWrapper('entity/create', initConfig),
-      edit: requestWrapper('entity/edit', initConfig)
+      edit: requestWrapper('entity/edit', initConfig),
+      delete: requestWrapper('entity/delete', initConfig)
     }
   }
 

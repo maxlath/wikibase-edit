@@ -39,6 +39,9 @@
     - [create entity](#create-entity)
       - [create item](#create-item)
       - [create property](#create-property)
+    - [delete entity](#delete-entity)
+      - [delete item](#delete-item)
+      - [delete property](#delete-property)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -681,4 +684,15 @@ wdEdit.entity.create({
   const { entity } = res
   console.log('created property id', entity.id)
 })
+```
+
+#### delete entity
+##### delete item
+```js
+wdEdit.entity.delete({ id: 'Q1' })
+```
+
+##### delete property
+```js
+wdEdit.entity.delete({ id: 'P1' })
 ```
