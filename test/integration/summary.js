@@ -7,6 +7,7 @@ const { randomString } = require('../unit/utils')
 const breq = require('bluereq')
 const params = () => ({ labels: { en: randomString() } })
 const toolSignature = '#wikibasejs/edit'
+const resolveTitle = require('../../lib/resolve_title')
 
 describe('summary', function () {
   this.timeout(20 * 1000)
@@ -51,7 +52,10 @@ describe('summary', function () {
 
 const getEditSummary = res => {
   const { id } = res.entity
-  const url = wbk.getRevisions(`Item:${id}`, { limit: 1 })
-  return breq.get(url).get('body')
-  .then(res => Object.values(res.query.pages)[0].revisions[0].comment)
+  return resolveTitle(id, instance)
+  .then(title => {
+    const url = wbk.getRevisions(title, { limit: 1 })
+    return breq.get(url).get('body')
+    .then(res => Object.values(res.query.pages)[0].revisions[0].comment)
+  })
 }
