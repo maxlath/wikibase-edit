@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 3.1.0 - 2019-08-17
+* Added [`entity.delete`](https://github.com/maxlath/wikibase-edit/blob/master/docs/how_to.md#entity-delete) function
+
 ## 3.0.0 - 2019-08-17
 
 **Breaking Changes**:
