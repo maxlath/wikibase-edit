@@ -39,6 +39,9 @@
     - [create entity](#create-entity)
       - [create item](#create-item)
       - [create property](#create-property)
+    - [merge entity](#merge-entity)
+      - [merge item](#merge-item)
+      - [merge property](#merge-property)
     - [delete entity](#delete-entity)
       - [delete item](#delete-item)
       - [delete property](#delete-property)
@@ -685,6 +688,16 @@ wdEdit.entity.create({
   console.log('created property id', entity.id)
 })
 ```
+
+#### merge entity
+##### merge item
+```js
+// Merge Q1 into Q2, turning Q1 into a redirection
+wdEdit.entity.merge({ from: 'Q1', to: 'Q2' })
+```
+
+##### merge property
+Wikibase doesn't allow to merge properties
 
 #### delete entity
 ##### delete item

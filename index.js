@@ -38,6 +38,7 @@ module.exports = (initConfig = {}) => {
     entity: {
       create: requestWrapper('entity/create', initConfig),
       edit: requestWrapper('entity/edit', initConfig),
+      merge: requestWrapper('entity/merge', initConfig),
       delete: requestWrapper('entity/delete', initConfig)
     }
   }
