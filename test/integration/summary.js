@@ -15,8 +15,7 @@ describe('summary', function () {
 
   it('should add a default summary', done => {
     const wbEdit = WBEdit({ instance, credentials })
-    wbEdit.entity.create(params())
-    .then(getEditSummary)
+    postAndGetEditSummary(wbEdit)
     .then(editSummary => {
       editSummary.should.endWith(toolSignature)
       done()
@@ -28,8 +27,7 @@ describe('summary', function () {
     const summary = 'some custom summary'
     const customConfig = Object.assign({ instance, credentials, summary })
     const wbEdit = WBEdit(customConfig)
-    wbEdit.entity.create(params())
-    .then(getEditSummary)
+    postAndGetEditSummary(wbEdit)
     .then(editSummary => {
       editSummary.should.endWith(`${summary} ${toolSignature}`)
       done()
@@ -39,16 +37,35 @@ describe('summary', function () {
 
   it('should accept a custom summary in the request config', done => {
     const summary = 'another custom summary'
-    const wbEdit = WBEdit({ instance, credentials })
-    wbEdit.entity.create(params(), { summary })
-    .then(getEditSummary)
+    const wbEdit = WBEdit({ instance, credentials, summary: 'global summary' })
+    postAndGetEditSummary(wbEdit, { summary })
     .then(editSummary => {
-      editSummary.should.endWith(`${summary} ${toolSignature}`)
+      editSummary.should.endWith(` */ ${summary} ${toolSignature}`)
       done()
     })
     .catch(done)
   })
+
+  it('should not re-use the previous summary', done => {
+    const summary = 'another custom summary'
+    const wbEdit = WBEdit({ instance, credentials })
+    postAndGetEditSummary(wbEdit, { summary })
+    .then(editSummary => {
+      editSummary.should.endWith(` */ ${summary} ${toolSignature}`)
+      return postAndGetEditSummary(wbEdit)
+      .then(editSummary2 => {
+        editSummary2.should.endWith(` */ ${toolSignature}`)
+        done()
+      })
+    })
+    .catch(done)
+  })
 })
+
+const postAndGetEditSummary = (wbEdit, reqConfig) => {
+  return wbEdit.entity.create(params(), reqConfig)
+  .then(getEditSummary)
+}
 
 const getEditSummary = res => {
   const { id } = res.entity
