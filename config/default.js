@@ -1,6 +1,9 @@
 const projectRoot = process.cwd()
 const projectRelativeRequire = relativePath => require(`${projectRoot}/${relativePath}`)
 
+// Log full objects
+require('util').inspect.defaultOptions.depth = null
+
 module.exports = {
   // A function to be able to make project root relative requires
   // ex: __.require('test/integration/utils/utils')
