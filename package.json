@@ -52,6 +52,7 @@
     ],
     "globals": [
       "it",
+      "xit",
       "describe",
       "before",
       "beforeEach"
