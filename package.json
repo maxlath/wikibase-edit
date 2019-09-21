@@ -35,7 +35,7 @@
   "dependencies": {
     "bluereq": "^2.1.7",
     "chalk": "^2.4.1",
-    "wikibase-sdk": "^7.1.1",
+    "wikibase-sdk": "^7.1.2",
     "wikibase-token": "^3.0.4"
   },
   "devDependencies": {
