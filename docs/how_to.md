@@ -9,6 +9,8 @@
 - [Config](#config)
   - [General config](#general-config)
   - [Per-request config](#per-request-config)
+  - [Bot](#bot)
+  - [Maxlag](#maxlag)
   - [OAuth setup tip](#oauth-setup-tip)
 - [API](#api)
   - [Label](#label)
@@ -78,16 +80,15 @@ const generalConfig = {
 
   // Optional
   userAgent: 'my-project-name/v3.2.5 (https://project.website)', // Default: `wikidata-edit/${pkg.version} (https://github.com/maxlath/wikidata-edit)`
-  summary: 'my project name'
-  verbose: true // Default: false,
-  bot: true // Default: false
+  summary: 'my project name',
+  verbose: true, // Default: false,
+  bot: true, // Default: false
+  maxlag: 2 // Default: 5
 }
 
 const wdEdit = require('wikibase-edit')(generalConfig)
 wdEdit.label.set({ id, language, value })
 ```
-
-The `bot` flag will mark your edits as made by a [bot account](https://www.wikidata.org/wiki/Wikidata:Bots)
 
 ### Per-request config
 If you make requests to different Wikibase instances or with different credentials (typically when using different users OAuth keys), you can pass those specific configuration parameter per function call:
@@ -104,7 +105,8 @@ const requestConfig = {
     oauth
   },
   bot: true,
-  summary: 'some request specific edit summary'
+  summary: 'some request specific edit summary',
+  maxlag: 5
 }
 wdEdit.label.set({ id, language, value }, requestConfig)
 ```
@@ -112,6 +114,12 @@ wdEdit.label.set({ id, language, value }, requestConfig)
 Rules:
 * All parameters can either be set in `generalConfig` or `requestConfig`, except `userAgent` which can only be set in `generalConfig`
 * Credentials must not be defined on both `generalConfig` and `requestConfig`
+
+### Bot
+The `bot` flag will mark your edits as made by a [bot account](https://www.wikidata.org/wiki/Wikidata:Bots)
+
+### Maxlag
+See [`maxlag` parameter documentation](https://www.mediawiki.org/wiki/Manual:Maxlag_parameter). If the Wikibase server returns a `maxlag` error, the request will automatically be re-executed after the amount of seconds recommended by the Wikibase server via the `Retry-After` header. This automatic retry can be disabled by setting `autoRetry` to `false` in the general config or the request config.
 
 ### OAuth setup tip
 :warning: If you are going for the OAuth setup, beware of the doc [footnotes](https://www.mediawiki.org/wiki/OAuth/For_Developers#Notes): make sure to use the right URLs before loosing hours at a `invalid signature` error message. You may use this [working implementation](https://github.com/inventaire/inventaire/blob/3dbec57/server/controllers/auth/wikidata_oauth.coffee) as reference.
