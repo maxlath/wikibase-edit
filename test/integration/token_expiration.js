@@ -6,7 +6,7 @@ const { randomString } = __.require('test/unit/utils')
 const { getSandboxItemId } = __.require('test/integration/utils/sandbox_entities')
 const language = 'fr'
 
-describe('alias add', function () {
+describe('token expiration', function () {
   this.timeout(24 * 60 * 60 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
