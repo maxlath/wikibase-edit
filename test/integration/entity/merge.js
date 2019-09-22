@@ -8,7 +8,9 @@ describe('entity merge', function () {
   this.timeout(20 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
-  it('should merge two items', done => {
+  // Do not run this test on the local instance as it currently fails
+  // https://phabricator.wikimedia.org/T232925
+  xit('should merge two items', done => {
     Promise.all([
       wbEdit.entity.create({ labels: { en: randomString() } }),
       wbEdit.entity.create({ labels: { en: randomString() } })
