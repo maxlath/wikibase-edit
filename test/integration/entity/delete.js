@@ -14,7 +14,7 @@ describe('entity delete', function () {
       const { id } = res.entity
       return wbEdit.entity.delete({ id })
       .then(res => {
-        res.delete.title.should.match(id)
+        res.delete.title.should.endWith(id)
         done()
       })
     })
