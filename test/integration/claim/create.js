@@ -29,4 +29,23 @@ describe('claim create', function () {
     })
     .catch(done)
   })
+
+  it('should create a with a negative year', done => {
+    Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('time')
+    ])
+    .then(([ qid, pid ]) => {
+      return wbEdit.claim.create({ id: qid, property: pid, value: '-0028' })
+      .then(res => {
+        res.success.should.equal(1)
+        isGuid(res.claim.id).should.be.true()
+        res.claim.rank.should.equal('normal')
+        res.claim.mainsnak.snaktype.should.equal('value')
+        res.claim.mainsnak.datavalue.value.time.should.equal('-0028-00-00T00:00:00Z')
+        done()
+      })
+    })
+    .catch(done)
+  })
 })
