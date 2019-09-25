@@ -39,6 +39,14 @@ describe('credentials', function () {
     .catch(done)
   })
 
+  it('should reject undefined credentials', done => {
+    const creds = { username: null, password: null }
+    const wbEdit = WBEdit({ instance, credentials: creds })
+    wbEdit.entity.create.bind(null, params())
+    .should.throw('missing credentials')
+    done()
+  })
+
   it('should reject defining credentials both at initialization and request time', done => {
     const wbEdit = WBEdit({ credentials })
     wbEdit.entity.create.bind(null, params(), { instance, credentials })
@@ -51,7 +59,7 @@ describe('credentials', function () {
     const creds = { username, password, oauth: {} }
     const wbEdit = WBEdit({ instance, credentials: creds })
     wbEdit.entity.create.bind(null, params())
-    .should.throw('credentials should either be oauth tokens or a username and password')
+    .should.throw('credentials can not be both oauth tokens, and a username and password')
     done()
   })
 
