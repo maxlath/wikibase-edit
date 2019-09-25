@@ -51,7 +51,7 @@ We are developing and maintaining tools to work with Wikibase from NodeJS, the b
 * [wikibase-sdk](https://github.com/maxlath/wikibase-sdk): a javascript tool suite to query and work with any Wikibase data, heavily used by wikibase-edit and wikibase-cli
 * [wikibase-cli](https://github.com/maxlath/wikibase-cli): The friendly command-line interface to Wikibase
 * [wikidata-filter](https://github.com/maxlath/wikidata-filter): A command-line tool to filter a Wikidata dump by claim
-* [wikidata-subset-search-engine](https://github.com/inventaire/wikidata-subset-search-engine): Tools to setup an ElasticSearch instance fed with subsets of Wikidata
+* [wikidata-subset-search-engine](https://github.com/inventaire/entities-search-engine/tree/wikidata-subset-search-engine): Tools to setup an ElasticSearch instance fed with subsets of Wikidata
 * [wikidata-taxonomy](https://github.com/nichtich/wikidata-taxonomy): Command-line tool to extract taxonomies from Wikidata
 * [Other Wikidata external tools](https://www.wikidata.org/wiki/Wikidata:Tools/External_tools)
 
@@ -59,7 +59,7 @@ We are developing and maintaining tools to work with Wikibase from NodeJS, the b
 
 [![inventaire banner](https://inventaire.io/public/images/inventaire-brittanystevens-13947832357-CC-BY-lighter-blue-4-banner-500px.png)](https://inventaire.io)
 
-Do you know [inventaire.io](https://inventaire.io/)? It's a web app to share books with your friends, built on top of Wikidata! And its [libre software](http://github.com/inventaire/inventaire) too.
+Do you know [Inventaire](https://inventaire.io/)? It's a web app to share books with your friends, built on top of Wikidata! And its [libre software](http://github.com/inventaire/inventaire) too.
 
 ## License
 [MIT](LICENSE.md)
