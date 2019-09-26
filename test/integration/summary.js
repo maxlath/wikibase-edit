@@ -17,7 +17,7 @@ describe('summary', function () {
     const wbEdit = WBEdit({ instance, credentials })
     postAndGetEditSummary(wbEdit)
     .then(editSummary => {
-      editSummary.should.endWith(toolSignature)
+      editSummary.should.endWith(` */ ${toolSignature}`)
       done()
     })
     .catch(done)
@@ -29,7 +29,7 @@ describe('summary', function () {
     const wbEdit = WBEdit(customConfig)
     postAndGetEditSummary(wbEdit)
     .then(editSummary => {
-      editSummary.should.endWith(`${summary} ${toolSignature}`)
+      editSummary.should.endWith(` */ ${summary}`)
       done()
     })
     .catch(done)
@@ -40,7 +40,7 @@ describe('summary', function () {
     const wbEdit = WBEdit({ instance, credentials, summary: 'global summary' })
     postAndGetEditSummary(wbEdit, { summary })
     .then(editSummary => {
-      editSummary.should.endWith(` */ ${summary} ${toolSignature}`)
+      editSummary.should.endWith(` */ ${summary}`)
       done()
     })
     .catch(done)
@@ -51,7 +51,7 @@ describe('summary', function () {
     const wbEdit = WBEdit({ instance, credentials })
     postAndGetEditSummary(wbEdit, { summary })
     .then(editSummary => {
-      editSummary.should.endWith(` */ ${summary} ${toolSignature}`)
+      editSummary.should.endWith(` */ ${summary}`)
       return postAndGetEditSummary(wbEdit)
       .then(editSummary2 => {
         editSummary2.should.endWith(` */ ${toolSignature}`)
