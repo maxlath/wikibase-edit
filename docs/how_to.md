@@ -514,12 +514,12 @@ wdEdit.reference.remove({
 
 ### Reference
 
-#### add reference
+#### set reference
 
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 // reference url (P854) is 'https://example.org/rise-and-fall-of-the-holy-sand-box'
-wdEdit.reference.add({
+wdEdit.reference.set({
   guid: claimGuid,
   property: 'P854',
   value: 'https://example.org/rise-and-fall-of-the-holy-sand-box'
@@ -529,13 +529,13 @@ wdEdit.reference.add({
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 // imported from (P143) the French Wikipedia 'Q8447'
-wdEdit.reference.add({
+wdEdit.reference.set({
   guid: claimGuid,
   property: 'P143',
   value: 'Q8447'
 })
 // imported from (P143) we don't know where
-wdEdit.reference.add({
+wdEdit.reference.set({
   guid: claimGuid,
   property: 'P143',
   value: { snaktype : 'somevalue' }
