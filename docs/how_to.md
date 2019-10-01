@@ -22,7 +22,7 @@
     - [remove aliases](#remove-aliases)
     - [set aliases](#set-aliases)
   - [Claim](#claim)
-    - [add claim](#add-claim)
+    - [create claim](#create-claim)
     - [update claim](#update-claim)
       - [find claim to update by value](#find-claim-to-update-by-value)
       - [find claim to update by claim GUID](#find-claim-to-update-by-claim-guid)
@@ -199,7 +199,7 @@ wdEdit.alias.set({
 ```
 
 ### Claim
-#### add claim
+#### create claim
 ```js
 wdEdit.claim.create({
   id: 'Q4115189',
