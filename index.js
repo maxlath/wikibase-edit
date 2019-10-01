@@ -43,7 +43,9 @@ module.exports = (initConfig = {}) => {
     }
   }
 
+  // Legacy aliases
   API.claim.add = API.claim.create
+  API.qualifier.add = API.qualifier.create
 
   // Bundles: async functions that make use of the primitives to offer more sophisticated behaviors
   API.claim.update = bundleWrapper('claim/update', initConfig, API)
