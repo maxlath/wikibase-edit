@@ -28,7 +28,7 @@
       - [find claim to update by claim GUID](#find-claim-to-update-by-claim-guid)
     - [remove claim](#remove-claim)
   - [Qualifier](#qualifier)
-    - [add qualifier](#add-qualifier)
+    - [set qualifier](#set-qualifier)
     - [update qualifier](#update-qualifier)
     - [remove qualifier](#remove-qualifier)
   - [Reference](#reference)
@@ -407,7 +407,7 @@ wdEdit.claim.remove({ guid: claimGuids })
 
 ### Qualifier
 
-#### add qualifier
+#### set qualifier
 
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
