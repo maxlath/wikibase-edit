@@ -28,6 +28,21 @@ describe('qualifier update', function () {
     .catch(done)
   })
 
+  it('should fetch the properties it needs', done => {
+    const oldValue = randomString()
+    const newValue = randomString()
+    addQualifier('string', oldValue)
+    .then(({ guid, property, qualifier }) => {
+      return updateQualifier({ guid, property: 'P999999', oldValue, newValue })
+      .then(undesiredRes(done))
+      .catch(err => {
+        err.message.should.equal('property not found')
+        done()
+      })
+    })
+    .catch(done)
+  })
+
   it('should reject if old value is missing', done => {
     const oldValue = randomString()
     const newValue = randomString()
