@@ -3,43 +3,43 @@ const bundleWrapper = require('./lib/bundle_wrapper')
 const error_ = require('./lib/error')
 const { name, version, homepage } = require('./package.json')
 
-module.exports = (initConfig = {}) => {
-  if (!initConfig || typeof initConfig !== 'object') error_.new('missing init config object', { initConfig })
+module.exports = (generalConfig = {}) => {
+  if (!generalConfig || typeof generalConfig !== 'object') error_.new('missing general config object', { generalConfig })
 
-  initConfig.userAgent = initConfig.userAgent || `${name}/v${version} (${homepage})`
+  generalConfig.userAgent = generalConfig.userAgent || `${name}/v${version} (${homepage})`
 
   // Primitives: sync functions that return an { action, params } object
   //             passed to request.post by requestWrapper
   const API = {
     label: {
-      set: requestWrapper('label/set', initConfig)
+      set: requestWrapper('label/set', generalConfig)
     },
     description: {
-      set: requestWrapper('description/set', initConfig)
+      set: requestWrapper('description/set', generalConfig)
     },
     alias: {
-      set: requestWrapper('alias/set', initConfig),
-      add: requestWrapper('alias/add', initConfig),
-      remove: requestWrapper('alias/remove', initConfig)
+      set: requestWrapper('alias/set', generalConfig),
+      add: requestWrapper('alias/add', generalConfig),
+      remove: requestWrapper('alias/remove', generalConfig)
     },
     claim: {
-      create: requestWrapper('claim/create', initConfig),
-      set: requestWrapper('claim/set', initConfig),
-      remove: requestWrapper('claim/remove', initConfig)
+      create: requestWrapper('claim/create', generalConfig),
+      set: requestWrapper('claim/set', generalConfig),
+      remove: requestWrapper('claim/remove', generalConfig)
     },
     qualifier: {
-      set: requestWrapper('qualifier/set', initConfig),
-      remove: requestWrapper('qualifier/remove', initConfig)
+      set: requestWrapper('qualifier/set', generalConfig),
+      remove: requestWrapper('qualifier/remove', generalConfig)
     },
     reference: {
-      set: requestWrapper('reference/set', initConfig),
-      remove: requestWrapper('reference/remove', initConfig)
+      set: requestWrapper('reference/set', generalConfig),
+      remove: requestWrapper('reference/remove', generalConfig)
     },
     entity: {
-      create: requestWrapper('entity/create', initConfig),
-      edit: requestWrapper('entity/edit', initConfig),
-      merge: requestWrapper('entity/merge', initConfig),
-      delete: requestWrapper('entity/delete', initConfig)
+      create: requestWrapper('entity/create', generalConfig),
+      edit: requestWrapper('entity/edit', generalConfig),
+      merge: requestWrapper('entity/merge', generalConfig),
+      delete: requestWrapper('entity/delete', generalConfig)
     }
   }
 
@@ -49,8 +49,8 @@ module.exports = (initConfig = {}) => {
   API.reference.add = API.reference.set
 
   // Bundles: async functions that make use of the primitives to offer more sophisticated behaviors
-  API.claim.update = bundleWrapper('claim/update', initConfig, API)
-  API.qualifier.update = bundleWrapper('qualifier/update', initConfig, API)
+  API.claim.update = bundleWrapper('claim/update', generalConfig, API)
+  API.qualifier.update = bundleWrapper('qualifier/update', generalConfig, API)
 
   return API
 }
