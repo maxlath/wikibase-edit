@@ -32,7 +32,7 @@
     - [update qualifier](#update-qualifier)
     - [remove qualifier](#remove-qualifier)
   - [Reference](#reference)
-    - [add reference](#add-reference)
+    - [set reference](#set-reference)
     - [remove reference](#remove-reference)
   - [Entity](#entity)
     - [edit entity](#edit-entity)

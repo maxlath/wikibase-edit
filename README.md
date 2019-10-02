@@ -17,7 +17,7 @@ This project has received a [Wikimedia Project Grant](https://meta.wikimedia.org
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 ## Summary
-
+- [Changelog](CHANGELOG.md)
 - [Install](#install)
 - [How-To](https://github.com/maxlath/wikibase-edit/blob/master/docs/how_to.md)
 - [Development setup](https://github.com/maxlath/wikibase-edit/blob/master/docs/development_setup.md)
@@ -26,6 +26,9 @@ This project has received a [Wikimedia Project Grant](https://meta.wikimedia.org
 - [See Also](#see-also)
 - [You may also like](#you-may-also-like)
 - [License](#license)
+
+## Changelog
+See [CHANGELOG.md](CHANGELOG.md) for version info
 
 ## Install
 ```sh
