@@ -36,10 +36,10 @@ npm install wikibase-edit
 ```
 
 ## How-To
-see [How-to](docs/how_to.md) doc
+See [How-to](docs/how_to.md) doc
 
 ## Development
-see [Development](docs/development.md) doc
+See [Development](docs/development.md) doc
 
 ## Contributing
 
