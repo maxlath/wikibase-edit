@@ -2,6 +2,7 @@ require('should')
 const config = require('config')
 const { __ } = config
 const wbEdit = __.require('.')(config)
+const { simplify } = require('wikibase-sdk')
 const { randomString } = __.require('test/unit/utils')
 const { getSandboxItemId, getSandboxPropertyId } = __.require('test/integration/utils/sandbox_entities')
 
@@ -61,6 +62,29 @@ describe('entity edit', function () {
           entity.claims.should.deepEqual({})
           done()
         })
+      })
+    })
+    .catch(done)
+  })
+
+  it('should set an item claim rank', done => {
+    Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('string')
+    ])
+    .then(([ id, propertyId ]) => {
+      const claims = {}
+      claims[propertyId] = [
+        { rank: 'preferred', value: 'foo' },
+        { rank: 'normal', value: 'bar' },
+        { rank: 'deprecated', value: 'buzz' }
+      ]
+      return wbEdit.entity.edit({ id, claims })
+      .then(res => {
+        const propertyClaims = res.entity.claims[propertyId].slice(-3)
+        const simplifiedPropertyClaims = simplify.propertyClaims(propertyClaims, { keepRanks: true, keepNonTruthy: true })
+        simplifiedPropertyClaims.should.deepEqual(claims[propertyId])
+        done()
       })
     })
     .catch(done)
