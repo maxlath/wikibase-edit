@@ -12,6 +12,7 @@
     "test:unit": "mocha test/unit/*.js test/unit/*/*.js",
     "test:integration": "mocha test/integration/*.js test/integration/*/*.js",
     "prepublishOnly": "npm run lint && npm test",
+    "postpublish": "git push --tags",
     "update-toc": "doctoc docs/*.md"
   },
   "repository": {
