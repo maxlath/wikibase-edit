@@ -32,7 +32,7 @@ describe('alias add', () => {
     const value = [ randomString(), randomString() ]
     const { action, data } = addAlias({ id: someEntityId, language, value })
     action.should.equal('wbsetaliases')
-    data.add.should.deepEqual(value)
+    data.add.should.equal(value.join('|'))
     done()
   })
 })

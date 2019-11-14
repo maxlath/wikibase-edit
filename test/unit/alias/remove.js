@@ -34,7 +34,7 @@ describe('alias remove', () => {
     const value = [ randomString(), randomString() ]
     const { action, data } = removeAlias({ id: someEntityId, language, value })
     action.should.equal('wbsetaliases')
-    data.remove.should.deepEqual(value)
+    data.remove.should.equal(value.join('|'))
     done()
   })
 })

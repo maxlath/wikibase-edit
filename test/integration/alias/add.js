@@ -22,4 +22,24 @@ describe('alias add', function () {
     })
     .catch(done)
   })
+
+  it('should add several aliases', done => {
+    getSandboxItemId()
+    .then(id => {
+      const aliases = [
+        randomString(),
+        randomString(),
+        randomString(),
+        randomString()
+      ]
+      console.log('aliases', aliases)
+      return wbEdit.alias.add({ id, language, value: aliases })
+      .then(res => {
+        console.log('res', res)
+        res.success.should.equal(1)
+        done()
+      })
+    })
+    .catch(done)
+  })
 })
