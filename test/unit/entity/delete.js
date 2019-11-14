@@ -1,6 +1,6 @@
 require('should')
 const { __ } = require('config')
-const { sandboxEntity: id } = __.require('test/unit/utils')
+const { someEntityId: id } = __.require('test/unit/utils')
 const deleteEntity = __.require('lib/entity/delete')
 
 describe('entity delete', () => {

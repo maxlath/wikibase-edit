@@ -21,37 +21,37 @@ describe('reference set', () => {
   })
 
   it('should rejected if not passed a reference value', done => {
-    setReference.bind(null, { guid, property: 'P143' }, properties)
+    setReference.bind(null, { guid, property: 'P2' }, properties)
     .should.throw('missing snak value')
     done()
   })
 
   it('should rejected if passed an invalid reference', done => {
-    const params = { guid, property: 'P143', value: 'not-a-valid-reference' }
+    const params = { guid, property: 'P2', value: 'not-a-valid-reference' }
     setReference.bind(null, params, properties).should.throw('invalid entity value')
     done()
   })
 
   it('should set the action to wbsetreference', done => {
-    const params = { guid, property: 'P143', value: 'Q1' }
+    const params = { guid, property: 'P2', value: 'Q1' }
     setReference(params, properties).action.should.equal('wbsetreference')
     done()
   })
 
   it('should format the data for a url', done => {
-    const params = { guid, property: 'P854', value: 'http://foo.bar' }
+    const params = { guid, property: 'P7', value: 'http://foo.bar' }
     setReference(params, properties).data.should.deepEqual({
       statement: guid,
-      snaks: '{"P854":[{"property":"P854","snaktype":"value","datavalue":{"type":"string","value":"http://foo.bar"}}]}'
+      snaks: '{"P7":[{"property":"P7","snaktype":"value","datavalue":{"type":"string","value":"http://foo.bar"}}]}'
     })
     done()
   })
 
   it('should set a reference with a special snaktype', done => {
-    const params = { guid, property: 'P854', value: { snaktype: 'somevalue' } }
+    const params = { guid, property: 'P7', value: { snaktype: 'somevalue' } }
     setReference(params, properties).data.should.deepEqual({
       statement: guid,
-      snaks: '{"P854":[{"snaktype":"somevalue","property":"P854"}]}'
+      snaks: '{"P7":[{"snaktype":"somevalue","property":"P7"}]}'
     })
     done()
   })

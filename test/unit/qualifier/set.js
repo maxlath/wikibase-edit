@@ -23,40 +23,40 @@ describe('qualifier set', () => {
   })
 
   it('should rejected if not passed a value', done => {
-    const params = { guid, property: 'P155' }
+    const params = { guid, property: 'P2' }
     setQualifier.bind(null, params).should.throw('missing snak value')
     done()
   })
 
   it('should rejected if passed an invalid value', done => {
-    const params = { guid, property: 'P155', value: 'not-a-valid-value' }
+    const params = { guid, property: 'P2', value: 'not-a-valid-value' }
     setQualifier.bind(null, params).should.throw('invalid entity value')
     done()
   })
 
   it('should rejected if passed an hash', done => {
-    const params = { guid, hash: 'foo', property: 'P155', value: 'Q123' }
+    const params = { guid, hash: 'foo', property: 'P2', value: 'Q123' }
     setQualifier.bind(null, params).should.throw('invalid hash')
     done()
   })
 
   it('should set the hash', done => {
-    const params = { guid, hash, property: 'P155', value: 'Q123' }
+    const params = { guid, hash, property: 'P2', value: 'Q123' }
     setQualifier(params).data.snakhash.should.equal(hash)
     done()
   })
 
   it('should set the action to wbsetreference', done => {
-    const params = { guid, property: 'P155', value: 'Q123' }
+    const params = { guid, property: 'P2', value: 'Q123' }
     setQualifier(params).action.should.equal('wbsetqualifier')
     done()
   })
 
   it('should format the data for a string', done => {
-    const params = { guid, property: 'P1545', value: '123' }
+    const params = { guid, property: 'P1', value: '123' }
     setQualifier(params).data.should.deepEqual({
       claim: guid,
-      property: 'P1545',
+      property: 'P1',
       snaktype: 'value',
       value: '"123"'
     })
@@ -64,10 +64,10 @@ describe('qualifier set', () => {
   })
 
   it('should set a time qualifier', done => {
-    const params = { guid, property: 'P580', value: '1802-02' }
+    const params = { guid, property: 'P4', value: '1802-02' }
     setQualifier(params).data.should.deepEqual({
       claim: guid,
-      property: 'P580',
+      property: 'P4',
       snaktype: 'value',
       value: '{"time":"+1802-02-00T00:00:00Z","timezone":0,"before":0,"after":0,"precision":10,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}'
     })
@@ -75,10 +75,10 @@ describe('qualifier set', () => {
   })
 
   it('should set a time qualifier with precision', done => {
-    const params = { guid, property: 'P580', value: { time: '1802-02', precision: 10 } }
+    const params = { guid, property: 'P4', value: { time: '1802-02', precision: 10 } }
     setQualifier(params).data.should.deepEqual({
       claim: guid,
-      property: 'P580',
+      property: 'P4',
       snaktype: 'value',
       value: '{"time":"+1802-02-00T00:00:00Z","timezone":0,"before":0,"after":0,"precision":10,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}'
     })
@@ -86,10 +86,10 @@ describe('qualifier set', () => {
   })
 
   it('should set a quantity qualifier', done => {
-    const params = { guid, property: 'P2130', value: { amount: 123, unit: 'Q4916' } }
+    const params = { guid, property: 'P8', value: { amount: 123, unit: 'Q4916' } }
     setQualifier(params).data.should.deepEqual({
       claim: guid,
-      property: 'P2130',
+      property: 'P8',
       snaktype: 'value',
       value: `{"amount":"+123","unit":"${instance}/entity/Q4916"}`
     })
@@ -97,10 +97,10 @@ describe('qualifier set', () => {
   })
 
   it('should set a monolingualtext qualifier', done => {
-    const params = { guid, property: 'P3132', value: { text: 'foo', language: 'fr' } }
+    const params = { guid, property: 'P9', value: { text: 'foo', language: 'fr' } }
     setQualifier(params).data.should.deepEqual({
       claim: guid,
-      property: 'P3132',
+      property: 'P9',
       snaktype: 'value',
       value: '{"text":"foo","language":"fr"}'
     })
@@ -108,10 +108,10 @@ describe('qualifier set', () => {
   })
 
   it('should set a qualifier with a special snaktype', done => {
-    const params = { guid, property: 'P578', value: { snaktype: 'novalue' } }
+    const params = { guid, property: 'P4', value: { snaktype: 'novalue' } }
     setQualifier(params).data.should.deepEqual({
       claim: guid,
-      property: 'P578',
+      property: 'P4',
       snaktype: 'novalue'
     })
     done()

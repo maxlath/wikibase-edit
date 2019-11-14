@@ -1,12 +1,12 @@
 require('should')
 const { __, instance } = require('config')
-const { randomString, sandboxEntity: id, properties } = __.require('test/unit/utils')
+const { randomString, someEntityId: id, properties } = __.require('test/unit/utils')
 const _editEntity = __.require('lib/entity/edit')
 const editEntity = params => _editEntity(params, properties, instance)
 
 describe('entity edit', () => {
   it('should reject a missing id', done => {
-    const params = { claims: { P31: 'bla' } }
+    const params = { claims: { someWikibaseItemPropertyId: 'bla' } }
     editEntity.bind(null, params).should.throw('invalid entity id')
     done()
   })
@@ -18,7 +18,7 @@ describe('entity edit', () => {
   })
 
   it('should reject invalid claims', done => {
-    const params = { id, claims: { P31: 'bla' } }
+    const params = { id, claims: { P2: 'bla' } }
     editEntity.bind(null, params).should.throw('invalid entity value')
     done()
   })
@@ -51,7 +51,7 @@ describe('entity edit', () => {
       labels: { fr: label },
       aliases: { fr: frAlias, en: [ enAlias ] },
       descriptions: { fr: description },
-      claims: { P1775: 'Q3576110' }
+      claims: { P2: 'Q3576110' }
     })
     data.id.should.equal(id)
     JSON.parse(data.data).should.deepEqual({
@@ -66,12 +66,12 @@ describe('entity edit', () => {
         fr: { language: 'fr', value: description }
       },
       claims: {
-        P1775: [
+        P2: [
           {
             rank: 'normal',
             type: 'statement',
             mainsnak: {
-              property: 'P1775',
+              property: 'P2',
               snaktype: 'value',
               datavalue: {
                 type: 'wikibase-entityid',
@@ -92,25 +92,25 @@ describe('entity edit', () => {
     const { data } = editEntity({
       id,
       claims: {
-        P369: [
-          { value: 'Q5111731', qualifiers: { P1545: '17', P1416: [ 'Q13406268' ] } },
+        P2: [
+          { value: 'Q5111731', qualifiers: { P1: '17', P2: [ 'Q13406268' ] } },
           {
             value: 'Q2622002',
             qualifiers: {
-              P580: '1789-08-04',
-              P1106: { amount: 9001, unit: 'Q7727' },
-              P1476: { text: 'bulgroz', language: 'fr' }
+              P4: '1789-08-04',
+              P8: { amount: 9001, unit: 'Q7727' },
+              P9: { text: 'bulgroz', language: 'fr' }
             }
           }
         ]
       }
     })
-    JSON.parse(data.data).claims.P369.should.deepEqual([
+    JSON.parse(data.data).claims.P2.should.deepEqual([
       {
         rank: 'normal',
         type: 'statement',
         mainsnak: {
-          property: 'P369',
+          property: 'P2',
           snaktype: 'value',
           datavalue: {
             type: 'wikibase-entityid',
@@ -118,16 +118,16 @@ describe('entity edit', () => {
           }
         },
         qualifiers: {
-          P1545: [
+          P1: [
             {
-              property: 'P1545',
+              property: 'P1',
               snaktype: 'value',
               datavalue: { type: 'string', value: '17' }
             }
           ],
-          P1416: [
+          P2: [
             {
-              property: 'P1416',
+              property: 'P2',
               snaktype: 'value',
               datavalue: {
                 type: 'wikibase-entityid',
@@ -141,7 +141,7 @@ describe('entity edit', () => {
         rank: 'normal',
         type: 'statement',
         mainsnak: {
-          property: 'P369',
+          property: 'P2',
           snaktype: 'value',
           datavalue: {
             type: 'wikibase-entityid',
@@ -149,9 +149,9 @@ describe('entity edit', () => {
           }
         },
         qualifiers: {
-          P580: [
+          P4: [
             {
-              property: 'P580',
+              property: 'P4',
               snaktype: 'value',
               datavalue: {
                 type: 'time',
@@ -166,9 +166,9 @@ describe('entity edit', () => {
               }
             }
           ],
-          P1106: [
+          P8: [
             {
-              property: 'P1106',
+              property: 'P8',
               snaktype: 'value',
               datavalue: {
                 type: 'quantity',
@@ -176,9 +176,9 @@ describe('entity edit', () => {
               }
             }
           ],
-          P1476: [
+          P9: [
             {
-              property: 'P1476',
+              property: 'P9',
               snaktype: 'value',
               datavalue: {
                 type: 'monolingualtext',
@@ -194,16 +194,16 @@ describe('entity edit', () => {
 
   it('should format an entity with rich qualifier', done => {
     const qualifiers = {
-      P2109: [ { value: { amount: 100, unit: 'Q6982035' } } ]
+      P8: [ { value: { amount: 100, unit: 'Q6982035' } } ]
     }
     const { data } = editEntity({
       id,
       claims: {
-        P516: [ { value: 'Q54173', qualifiers } ]
+        P2: [ { value: 'Q54173', qualifiers } ]
       }
     })
-    JSON.parse(data.data).claims.P516[0].qualifiers.P2109[0].should.deepEqual({
-      property: 'P2109',
+    JSON.parse(data.data).claims.P2[0].qualifiers.P8[0].should.deepEqual({
+      property: 'P8',
       snaktype: 'value',
       datavalue: {
         type: 'quantity',
@@ -218,16 +218,16 @@ describe('entity edit', () => {
 
   it('should format an entity with a qualifier with a special snaktype', done => {
     const qualifiers = {
-      P571: { snaktype: 'somevalue' }
+      P4: { snaktype: 'somevalue' }
     }
     const { data } = editEntity({
       id,
       claims: {
-        P516: [ { value: 'Q54173', qualifiers } ]
+        P2: [ { value: 'Q54173', qualifiers } ]
       }
     })
-    JSON.parse(data.data).claims.P516[0].qualifiers.P571[0].should.deepEqual({
-      property: 'P571',
+    JSON.parse(data.data).claims.P2[0].qualifiers.P4[0].should.deepEqual({
+      property: 'P4',
       snaktype: 'somevalue'
     })
     done()
@@ -235,16 +235,16 @@ describe('entity edit', () => {
 
   it('should format an entity with a time qualifier', done => {
     const qualifiers = {
-      P571: { value: '2019-04-01T00:00:00.000Z' }
+      P4: { value: '2019-04-01T00:00:00.000Z' }
     }
     const { data } = editEntity({
       id,
       claims: {
-        P516: [ { value: 'Q54173', qualifiers } ]
+        P2: [ { value: 'Q54173', qualifiers } ]
       }
     })
-    JSON.parse(data.data).claims.P516[0].qualifiers.P571[0].should.deepEqual({
-      property: 'P571',
+    JSON.parse(data.data).claims.P2[0].qualifiers.P4[0].should.deepEqual({
+      property: 'P4',
       snaktype: 'value',
       datavalue: {
         type: 'time',
@@ -263,23 +263,23 @@ describe('entity edit', () => {
 
   it('should format an entity with a reference', done => {
     const reference = {
-      P855: 'https://example.org',
-      P143: 'Q8447'
+      P7: 'https://example.org',
+      P2: 'Q8447'
     }
     const { data } = editEntity({
       id,
       claims: {
-        P369: { value: 'Q2622002', references: reference }
+        P2: { value: 'Q2622002', references: reference }
       }
     })
-    JSON.parse(data.data).claims.P369[0].references[0].snaks.should.deepEqual([
+    JSON.parse(data.data).claims.P2[0].references[0].snaks.should.deepEqual([
       {
-        property: 'P855',
+        property: 'P7',
         snaktype: 'value',
         datavalue: { type: 'string', value: 'https://example.org' }
       },
       {
-        property: 'P143',
+        property: 'P2',
         snaktype: 'value',
         datavalue: {
           type: 'wikibase-entityid',
@@ -293,17 +293,17 @@ describe('entity edit', () => {
   it('should format an entity with a reference formatted with a snaks object', done => {
     const reference = {
       snaks: {
-        P855: 'https://example.org',
-        P143: 'Q8447'
+        P7: 'https://example.org',
+        P2: 'Q8447'
       }
     }
     const { data } = editEntity({
       id,
       claims: {
-        P369: { value: 'Q2622002', references: [ reference ] }
+        P2: { value: 'Q2622002', references: [ reference ] }
       }
     })
-    JSON.parse(data.data).claims.P369[0].references[0].snaks[0]
+    JSON.parse(data.data).claims.P2[0].references[0].snaks[0]
     .datavalue.value.should.equal('https://example.org')
     done()
   })
@@ -312,12 +312,12 @@ describe('entity edit', () => {
   //   editEntity({
   //     id,
   //     claims: {
-  //       P369: [
+  //       P2: [
   //         {
   //           value: 'Q2622002',
   //           references: [
-  //             { P855: 'https://example.org', P143: 'Q8447' },
-  //             { P855: 'https://example2.org', P143: 'Q8447' }
+  //             { P7: 'https://example.org', P2: 'Q8447' },
+  //             { P7: 'https://example2.org', P2: 'Q8447' }
   //           ]
   //         }
   //       ]
@@ -325,8 +325,8 @@ describe('entity edit', () => {
   //   })
   //   .then(res => {
   //     res.success.should.equal(1)
-  //     const lastClaim = res.entity.claims.P369.slice(-1)[0]
-  //     const urlRef = lastClaim.references[0].snaks.P855[0]
+  //     const lastClaim = res.entity.claims.P2.slice(-1)[0]
+  //     const urlRef = lastClaim.references[0].snaks.P7[0]
   //     urlRef.datavalue.value.should.equal('https://example.org')
   //     done()
   //   })
@@ -336,7 +336,7 @@ describe('entity edit', () => {
   // xit('should format an entity with a monolingual text claim', done => {
   //   editEntity({
   //     id,
-  //     claims: { P1705: { text: 'Lundeborg', 'language': 'mul' } }
+  //     claims: { P9: { text: 'Lundeborg', 'language': 'mul' } }
   //   })
   //   .then(res => {
   //     res.success.should.equal(1)
@@ -348,7 +348,7 @@ describe('entity edit', () => {
   // xit('should format an entity with a quantity claim', done => {
   //   editEntity({
   //     id,
-  //     claims: { P1106: { amount: 9001, unit: 'Q7727' } }
+  //     claims: { P8: { amount: 9001, unit: 'Q7727' } }
   //   })
   //   .then(res => {
   //     res.success.should.equal(1)
@@ -361,9 +361,9 @@ describe('entity edit', () => {
   //   editEntity({
   //     id,
   //     claims: {
-  //       P1106: {
+  //       P8: {
   //         value: { amount: 9002, unit: 'Q7727' },
-  //         qualifiers: { P580: '1789-08-04' }
+  //         qualifiers: { P4: '1789-08-04' }
   //       }
   //     }
   //   })
@@ -377,7 +377,7 @@ describe('entity edit', () => {
   // xit('should format an entity with a globe coordinate claim', done => {
   //   editEntity({
   //     id,
-  //     claims: { P626: { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 } }
+  //     claims: { P6: { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 } }
   //   })
   //   .then(res => {
   //     res.success.should.equal(1)
@@ -390,14 +390,14 @@ describe('entity edit', () => {
   //   editEntity({
   //     id,
   //     claims: {
-  //       P369: { snaktype: 'somevalue' },
-  //       P626: { snaktype: 'novalue' }
+  //       P2: { snaktype: 'somevalue' },
+  //       P6: { snaktype: 'novalue' }
   //     }
   //   })
   //   .then(res => {
   //     res.success.should.equal(1)
-  //     res.entity.claims.P369.slice(-1)[0].mainsnak.snaktype.should.equal('somevalue')
-  //     res.entity.claims.P626.slice(-1)[0].mainsnak.snaktype.should.equal('novalue')
+  //     res.entity.claims.P2.slice(-1)[0].mainsnak.snaktype.should.equal('somevalue')
+  //     res.entity.claims.P6.slice(-1)[0].mainsnak.snaktype.should.equal('novalue')
   //     done()
   //   })
   //   .catch(done)
@@ -407,21 +407,21 @@ describe('entity edit', () => {
   //   editEntity({
   //     id,
   //     claims: {
-  //       P369: { rank: 'deprecated', snaktype: 'somevalue' },
-  //       P626: { rank: 'deprecated', latitude: 0.1, longitude: 0.1, precision: 1 / 360 },
-  //       P6089: { rank: 'preferred', value: 123 }
+  //       P2: { rank: 'deprecated', snaktype: 'somevalue' },
+  //       P6: { rank: 'deprecated', latitude: 0.1, longitude: 0.1, precision: 1 / 360 },
+  //       P8: { rank: 'preferred', value: 123 }
   //     }
   //   })
   //   .then(res => {
   //     res.success.should.equal(1)
-  //     res.entity.claims.P369.slice(-1)[0].rank.should.equal('deprecated')
-  //     res.entity.claims.P369.slice(-1)[0].mainsnak.snaktype.should.equal('somevalue')
-  //     res.entity.claims.P626.slice(-1)[0].rank.should.equal('deprecated')
-  //     res.entity.claims.P626.slice(-1)[0].mainsnak.datavalue.value.latitude.should.equal(0.1)
-  //     res.entity.claims.P626.slice(-1)[0].mainsnak.datavalue.value.longitude.should.equal(0.1)
-  //     res.entity.claims.P626.slice(-1)[0].mainsnak.datavalue.value.precision.should.equal(0.0027777777777778)
-  //     res.entity.claims.P6089.slice(-1)[0].rank.should.equal('preferred')
-  //     res.entity.claims.P6089.slice(-1)[0].mainsnak.datavalue.value.amount.should.equal('+123')
+  //     res.entity.claims.P2.slice(-1)[0].rank.should.equal('deprecated')
+  //     res.entity.claims.P2.slice(-1)[0].mainsnak.snaktype.should.equal('somevalue')
+  //     res.entity.claims.P6.slice(-1)[0].rank.should.equal('deprecated')
+  //     res.entity.claims.P6.slice(-1)[0].mainsnak.datavalue.value.latitude.should.equal(0.1)
+  //     res.entity.claims.P6.slice(-1)[0].mainsnak.datavalue.value.longitude.should.equal(0.1)
+  //     res.entity.claims.P6.slice(-1)[0].mainsnak.datavalue.value.precision.should.equal(0.0027777777777778)
+  //     res.entity.claims.P8.slice(-1)[0].rank.should.equal('preferred')
+  //     res.entity.claims.P8.slice(-1)[0].mainsnak.datavalue.value.amount.should.equal('+123')
   //     done()
   //   })
   //   .catch(done)
@@ -430,17 +430,17 @@ describe('entity edit', () => {
   // xit('should be able to remove a claim', done => {
   //   editEntity({
   //     id,
-  //     claims: { P369: sandboxEntity }
+  //     claims: { P2: sandboxEntity }
   //   })
   //   .then(res => {
-  //     const guid = res.entity.claims.P369.slice(-1)[0].id
+  //     const guid = res.entity.claims.P2.slice(-1)[0].id
   //     return editEntity({
   //       id,
-  //       claims: { P369: { id: guid, remove: true } }
+  //       claims: { P2: { id: guid, remove: true } }
   //     })
   //     .then(res => {
   //       res.success.should.equal(1)
-  //       const propClaims = res.entity.claims.P369
+  //       const propClaims = res.entity.claims.P2
   //       if (propClaims) {
   //         const guids = propClaims.map(claim => claim.id)
   //         guids.includes(guid).should.be.false()
@@ -506,16 +506,16 @@ describe('entity edit', () => {
   // xit('should edit the existing claim when passed an id', done => {
   //   editEntity({
   //     id,
-  //     claims: { P370: 'ABC' }
+  //     claims: { P1: 'ABC' }
   //   })
   //   .then(res => {
-  //     const claim = res.entity.claims.P370.slice(-1)[0]
+  //     const claim = res.entity.claims.P1.slice(-1)[0]
   //     return editEntity({
   //       id,
-  //       claims: { P370: { id: claim.id, value: 'DEF', rank: 'preferred' } }
+  //       claims: { P1: { id: claim.id, value: 'DEF', rank: 'preferred' } }
   //     })
   //     .then(res => {
-  //       const updatedClaim = res.entity.claims.P370.find(propClaim => propClaim.id === claim.id)
+  //       const updatedClaim = res.entity.claims.P1.find(propClaim => propClaim.id === claim.id)
   //       console.log('updatedClaim', updatedClaim)
   //       updatedClaim.mainsnak.datavalue.value.should.equal('DEF')
   //       updatedClaim.rank.should.equal('preferred')

@@ -12,7 +12,7 @@ describe('entity create', () => {
   })
 
   it('should then use entity.edit validation features', done => {
-    const params = { claims: { P31: 'bla' } }
+    const params = { claims: { P2: 'bla' } }
     createEntity.bind(null, params).should.throw('invalid entity value')
     done()
   })
@@ -26,7 +26,7 @@ describe('entity create', () => {
       labels: { en: label },
       aliases: { fr: frAlias, en: [ enAlias ] },
       descriptions: { fr: description },
-      claims: { P17: 'Q166376' }
+      claims: { P2: 'Q166376' }
     }
     const { data } = createEntity(params)
     data.new.should.equal('item')
@@ -40,12 +40,12 @@ describe('entity create', () => {
         fr: { language: 'fr', value: description }
       },
       claims: {
-        P17: [
+        P2: [
           {
             rank: 'normal',
             type: 'statement',
             mainsnak: {
-              property: 'P17',
+              property: 'P2',
               snaktype: 'value',
               datavalue: {
                 type: 'wikibase-entityid',
