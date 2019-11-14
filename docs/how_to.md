@@ -86,15 +86,28 @@ const generalConfig = {
   maxlag: 2 // Default: 5
 }
 
-const wdEdit = require('wikibase-edit')(generalConfig)
-wdEdit.label.set({ id, language, value })
+const wbEdit = require('wikibase-edit')(generalConfig)
+wbEdit.label.set({ id, language, value })
+```
+
+So if you have a local Wikibase instance installed via [`wikibase-docker`](https://github.com/wmde/wikibase-docker) with the default settings, that would look something like:
+```js
+const generalConfig = {
+  instance: 'http://localhost:8181',
+  credentials: {
+    username: 'WikibaseAdmin',
+    password: 'WikibaseDockerAdminPass'
+  }
+}
+
+const wbEdit = require('wikibase-edit')(generalConfig)
 ```
 
 ### Per-request config
 If you make requests to different Wikibase instances or with different credentials (typically when using different users OAuth keys), you can pass those specific configuration parameter per function call:
 ```js
 const generalConfig = { userAgent }
-const wdEdit = require('wikibase-edit')(generalConfig)
+const wbEdit = require('wikibase-edit')(generalConfig)
 const requestConfig = {
   instance: 'https://project-915215.wikibase.farm',
   credentials: {
@@ -108,7 +121,7 @@ const requestConfig = {
   summary: 'some request specific edit summary',
   maxlag: 5
 }
-wdEdit.label.set({ id, language, value }, requestConfig)
+wbEdit.label.set({ id, language, value }, requestConfig)
 ```
 
 Rules:
@@ -132,7 +145,7 @@ See also [Wikidata API documentation](https://www.wikidata.org/w/api.php).
 ### Label
 #### set label
 ```js
-wdEdit.label.set({
+wbEdit.label.set({
   id: 'Q4115189',
   language: 'fr',
   value: 'Bac à sable bulgroz'
@@ -142,7 +155,7 @@ wdEdit.label.set({
 ### Description
 #### set description
 ```js
-wdEdit.description.set({
+wbEdit.description.set({
   id: 'Q4115189',
   language: 'fr',
   value: 'description du Bac à sable bulgroz'
@@ -153,13 +166,13 @@ wdEdit.description.set({
 #### add aliases
 ```js
 // Add one alias
-wdEdit.alias.add({
+wbEdit.alias.add({
   id: 'Q4115189',
   language: 'fr',
   value: 'foo'
 })
 // Add several aliases
-wdEdit.alias.add({
+wbEdit.alias.add({
   id: 'Q4115189',
   language: 'fr',
   value: [ 'foo', 'bar' ]
@@ -169,13 +182,13 @@ wdEdit.alias.add({
 #### remove aliases
 ```js
 // Remove one alias
-wdEdit.alias.remove({
+wbEdit.alias.remove({
   id: 'Q4115189',
   language: 'fr',
   value: 'foo'
 })
 // Remove several aliases
-wdEdit.alias.remove({
+wbEdit.alias.remove({
   id: 'Q4115189',
   language: 'fr',
   value: [ 'foo', 'bar' ]
@@ -185,13 +198,13 @@ wdEdit.alias.remove({
 #### set aliases
 ```js
 // Replace the current list of aliases in French on Q4115189 by 'foo'
-wdEdit.alias.set({
+wbEdit.alias.set({
   id: 'Q4115189',
   language: 'fr',
   value: 'foo'
 })
 // Replace the current list of aliases in French on Q4115189 by 'foo' and 'bar'
-wdEdit.alias.set({
+wbEdit.alias.set({
   id: 'Q4115189',
   language: 'fr',
   value: [ 'foo', 'bar']
@@ -201,7 +214,7 @@ wdEdit.alias.set({
 ### Claim
 #### create claim
 ```js
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P2002',
   value: 'bulgroz'
@@ -211,7 +224,7 @@ wdEdit.claim.create({
 Special cases:
 ```js
 // Monolingualtext property
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P1476',
   value: { text: 'bulgroz', language: 'it' }
@@ -219,7 +232,7 @@ wdEdit.claim.create({
 
 // Quantity with a unit
 // Example here with the unit 'minute' (Q7727)
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P1106',
   value: { amount: 9001, unit: 'Q7727' }
@@ -227,7 +240,7 @@ wdEdit.claim.create({
 
 // Time property
 // day, with implicit precision
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: '1802-02-26'
@@ -235,82 +248,82 @@ wdEdit.claim.create({
 
 // day, with explicit precision
 // cf https://www.wikidata.org/wiki/Help:Dates#Precision
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '1802-02-26', precision: 11 }
 })
 
 // month
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: '1802-02'
 })
 
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '1802-02', precision: 10 }
 })
 
 // year
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: '1802'
 })
 
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '1802', precision: 9 }
 })
 
 // decade
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '1800', precision: 8 }
 })
 
 // century
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '1800', precision: 7 }
 })
 
 // millennium
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '1000', precision: 6 }
 })
 
 // ten thousand years
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '-50000', precision: 5 }
 })
 
 // hundred thousand years
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '-100000', precision: 4 }
 })
 
 // million years
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '-1000000', precision: 3 }
 })
 
 // billion years
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: { time: '-13000000000', precision: 0 }
@@ -318,14 +331,14 @@ wdEdit.claim.create({
 
 // Quantity:
 // pass a single value for a count without a specific unit
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P1106',
   value: 9000
 })
 
 // pass an object for a value with a specific unit. Example here to specify minutes (Q7727)
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P2097',
   value: { amount: 9000, unit: 'Q7727' }
@@ -333,21 +346,21 @@ wdEdit.claim.create({
 
 // Globe Coordinate:
 // Here with a precision of an arcsecond
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P626',
   value: { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 }
 })
 
 // somevalue:
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P19',
   value: { snaktype: 'somevalue' }
 })
 
 // novalue:
-wdEdit.claim.create({
+wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P27',
   value: { snaktype: 'novalue' }
@@ -360,7 +373,7 @@ A function to change the value of an existing claim without having to remove it 
 
 ##### find claim to update by value
 ```js
-wdEdit.claim.update({
+wbEdit.claim.update({
   id: 'Q4115189',
   property: 'P2002',
   oldValue: 'initial-value',
@@ -373,7 +386,7 @@ It can also be used for rich values such as `globecoordinate` claims:
 ```js
 const oldValue = { latitude: 18.65, longitude: 226.2, precision: 0.01, globe: "http://www.wikidata.org/entity/Q111" }
 const newValue = { latitude: 18.65, longitude: 226.2, precision: 0.01, globe: "http://www.wikidata.org/entity/Q313" }
-wdEdit.claim.update({
+wbEdit.claim.update({
   id: 'Q4115189',
   property: 'P2002',
   oldValue,
@@ -385,7 +398,7 @@ wdEdit.claim.update({
 Instead of passing the old value, you can pass the claim GUID
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
-wdEdit.claim.update({
+wbEdit.claim.update({
   guid: claimGuid,
   newValue: 'new-value'
 })
@@ -395,14 +408,14 @@ wdEdit.claim.update({
 ```js
 // remove one claim
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
-wdEdit.claim.remove({ guid: claimGuid })
+wbEdit.claim.remove({ guid: claimGuid })
 
 // remove several claims on the same entity
 const claimGuids = [
   'Q4115189$BB467A9A-9123-4D0C-A87A-B7BF7ACD6477',
   'Q4115189$D2CC0D8C-187C-40CD-8CF3-F6AAFE1496F4'
 ]
-wdEdit.claim.remove({ guid: claimGuids })
+wbEdit.claim.remove({ guid: claimGuids })
 ```
 
 ### Qualifier
@@ -413,61 +426,61 @@ wdEdit.claim.remove({ guid: claimGuids })
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 
 // entity qualifier
-wdEdit.qualifier.set({
+wbEdit.qualifier.set({
   guid: claimGuid,
   property: 'P155',
   value: 'Q4115189'
 })
 
 // string qualifier
-wdEdit.qualifier.set({
+wbEdit.qualifier.set({
   guid: claimGuid,
   property: 'P1545',
   value: '123'
 })
 
 // time qualifier
-wdEdit.qualifier.set({
+wbEdit.qualifier.set({
   guid: claimGuid,
   property: 'P580',
   value: '1802-02-26'
 })
-wdEdit.qualifier.set({
+wbEdit.qualifier.set({
   guid: claimGuid,
   property: 'P580',
   value: { time: '1802-02-26', precision: 11 }
 })
 
 // quantity qualifier
-wdEdit.qualifier.set({
+wbEdit.qualifier.set({
   guid: claimGuid,
   property: 'P2130',
   value: 13
 })
 
 // quantity qualifier with a unit
-wdEdit.qualifier.set({
+wbEdit.qualifier.set({
   guid: claimGuid,
   property: 'P2130',
   value: { amount: 123, unit: 'Q4916' }
 })
 
 // monolingualtext qualifier
-wdEdit.qualifier.set({
+wbEdit.qualifier.set({
   guid: claimGuid,
   property: 'P3132',
   value: { text : "les sanglots long des violons de l'automne", language: 'fr' }
 })
 
 // somevalue
-wdEdit.qualifier.set({
+wbEdit.qualifier.set({
   guid: claimGuid,
   property: 'P3132',
   value: { snaktype : 'somevalue' }
 })
 
 // novalue
-wdEdit.qualifier.set({
+wbEdit.qualifier.set({
   guid: claimGuid,
   property: 'P3132',
   value: { snaktype : 'novalue' }
@@ -477,7 +490,7 @@ wdEdit.qualifier.set({
 #### update qualifier
 
 ```js
-wdEdit.qualifier.update({
+wbEdit.qualifier.update({
   guid: 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F',
   property: 'P155',
   oldValue: 'Q4115189',
@@ -485,14 +498,14 @@ wdEdit.qualifier.update({
 })
 
 // somevalue
-wdEdit.qualifier.update({
+wbEdit.qualifier.update({
   guid,
   property,
   oldValue,
   newValue: { snaktype : 'somevalue' }
 })
 // novalue
-wdEdit.qualifier.update({
+wbEdit.qualifier.update({
   guid,
   property,
   oldValue,
@@ -506,7 +519,7 @@ wdEdit.qualifier.update({
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 // qualifierHash can be either a single hash string or an array of reference hash strings
 const qualifierHash = '239ef1c81ef0c24611d6d7c294d07036e82c4666'
-wdEdit.reference.remove({
+wbEdit.reference.remove({
   guid: claimGuid,
   hash: qualifierHash
 })
@@ -519,7 +532,7 @@ wdEdit.reference.remove({
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 // reference url (P854) is 'https://example.org/rise-and-fall-of-the-holy-sand-box'
-wdEdit.reference.set({
+wbEdit.reference.set({
   guid: claimGuid,
   property: 'P854',
   value: 'https://example.org/rise-and-fall-of-the-holy-sand-box'
@@ -529,13 +542,13 @@ wdEdit.reference.set({
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 // imported from (P143) the French Wikipedia 'Q8447'
-wdEdit.reference.set({
+wbEdit.reference.set({
   guid: claimGuid,
   property: 'P143',
   value: 'Q8447'
 })
 // imported from (P143) we don't know where
-wdEdit.reference.set({
+wbEdit.reference.set({
   guid: claimGuid,
   property: 'P143',
   value: { snaktype : 'somevalue' }
@@ -547,7 +560,7 @@ wdEdit.reference.set({
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 // referenceHash can be either a single hash string or an array of reference hash strings
 const referenceHash = '239ef1c81ef0c24611d6d7c294d07036e82c4666'
-wdEdit.reference.remove({
+wbEdit.reference.remove({
   guid: claimGuid,
   hash: referenceHash
 })
@@ -562,7 +575,7 @@ Make many edits on an entity at once.
 By default, every label, description, claim, or sitelink that isn't included in the passed object will stay untouched: only those with a `remove` flag will be removed. Beware that this isn't true for qualifiers and references, which can be removed by just being omitted (see P1114 example below).
 
 ```js
-wdEdit.entity.edit({
+wbEdit.entity.edit({
   // Required
   id: 'Q4115189',
   // All the rest is optional but one of labels, descriptions, aliases, claims, or sitelinks must be set
@@ -650,7 +663,7 @@ wdEdit.entity.edit({
 If the entity you are editing requires a big cleanup, instead of adding a `remove` flag to all the elements that needs to be removed, you can set the `clear` flag to `true`, which will **delete all the entity data** before adding the specified data:
 ```js
 // Remove ALL the labels, descriptions, aliases, claims, and sitelinks, and set the English label to 'Sandbox'
-wdEdit.entity.edit({
+wbEdit.entity.edit({
   id: 'Q4115189',
   clear: true,
   labels: {
@@ -662,10 +675,10 @@ wdEdit.entity.edit({
 #### create entity
 ##### create item
 Create an [item](https://www.wikidata.org/wiki/Wikidata:Glossary#Item) from scratch.
-The item data follow the same rules as [`wdEdit.entity.edit`](#edit-entity), simply without the `id`
+The item data follow the same rules as [`wbEdit.entity.edit`](#edit-entity), simply without the `id`
 
 ```js
-wdEdit.entity.create({
+wbEdit.entity.create({
   type: 'item',
   labels,
   descriptions,
@@ -683,7 +696,7 @@ wdEdit.entity.create({
 Creating a [property](https://www.wikidata.org/wiki/Wikidata:Glossary#Property) is just like creating an item, but with a `type=property` and a `datatype`
 
 ```js
-wdEdit.entity.create({
+wbEdit.entity.create({
   type: 'property',
   datatype: 'string',
   labels,
@@ -701,7 +714,7 @@ wdEdit.entity.create({
 ##### merge item
 ```js
 // Merge Q1 into Q2, turning Q1 into a redirection
-wdEdit.entity.merge({ from: 'Q1', to: 'Q2' })
+wbEdit.entity.merge({ from: 'Q1', to: 'Q2' })
 ```
 
 ##### merge property
@@ -710,10 +723,10 @@ Wikibase doesn't allow to merge properties
 #### delete entity
 ##### delete item
 ```js
-wdEdit.entity.delete({ id: 'Q1' })
+wbEdit.entity.delete({ id: 'Q1' })
 ```
 
 ##### delete property
 ```js
-wdEdit.entity.delete({ id: 'P1' })
+wbEdit.entity.delete({ id: 'P1' })
 ```
