@@ -55,27 +55,29 @@ describe('credentials', function () {
   })
 
   it('should reject defining both oauth and username:password credentials', done => {
-    const { username, password } = credentials
-    const creds = { username, password, oauth: {} }
+    const creds = { username: 'abc', password: 'def', oauth: {} }
     const wbEdit = WBEdit({ instance, credentials: creds })
     wbEdit.entity.create.bind(null, params())
     .should.throw('credentials can not be both oauth tokens, and a username and password')
     done()
   })
 
-  it('should re-generate credentials when re-using a pre-existing credentials object', done => {
-    const wbEdit = WBEdit({ instance })
-    const creds = Object.assign({}, credentials)
-    wbEdit.entity.create(params(), { credentials: creds })
-    .then(() => {
-      creds.username = 'foo'
-      return wbEdit.entity.create(params(), { credentials: creds })
+  // @TODO run a similar test for oauth
+  if( !('oauth' in credentials) ) {
+    it('should re-generate credentials when re-using a pre-existing credentials object', done => {
+      const wbEdit = WBEdit({ instance })
+      const creds = Object.assign({}, credentials)
+      wbEdit.entity.create(params(), { credentials: creds })
+      .then(() => {
+        creds.username = 'foo'
+        return wbEdit.entity.create(params(), { credentials: creds })
+      })
+      .then(undesiredRes(done))
+      .catch(err => {
+        err.body.error.code.should.equal('assertuserfailed')
+        done()
+      })
+      .catch(done)
     })
-    .then(undesiredRes(done))
-    .catch(err => {
-      err.body.error.code.should.equal('assertuserfailed')
-      done()
-    })
-    .catch(done)
-  })
+  }
 })
