@@ -62,7 +62,7 @@ describe('credentials', function () {
     done()
   })
 
-  // @TODO run a similar test for oauth
+  // TODO: run a similar test for oauth
   if (!('oauth' in credentials)) {
     it('should re-generate credentials when re-using a pre-existing credentials object', done => {
       const wbEdit = WBEdit({ instance })
