@@ -35,7 +35,6 @@ describe('alias add', function () {
       console.log('aliases', aliases)
       return wbEdit.alias.add({ id, language, value: aliases })
       .then(res => {
-        console.log('res', res)
         res.success.should.equal(1)
         done()
       })
