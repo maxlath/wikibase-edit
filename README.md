@@ -13,7 +13,7 @@ This project has received a [Wikimedia Project Grant](https://meta.wikimedia.org
 [![NPM](https://nodei.co/npm/wikibase-edit.png?stars&downloads&downloadRank)](https://npmjs.com/package/wikibase-edit/)
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Node](https://img.shields.io/badge/node-%3E=%20v6.4.0-brightgreen.svg)](http://nodejs.org)
+[![Node](https://img.shields.io/badge/node-%3E=%20v7.6.0-brightgreen.svg)](http://nodejs.org)
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 ## Summary
