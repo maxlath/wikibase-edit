@@ -41,8 +41,4 @@ const doAction = (wbEdit, reqConfig) => {
     const params = { id, language: 'fr', value: randomString() }
     return wbEdit.alias.add(params, reqConfig)
   })
-  .then(res => {
-    console.log('headers', res.headers)
-    return res
-  })
 }

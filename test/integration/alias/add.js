@@ -32,7 +32,6 @@ describe('alias add', function () {
         randomString(),
         randomString()
       ]
-      console.log('aliases', aliases)
       return wbEdit.alias.add({ id, language, value: aliases })
       .then(res => {
         res.success.should.equal(1)
