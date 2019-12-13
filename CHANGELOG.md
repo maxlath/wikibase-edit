@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 4.0.0 - 2019-12-13
+**Breaking Changes**: started using async/await internally, so `wikibase-edit` now requires NodeJS `>= v7.6.0`. If you are locked on an older version of NodeJS, you are thus advised to stay on `wikibase-edit@3`
+
 ## 3.2.0 - 2019-08-17
 * Added [`entity.merge`](https://github.com/maxlath/wikibase-edit/blob/master/docs/how_to.md#entity-merge) function
 * Added [`maxlag` parameter support](https://github.com/maxlath/wikibase-edit/blob/master/docs/how_to.md#maxlag)
