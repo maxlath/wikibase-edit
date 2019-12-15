@@ -2,17 +2,17 @@ const should = require('should')
 const { instance, credentials, credentialsAlt, __ } = require('config')
 const { username, password } = credentialsAlt
 const { undesiredRes } = __.require('test/integration/utils/utils')
-const wikibaseToken = __.require('lib/request/wikibase_token')
+const GetToken = __.require('lib/request/get_token')
 const validateAndEnrichConfig = __.require('lib/validate_and_enrich_config')
 
-describe('auth tokens', function () {
+describe('get token', function () {
   this.timeout(10000)
 
   it('should get token from username and password', done => {
     const config = validateAndEnrichConfig({ instance, credentials: { username, password } })
-    const tokenGetter = wikibaseToken(config)
-    tokenGetter.should.be.a.Function()
-    tokenGetter()
+    const getToken = GetToken(config)
+    getToken.should.be.a.Function()
+    getToken()
     .then(res => {
       res.token.length.should.be.above(40)
       const { cookie } = res
@@ -25,9 +25,9 @@ describe('auth tokens', function () {
 
   it('should get token from oauth', done => {
     const config = validateAndEnrichConfig({ instance, credentials })
-    const tokenGetter = wikibaseToken(config)
-    tokenGetter.should.be.a.Function()
-    tokenGetter()
+    const getToken = GetToken(config)
+    getToken.should.be.a.Function()
+    getToken()
     .then(res => {
       res.token.length.should.be.above(40)
       done()
@@ -38,9 +38,9 @@ describe('auth tokens', function () {
   it('should reject on invalid username/password credentials', done => {
     const invalidCreds = { username: 'inva', password: 'lid' }
     const config = validateAndEnrichConfig({ instance, credentials: invalidCreds })
-    const tokenGetter = wikibaseToken(config)
-    tokenGetter.should.be.a.Function()
-    tokenGetter()
+    const getToken = GetToken(config)
+    getToken.should.be.a.Function()
+    getToken()
     .then(undesiredRes(done))
     .catch(err => {
       err.message.should.equal('failed to login: invalid username/password')
@@ -59,9 +59,9 @@ describe('auth tokens', function () {
       }
     }
     const config = validateAndEnrichConfig({ instance, credentials: { oauth: invalidCreds } })
-    const tokenGetter = wikibaseToken(config)
-    tokenGetter.should.be.a.Function()
-    tokenGetter()
+    const getToken = GetToken(config)
+    getToken.should.be.a.Function()
+    getToken()
     .then(undesiredRes(done))
     .catch(err => {
       err.message.should.endWith('Invalid consumer')

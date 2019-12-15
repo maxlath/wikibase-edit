@@ -51,4 +51,9 @@ describe('general', () => {
     wdEdit({}).entity.edit.should.be.a.Function()
     done()
   })
+
+  it('should have auth functions', done => {
+    wdEdit({}).getAuthData.should.be.a.Function()
+    done()
+  })
 })

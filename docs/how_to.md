@@ -47,6 +47,7 @@
     - [delete entity](#delete-entity)
       - [delete item](#delete-item)
       - [delete property](#delete-property)
+  - [get auth data](#get-auth-data)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -729,4 +730,19 @@ wbEdit.entity.delete({ id: 'Q1' })
 ##### delete property
 ```js
 wbEdit.entity.delete({ id: 'P1' })
+```
+
+### get auth data
+All the functions above handle authentification for you, but you can also access the auth data, that is session cookies and the currently valid [csrf token](https://www.mediawiki.org/wiki/Manual:Edit_token), using the `getAuthData` function.
+```js
+wbEdit.getAuthData()
+.then(({ cookie, token }) => {
+  // Do some custom stuffs
+})
+```
+It can also be used as a way to validate credentials:
+```js
+require('wikibase-edit')({ instance, credentials }).getAuthData()
+.then(onValidCredentials)
+.catch(onInvalidCredentials)
 ```
