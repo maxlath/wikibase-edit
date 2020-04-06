@@ -6,18 +6,17 @@ const WBEdit = __.require('.')
 const { randomString } = require('../unit/utils')
 const breq = require('bluereq')
 const params = () => ({ labels: { en: randomString() } })
-const toolSignature = '#wikibasejs/edit'
 const resolveTitle = require('../../lib/resolve_title')
 
 describe('summary', function () {
   this.timeout(20 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
-  it('should add a default summary', done => {
+  it('should not add a default summary', done => {
     const wbEdit = WBEdit({ instance, credentials })
     postAndGetEditSummary(wbEdit)
     .then(editSummary => {
-      editSummary.should.endWith(` */ ${toolSignature}`)
+      editSummary.should.endWith(' */')
       done()
     })
     .catch(done)
@@ -54,7 +53,7 @@ describe('summary', function () {
       editSummary.should.endWith(` */ ${summary}`)
       return postAndGetEditSummary(wbEdit)
       .then(editSummary2 => {
-        editSummary2.should.endWith(` */ ${toolSignature}`)
+        editSummary2.should.endWith(' */')
         done()
       })
     })
