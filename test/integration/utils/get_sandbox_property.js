@@ -2,7 +2,7 @@ const config = require('config')
 const { __ } = config
 const wbk = require('wikibase-sdk')({ instance: config.instance })
 const sandboxProperties = {}
-const breq = require('bluereq')
+const fetch = require('cross-fetch')
 const wbEdit = __.require('.')(config)
 
 module.exports = async datatype => {
@@ -26,8 +26,8 @@ const getProperty = async datatype => {
 
 const findOnWikibase = async pseudoPropertyId => {
   const url = wbk.searchEntities({ search: pseudoPropertyId, type: 'property' })
-  const res = await breq.get(url)
-  const firstWbResult = res.body.search[0]
+  const body = await fetch(url).then(res => res.json())
+  const firstWbResult = body.search[0]
   if (firstWbResult) return firstWbResult
 }
 

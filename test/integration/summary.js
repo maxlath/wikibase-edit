@@ -1,12 +1,10 @@
 require('should')
 const config = require('config')
 const { instance, credentials, __ } = config
-const wbk = require('wikibase-sdk')({ instance })
 const WBEdit = __.require('.')
 const { randomString } = require('../unit/utils')
-const breq = require('bluereq')
+const { getLastRevision } = require('./utils/utils')
 const params = () => ({ labels: { en: randomString() } })
-const resolveTitle = require('../../lib/resolve_title')
 
 describe('summary', function () {
   this.timeout(20 * 1000)
@@ -50,8 +48,6 @@ const postAndGetEditSummary = (wbEdit, reqConfig) => {
 
 const getEditSummary = async res => {
   const { id } = res.entity
-  const title = await resolveTitle(id, instance)
-  const url = wbk.getRevisions(title, { limit: 1 })
-  const { query } = await breq.get(url).get('body')
-  return Object.values(query.pages)[0].revisions[0].comment
+  const revision = await getLastRevision(id)
+  return revision.comment
 }

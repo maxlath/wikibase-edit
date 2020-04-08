@@ -3,7 +3,7 @@ const { __ } = config
 const wbEdit = __.require('.')(config)
 const { randomString } = __.require('test/unit/utils')
 const getSandboxProperty = require('./get_sandbox_property')
-const breq = require('bluereq')
+const fetch = require('cross-fetch')
 const validateAndEnrichConfig = __.require('lib/validate_and_enrich_config')
 // Set config.wbk
 validateAndEnrichConfig(config)
@@ -21,9 +21,10 @@ const getSandboxItem = () => {
   return sandboxItemPromise
 }
 
-const getRefreshedEntity = id => {
+const getRefreshedEntity = async id => {
   const url = config.wbk.getEntities({ ids: id })
-  return breq.get(url).then(res => res.entities[id])
+  const res = await fetch(url).then(res => res.json())
+  return res.entities[id]
 }
 
 var claimPromise
