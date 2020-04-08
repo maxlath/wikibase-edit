@@ -80,11 +80,24 @@ const generalConfig = {
   },
 
   // Optional
-  userAgent: 'my-project-name/v3.2.5 (https://project.website)', // Default: `wikidata-edit/${pkg.version} (https://github.com/maxlath/wikidata-edit)`
-  summary: 'my project name',
-  verbose: true, // Default: false,
-  bot: true, // Default: false
-  maxlag: 2 // Default: 5
+  // See https://meta.wikimedia.org/wiki/Help:Edit_summary
+  // Default: empty
+  summary: 'some edit summary common to all the edits',
+
+  // See https://www.mediawiki.org/wiki/Manual:Tags
+  // Default: on Wikidata [ 'WikibaseJS-edit' ], empty for other Wikibase instances
+  tags: [ 'Some general tag' ],
+
+  // Default: `wikidata-edit/${pkg.version} (https://github.com/maxlath/wikidata-edit)`
+  userAgent: 'my-project-name/v3.2.5 (https://project.website)',
+
+  // See https://www.mediawiki.org/wiki/Manual:Bots
+  // Default: false
+  bot: true,
+
+  // See https://www.mediawiki.org/wiki/Manual:Maxlag_parameter
+  // Default: 5
+  maxlag: 2
 }
 
 const wbEdit = require('wikibase-edit')(generalConfig)
@@ -118,8 +131,21 @@ const requestConfig = {
     // OR
     oauth
   },
+
+  // See https://www.mediawiki.org/wiki/Manual:Bots
+  // Default: false
   bot: true,
+
+  // See https://meta.wikimedia.org/wiki/Help:Edit_summary
+  // Default: empty
   summary: 'some request specific edit summary',
+
+  // See https://www.mediawiki.org/wiki/Manual:Tags
+  // Default: on Wikidata [ 'WikibaseJS-edit' ], empty for other Wikibase instances
+  tags: [ 'Some edit specific tag' ],
+
+  // See https://www.mediawiki.org/wiki/Manual:Maxlag_parameter
+  // Default: 5
   maxlag: 5
 }
 wbEdit.label.set({ id, language, value }, requestConfig)
