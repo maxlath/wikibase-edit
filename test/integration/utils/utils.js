@@ -1,6 +1,6 @@
 const { yellow } = require('chalk')
 const { instance } = require('config')
-const wbk = require('wikibase-sdk')({ instance })
+const WBK = require('wikibase-sdk')
 const fetch = require('cross-fetch')
 const resolveTitle = require('../../../lib/resolve_title')
 
@@ -12,9 +12,11 @@ const undesiredRes = done => res => {
 
 const delay = delayMs => new Promise(resolve => setTimeout(resolve, delayMs))
 
-const getLastRevision = async id => {
-  const title = await resolveTitle(id, instance)
-  const url = wbk.getRevisions(title, { limit: 1 })
+const getLastRevision = async (id, customInstance) => {
+  customInstance = customInstance || instance
+  const title = await resolveTitle(id, customInstance)
+  const wbk = WBK({ instance: customInstance })
+  const url = wbk.getRevisions(title, { limit: 1, prop: [ 'comment', 'tags' ] })
   const { query } = await fetch(url).then(res => res.json())
   return Object.values(query.pages)[0].revisions[0]
 }
