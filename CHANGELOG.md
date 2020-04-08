@@ -1,6 +1,10 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 4.2.0 - 2020-04-08
+* Added tags support
+* Added anonymous mode support
+
 ## 4.1.0 - 2019-12-15
 * Added [`getAuthData`](https://github.com/maxlath/wikibase-edit/blob/master/docs/how_to.md#get-auth-data) function
 
