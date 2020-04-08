@@ -35,10 +35,8 @@ describe('maxlag', function () {
   })
 })
 
-const doAction = (wbEdit, reqConfig) => {
-  return getSandboxItemId()
-  .then(id => {
-    const params = { id, language: 'fr', value: randomString() }
-    return wbEdit.alias.add(params, reqConfig)
-  })
+const doAction = async (wbEdit, reqConfig) => {
+  const id = await getSandboxItemId()
+  const params = { id, language: 'fr', value: randomString() }
+  return wbEdit.alias.add(params, reqConfig)
 }

@@ -10,34 +10,22 @@ describe('alias add', function () {
   this.timeout(20 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
-  it('should add an alias', done => {
-    getSandboxItemId()
-    .then(id => {
-      const value = randomString()
-      return wbEdit.alias.add({ id, language, value })
-      .then(res => {
-        res.success.should.equal(1)
-        done()
-      })
-    })
-    .catch(done)
+  it('should add an alias', async () => {
+    const id = await getSandboxItemId()
+    const value = randomString()
+    const res = await wbEdit.alias.add({ id, language, value })
+    res.success.should.equal(1)
   })
 
-  it('should add several aliases', done => {
-    getSandboxItemId()
-    .then(id => {
-      const aliases = [
-        randomString(),
-        randomString(),
-        randomString(),
-        randomString()
-      ]
-      return wbEdit.alias.add({ id, language, value: aliases })
-      .then(res => {
-        res.success.should.equal(1)
-        done()
-      })
-    })
-    .catch(done)
+  it('should add several aliases', async () => {
+    const id = await getSandboxItemId()
+    const aliases = [
+      randomString(),
+      randomString(),
+      randomString(),
+      randomString()
+    ]
+    const res = await wbEdit.alias.add({ id, language, value: aliases })
+    res.success.should.equal(1)
   })
 })

@@ -12,18 +12,12 @@ describe('fetch properties datatypes', function () {
   this.timeout(20 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
-  it('should fetch a property datatype', done => {
-    getSandboxPropertyId('wikibase-item')
-    .then(propertyId => {
-      return fetchPropertiesDatatypes(config, [ propertyId ])
-      .then(() => {
-        config.properties.should.be.an.Object()
-        const datatype = config.properties[propertyId]
-        datatype.should.equal('wikibase-item')
-        done()
-      })
-    })
-    .catch(done)
+  it('should fetch a property datatype', async () => {
+    const propertyId = await getSandboxPropertyId('wikibase-item')
+    await fetchPropertiesDatatypes(config, [ propertyId ])
+    config.properties.should.be.an.Object()
+    const datatype = config.properties[propertyId]
+    datatype.should.equal('wikibase-item')
   })
 
   it("should throw when it can't find the property datatype", done => {

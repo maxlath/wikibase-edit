@@ -8,31 +8,22 @@ const validateAndEnrichConfig = __.require('lib/validate_and_enrich_config')
 describe('get token', function () {
   this.timeout(10000)
 
-  it('should get token from username and password', done => {
+  it('should get token from username and password', async () => {
     const config = validateAndEnrichConfig({ instance, credentials: { username, password } })
     const getToken = GetToken(config)
     getToken.should.be.a.Function()
-    getToken()
-    .then(res => {
-      res.token.length.should.be.above(40)
-      const { cookie } = res
-      should(/.+[sS]ession=\w{32}/.test(cookie)).be.true('should contain session ID')
-      should(/.+UserID=\d+/.test(cookie)).be.true('should contain user ID')
-      done()
-    })
-    .catch(done)
+    const { cookie, token } = await getToken()
+    token.length.should.be.above(40)
+    should(/.+[sS]ession=\w{32}/.test(cookie)).be.true('should contain session ID')
+    should(/.+UserID=\d+/.test(cookie)).be.true('should contain user ID')
   })
 
-  it('should get token from oauth', done => {
+  it('should get token from oauth', async () => {
     const config = validateAndEnrichConfig({ instance, credentials })
     const getToken = GetToken(config)
     getToken.should.be.a.Function()
-    getToken()
-    .then(res => {
-      res.token.length.should.be.above(40)
-      done()
-    })
-    .catch(done)
+    const { token } = await getToken()
+    token.length.should.be.above(40)
   })
 
   it('should reject on invalid username/password credentials', done => {

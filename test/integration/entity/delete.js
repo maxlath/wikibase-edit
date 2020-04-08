@@ -8,33 +8,21 @@ describe('entity delete', function () {
   this.timeout(20 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
-  it('should delete an item', done => {
-    wbEdit.entity.create({ labels: { en: randomString() } })
-    .then(res => {
-      const { id } = res.entity
-      return wbEdit.entity.delete({ id })
-      .then(res => {
-        res.delete.title.should.endWith(id)
-        done()
-      })
-    })
-    .catch(done)
+  it('should delete an item', async () => {
+    const resA = await wbEdit.entity.create({ labels: { en: randomString() } })
+    const { id } = resA.entity
+    const resB = await wbEdit.entity.delete({ id })
+    resB.delete.title.should.endWith(id)
   })
 
-  it('should delete a property', done => {
-    wbEdit.entity.create({
+  it('should delete a property', async () => {
+    const resA = await wbEdit.entity.create({
       type: 'property',
       datatype: 'string',
       labels: { en: randomString() }
     })
-    .then(res => {
-      const { id } = res.entity
-      return wbEdit.entity.delete({ id })
-      .then(res => {
-        res.delete.title.should.equal(`Property:${id}`)
-        done()
-      })
-    })
-    .catch(done)
+    const { id } = resA.entity
+    const resB = await wbEdit.entity.delete({ id })
+    resB.delete.title.should.equal(`Property:${id}`)
   })
 })

@@ -10,16 +10,10 @@ describe('alias remove', function () {
   this.timeout(20 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
-  it('should remove an alias', done => {
-    getSandboxItemId()
-    .then(id => {
-      const value = randomString()
-      return wbEdit.alias.remove({ id, language, value })
-      .then(res => {
-        res.success.should.equal(1)
-        done()
-      })
-    })
-    .catch(done)
+  it('should remove an alias', async () => {
+    const id = await getSandboxItemId()
+    const value = randomString()
+    const res = await wbEdit.alias.remove({ id, language, value })
+    res.success.should.equal(1)
   })
 })

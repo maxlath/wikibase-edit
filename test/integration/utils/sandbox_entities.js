@@ -8,14 +8,11 @@ const validateAndEnrichConfig = __.require('lib/validate_and_enrich_config')
 // Set config.wbk
 validateAndEnrichConfig(config)
 
-const createEntity = (data = {}) => {
+const createEntity = async (data = {}) => {
   data.labels = data.labels || { en: randomString() }
-  return wbEdit.entity.create(data)
-  .then(res => {
-    const { entity } = res
-    console.log(`created ${entity.type}`, entity.id, data.datatype || '')
-    return entity
-  })
+  const { entity } = await wbEdit.entity.create(data)
+  console.log(`created ${entity.type}`, entity.id, data.datatype || '')
+  return entity
 }
 
 var sandboxItemPromise

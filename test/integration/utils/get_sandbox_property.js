@@ -5,48 +5,42 @@ const sandboxProperties = {}
 const breq = require('bluereq')
 const wbEdit = __.require('.')(config)
 
-module.exports = datatype => {
+module.exports = async datatype => {
   if (!datatype) throw new Error('missing datatype')
-  return getProperty(datatype)
-  .then(property => {
-    sandboxProperties[datatype] = property
-    return property
-  })
+  const property = await getProperty(datatype)
+  sandboxProperties[datatype] = property
+  return property
 }
 
-const getProperty = datatype => {
+const getProperty = async datatype => {
   const pseudoPropertyId = getPseudoPropertyId(datatype)
 
   const cachedPropertyId = sandboxProperties[pseudoPropertyId]
 
   if (cachedPropertyId) return Promise.resolve(cachedPropertyId)
 
-  return findOnWikibase(pseudoPropertyId)
-  .then(foundPropertyId => {
-    if (foundPropertyId) return foundPropertyId
-    else return createProperty(datatype)
-  })
+  const foundPropertyId = await findOnWikibase(pseudoPropertyId)
+  if (foundPropertyId) return foundPropertyId
+  else return createProperty(datatype)
 }
 
-const findOnWikibase = pseudoPropertyId => {
+const findOnWikibase = async pseudoPropertyId => {
   const url = wbk.searchEntities({ search: pseudoPropertyId, type: 'property' })
-  return breq.get(url)
-  .then(res => {
-    const firstWbResult = res.body.search[0]
-    if (firstWbResult) return firstWbResult
-  })
+  const res = await breq.get(url)
+  const firstWbResult = res.body.search[0]
+  if (firstWbResult) return firstWbResult
 }
 
-const createProperty = datatype => {
+const createProperty = async datatype => {
   const pseudoPropertyId = getPseudoPropertyId(datatype)
-  return wbEdit.entity.create({
+  const res = await wbEdit.entity.create({
     type: 'property',
     datatype,
     labels: {
       en: pseudoPropertyId
     }
   })
-  .then(res => res.entity)
+  return res.entity
 }
 
 const getPseudoPropertyId = datatype => `${datatype} sandbox property`

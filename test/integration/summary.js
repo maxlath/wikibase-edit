@@ -12,52 +12,34 @@ describe('summary', function () {
   this.timeout(20 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
-  it('should not add a default summary', done => {
+  it('should not add a default summary', async () => {
     const wbEdit = WBEdit({ instance, credentials })
-    postAndGetEditSummary(wbEdit)
-    .then(editSummary => {
-      editSummary.should.endWith(' */')
-      done()
-    })
-    .catch(done)
+    const editSummary = await postAndGetEditSummary(wbEdit)
+    editSummary.should.endWith(' */')
   })
 
-  it('should accept a custom summary in config', done => {
+  it('should accept a custom summary in config', async () => {
     const summary = 'some custom summary'
     const customConfig = Object.assign({ instance, credentials, summary })
     const wbEdit = WBEdit(customConfig)
-    postAndGetEditSummary(wbEdit)
-    .then(editSummary => {
-      editSummary.should.endWith(` */ ${summary}`)
-      done()
-    })
-    .catch(done)
+    const editSummary = await postAndGetEditSummary(wbEdit)
+    editSummary.should.endWith(` */ ${summary}`)
   })
 
-  it('should accept a custom summary in the request config', done => {
+  it('should accept a custom summary in the request config', async () => {
     const summary = 'another custom summary'
     const wbEdit = WBEdit({ instance, credentials, summary: 'global summary' })
-    postAndGetEditSummary(wbEdit, { summary })
-    .then(editSummary => {
-      editSummary.should.endWith(` */ ${summary}`)
-      done()
-    })
-    .catch(done)
+    const editSummary = await postAndGetEditSummary(wbEdit, { summary })
+    editSummary.should.endWith(` */ ${summary}`)
   })
 
-  it('should not re-use the previous summary', done => {
+  it('should not re-use the previous summary', async () => {
     const summary = 'another custom summary'
     const wbEdit = WBEdit({ instance, credentials })
-    postAndGetEditSummary(wbEdit, { summary })
-    .then(editSummary => {
-      editSummary.should.endWith(` */ ${summary}`)
-      return postAndGetEditSummary(wbEdit)
-      .then(editSummary2 => {
-        editSummary2.should.endWith(' */')
-        done()
-      })
-    })
-    .catch(done)
+    const editSummary = await postAndGetEditSummary(wbEdit, { summary })
+    editSummary.should.endWith(` */ ${summary}`)
+    const editSummary2 = await postAndGetEditSummary(wbEdit)
+    editSummary2.should.endWith(' */')
   })
 })
 
@@ -66,12 +48,10 @@ const postAndGetEditSummary = (wbEdit, reqConfig) => {
   .then(getEditSummary)
 }
 
-const getEditSummary = res => {
+const getEditSummary = async res => {
   const { id } = res.entity
-  return resolveTitle(id, instance)
-  .then(title => {
-    const url = wbk.getRevisions(title, { limit: 1 })
-    return breq.get(url).get('body')
-    .then(res => Object.values(res.query.pages)[0].revisions[0].comment)
-  })
+  const title = await resolveTitle(id, instance)
+  const url = wbk.getRevisions(title, { limit: 1 })
+  const { query } = await breq.get(url).get('body')
+  return Object.values(query.pages)[0].revisions[0].comment
 }

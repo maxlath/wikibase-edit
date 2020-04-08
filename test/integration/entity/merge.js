@@ -10,23 +10,17 @@ describe('entity merge', function () {
 
   // Do not run this test on the local instance as it currently fails
   // https://phabricator.wikimedia.org/T232925
-  xit('should merge two items', done => {
-    Promise.all([
+  xit('should merge two items', async () => {
+    const [ res1, res2 ] = await Promise.all([
       wbEdit.entity.create({ labels: { en: randomString() } }),
       wbEdit.entity.create({ labels: { en: randomString() } })
     ])
-    .then(([ res1, res2 ]) => {
-      const { id: from } = res1.entity
-      const { id: to } = res2.entity
-      return wbEdit.entity.merge({ from, to })
-      .then(res => {
-        res.success.should.equal(1)
-        res.redirected.should.equal(1)
-        res.from.id.should.equal(from)
-        res.to.id.should.equal(to)
-        done()
-      })
-    })
-    .catch(done)
+    const { id: from } = res1.entity
+    const { id: to } = res2.entity
+    const res3 = await wbEdit.entity.merge({ from, to })
+    res3.success.should.equal(1)
+    res3.redirected.should.equal(1)
+    res3.from.id.should.equal(from)
+    res3.to.id.should.equal(to)
   })
 })

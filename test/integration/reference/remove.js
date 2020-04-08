@@ -10,33 +10,21 @@ describe('reference remove', function () {
   this.timeout(20 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
-  it('should remove a reference', done => {
-    addReference('string', randomString())
-    .then(({ guid, property, reference }) => {
-      return removeReference({ guid, hash: reference.hash })
-      .then(res => {
-        res.success.should.equal(1)
-        done()
-      })
-    })
-    .catch(done)
+  it('should remove a reference', async () => {
+    const { guid, reference } = await addReference('string', randomString())
+    const res = await removeReference({ guid, hash: reference.hash })
+    res.success.should.equal(1)
   })
 
-  it('should remove several qualifiers', done => {
-    Promise.all([
+  it('should remove several qualifiers', async () => {
+    const [ res1, res2 ] = await Promise.all([
       addReference('string', randomString()),
       addReference('string', randomString())
     ])
-    .then(([ res1, res2 ]) => {
-      return removeReference({
-        guid: res1.guid,
-        hash: [ res1.reference.hash, res2.reference.hash ]
-      })
-      .then(res => {
-        res.success.should.equal(1)
-        done()
-      })
+    const res3 = await removeReference({
+      guid: res1.guid,
+      hash: [ res1.reference.hash, res2.reference.hash ]
     })
-    .catch(done)
+    res3.success.should.equal(1)
   })
 })

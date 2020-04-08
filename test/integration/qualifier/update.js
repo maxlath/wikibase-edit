@@ -13,19 +13,13 @@ describe('qualifier update', function () {
   this.timeout(20 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
-  it('should update a qualifier', done => {
+  it('should update a qualifier', async () => {
     const oldValue = randomString()
     const newValue = randomString()
-    addQualifier('string', oldValue)
-    .then(({ guid, property, qualifier }) => {
-      return updateQualifier({ guid, property, oldValue, newValue })
-      .then(res => {
-        const qualifier = res.claim.qualifiers[property].slice(-1)[0]
-        qualifier.datavalue.value.should.deepEqual(newValue)
-        done()
-      })
-    })
-    .catch(done)
+    const { guid, property } = await addQualifier('string', oldValue)
+    const res = await updateQualifier({ guid, property, oldValue, newValue })
+    const updatedQualifier = res.claim.qualifiers[property].slice(-1)[0]
+    updatedQualifier.datavalue.value.should.deepEqual(newValue)
   })
 
   it('should fetch the properties it needs', done => {
@@ -62,54 +56,36 @@ describe('qualifier update', function () {
     .catch(done)
   })
 
-  it('should update a monolingual text claim', done => {
+  it('should update a monolingual text claim', async () => {
     const oldValue = { text: randomString(), language: 'fr' }
     const newValue = { text: randomString(), language: 'de' }
-    addQualifier('monolingualtext', oldValue)
-    .then(({ guid, property }) => {
-      return updateQualifier({ guid, property, oldValue, newValue })
-      .then(res => {
-        const qualifier = res.claim.qualifiers[property].slice(-1)[0]
-        qualifier.datavalue.value.should.deepEqual(newValue)
-        done()
-      })
-    })
-    .catch(done)
+    const { guid, property } = await addQualifier('monolingualtext', oldValue)
+    const res = await updateQualifier({ guid, property, oldValue, newValue })
+    const qualifier = res.claim.qualifiers[property].slice(-1)[0]
+    qualifier.datavalue.value.should.deepEqual(newValue)
   })
 
-  it('should update a quantity claim with a unit', done => {
+  it('should update a quantity claim with a unit', async () => {
     const oldValue = { amount: randomNumber(), unit: 'Q1' }
     const newValue = { amount: randomNumber(), unit: 'Q2' }
-    addQualifier('quantity', oldValue)
-    .then(({ guid, property }) => {
-      return updateQualifier({ guid, property, oldValue, newValue })
-      .then(res => {
-        const qualifier = res.claim.qualifiers[property].slice(-1)[0]
-        simplify.qualifier(qualifier, { keepRichValues: true }).should.deepEqual(newValue)
-        done()
-      })
-    })
-    .catch(done)
+    const { guid, property } = await addQualifier('quantity', oldValue)
+    const res = await updateQualifier({ guid, property, oldValue, newValue })
+    const qualifier = res.claim.qualifiers[property].slice(-1)[0]
+    simplify.qualifier(qualifier, { keepRichValues: true }).should.deepEqual(newValue)
   })
 
-  it('should update a time claim', done => {
+  it('should update a time claim', async () => {
     const oldYear = 1000 + randomNumber(3)
     const newYear = 1000 + randomNumber(3)
     const oldValue = `${oldYear}-02-26`
     const newValue = `${newYear}-10-25`
-    addQualifier('time', oldValue)
-    .then(({ guid, property }) => {
-      return updateQualifier({ guid, property, oldValue, newValue })
-      .then(res => {
-        const qualifier = res.claim.qualifiers[property].slice(-1)[0]
-        simplify.qualifier(qualifier, { timeConverter: 'simple-day' }).should.equal(newValue)
-        done()
-      })
-    })
-    .catch(done)
+    const { guid, property } = await addQualifier('time', oldValue)
+    const res = await updateQualifier({ guid, property, oldValue, newValue })
+    const qualifier = res.claim.qualifiers[property].slice(-1)[0]
+    simplify.qualifier(qualifier, { timeConverter: 'simple-day' }).should.equal(newValue)
   })
 
-  it('should update a globe-coordinate claim', done => {
+  it('should update a globe-coordinate claim', async () => {
     const oldValue = {
       latitude: randomNumber(2),
       longitude: randomNumber(2),
@@ -122,35 +98,23 @@ describe('qualifier update', function () {
       precision: 0.01,
       globe: 'http://www.wikidata.org/entity/Q112'
     }
-    addQualifier('globe-coordinate', oldValue)
-    .then(({ guid, property }) => {
-      return updateQualifier({ guid, property, oldValue, newValue })
-      .then(res => {
-        const qualifier = res.claim.qualifiers[property].slice(-1)[0]
-        const { value } = qualifier.datavalue
-        value.latitude.should.equal(newValue.latitude)
-        value.longitude.should.equal(newValue.longitude)
-        value.precision.should.equal(newValue.precision)
-        value.globe.should.equal(newValue.globe)
-        done()
-      })
-    })
-    .catch(done)
+    const { guid, property } = await addQualifier('globe-coordinate', oldValue)
+    const res = await updateQualifier({ guid, property, oldValue, newValue })
+    const qualifier = res.claim.qualifiers[property].slice(-1)[0]
+    const { value } = qualifier.datavalue
+    value.latitude.should.equal(newValue.latitude)
+    value.longitude.should.equal(newValue.longitude)
+    value.precision.should.equal(newValue.precision)
+    value.globe.should.equal(newValue.globe)
   })
 
-  it('should update a qualifier with a special snaktype', done => {
+  it('should update a qualifier with a special snaktype', async () => {
     const oldValue = { snaktype: 'novalue' }
     const newValue = { snaktype: 'somevalue' }
-    addQualifier('string', oldValue)
-    .then(({ guid, property, qualifier }) => {
-      qualifier.snaktype.should.equal('novalue')
-      return updateQualifier({ guid, property, oldValue, newValue })
-      .then(res => {
-        const updatedQualifier = res.claim.qualifiers[property].slice(-1)[0]
-        updatedQualifier.snaktype.should.equal('somevalue')
-        done()
-      })
-    })
-    .catch(done)
+    const { guid, property, qualifier } = await addQualifier('string', oldValue)
+    qualifier.snaktype.should.equal('novalue')
+    const res = await updateQualifier({ guid, property, oldValue, newValue })
+    const updatedQualifier = res.claim.qualifiers[property].slice(-1)[0]
+    updatedQualifier.snaktype.should.equal('somevalue')
   })
 })

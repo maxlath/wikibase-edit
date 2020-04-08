@@ -6,10 +6,6 @@ const undesiredRes = done => res => {
   done(new Error('.then function was expected not to be called'))
 }
 
-const delay = delayMs => {
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, delayMs)
-  })
-}
+const delay = delayMs => new Promise(resolve => setTimeout(resolve, delayMs))
 
 module.exports = { undesiredRes, delay }
