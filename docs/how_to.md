@@ -60,7 +60,7 @@ const generalConfig = {
   // A Wikibase instance is required
   instance: 'https://www.wikidata.org',
 
-  // One authorization mean is required
+  // One authorization mean is required (unless in anonymous mode, see below)
   credentials: {
     // either a username and password
     username: 'my-wikidata-username',
@@ -78,6 +78,11 @@ const generalConfig = {
       token_secret: 'a-secret-token'
     }
   },
+
+  // Flag to activate the 'anonymous' mode,
+  // which actually isn't anonymous as it signs with your IP
+  // Default: false
+  anonymous: true,
 
   // Optional
   // See https://meta.wikimedia.org/wiki/Help:Edit_summary
@@ -131,6 +136,9 @@ const requestConfig = {
     // OR
     oauth
   },
+
+  // Default: false
+  anonymous: false,
 
   // See https://www.mediawiki.org/wiki/Manual:Bots
   // Default: false
