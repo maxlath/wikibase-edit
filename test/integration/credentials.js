@@ -2,7 +2,7 @@ require('should')
 const { __, instance, credentials } = require('config')
 const WBEdit = __.require('.')
 const { randomString } = __.require('test/unit/utils')
-const { undesiredRes } = require('./utils/utils')
+const { undesiredRes, shouldNotGetHere, rethrowShouldNotGetHereErrors } = require('./utils/utils')
 const params = () => ({ labels: { en: randomString() } })
 
 describe('credentials', function () {
@@ -30,21 +30,36 @@ describe('credentials', function () {
   it('should reject undefined credentials', async () => {
     const creds = { username: null, password: null }
     const wbEdit = WBEdit({ instance, credentials: creds })
-    wbEdit.entity.create.bind(null, params())
-    .should.throw('missing credentials')
+    try {
+      const res = await wbEdit.entity.create(params())
+      shouldNotGetHere(res)
+    } catch (err) {
+      rethrowShouldNotGetHereErrors(err)
+      err.message.should.equal('missing credentials')
+    }
   })
 
   it('should reject defining credentials both at initialization and request time', async () => {
     const wbEdit = WBEdit({ credentials })
-    wbEdit.entity.create.bind(null, params(), { instance, credentials })
-    .should.throw('credentials should either be passed at initialization or per request')
+    try {
+      const res = await wbEdit.entity.create(params(), { instance, credentials })
+      shouldNotGetHere(res)
+    } catch (err) {
+      rethrowShouldNotGetHereErrors(err)
+      err.message.should.equal('credentials should either be passed at initialization or per request')
+    }
   })
 
   it('should reject defining both oauth and username:password credentials', async () => {
     const creds = { username: 'abc', password: 'def', oauth: {} }
     const wbEdit = WBEdit({ instance, credentials: creds })
-    wbEdit.entity.create.bind(null, params())
-    .should.throw('credentials can not be both oauth tokens, and a username and password')
+    try {
+      const res = await wbEdit.entity.create(params())
+      shouldNotGetHere(res)
+    } catch (err) {
+      rethrowShouldNotGetHereErrors(err)
+      err.message.should.equal('credentials can not be both oauth tokens, and a username and password')
+    }
   })
 
   // TODO: run a similar test for oauth
