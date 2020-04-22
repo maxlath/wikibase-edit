@@ -53,7 +53,7 @@ We are developing and maintaining tools to work with Wikibase from NodeJS, the b
 ## See Also
 * [wikibase-sdk](https://github.com/maxlath/wikibase-sdk): a javascript tool suite to query and work with any Wikibase data, heavily used by wikibase-edit and wikibase-cli
 * [wikibase-cli](https://github.com/maxlath/wikibase-cli): The friendly command-line interface to Wikibase
-* [wikidata-filter](https://github.com/maxlath/wikidata-filter): A command-line tool to filter a Wikidata dump by claim
+* [wikibase-dump-filter](https://npmjs.com/package/wikibase-dump-filter): Filter and format a newline-delimited JSON stream of Wikibase entities
 * [wikidata-subset-search-engine](https://github.com/inventaire/entities-search-engine/tree/wikidata-subset-search-engine): Tools to setup an ElasticSearch instance fed with subsets of Wikidata
 * [wikidata-taxonomy](https://github.com/nichtich/wikidata-taxonomy): Command-line tool to extract taxonomies from Wikidata
 * [Other Wikidata external tools](https://www.wikidata.org/wiki/Wikidata:Tools/External_tools)
