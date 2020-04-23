@@ -5,6 +5,12 @@ const _createEntity = __.require('lib/entity/create')
 const createEntity = params => _createEntity(params, properties, instance)
 
 describe('entity create', () => {
+  it('should reject parameters with an id', done => {
+    const params = { id: 'Q3' }
+    createEntity.bind(null, params).should.throw("a new entity can't already have an id")
+    done()
+  })
+
   it('should set the action to wbeditentity', done => {
     const params = { labels: { fr: 'foo' } }
     createEntity(params).action.should.equal('wbeditentity')
