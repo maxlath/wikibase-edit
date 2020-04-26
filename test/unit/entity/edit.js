@@ -233,6 +233,34 @@ describe('entity edit', () => {
     done()
   })
 
+  it('should format an entity with a low precision time claim', done => {
+    const qualifiers = {
+      P4: { value: '2019-04-01T00:00:00.000Z' }
+    }
+    const { data } = editEntity({
+      id,
+      claims: {
+        P2: [ { value: 'Q54173', qualifiers } ]
+      }
+    })
+    JSON.parse(data.data).claims.P2[0].qualifiers.P4[0].should.deepEqual({
+      property: 'P4',
+      snaktype: 'value',
+      datavalue: {
+        type: 'time',
+        value: {
+          time: '+2019-04-01T00:00:00Z',
+          timezone: 0,
+          before: 0,
+          after: 0,
+          precision: 11,
+          calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+        }
+      }
+    })
+    done()
+  })
+
   it('should format an entity with a time qualifier', done => {
     const qualifiers = {
       P4: { value: '2019-04-01T00:00:00.000Z' }

@@ -302,4 +302,16 @@ describe('claim time', () => {
     })
     done()
   })
+
+  it('should parse low precision time with too much precision', function (done) {
+    getTimeObject({ time: '2100-01-23', precision: 7 }).should.deepEqual({
+      'time': '+2100-00-00T00:00:00Z',
+      'timezone': 0,
+      'before': 0,
+      'after': 0,
+      'precision': 7,
+      'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
+    })
+    done()
+  })
 })
