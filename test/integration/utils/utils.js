@@ -1,7 +1,7 @@
 const { yellow } = require('chalk')
-const { instance } = require('config')
+const { instance, __ } = require('config')
 const WBK = require('wikibase-sdk')
-const fetch = require('cross-fetch')
+const fetch = __.require('lib/request/fetch')
 const resolveTitle = require('../../../lib/resolve_title')
 
 module.exports = {

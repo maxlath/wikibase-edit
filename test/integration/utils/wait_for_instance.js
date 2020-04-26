@@ -1,5 +1,5 @@
 const { __, instance } = require('config')
-const fetch = require('cross-fetch')
+const fetch = __.require('lib/request/fetch')
 const { yellow, grey } = require('chalk')
 const { delay } = __.require('test/integration/utils/utils')
 

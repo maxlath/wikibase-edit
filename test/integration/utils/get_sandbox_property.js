@@ -2,7 +2,7 @@ const config = require('config')
 const { __ } = config
 const wbk = require('wikibase-sdk')({ instance: config.instance })
 const sandboxProperties = {}
-const fetch = require('cross-fetch')
+const fetch = __.require('lib/request/fetch')
 const wbEdit = __.require('.')(config)
 
 module.exports = async datatype => {

@@ -3,7 +3,7 @@ const { __ } = config
 const wbEdit = __.require('.')(config)
 const { randomString } = __.require('test/unit/utils')
 const getSandboxProperty = require('./get_sandbox_property')
-const fetch = require('cross-fetch')
+const fetch = __.require('lib/request/fetch')
 const validateAndEnrichConfig = __.require('lib/validate_and_enrich_config')
 // Set config.wbk
 validateAndEnrichConfig(config)
