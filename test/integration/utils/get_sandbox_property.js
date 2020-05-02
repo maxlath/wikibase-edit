@@ -17,7 +17,7 @@ const getProperty = async datatype => {
 
   const cachedPropertyId = sandboxProperties[pseudoPropertyId]
 
-  if (cachedPropertyId) return Promise.resolve(cachedPropertyId)
+  if (cachedPropertyId) return cachedPropertyId
 
   const foundPropertyId = await findOnWikibase(pseudoPropertyId)
   if (foundPropertyId) return foundPropertyId
