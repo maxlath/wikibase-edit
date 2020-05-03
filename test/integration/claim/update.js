@@ -4,7 +4,7 @@ const { __ } = config
 const wbEdit = __.require('.')(config)
 const updateClaim = wbEdit.claim.update
 const editEntity = wbEdit.entity.edit
-const { undesiredRes } = __.require('test/integration/utils/utils')
+const { shouldNotGetHere } = __.require('test/integration/utils/utils')
 const { getSandboxItemId, getSandboxPropertyId } = __.require('test/integration/utils/sandbox_entities')
 const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
 const { randomString, randomNumber } = __.require('test/unit/utils')
@@ -24,56 +24,49 @@ describe('claim update', function () {
       simplify.claim(res.claim).should.equal(newValue)
     })
 
-    it('should fetch the properties it needs', done => {
+    it('should fetch the properties it needs', async () => {
       const oldValue = randomString()
       const newValue = randomString()
-      addClaim('string', oldValue)
-      .then(({ id, property, guid }) => {
-        return updateClaim({ id, property: 'P999999', oldValue, newValue })
-        .then(undesiredRes(done))
-        .catch(err => {
-          err.message.should.equal('property not found')
-          done()
-        })
-      })
-      .catch(done)
+      const { id } = await addClaim('string', oldValue)
+      try {
+        const res = await updateClaim({ id, property: 'P999999', oldValue, newValue })
+        shouldNotGetHere(res)
+      } catch (err) {
+        err.message.should.equal('property not found')
+      }
     })
 
-    it('should reject if old value is missing', done => {
+    it('should reject if old value is missing', async () => {
       const oldValue = randomString()
       const newValue = randomString()
-      Promise.all([
+      const [ id, property ] = await Promise.all([
         getSandboxItemId(),
         getSandboxPropertyId('string')
       ])
-      .then(([ id, property ]) => updateClaim({ id, property, oldValue, newValue }))
-      .then(undesiredRes(done))
-      .catch(err => {
+      try {
+        const res = await updateClaim({ id, property, oldValue, newValue })
+        shouldNotGetHere(res)
+      } catch (err) {
         // Accept both messages as the sandbox item might not have pre-existing claims for that property
         const possibleMessages = [ 'no property claims found', 'claim not found' ]
         possibleMessages.includes(err.message).should.be.true()
-        done()
-      })
-      .catch(done)
+      }
     })
 
-    it('should reject claim updates from values when several claims match', done => {
+    it('should reject claim updates from values when several claims match', async () => {
       const oldValue = randomString()
       const newValue = randomString()
-      Promise.all([
+      const [ res1 ] = await Promise.all([
         addClaim('string', oldValue),
         addClaim('string', oldValue)
       ])
-      .then(([ res1, res2 ]) => {
-        const { id, property } = res1
-        return updateClaim({ id, property, oldValue, newValue })
-      })
-      .then(undesiredRes(done))
-      .catch(err => {
+      const { id, property } = res1
+      try {
+        const res = await updateClaim({ id, property, oldValue, newValue })
+        shouldNotGetHere(res)
+      } catch (err) {
         err.message.should.equal('snak not found: too many matching snaks')
-        done()
-      })
-      .catch(done)
+      }
     })
   })
 
