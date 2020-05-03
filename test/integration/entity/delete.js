@@ -1,7 +1,9 @@
 require('should')
 const config = require('config')
-const { __ } = config
-const wbEdit = __.require('.')(config)
+const { __, instance, credentialsAlt } = config
+// Use credentialsAlt as the OAuth token might miss the permission to delete pages
+// thus getting a 'permissiondenied' error
+const wbEdit = __.require('.')({ instance, credentials: credentialsAlt })
 const { randomString } = __.require('test/unit/utils')
 
 describe('entity delete', function () {
