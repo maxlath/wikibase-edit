@@ -39,15 +39,10 @@ describe('credentials', function () {
     }
   })
 
-  it('should reject defining credentials both at initialization and request time', async () => {
+  it('should allow defining credentials both at initialization and request time', async () => {
     const wbEdit = WBEdit({ credentials })
-    try {
-      const res = await wbEdit.entity.create(params(), { instance, credentials })
-      shouldNotGetHere(res)
-    } catch (err) {
-      rethrowShouldNotGetHereErrors(err)
-      err.message.should.equal('credentials should either be passed at initialization or per request')
-    }
+    const res = await wbEdit.entity.create(params(), { instance, credentials })
+    res.success.should.equal(1)
   })
 
   it('should reject defining both oauth and username:password credentials', async () => {
