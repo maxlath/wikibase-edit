@@ -4,9 +4,6 @@ const { __ } = config
 const { undesiredRes } = require('./utils/utils')
 const { getSandboxPropertyId } = __.require('test/integration/utils/sandbox_entities')
 const fetchPropertiesDatatypes = __.require('lib/properties/fetch_properties_datatypes')
-const validateAndEnrichConfig = __.require('lib/validate_and_enrich_config')
-// Set config.wbk
-validateAndEnrichConfig(config)
 
 describe('fetch properties datatypes', function () {
   this.timeout(20 * 1000)
