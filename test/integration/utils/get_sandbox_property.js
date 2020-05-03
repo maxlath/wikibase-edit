@@ -4,6 +4,7 @@ const wbk = require('wikibase-sdk')({ instance: config.instance })
 const sandboxProperties = {}
 const fetch = __.require('lib/request/fetch')
 const wbEdit = __.require('.')(config)
+const { randomString } = __.require('test/unit/utils')
 
 module.exports = async datatype => {
   if (!datatype) throw new Error('missing datatype')
@@ -37,7 +38,9 @@ const createProperty = async datatype => {
     type: 'property',
     datatype,
     labels: {
-      en: pseudoPropertyId
+      // Including a random string to avoid conflicts in case a property with that pseudoPropertyId
+      // already exist but wasn't found due to a problem in ElasticSearch
+      en: `${pseudoPropertyId} (${randomString()})`
     }
   })
   return res.entity
