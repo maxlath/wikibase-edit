@@ -47,11 +47,17 @@ const getSandboxPropertyId = datatype => getProperty({ datatype }).then(getId)
 const getSandboxClaimId = () => getSandboxClaim().then(getId)
 const getId = obj => obj.id
 
+const createItem = (data = {}) => {
+  data.type = 'item'
+  return createEntity(data)
+}
+
 module.exports = {
   getSandboxItem,
   getSandboxItemId,
   getSandboxPropertyId,
   getRefreshedEntity,
   getSandboxClaim,
-  getSandboxClaimId
+  getSandboxClaimId,
+  createItem
 }

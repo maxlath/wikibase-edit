@@ -4,7 +4,7 @@ const { __ } = config
 const wbEdit = __.require('.')(config)
 const { move: moveClaim } = wbEdit.claim
 const { shouldNotGetHere } = __.require('test/integration/utils/utils')
-const { getSandboxItemId } = __.require('test/integration/utils/sandbox_entities')
+const { getSandboxItemId, createItem } = __.require('test/integration/utils/sandbox_entities')
 const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
 const { randomString } = __.require('test/unit/utils')
 const getProperty = __.require('test/integration/utils/get_property')
@@ -112,5 +112,14 @@ describe('claim move', function () {
       err.context.currentProperty.should.equal(property)
       err.context.currentPropertyDatatype.should.equal('string')
     }
+  })
+
+  it('should move a claim from one entity to another', async () => {
+    const { guid, id, property } = await addClaim('string', randomString())
+    const { id: otherItemId } = await createItem()
+    const res = await moveClaim({ guid, id: otherItemId, property })
+    const [ removeClaimRes, addClaimRes ] = res
+    removeClaimRes.entity.id.should.equal(id)
+    addClaimRes.entity.id.should.equal(otherItemId)
   })
 })
