@@ -90,12 +90,27 @@ describe('claim move', function () {
 
   it('should move a claim from one property to another', async () => {
     const { guid, id, property } = await addClaim('string', randomString())
-    const otherStringProperty = await getProperty({ datatype: 'string', reserved: true })
-    const [ res ] = await moveClaim({ guid, id, property: otherStringProperty.id })
+    const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
+    const [ res ] = await moveClaim({ guid, id, property: otherStringPropertyId })
     const { entity } = res
     entity.id.should.equal(id)
     should(entity.claims[property]).not.be.ok()
-    const movedClaim = entity.claims[otherStringProperty.id][0]
+    const movedClaim = entity.claims[otherStringPropertyId][0]
     movedClaim.id.should.equal(guid)
+  })
+
+  it("should reject if properties datatypes don't match", async () => {
+    const { guid, id, property } = await addClaim('string', randomString())
+    const { id: otherStringPropertyId } = await getProperty({ datatype: 'quantity' })
+    try {
+      const res = await moveClaim({ guid, id, property: otherStringPropertyId })
+      shouldNotGetHere(res)
+    } catch (err) {
+      err.message.should.equal("properties datatype don't match")
+      err.context.property.should.equal(otherStringPropertyId)
+      err.context.propertyDatatype.should.equal('quantity')
+      err.context.currentProperty.should.equal(property)
+      err.context.currentPropertyDatatype.should.equal('string')
+    }
   })
 })
