@@ -6,8 +6,9 @@ const fetch = __.require('lib/request/fetch')
 const wbEdit = __.require('.')(config)
 const { randomString } = __.require('test/unit/utils')
 
-module.exports = async datatype => {
+module.exports = async ({ datatype, reserved }) => {
   if (!datatype) throw new Error('missing datatype')
+  if (reserved) return createProperty(datatype)
   const property = await getProperty(datatype)
   sandboxProperties[datatype] = property
   return property
