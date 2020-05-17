@@ -26,6 +26,7 @@
     - [update claim](#update-claim)
       - [find claim to update by value](#find-claim-to-update-by-value)
       - [find claim to update by claim GUID](#find-claim-to-update-by-claim-guid)
+    - [move claim](#move-claim)
     - [remove claim](#remove-claim)
   - [Qualifier](#qualifier)
     - [set qualifier](#set-qualifier)
@@ -438,6 +439,39 @@ wbEdit.claim.update({
   newValue: 'new-value'
 })
 ```
+
+#### move claim
+Move a claim from an entity to another and/or from a property to another
+
+* change the property of a claim (without changing entity)
+```js
+const wbEdit.claim.move({
+  // This guid identifies a P19 claim on Q4115189
+  guid: 'Q4115189$13681798-47F7-4D51-B3B4-BA8C7E044E1F',
+  id: 'Q4115189',
+  property: 'P20'
+})
+````
+
+* move the claim to another entity (without changing the property)
+```js
+const wbEdit.claim.move({
+  // This guid identifies a P19 claim on Q4115189
+  guid: 'Q4115189$13681798-47F7-4D51-B3B4-BA8C7E044E1F',
+  id: 'Q13406268',
+  property: 'P19'
+})
+````
+
+* move the claim to another entity and another property
+```js
+const wbEdit.claim.move({
+  // This guid identifies a P19 claim on Q4115189
+  guid: 'Q4115189$13681798-47F7-4D51-B3B4-BA8C7E044E1F',
+  id: 'Q13406268',
+  property: 'P20'
+})
+````
 
 #### remove claim
 ```js
