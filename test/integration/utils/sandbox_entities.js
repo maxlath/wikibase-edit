@@ -2,7 +2,7 @@ const config = require('config')
 const { __ } = config
 const wbEdit = __.require('.')(config)
 const { randomString } = __.require('test/unit/utils')
-const getSandboxProperty = require('./get_sandbox_property')
+const getProperty = require('./get_property')
 const fetch = __.require('lib/request/fetch')
 
 const createEntity = async (data = {}) => {
@@ -43,16 +43,21 @@ const getSandboxClaim = (datatype = 'string') => {
 }
 
 const getSandboxItemId = () => getSandboxItem().then(getId)
-const getSandboxPropertyId = datatype => getSandboxProperty(datatype).then(getId)
+const getSandboxPropertyId = datatype => getProperty({ datatype }).then(getId)
 const getSandboxClaimId = () => getSandboxClaim().then(getId)
 const getId = obj => obj.id
 
+const createItem = (data = {}) => {
+  data.type = 'item'
+  return createEntity(data)
+}
+
 module.exports = {
   getSandboxItem,
-  getSandboxProperty,
   getSandboxItemId,
   getSandboxPropertyId,
   getRefreshedEntity,
   getSandboxClaim,
-  getSandboxClaimId
+  getSandboxClaimId,
+  createItem
 }
