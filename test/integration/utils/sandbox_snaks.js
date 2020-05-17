@@ -3,11 +3,9 @@ const { __ } = config
 const wbEdit = __.require('.')(config)
 const { getSandboxItemId, getSandboxPropertyId, getSandboxClaimId } = require('./sandbox_entities')
 
-const addClaim = async (datatype, value) => {
-  const [ id, property ] = await Promise.all([
-    getSandboxItemId(),
-    getSandboxPropertyId(datatype)
-  ])
+const addClaim = async ({ id, property, datatype, value }) => {
+  id = id || await getSandboxItemId()
+  property = property || await getSandboxPropertyId(datatype)
   const res = await wbEdit.claim.create({ id, property, value })
   return { id, property, guid: res.claim.id }
 }

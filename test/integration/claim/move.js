@@ -12,7 +12,7 @@ const getProperty = __.require('test/integration/utils/get_property')
 let someGuid
 const getSomeGuid = async () => {
   if (someGuid) return someGuid
-  const { guid } = await addClaim('string', randomString())
+  const { guid } = await addClaim({ datatype: 'string', value: randomString() })
   someGuid = guid
   return guid
 }
@@ -89,18 +89,19 @@ describe('claim move', function () {
   })
 
   it('should move a claim from one property to another', async () => {
-    const { guid, id, property } = await addClaim('string', randomString())
+    const { id } = await createItem()
+    const { guid, property: currentProperty } = await addClaim({ id, datatype: 'string', value: randomString() })
     const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
     const [ res ] = await moveClaim({ guid, id, property: otherStringPropertyId })
     const { entity } = res
     entity.id.should.equal(id)
-    should(entity.claims[property]).not.be.ok()
+    should(entity.claims[currentProperty]).not.be.ok()
     const movedClaim = entity.claims[otherStringPropertyId][0]
     movedClaim.id.should.not.equal(guid)
   })
 
   it("should reject if properties datatypes don't match", async () => {
-    const { guid, id, property } = await addClaim('string', randomString())
+    const { guid, id, property } = await addClaim({ datatype: 'string', value: randomString() })
     const { id: otherStringPropertyId } = await getProperty({ datatype: 'quantity' })
     try {
       const res = await moveClaim({ guid, id, property: otherStringPropertyId })
@@ -115,7 +116,7 @@ describe('claim move', function () {
   })
 
   it('should move a claim from one entity to another', async () => {
-    const { guid, id, property } = await addClaim('string', randomString())
+    const { guid, id, property } = await addClaim({ datatype: 'string', value: randomString() })
     const { id: otherItemId } = await createItem()
     const res = await moveClaim({ guid, id: otherItemId, property })
     const [ removeClaimRes, addClaimRes ] = res

@@ -11,7 +11,7 @@ describe('claim create', function () {
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
   it('should remove a claim', async () => {
-    const { guid } = await addClaim('string', randomString())
+    const { guid } = await addClaim({ datatype: 'string', value: randomString() })
     const res = await wbEdit.claim.remove({ guid })
     res.success.should.equal(1)
     res.claims.should.deepEqual([ guid ])

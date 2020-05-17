@@ -18,7 +18,7 @@ describe('claim update', function () {
     it('should update a claim', async () => {
       const oldValue = randomString()
       const newValue = randomString()
-      const { id, property, guid } = await addClaim('string', oldValue)
+      const { id, property, guid } = await addClaim({ datatype: 'string', value: oldValue })
       const res = await updateClaim({ id, property, oldValue, newValue })
       res.claim.id.should.equal(guid)
       simplify.claim(res.claim).should.equal(newValue)
@@ -27,7 +27,7 @@ describe('claim update', function () {
     it('should fetch the properties it needs', async () => {
       const oldValue = randomString()
       const newValue = randomString()
-      const { id } = await addClaim('string', oldValue)
+      const { id } = await addClaim({ datatype: 'string', value: oldValue })
       try {
         const res = await updateClaim({ id, property: 'P999999', oldValue, newValue })
         shouldNotGetHere(res)
@@ -57,8 +57,8 @@ describe('claim update', function () {
       const oldValue = randomString()
       const newValue = randomString()
       const [ res1 ] = await Promise.all([
-        addClaim('string', oldValue),
-        addClaim('string', oldValue)
+        addClaim({ datatype: 'string', value: oldValue }),
+        addClaim({ datatype: 'string', value: oldValue })
       ])
       const { id, property } = res1
       try {
@@ -74,7 +74,7 @@ describe('claim update', function () {
     it('should update a claim', async () => {
       const oldValue = randomString()
       const newValue = randomString()
-      const { guid, property } = await addClaim('string', oldValue)
+      const { guid, property } = await addClaim({ datatype: 'string', value: oldValue })
       const res = await updateClaim({ guid, property, newValue })
       res.claim.id.should.equal(guid)
       res.claim.mainsnak.datavalue.value.should.equal(newValue)
@@ -110,7 +110,7 @@ describe('claim update', function () {
     it('should update a monolingual text claim', async () => {
       const oldValue = { text: randomString(), language: 'fr' }
       const newValue = { text: randomString(), language: 'de' }
-      const { guid, property } = await addClaim('monolingualtext', oldValue)
+      const { guid, property } = await addClaim({ datatype: 'monolingualtext', value: oldValue })
       const res = await updateClaim({ guid, property, newValue })
       res.claim.id.should.equal(guid)
       simplify.claim(res.claim, { keepRichValues: true }).should.deepEqual(newValue)
@@ -119,7 +119,7 @@ describe('claim update', function () {
     it('should update a quantity claim with a unit', async () => {
       const oldValue = { amount: randomNumber(), unit: 'Q1' }
       const newValue = { amount: randomNumber(), unit: 'Q2' }
-      const { guid, property } = await addClaim('quantity', oldValue)
+      const { guid, property } = await addClaim({ datatype: 'quantity', value: oldValue })
       const res = await updateClaim({ guid, property, newValue })
       res.claim.id.should.equal(guid)
       simplify.claim(res.claim, { keepRichValues: true }).should.deepEqual(newValue)
@@ -130,7 +130,7 @@ describe('claim update', function () {
       const newYear = 1000 + randomNumber(3)
       const oldValue = `${oldYear}-02-26`
       const newValue = `${newYear}-10-25`
-      const { guid, property } = await addClaim('time', oldValue)
+      const { guid, property } = await addClaim({ datatype: 'time', value: oldValue })
       const res = await updateClaim({ guid, property, newValue })
       res.claim.id.should.equal(guid)
       simplify.claim(res.claim).split('T')[0].should.equal(newValue)
@@ -149,7 +149,7 @@ describe('claim update', function () {
         precision: 0.01,
         globe: 'http://www.wikidata.org/entity/Q112'
       }
-      const { guid, property } = await addClaim('globe-coordinate', oldValue)
+      const { guid, property } = await addClaim({ datatype: 'globe-coordinate', value: oldValue })
       const res = await updateClaim({ guid, property, newValue })
       res.claim.id.should.equal(guid)
       const { value } = res.claim.mainsnak.datavalue
