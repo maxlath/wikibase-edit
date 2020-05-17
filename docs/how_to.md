@@ -631,15 +631,9 @@ wbEdit.entity.edit({
     en: [ 'foo', 'bar' ],
     // Or a single value
     de: 'buzz',
-    // Remove an alias
-    fr: { value: 'bla', remove: true }
-    // Add some aliases and remove others
-    es: [
-      // Will be added
-      'ola',
-      // Will be removed
-      { value: 'alo', remove: true }
-    ]
+    // /!\ for any language specified, the values you pass will overwrite the existing values,
+    // which means that the following empty array will remove all existing aliases in French.
+    fr: []
   },
   claims: {
     // Pass values as an array
