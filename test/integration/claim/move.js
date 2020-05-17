@@ -96,7 +96,7 @@ describe('claim move', function () {
     entity.id.should.equal(id)
     should(entity.claims[property]).not.be.ok()
     const movedClaim = entity.claims[otherStringPropertyId][0]
-    movedClaim.id.should.equal(guid)
+    movedClaim.id.should.not.equal(guid)
   })
 
   it("should reject if properties datatypes don't match", async () => {
