@@ -3,7 +3,7 @@ const config = require('config')
 const { __ } = config
 const wbEdit = __.require('.')(config)
 const { move: moveClaim } = wbEdit.claim
-const { shouldNotGetHere } = __.require('test/integration/utils/utils')
+const { shouldNotBeCalled } = __.require('test/integration/utils/utils')
 const { getSandboxItemId, createItem } = __.require('test/integration/utils/sandbox_entities')
 const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
 const { randomString } = __.require('test/unit/utils')
@@ -23,14 +23,13 @@ const getSomeEntityId = async () => {
   return someEntityId
 }
 
-describe('claim move', function () {
+describe('move claim', function () {
   this.timeout(20 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
   it('should reject missing guid', async () => {
     try {
-      const res = await moveClaim({})
-      shouldNotGetHere(res)
+      await moveClaim({}).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('missing claim guid')
     }
@@ -38,8 +37,7 @@ describe('claim move', function () {
 
   it('should reject invalid guid', async () => {
     try {
-      const res = await moveClaim({ guid: 123 })
-      shouldNotGetHere(res)
+      await moveClaim({ guid: 123 }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('invalid claim guid')
     }
@@ -48,8 +46,7 @@ describe('claim move', function () {
   it('should reject missing entity id', async () => {
     try {
       const guid = await getSomeGuid()
-      const res = await moveClaim({ guid })
-      shouldNotGetHere(res)
+      await moveClaim({ guid }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('missing target entity id')
     }
@@ -58,8 +55,7 @@ describe('claim move', function () {
   it('should reject invalid entity id', async () => {
     try {
       const guid = await getSomeGuid()
-      const res = await moveClaim({ guid, id: 'foo' })
-      shouldNotGetHere(res)
+      await moveClaim({ guid, id: 'foo' }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('invalid target entity id')
     }
@@ -70,8 +66,7 @@ describe('claim move', function () {
       const guid = await getSomeGuid()
       const id = await getSomeEntityId()
       console.log('id', id)
-      const res = await moveClaim({ guid, id })
-      shouldNotGetHere(res)
+      await moveClaim({ guid, id }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('missing property id')
     }
@@ -81,8 +76,7 @@ describe('claim move', function () {
     try {
       const guid = await getSomeGuid()
       const id = await getSomeEntityId()
-      const res = await moveClaim({ guid, id, property: '123' })
-      shouldNotGetHere(res)
+      await moveClaim({ guid, id, property: '123' }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('invalid property id')
     }
@@ -105,7 +99,7 @@ describe('claim move', function () {
     const { id: otherStringPropertyId } = await getProperty({ datatype: 'quantity' })
     try {
       const res = await moveClaim({ guid, id, property: otherStringPropertyId })
-      shouldNotGetHere(res)
+      shouldNotBeCalled(res)
     } catch (err) {
       err.message.should.equal("properties datatype don't match")
       err.context.property.should.equal(otherStringPropertyId)
