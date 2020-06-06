@@ -53,11 +53,11 @@ describe('move property claims', function () {
     }
   })
 
-  it('should reject empty move operation', async () => {
+  it('should reject move operation with no entity or property change', async () => {
+    const { id, property } = await addClaim({ datatype: 'string', value: randomString() })
+    const propertyClaimsId = `${id}#${property}`
     try {
-      const { id: somePropertyId } = await getProperty({ datatype: 'string' })
-      const propertyClaimsId = `Q1#${somePropertyId}`
-      await movePropertyClaims({ propertyClaimsId, id: 'Q1', property: somePropertyId }).then(shouldNotBeCalled)
+      await movePropertyClaims({ propertyClaimsId, id, property }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal("move operation wouldn't have any effect: same entity, same property")
     }
@@ -75,6 +75,18 @@ describe('move property claims', function () {
       err.context.propertyDatatype.should.equal('quantity')
       err.context.currentProperty.should.equal(property)
       err.context.currentPropertyDatatype.should.equal('string')
+    }
+  })
+
+  it('should reject moves with no claims to move', async () => {
+    const { id } = await createItem()
+    const { id: someStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
+    const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
+    const propertyClaimsId = `${id}#${someStringPropertyId}`
+    try {
+      await movePropertyClaims({ propertyClaimsId, id, property: otherStringPropertyId }).then(shouldNotBeCalled)
+    } catch (err) {
+      err.message.should.equal('no property claims found')
     }
   })
 
