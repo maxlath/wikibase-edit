@@ -1,17 +1,24 @@
 const { yellow } = require('chalk')
 const { instance, __ } = require('config')
 const WBK = require('wikibase-sdk')
+const wbk = WBK({ instance })
 const fetch = __.require('lib/request/fetch')
 const resolveTitle = require('../../../lib/resolve_title')
 
 module.exports = {
   delay: delayMs => new Promise(resolve => setTimeout(resolve, delayMs)),
 
+  getEntity: async id => {
+    const url = wbk.getEntities({ ids: id })
+    const { entities } = await fetch(url).then(res => res.json())
+    return entities[id]
+  },
+
   getLastRevision: async (id, customInstance) => {
     customInstance = customInstance || instance
     const title = await resolveTitle(id, customInstance)
-    const wbk = WBK({ instance: customInstance })
-    const url = wbk.getRevisions(title, { limit: 1, prop: [ 'comment', 'tags' ] })
+    const customWbk = WBK({ instance: customInstance })
+    const url = customWbk.getRevisions(title, { limit: 1, prop: [ 'comment', 'tags' ] })
     const { query } = await fetch(url).then(res => res.json())
     return Object.values(query.pages)[0].revisions[0]
   },

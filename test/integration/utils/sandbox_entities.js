@@ -5,6 +5,13 @@ const { randomString } = __.require('test/unit/utils')
 const getProperty = require('./get_property')
 const fetch = __.require('lib/request/fetch')
 
+// Working around the circular dependency
+let addClaim
+const lateRequire = () => {
+  ({ addClaim } = __.require('test/integration/utils/sandbox_snaks'))
+}
+setTimeout(lateRequire, 0)
+
 const createEntity = async (data = {}) => {
   data.labels = data.labels || { en: randomString() }
   const { entity } = await wbEdit.entity.create(data)
@@ -52,6 +59,20 @@ const createItem = (data = {}) => {
   return createEntity(data)
 }
 
+let someEntityId
+const getSomeEntityId = async () => {
+  someEntityId = someEntityId || await getSandboxItemId()
+  return someEntityId
+}
+
+let someGuid
+const getSomeGuid = async () => {
+  if (someGuid) return someGuid
+  const { guid } = await addClaim({ datatype: 'string', value: randomString() })
+  someGuid = guid
+  return guid
+}
+
 module.exports = {
   getSandboxItem,
   getSandboxItemId,
@@ -59,5 +80,7 @@ module.exports = {
   getRefreshedEntity,
   getSandboxClaim,
   getSandboxClaimId,
-  createItem
+  createItem,
+  getSomeEntityId,
+  getSomeGuid
 }
