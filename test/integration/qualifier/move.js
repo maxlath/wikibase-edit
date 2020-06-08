@@ -32,7 +32,7 @@ describe('qualifier move', function () {
 
   it('should reject missing new property', async () => {
     try {
-      const { guid, property: oldProperty } = await addQualifier('string', randomString())
+      const { guid, property: oldProperty } = await addQualifier({ datatype: 'string', value: randomString() })
       await moveQualifier({ guid, oldProperty }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('missing new property')
@@ -41,7 +41,7 @@ describe('qualifier move', function () {
 
   it('should move a qualifier', async () => {
     const value = randomString()
-    const { guid, property: oldProperty } = await addQualifier('string', value)
+    const { guid, property: oldProperty } = await addQualifier({ datatype: 'string', value: value })
     const { id: newProperty } = await getProperty({ datatype: 'string', reserved: true })
     const { claim } = await moveQualifier({ guid, oldProperty, newProperty })
     should(claim.qualifiers[oldProperty]).not.be.ok()

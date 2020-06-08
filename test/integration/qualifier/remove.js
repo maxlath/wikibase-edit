@@ -11,15 +11,15 @@ describe('qualifier remove', function () {
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
   it('should remove a qualifier', async () => {
-    const { guid, qualifier } = await addQualifier('string', randomString())
+    const { guid, qualifier } = await addQualifier({ datatype: 'string', value: randomString() })
     const res = await removeQualifier({ guid, hash: qualifier.hash })
     res.success.should.equal(1)
   })
 
   it('should remove several qualifiers', async () => {
     const [ res1, res2 ] = await Promise.all([
-      addQualifier('string', randomString()),
-      addQualifier('string', randomString())
+      addQualifier({ datatype: 'string', value: randomString() }),
+      addQualifier({ datatype: 'string', value: randomString() })
     ])
     const res = await removeQualifier({
       guid: res1.guid,

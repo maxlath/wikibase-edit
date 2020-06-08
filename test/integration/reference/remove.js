@@ -11,15 +11,15 @@ describe('reference remove', function () {
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
   it('should remove a reference', async () => {
-    const { guid, reference } = await addReference('string', randomString())
+    const { guid, reference } = await addReference({ datatype: 'string', value: randomString() })
     const res = await removeReference({ guid, hash: reference.hash })
     res.success.should.equal(1)
   })
 
   it('should remove several qualifiers', async () => {
     const [ res1, res2 ] = await Promise.all([
-      addReference('string', randomString()),
-      addReference('string', randomString())
+      addReference({ datatype: 'string', value: randomString() }),
+      addReference({ datatype: 'string', value: randomString() })
     ])
     const res3 = await removeReference({
       guid: res1.guid,
