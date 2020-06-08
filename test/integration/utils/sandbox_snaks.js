@@ -15,7 +15,8 @@ const addQualifier = async ({ guid, property, datatype, value }) => {
   property = property || await getSandboxPropertyId(datatype)
   const res = await wbEdit.qualifier.set({ guid, property, value })
   const qualifier = res.claim.qualifiers[property].slice(-1)[0]
-  return { guid, property, qualifier }
+  const { hash } = qualifier
+  return { guid, property, qualifier, hash }
 }
 
 const addReference = async ({ guid, property, datatype, value }) => {

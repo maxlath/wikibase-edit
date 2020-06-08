@@ -33,6 +33,9 @@
   - [Qualifier](#qualifier)
     - [set qualifier](#set-qualifier)
     - [update qualifier](#update-qualifier)
+    - [move qualifier](#move-qualifier)
+      - [move a unique qualifier](#move-a-unique-qualifier)
+      - [move all qualifiers from a property to another](#move-all-qualifiers-from-a-property-to-another)
     - [remove qualifier](#remove-qualifier)
   - [Reference](#reference)
     - [set reference](#set-reference)
@@ -610,6 +613,29 @@ wbEdit.qualifier.update({
   property,
   oldValue,
   newValue: { snaktype : 'novalue' }
+})
+```
+
+#### move qualifier
+A function to move qualifiers between properties within a claim:
+
+##### move a unique qualifier
+```js
+wbEdit.qualifier.move({
+  guid: 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F',
+  hash: '239ef1c81ef0c24611d6d7c294d07036e82c4666',
+  oldProperty: 'P155',
+  newProperty: 'P156'
+})
+```
+
+##### move all qualifiers from a property to another
+That's exactly the same as above, just not specifying a hash
+```js
+wbEdit.qualifier.move({
+  guid: 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F',
+  oldProperty: 'P155',
+  newProperty: 'P156'
 })
 ```
 

@@ -39,12 +39,24 @@ describe('qualifier move', function () {
     }
   })
 
-  it('should move a qualifier', async () => {
-    const value = randomString()
-    const { guid, property: oldProperty } = await addQualifier({ datatype: 'string', value: value })
+  it('should move property qualifiers', async () => {
+    const [ valueA, valueB ] = [ randomString(), randomString() ]
+    const { guid, property: oldProperty } = await addQualifier({ datatype: 'string', value: valueA })
+    await addQualifier({ guid, property: oldProperty, value: valueB })
     const { id: newProperty } = await getProperty({ datatype: 'string', reserved: true })
     const { claim } = await moveQualifier({ guid, oldProperty, newProperty })
     should(claim.qualifiers[oldProperty]).not.be.ok()
-    claim.qualifiers[newProperty][0].datavalue.value.should.equal(value)
+    claim.qualifiers[newProperty][0].datavalue.value.should.equal(valueA)
+    claim.qualifiers[newProperty][1].datavalue.value.should.equal(valueB)
+  })
+
+  it('should move a unique qualifier', async () => {
+    const [ valueA, valueB ] = [ randomString(), randomString() ]
+    const { guid, property: oldProperty, hash } = await addQualifier({ datatype: 'string', value: valueA })
+    await addQualifier({ guid, property: oldProperty, value: valueB })
+    const { id: newProperty } = await getProperty({ datatype: 'string', reserved: true })
+    const { claim } = await moveQualifier({ guid, hash, oldProperty, newProperty })
+    claim.qualifiers[oldProperty][0].datavalue.value.should.equal(valueB)
+    claim.qualifiers[newProperty][0].datavalue.value.should.equal(valueA)
   })
 })
