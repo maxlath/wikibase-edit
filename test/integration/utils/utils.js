@@ -6,7 +6,7 @@ const fetch = __.require('lib/request/fetch')
 const resolveTitle = require('../../../lib/resolve_title')
 
 module.exports = {
-  delay: delayMs => new Promise(resolve => setTimeout(resolve, delayMs)),
+  wait: ms => new Promise(resolve => setTimeout(resolve, ms)),
 
   getEntity: async id => {
     const url = wbk.getEntities({ ids: id })
