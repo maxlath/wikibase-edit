@@ -3,43 +3,27 @@ const config = require('config')
 const { __ } = config
 const wbEdit = __.require('.')(config)
 const { move: moveClaim } = wbEdit.claim
-const { shouldNotGetHere } = __.require('test/integration/utils/utils')
-const { getSandboxItemId, createItem } = __.require('test/integration/utils/sandbox_entities')
+const { shouldNotBeCalled } = __.require('test/integration/utils/utils')
+const { createItem, getSomeEntityId, getSomeGuid } = __.require('test/integration/utils/sandbox_entities')
 const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
 const { randomString } = __.require('test/unit/utils')
 const getProperty = __.require('test/integration/utils/get_property')
 
-let someGuid
-const getSomeGuid = async () => {
-  if (someGuid) return someGuid
-  const { guid } = await addClaim({ datatype: 'string', value: randomString() })
-  someGuid = guid
-  return guid
-}
-
-let someEntityId
-const getSomeEntityId = async () => {
-  someEntityId = someEntityId || await getSandboxItemId()
-  return someEntityId
-}
-
-describe('claim move', function () {
+describe('move claim', function () {
   this.timeout(20 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
   it('should reject missing guid', async () => {
     try {
-      const res = await moveClaim({})
-      shouldNotGetHere(res)
+      await moveClaim({}).then(shouldNotBeCalled)
     } catch (err) {
-      err.message.should.equal('missing claim guid')
+      err.message.should.equal('missing claim guid or property claims id')
     }
   })
 
   it('should reject invalid guid', async () => {
     try {
-      const res = await moveClaim({ guid: 123 })
-      shouldNotGetHere(res)
+      await moveClaim({ guid: 123 }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('invalid claim guid')
     }
@@ -48,8 +32,7 @@ describe('claim move', function () {
   it('should reject missing entity id', async () => {
     try {
       const guid = await getSomeGuid()
-      const res = await moveClaim({ guid })
-      shouldNotGetHere(res)
+      await moveClaim({ guid }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('missing target entity id')
     }
@@ -58,8 +41,7 @@ describe('claim move', function () {
   it('should reject invalid entity id', async () => {
     try {
       const guid = await getSomeGuid()
-      const res = await moveClaim({ guid, id: 'foo' })
-      shouldNotGetHere(res)
+      await moveClaim({ guid, id: 'foo' }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('invalid target entity id')
     }
@@ -69,9 +51,7 @@ describe('claim move', function () {
     try {
       const guid = await getSomeGuid()
       const id = await getSomeEntityId()
-      console.log('id', id)
-      const res = await moveClaim({ guid, id })
-      shouldNotGetHere(res)
+      await moveClaim({ guid, id }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('missing property id')
     }
@@ -81,8 +61,7 @@ describe('claim move', function () {
     try {
       const guid = await getSomeGuid()
       const id = await getSomeEntityId()
-      const res = await moveClaim({ guid, id, property: '123' })
-      shouldNotGetHere(res)
+      await moveClaim({ guid, id, property: '123' }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('invalid property id')
     }
@@ -102,13 +81,12 @@ describe('claim move', function () {
 
   it("should reject if properties datatypes don't match", async () => {
     const { guid, id, property } = await addClaim({ datatype: 'string', value: randomString() })
-    const { id: otherStringPropertyId } = await getProperty({ datatype: 'quantity' })
+    const { id: someQuantityProperty } = await getProperty({ datatype: 'quantity' })
     try {
-      const res = await moveClaim({ guid, id, property: otherStringPropertyId })
-      shouldNotGetHere(res)
+      await moveClaim({ guid, id, property: someQuantityProperty }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal("properties datatype don't match")
-      err.context.property.should.equal(otherStringPropertyId)
+      err.context.property.should.equal(someQuantityProperty)
       err.context.propertyDatatype.should.equal('quantity')
       err.context.currentProperty.should.equal(property)
       err.context.currentPropertyDatatype.should.equal('string')

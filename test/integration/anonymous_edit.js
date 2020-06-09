@@ -7,6 +7,7 @@ const { getSandboxItemId } = __.require('test/integration/utils/sandbox_entities
 
 describe('anonymous edit', function () {
   this.timeout(20 * 1000)
+  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
   it('should make an anonymous edit', async () => {
     const id = await getSandboxItemId()

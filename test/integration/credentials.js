@@ -2,7 +2,7 @@ require('should')
 const { __, instance, credentials } = require('config')
 const WBEdit = __.require('.')
 const { randomString } = __.require('test/unit/utils')
-const { undesiredRes, shouldNotGetHere, rethrowShouldNotGetHereErrors } = require('./utils/utils')
+const { undesiredRes, shouldNotBeCalled, rethrowShouldNotBeCalledErrors } = require('./utils/utils')
 const params = () => ({ labels: { en: randomString() } })
 
 describe('credentials', function () {
@@ -31,10 +31,9 @@ describe('credentials', function () {
     const creds = { username: null, password: null }
     const wbEdit = WBEdit({ instance, credentials: creds })
     try {
-      const res = await wbEdit.entity.create(params())
-      shouldNotGetHere(res)
+      await wbEdit.entity.create(params()).then(shouldNotBeCalled)
     } catch (err) {
-      rethrowShouldNotGetHereErrors(err)
+      rethrowShouldNotBeCalledErrors(err)
       err.message.should.equal('missing credentials')
     }
   })
@@ -49,10 +48,9 @@ describe('credentials', function () {
     const creds = { username: 'abc', password: 'def', oauth: {} }
     const wbEdit = WBEdit({ instance, credentials: creds })
     try {
-      const res = await wbEdit.entity.create(params())
-      shouldNotGetHere(res)
+      await wbEdit.entity.create(params()).then(shouldNotBeCalled)
     } catch (err) {
-      rethrowShouldNotGetHereErrors(err)
+      rethrowShouldNotBeCalledErrors(err)
       err.message.should.equal('credentials can not be both oauth tokens, and a username and password')
     }
   })

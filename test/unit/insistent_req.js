@@ -2,7 +2,7 @@ require('should')
 const { __ } = require('config')
 const insistentReq = __.require('lib/request/insistent_req')
 const nock = require('nock')
-const { shouldNotGetHere, rethrowShouldNotGetHereErrors } = require('../integration/utils/utils')
+const { shouldNotBeCalled, rethrowShouldNotBeCalledErrors } = require('../integration/utils/utils')
 
 describe('insistent_req', () => {
   beforeEach(() => {
@@ -13,10 +13,9 @@ describe('insistent_req', () => {
 
   it('should throw a proper error', async () => {
     try {
-      const res = await insistentReq('get', { url: 'https://example.org' })
-      shouldNotGetHere(res)
+      await insistentReq('get', { url: 'https://example.org' }).then(shouldNotBeCalled)
     } catch (err) {
-      rethrowShouldNotGetHereErrors(err)
+      rethrowShouldNotBeCalledErrors(err)
       err.message.should.equal('Could not parse response: <!doctype html>')
       err.name.should.equal('wrong response format')
     }

@@ -1,10 +1,13 @@
-require('should')
+const should = require('should')
 const config = require('config')
 const { __ } = config
 const wbEdit = __.require('.')(config)
 const { simplify } = require('wikibase-sdk')
 const { randomString } = __.require('test/unit/utils')
-const { getSandboxItemId, getSandboxPropertyId } = __.require('test/integration/utils/sandbox_entities')
+const { getSandboxItemId, getSandboxPropertyId, createItem } = __.require('test/integration/utils/sandbox_entities')
+const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
+const { getEntity } = require('../utils/utils')
+const getProperty = __.require('test/integration/utils/get_property')
 
 describe('entity edit', function () {
   this.timeout(20 * 1000)
@@ -68,5 +71,31 @@ describe('entity edit', function () {
     const propertyClaims = res.entity.claims[propertyId].slice(-3)
     const simplifiedPropertyClaims = simplify.propertyClaims(propertyClaims, { keepRanks: true, keepNonTruthy: true })
     simplifiedPropertyClaims.should.deepEqual(claims[propertyId])
+  })
+
+  describe('raw mode', () => {
+    it('shoud accept raw data', async () => {
+      const [ labelA, labelB, claimValueA, claimValueB ] = [ randomString(), randomString(), randomString(), randomString() ]
+      const { id } = await createItem({ labels: { en: labelA } })
+      const { property } = await addClaim({ id, datatype: 'string', value: claimValueA })
+      const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
+      const { labels, claims } = await getEntity(id)
+      labels.en.value = labelB
+      const claim = claims[property][0]
+      const { id: guid } = claim
+      delete claim.id
+      const removedClaim = { id: guid, remove: true }
+      claim.mainsnak.property = otherStringPropertyId
+      claim.mainsnak.datavalue.value = claimValueB
+      const res = await wbEdit.entity.edit({
+        rawMode: true,
+        id,
+        labels,
+        claims: [ removedClaim, claim ]
+      })
+      res.entity.labels.en.value.should.equal(labelB)
+      should(res.entity.claims[property]).not.be.ok()
+      res.entity.claims[otherStringPropertyId][0].mainsnak.datavalue.value.should.equal(claimValueB)
+    })
   })
 })

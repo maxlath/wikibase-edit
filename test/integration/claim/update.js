@@ -4,7 +4,7 @@ const { __ } = config
 const wbEdit = __.require('.')(config)
 const updateClaim = wbEdit.claim.update
 const editEntity = wbEdit.entity.edit
-const { shouldNotGetHere } = __.require('test/integration/utils/utils')
+const { shouldNotBeCalled } = __.require('test/integration/utils/utils')
 const { getSandboxItemId, getSandboxPropertyId } = __.require('test/integration/utils/sandbox_entities')
 const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
 const { randomString, randomNumber } = __.require('test/unit/utils')
@@ -29,8 +29,7 @@ describe('claim update', function () {
       const newValue = randomString()
       const { id } = await addClaim({ datatype: 'string', value: oldValue })
       try {
-        const res = await updateClaim({ id, property: 'P999999', oldValue, newValue })
-        shouldNotGetHere(res)
+        await updateClaim({ id, property: 'P999999', oldValue, newValue }).then(shouldNotBeCalled)
       } catch (err) {
         err.message.should.equal('property not found')
       }
@@ -44,8 +43,7 @@ describe('claim update', function () {
         getSandboxPropertyId('string')
       ])
       try {
-        const res = await updateClaim({ id, property, oldValue, newValue })
-        shouldNotGetHere(res)
+        await updateClaim({ id, property, oldValue, newValue }).then(shouldNotBeCalled)
       } catch (err) {
         // Accept both messages as the sandbox item might not have pre-existing claims for that property
         const possibleMessages = [ 'no property claims found', 'claim not found' ]
@@ -62,8 +60,7 @@ describe('claim update', function () {
       ])
       const { id, property } = res1
       try {
-        const res = await updateClaim({ id, property, oldValue, newValue })
-        shouldNotGetHere(res)
+        await updateClaim({ id, property, oldValue, newValue }).then(shouldNotBeCalled)
       } catch (err) {
         err.message.should.equal('snak not found: too many matching snaks')
       }
