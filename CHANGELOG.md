@@ -1,6 +1,10 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 4.4.0 - 2020-06-09
+* Added [`qualifier.move`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-qualifier)
+* [`claim.move`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-claim): added [property claims mode](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-all-claims-from-an-entity-property)
+
 ## 4.3.0 - 2020-05-17
 * Added [`claim.move`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-claim)
 
