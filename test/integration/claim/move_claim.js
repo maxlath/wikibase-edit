@@ -3,7 +3,7 @@ const config = require('config')
 const { __ } = config
 const wbEdit = __.require('.')(config)
 const { move: moveClaim } = wbEdit.claim
-const { shouldNotBeCalled } = __.require('test/integration/utils/utils')
+const { shouldNotBeCalled, getLastEditSummary } = __.require('test/integration/utils/utils')
 const { createItem, getSomeEntityId, getSomeGuid } = __.require('test/integration/utils/sandbox_entities')
 const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
 const { randomString } = __.require('test/unit/utils')
@@ -77,6 +77,16 @@ describe('move claim', function () {
     should(entity.claims[currentProperty]).not.be.ok()
     const movedClaim = entity.claims[otherStringPropertyId][0]
     movedClaim.id.should.not.equal(guid)
+  })
+
+  it('should generate a custom summary', async () => {
+    const { id } = await createItem()
+    const { guid, property: currentProperty } = await addClaim({ id, datatype: 'string', value: randomString() })
+    const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
+    const [ res ] = await moveClaim({ guid, id, property: otherStringPropertyId })
+    const summary = await getLastEditSummary(res)
+    summary.split('*/')[1].trim()
+    .should.equal(`moving ${guid} from ${id}#${currentProperty} to ${id}#${otherStringPropertyId}`)
   })
 
   it("should reject if properties datatypes don't match", async () => {

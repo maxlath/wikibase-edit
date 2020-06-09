@@ -3,7 +3,7 @@ const config = require('config')
 const { __ } = config
 const wbEdit = __.require('.')(config)
 const { move: movePropertyClaims } = wbEdit.claim
-const { shouldNotBeCalled } = __.require('test/integration/utils/utils')
+const { shouldNotBeCalled, getLastEditSummary } = __.require('test/integration/utils/utils')
 const { createItem, getSomeEntityId } = __.require('test/integration/utils/sandbox_entities')
 const somePropertyClaimsId = 'Q1#P1'
 const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
@@ -92,21 +92,31 @@ describe('move property claims', function () {
 
   it('should move property claims from one property to another', async () => {
     const { id } = await createItem()
-    const { guid, property: currentProperty } = await addClaim({ id, datatype: 'string', value: randomString() })
+    const { guid, property: currentPropertyId } = await addClaim({ id, datatype: 'string', value: randomString() })
     const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
-    const propertyClaimsId = `${id}#${currentProperty}`
+    const propertyClaimsId = `${id}#${currentPropertyId}`
     const res = await movePropertyClaims({ propertyClaimsId, id, property: otherStringPropertyId })
     const { entity } = res[0]
     entity.id.should.equal(id)
-    should(entity.claims[currentProperty]).not.be.ok()
+    should(entity.claims[currentPropertyId]).not.be.ok()
     const movedClaim = entity.claims[otherStringPropertyId][0]
     movedClaim.id.should.not.equal(guid)
   })
 
+  it('should generate a custom summary', async () => {
+    const { id } = await createItem()
+    const { property: currentPropertyId } = await addClaim({ id, datatype: 'string', value: randomString() })
+    const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
+    const propertyClaimsId = `${id}#${currentPropertyId}`
+    const res = await movePropertyClaims({ propertyClaimsId, id, property: otherStringPropertyId })
+    const summary = await getLastEditSummary(res[0])
+    summary.split('*/')[1].trim().should.equal(`moving ${id}#${currentPropertyId} claims to ${id}#${otherStringPropertyId}`)
+  })
+
   it('should move a claim from one entity to another', async () => {
     const value = Math.trunc(Math.random() * 1000)
-    const { guid, id, property: currentProperty } = await addClaim({ datatype: 'quantity', value })
-    const propertyClaimsId = `${id}#${currentProperty}`
+    const { guid, id, property: currentPropertyId } = await addClaim({ datatype: 'quantity', value })
+    const propertyClaimsId = `${id}#${currentPropertyId}`
     const { id: otherItemId } = await createItem()
     const { id: otherStringPropertyId } = await getProperty({ datatype: 'quantity', reserved: true })
     const res = await movePropertyClaims({ propertyClaimsId, id: otherItemId, property: otherStringPropertyId })
@@ -115,9 +125,9 @@ describe('move property claims', function () {
     const { entity: newEntity } = addClaimsRes
     previousEntity.id.should.equal(id)
     newEntity.id.should.equal(otherItemId)
-    should(previousEntity.claims[currentProperty]).not.be.ok()
+    should(previousEntity.claims[currentPropertyId]).not.be.ok()
     should(previousEntity.claims[otherStringPropertyId]).not.be.ok()
-    should(newEntity.claims[currentProperty]).not.be.ok()
+    should(newEntity.claims[currentPropertyId]).not.be.ok()
     newEntity.claims[otherStringPropertyId][0].mainsnak.datavalue.value.amount.should.equal(`+${value}`)
     newEntity.claims[otherStringPropertyId][0].id.should.not.equal(guid)
   })

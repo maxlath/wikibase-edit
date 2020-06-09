@@ -3,7 +3,7 @@ const config = require('config')
 const { instance, credentials, __ } = config
 const WBEdit = __.require('.')
 const { randomString } = require('../unit/utils')
-const { getLastRevision } = require('./utils/utils')
+const { getLastEditSummary } = require('./utils/utils')
 const params = () => ({ labels: { en: randomString() } })
 
 describe('summary', function () {
@@ -43,11 +43,5 @@ describe('summary', function () {
 
 const postAndGetEditSummary = (wbEdit, reqConfig) => {
   return wbEdit.entity.create(params(), reqConfig)
-  .then(getEditSummary)
-}
-
-const getEditSummary = async res => {
-  const { id } = res.entity
-  const revision = await getLastRevision(id)
-  return revision.comment
+  .then(getLastEditSummary)
 }

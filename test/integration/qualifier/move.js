@@ -3,7 +3,7 @@ const config = require('config')
 const { __ } = config
 const wbEdit = __.require('.')(config)
 const { move: moveQualifier } = wbEdit.qualifier
-const { shouldNotBeCalled } = __.require('test/integration/utils/utils')
+const { shouldNotBeCalled, getLastEditSummary } = __.require('test/integration/utils/utils')
 const { getSomeGuid } = __.require('test/integration/utils/sandbox_entities')
 const { addClaim, addQualifier } = __.require('test/integration/utils/sandbox_snaks')
 const { randomString } = __.require('test/unit/utils')
@@ -60,5 +60,17 @@ describe('qualifier move', function () {
     const { claim } = await moveQualifier({ guid, hash, oldProperty, newProperty })
     claim.qualifiers[oldProperty][0].datavalue.value.should.equal(valueB)
     claim.qualifiers[newProperty][0].datavalue.value.should.equal(valueA)
+  })
+
+  it('should generate a custom summary', async () => {
+    const [ valueA, valueB ] = [ randomString(), randomString() ]
+    const { id, guid } = await addClaim({ datatype: 'string', value: randomString() })
+    const { property: oldProperty } = await addQualifier({ guid, datatype: 'string', value: valueA })
+    await addQualifier({ guid, property: oldProperty, value: valueB })
+    const { id: newProperty } = await getProperty({ datatype: 'string', reserved: true })
+    await moveQualifier({ guid, oldProperty, newProperty })
+    const summary = await getLastEditSummary(id)
+    summary.split('*/')[1].trim()
+    .should.equal(`moving ${guid} ${oldProperty} qualifiers to ${newProperty}`)
   })
 })

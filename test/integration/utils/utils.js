@@ -5,6 +5,15 @@ const wbk = WBK({ instance })
 const fetch = __.require('lib/request/fetch')
 const resolveTitle = require('../../../lib/resolve_title')
 
+const getLastRevision = async (id, customInstance) => {
+  customInstance = customInstance || instance
+  const title = await resolveTitle(id, customInstance)
+  const customWbk = WBK({ instance: customInstance })
+  const url = customWbk.getRevisions(title, { limit: 1, prop: [ 'comment', 'tags' ] })
+  const { query } = await fetch(url).then(res => res.json())
+  return Object.values(query.pages)[0].revisions[0]
+}
+
 module.exports = {
   wait: ms => new Promise(resolve => setTimeout(resolve, ms)),
 
@@ -14,13 +23,12 @@ module.exports = {
     return entities[id]
   },
 
-  getLastRevision: async (id, customInstance) => {
-    customInstance = customInstance || instance
-    const title = await resolveTitle(id, customInstance)
-    const customWbk = WBK({ instance: customInstance })
-    const url = customWbk.getRevisions(title, { limit: 1, prop: [ 'comment', 'tags' ] })
-    const { query } = await fetch(url).then(res => res.json())
-    return Object.values(query.pages)[0].revisions[0]
+  getLastRevision,
+
+  getLastEditSummary: async id => {
+    if (typeof id === 'object' && id.entity) id = id.entity.id
+    const revision = await getLastRevision(id)
+    return revision.comment
   },
 
   // A function to quickly fail when a test gets an undesired positive answer
