@@ -5,7 +5,7 @@ const wbEdit = __.require('.')(config)
 const { move: moveQualifier } = wbEdit.qualifier
 const { shouldNotBeCalled } = __.require('test/integration/utils/utils')
 const { getSomeGuid } = __.require('test/integration/utils/sandbox_entities')
-const { addQualifier } = __.require('test/integration/utils/sandbox_snaks')
+const { addClaim, addQualifier } = __.require('test/integration/utils/sandbox_snaks')
 const { randomString } = __.require('test/unit/utils')
 const getProperty = __.require('test/integration/utils/get_property')
 
@@ -41,7 +41,8 @@ describe('qualifier move', function () {
 
   it('should move property qualifiers', async () => {
     const [ valueA, valueB ] = [ randomString(), randomString() ]
-    const { guid, property: oldProperty } = await addQualifier({ datatype: 'string', value: valueA })
+    const { guid } = await addClaim({ datatype: 'string', value: randomString() })
+    const { property: oldProperty } = await addQualifier({ guid, datatype: 'string', value: valueA })
     await addQualifier({ guid, property: oldProperty, value: valueB })
     const { id: newProperty } = await getProperty({ datatype: 'string', reserved: true })
     const { claim } = await moveQualifier({ guid, oldProperty, newProperty })
@@ -52,7 +53,8 @@ describe('qualifier move', function () {
 
   it('should move a unique qualifier', async () => {
     const [ valueA, valueB ] = [ randomString(), randomString() ]
-    const { guid, property: oldProperty, hash } = await addQualifier({ datatype: 'string', value: valueA })
+    const { id: oldProperty } = await getProperty({ datatype: 'string', reserved: true })
+    const { guid, hash } = await addQualifier({ property: oldProperty, value: valueA })
     await addQualifier({ guid, property: oldProperty, value: valueB })
     const { id: newProperty } = await getProperty({ datatype: 'string', reserved: true })
     const { claim } = await moveQualifier({ guid, hash, oldProperty, newProperty })
