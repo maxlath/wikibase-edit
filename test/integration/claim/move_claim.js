@@ -86,7 +86,7 @@ describe('move claim', function () {
     const [ res ] = await moveClaim({ guid, id, property: otherStringPropertyId })
     const summary = await getLastEditSummary(res)
     summary.split('*/')[1].trim()
-    .should.equal(`moving ${guid} from ${id}#${currentProperty} to ${id}#${otherStringPropertyId}`)
+    .should.equal(`moving a ${currentProperty} claim to ${otherStringPropertyId}`)
   })
 
   it("should reject if properties datatypes don't match", async () => {

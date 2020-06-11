@@ -110,7 +110,7 @@ describe('move property claims', function () {
     const propertyClaimsId = `${id}#${currentPropertyId}`
     const res = await movePropertyClaims({ propertyClaimsId, id, property: otherStringPropertyId })
     const summary = await getLastEditSummary(res[0])
-    summary.split('*/')[1].trim().should.equal(`moving ${id}#${currentPropertyId} claims to ${id}#${otherStringPropertyId}`)
+    summary.split('*/')[1].trim().should.equal(`moving ${currentPropertyId} claims to ${otherStringPropertyId}`)
   })
 
   it('should move a claim from one entity to another', async () => {
