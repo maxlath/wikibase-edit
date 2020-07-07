@@ -675,6 +675,20 @@ wbEdit.reference.set({
 })
 ```
 
+To update an existing reference, pass its current hash value:
+```js
+const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+const referenceHash = '239ef1c81ef0c24611d6d7c294d07036e82c4666'
+wbEdit.reference.set({
+  guid: claimGuid,
+  hash: referenceHash,
+  snaks: {
+    // Will override all existing snaks of that reference record with this unique snak
+    P854: 'https://example.org/rise-and-fall-of-the-holy-sand-box'
+  }
+})
+```
+
 #### remove reference
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'

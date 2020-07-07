@@ -1,7 +1,7 @@
 require('should')
 const { __ } = require('config')
 const setReference = __.require('lib/reference/set')
-const { guid, properties } = __.require('test/unit/utils')
+const { guid, properties, hash } = __.require('test/unit/utils')
 
 describe('reference set', () => {
   it('should rejected if not passed a claim guid', () => {
@@ -61,5 +61,10 @@ describe('reference set', () => {
       statement: guid,
       snaks: '[{"property":"P2","snaktype":"value","datavalue":{"type":"wikibase-entityid","value":{"entity-type":"item","numeric-id":1}}},{"property":"P7","snaktype":"value","datavalue":{"type":"string","value":"http://foo.bar"}},{"snaktype":"somevalue","property":"P7"}]'
     })
+  })
+
+  it('should accept a hash', () => {
+    const params = { guid, property: 'P2', value: 'Q1', hash }
+    setReference(params, properties).data.reference.should.equal(hash)
   })
 })

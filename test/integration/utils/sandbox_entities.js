@@ -1,5 +1,6 @@
 const config = require('config')
 const { __ } = config
+const wbk = require('wikibase-sdk')({ instance: config.instance })
 const wbEdit = __.require('.')(config)
 const { randomString } = __.require('test/unit/utils')
 const getProperty = require('./get_property')
@@ -26,7 +27,7 @@ const getSandboxItem = () => {
 }
 
 const getRefreshedEntity = async id => {
-  const url = config.wbk.getEntities({ ids: id })
+  const url = wbk.getEntities({ ids: id })
   const res = await fetch(url).then(res => res.json())
   return res.entities[id]
 }
@@ -47,6 +48,16 @@ const getSandboxClaim = (datatype = 'string') => {
   })
 
   return claimPromise
+}
+
+const getRefreshedClaim = async guid => {
+  const id = guid.split('$')[0]
+  const { claims } = await getRefreshedEntity(id)
+  for (const propertyClaims of Object.values(claims)) {
+    for (const claim of propertyClaims) {
+      if (claim.id === guid) return claim
+    }
+  }
 }
 
 const getSandboxItemId = () => getSandboxItem().then(getId)
@@ -78,6 +89,7 @@ module.exports = {
   getSandboxItemId,
   getSandboxPropertyId,
   getRefreshedEntity,
+  getRefreshedClaim,
   getSandboxClaim,
   getSandboxClaimId,
   createItem,
