@@ -4,24 +4,21 @@ const removeQualifier = __.require('lib/qualifier/remove')
 const { guid, hash } = __.require('test/unit/utils')
 
 describe('qualifier remove', () => {
-  it('should set the action to wbremoveclaims', done => {
+  it('should set the action to wbremoveclaims', () => {
     removeQualifier({ guid, hash }).action.should.equal('wbremovequalifiers')
-    done()
   })
 
-  it('should return formatted data for one qualifier', done => {
+  it('should return formatted data for one qualifier', () => {
     removeQualifier({ guid, hash }).data.should.deepEqual({
       claim: guid,
       qualifiers: hash
     })
-    done()
   })
 
-  it('should return formatted data for several qualifiers', done => {
+  it('should return formatted data for several qualifiers', () => {
     removeQualifier({ guid, hash: [ hash, hash ] }).data.should.deepEqual({
       claim: guid,
       qualifiers: `${hash}|${hash}`
     })
-    done()
   })
 })

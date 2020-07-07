@@ -5,18 +5,16 @@ const instance = 'https://hello.bla'
 const apiEndpoint = `${instance}/w/api.php`
 
 describe('parseInstance', () => {
-  it('reject a missing instance', done => {
+  it('reject a missing instance', () => {
     parseInstance.bind(null, {}).should.throw('missing config parameter: instance')
-    done()
   })
 
-  it('return an instance and sparql endpoint', done => {
+  it('return an instance and sparql endpoint', () => {
     const configA = { instance }
     const configB = { instance: apiEndpoint }
     parseInstance(configA)
     parseInstance(configB)
     configA.instance.should.equal(instance)
     configB.instance.should.equal(instance)
-    done()
   })
 })

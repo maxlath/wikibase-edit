@@ -4,17 +4,16 @@ const createClaim = __.require('lib/claim/create')
 const { someEntityId: id, properties } = __.require('test/unit/utils')
 
 describe('claim create', () => {
-  it('should set the action to wbcreateclaim', done => {
+  it('should set the action to wbcreateclaim', () => {
     createClaim({
       id,
       property: 'P5',
       value: 'someid'
     }, properties)
     .action.should.equal('wbcreateclaim')
-    done()
   })
 
-  it('should return formatted data for an external id', done => {
+  it('should return formatted data for an external id', () => {
     createClaim({
       id,
       property: 'P5',
@@ -26,10 +25,9 @@ describe('claim create', () => {
       snaktype: 'value',
       value: '"someid"'
     })
-    done()
   })
 
-  it('should return formatted data for a wikibase item', done => {
+  it('should return formatted data for a wikibase item', () => {
     createClaim({
       id,
       property: 'P2',
@@ -41,10 +39,9 @@ describe('claim create', () => {
       snaktype: 'value',
       value: '{"entity-type":"item","numeric-id":627323}'
     })
-    done()
   })
 
-  it('should return formatted data for a year', done => {
+  it('should return formatted data for a year', () => {
     createClaim({
       id,
       property: 'P4',
@@ -56,10 +53,9 @@ describe('claim create', () => {
       snaktype: 'value',
       value: '{"time":"+1802-00-00T00:00:00Z","timezone":0,"before":0,"after":0,"precision":9,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}'
     })
-    done()
   })
 
-  it('should return formatted data for a month', done => {
+  it('should return formatted data for a month', () => {
     createClaim({
       id,
       property: 'P4',
@@ -71,10 +67,9 @@ describe('claim create', () => {
       snaktype: 'value',
       value: '{"time":"+1802-02-00T00:00:00Z","timezone":0,"before":0,"after":0,"precision":10,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}'
     })
-    done()
   })
 
-  it('should return formatted data for a day', done => {
+  it('should return formatted data for a day', () => {
     createClaim({
       id,
       property: 'P4',
@@ -86,10 +81,9 @@ describe('claim create', () => {
       snaktype: 'value',
       value: '{"time":"+1802-02-03T00:00:00Z","timezone":0,"before":0,"after":0,"precision":11,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}'
     })
-    done()
   })
 
-  it('should create a time claim with a low precision', done => {
+  it('should create a time claim with a low precision', () => {
     createClaim({
       id,
       property: 'P4',
@@ -101,11 +95,10 @@ describe('claim create', () => {
       snaktype: 'value',
       value: '{"time":"+2500000-00-00T00:00:00Z","timezone":0,"before":0,"after":0,"precision":4,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}'
     })
-    done()
   })
 
   // Not implemented by the Wikibase API
-  // it('should create a time claim with a high precision', done => {
+  // it('should create a time claim with a high precision', () => {
   //   createClaim({
   //     id,
   //     property: 'P4',
@@ -117,22 +110,19 @@ describe('claim create', () => {
   //     snaktype: 'value',
   //     value: '{"time":"+1802-02-04T11:22:33Z","timezone":0,"before":0,"after":0,"precision":14,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}'
   //   })
-  //   done()
   // })
 
-  it('should reject a claim with an invalid time', done => {
+  it('should reject a claim with an invalid time', () => {
     const params = { id, property: 'P4', value: '1802-22-33' }
     createClaim.bind(null, params, properties).should.throw('invalid time value')
-    done()
   })
 
-  it('should reject a claim with an invalid time (2)', done => {
+  it('should reject a claim with an invalid time (2)', () => {
     const params = { id, property: 'P4', value: '1802-02-04T11' }
     createClaim.bind(null, params, properties).should.throw('invalid time value')
-    done()
   })
 
-  it('should return formatted data for monolingualtext', done => {
+  it('should return formatted data for monolingualtext', () => {
     createClaim({
       id,
       property: 'P9',
@@ -144,10 +134,9 @@ describe('claim create', () => {
       snaktype: 'value',
       value: '{"text":"bulgroz","language":"fr"}'
     })
-    done()
   })
 
-  it('should return formatted data for a quantity', done => {
+  it('should return formatted data for a quantity', () => {
     createClaim({
       id,
       property: 'P8',
@@ -159,10 +148,9 @@ describe('claim create', () => {
       snaktype: 'value',
       value: '{"amount":"+9000","unit":"1"}'
     })
-    done()
   })
 
-  it('should return formatted data for a quantity passed as a string', done => {
+  it('should return formatted data for a quantity passed as a string', () => {
     createClaim({
       id,
       property: 'P8',
@@ -174,10 +162,9 @@ describe('claim create', () => {
       snaktype: 'value',
       value: '{"amount":"+9001","unit":"1"}'
     })
-    done()
   })
 
-  it('should return formatted data for a quantity with an item-defined unit', done => {
+  it('should return formatted data for a quantity with an item-defined unit', () => {
     createClaim({
       id,
       property: 'P8',
@@ -189,10 +176,9 @@ describe('claim create', () => {
       snaktype: 'value',
       value: `{"amount":"+9001","unit":"${instance}/entity/Q7727"}`
     })
-    done()
   })
 
-  it('should return formatted data for a negative amount', done => {
+  it('should return formatted data for a negative amount', () => {
     createClaim({
       id,
       property: 'P8',
@@ -204,16 +190,14 @@ describe('claim create', () => {
       snaktype: 'value',
       value: '{"amount":"-9002","unit":"1"}'
     })
-    done()
   })
 
-  it('should throw when passed an invalid string number', done => {
+  it('should throw when passed an invalid string number', () => {
     const params = { id, property: 'P8', value: '900$1' }
     createClaim.bind(null, params, properties).should.throw('invalid string number')
-    done()
   })
 
-  it('should return formatted data for a Url', done => {
+  it('should return formatted data for a Url', () => {
     createClaim({
       id,
       property: 'P7',
@@ -225,10 +209,9 @@ describe('claim create', () => {
       snaktype: 'value',
       value: '"http://foo.bar"'
     })
-    done()
   })
 
-  it('should return formatted data for a globe coordinate', done => {
+  it('should return formatted data for a globe coordinate', () => {
     createClaim({
       id,
       property: 'P6',
@@ -240,10 +223,9 @@ describe('claim create', () => {
       snaktype: 'value',
       value: '{"latitude":45.758,"longitude":4.84138,"precision":0.002777777777777778}'
     })
-    done()
   })
 
-  it('should create a claim of snaktype novalue', done => {
+  it('should create a claim of snaktype novalue', () => {
     createClaim({
       id,
       property: 'P8',
@@ -254,10 +236,9 @@ describe('claim create', () => {
       property: 'P8',
       snaktype: 'novalue'
     })
-    done()
   })
 
-  it('should create a claim of snaktype somevalue', done => {
+  it('should create a claim of snaktype somevalue', () => {
     createClaim({
       id,
       property: 'P8',
@@ -268,6 +249,5 @@ describe('claim create', () => {
       property: 'P8',
       snaktype: 'somevalue'
     })
-    done()
   })
 })

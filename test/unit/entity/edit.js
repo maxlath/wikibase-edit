@@ -5,43 +5,37 @@ const _editEntity = __.require('lib/entity/edit')
 const editEntity = params => _editEntity(params, properties, instance)
 
 describe('entity edit', () => {
-  it('should reject a missing id', done => {
+  it('should reject a missing id', () => {
     const params = { claims: { someWikibaseItemPropertyId: 'bla' } }
     editEntity.bind(null, params).should.throw('invalid entity id')
-    done()
   })
 
-  it('should reject an edit without data', done => {
+  it('should reject an edit without data', () => {
     const params = { id }
     editEntity.bind(null, params).should.throw('no data was passed')
-    done()
   })
 
-  it('should reject invalid claims', done => {
+  it('should reject invalid claims', () => {
     const params = { id, claims: { P2: 'bla' } }
     editEntity.bind(null, params).should.throw('invalid entity value')
-    done()
   })
 
-  it('should reject invalid labels', done => {
+  it('should reject invalid labels', () => {
     const params = { id, labels: { fr: '' } }
     editEntity.bind(null, params).should.throw('invalid label')
-    done()
   })
 
-  it('should reject invalid descriptions', done => {
+  it('should reject invalid descriptions', () => {
     const params = { id, descriptions: { fr: '' } }
     editEntity.bind(null, params).should.throw('invalid description')
-    done()
   })
 
-  it('should set the action to wbeditentity', done => {
+  it('should set the action to wbeditentity', () => {
     const params = { id, labels: { fr: 'foo' } }
     editEntity(params).action.should.equal('wbeditentity')
-    done()
   })
 
-  it('should return formatted data', done => {
+  it('should return formatted data', () => {
     const label = randomString()
     const description = randomString()
     const frAlias = randomString()
@@ -85,10 +79,9 @@ describe('entity edit', () => {
         ]
       }
     })
-    done()
   })
 
-  it('should format an entity with qualifiers', done => {
+  it('should format an entity with qualifiers', () => {
     const { data } = editEntity({
       id,
       claims: {
@@ -189,10 +182,9 @@ describe('entity edit', () => {
         }
       }
     ])
-    done()
   })
 
-  it('should format an entity with rich qualifier', done => {
+  it('should format an entity with rich qualifier', () => {
     const qualifiers = {
       P8: [ { value: { amount: 100, unit: 'Q6982035' } } ]
     }
@@ -213,10 +205,9 @@ describe('entity edit', () => {
         }
       }
     })
-    done()
   })
 
-  it('should format an entity with a qualifier with a special snaktype', done => {
+  it('should format an entity with a qualifier with a special snaktype', () => {
     const qualifiers = {
       P4: { snaktype: 'somevalue' }
     }
@@ -230,10 +221,9 @@ describe('entity edit', () => {
       property: 'P4',
       snaktype: 'somevalue'
     })
-    done()
   })
 
-  it('should format an entity with a low precision time claim', done => {
+  it('should format an entity with a low precision time claim', () => {
     const qualifiers = {
       P4: { value: '2019-04-01T00:00:00.000Z' }
     }
@@ -258,10 +248,9 @@ describe('entity edit', () => {
         }
       }
     })
-    done()
   })
 
-  it('should format an entity with a time qualifier', done => {
+  it('should format an entity with a time qualifier', () => {
     const qualifiers = {
       P4: { value: '2019-04-01T00:00:00.000Z' }
     }
@@ -286,10 +275,9 @@ describe('entity edit', () => {
         }
       }
     })
-    done()
   })
 
-  it('should format an entity with a reference', done => {
+  it('should format an entity with a reference', () => {
     const reference = {
       P7: 'https://example.org',
       P2: 'Q8447'
@@ -315,10 +303,9 @@ describe('entity edit', () => {
         }
       }
     ])
-    done()
   })
 
-  it('should format an entity with a reference formatted with a snaks object', done => {
+  it('should format an entity with a reference formatted with a snaks object', () => {
     const reference = {
       snaks: {
         P7: 'https://example.org',
@@ -333,10 +320,9 @@ describe('entity edit', () => {
     })
     JSON.parse(data.data).claims.P2[0].references[0].snaks[0]
     .datavalue.value.should.equal('https://example.org')
-    done()
   })
 
-  // xit('should format an entity with multiple references', done => {
+  // xit('should format an entity with multiple references', () => {
   //   editEntity({
   //     id,
   //     claims: {
@@ -356,36 +342,33 @@ describe('entity edit', () => {
   //     const lastClaim = res.entity.claims.P2.slice(-1)[0]
   //     const urlRef = lastClaim.references[0].snaks.P7[0]
   //     urlRef.datavalue.value.should.equal('https://example.org')
-  //     done()
   //   })
   //   .catch(done)
   // })
 
-  // xit('should format an entity with a monolingual text claim', done => {
+  // xit('should format an entity with a monolingual text claim', () => {
   //   editEntity({
   //     id,
   //     claims: { P9: { text: 'Lundeborg', 'language': 'mul' } }
   //   })
   //   .then(res => {
   //     res.success.should.equal(1)
-  //     done()
   //   })
   //   .catch(done)
   // })
 
-  // xit('should format an entity with a quantity claim', done => {
+  // xit('should format an entity with a quantity claim', () => {
   //   editEntity({
   //     id,
   //     claims: { P8: { amount: 9001, unit: 'Q7727' } }
   //   })
   //   .then(res => {
   //     res.success.should.equal(1)
-  //     done()
   //   })
   //   .catch(done)
   // })
 
-  // xit('should format an entity with a rich value and qualifiers', done => {
+  // xit('should format an entity with a rich value and qualifiers', () => {
   //   editEntity({
   //     id,
   //     claims: {
@@ -397,24 +380,22 @@ describe('entity edit', () => {
   //   })
   //   .then(res => {
   //     res.success.should.equal(1)
-  //     done()
   //   })
   //   .catch(done)
   // })
 
-  // xit('should format an entity with a globe coordinate claim', done => {
+  // xit('should format an entity with a globe coordinate claim', () => {
   //   editEntity({
   //     id,
   //     claims: { P6: { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 } }
   //   })
   //   .then(res => {
   //     res.success.should.equal(1)
-  //     done()
   //   })
   //   .catch(done)
   // })
 
-  // xit('should format an entity with special snaktypes', done => {
+  // xit('should format an entity with special snaktypes', () => {
   //   editEntity({
   //     id,
   //     claims: {
@@ -426,12 +407,11 @@ describe('entity edit', () => {
   //     res.success.should.equal(1)
   //     res.entity.claims.P2.slice(-1)[0].mainsnak.snaktype.should.equal('somevalue')
   //     res.entity.claims.P6.slice(-1)[0].mainsnak.snaktype.should.equal('novalue')
-  //     done()
   //   })
   //   .catch(done)
   // })
 
-  // xit('should format an entity with special rank', done => {
+  // xit('should format an entity with special rank', () => {
   //   editEntity({
   //     id,
   //     claims: {
@@ -450,12 +430,11 @@ describe('entity edit', () => {
   //     res.entity.claims.P6.slice(-1)[0].mainsnak.datavalue.value.precision.should.equal(0.0027777777777778)
   //     res.entity.claims.P8.slice(-1)[0].rank.should.equal('preferred')
   //     res.entity.claims.P8.slice(-1)[0].mainsnak.datavalue.value.amount.should.equal('+123')
-  //     done()
   //   })
   //   .catch(done)
   // })
 
-  // xit('should be able to remove a claim', done => {
+  // xit('should be able to remove a claim', () => {
   //   editEntity({
   //     id,
   //     claims: { P2: sandboxEntity }
@@ -473,13 +452,12 @@ describe('entity edit', () => {
   //         const guids = propClaims.map(claim => claim.id)
   //         guids.includes(guid).should.be.false()
   //       }
-  //       done()
   //     })
   //   })
   //   .catch(done)
   // })
 
-  // xit('should be able to remove a label, description, or alias', done => {
+  // xit('should be able to remove a label, description, or alias', () => {
   //   const label = randomString()
   //   const description = randomString()
   //   const alias = randomString()
@@ -505,13 +483,12 @@ describe('entity edit', () => {
   //           alias.value.should.not.equal('foo')
   //         })
   //       }
-  //       done()
   //     })
   //   })
   //   .catch(done)
   // })
 
-  // xit('should be able to add and remove a sitelink', done => {
+  // xit('should be able to add and remove a sitelink', () => {
   //   const frwikinews = 'Évènements du 16 novembre 2018'
   //   editEntity({
   //     id,
@@ -525,13 +502,12 @@ describe('entity edit', () => {
   //     })
   //     .then(res => {
   //       should(res.entity.sitelinks.frwikinews).not.be.ok()
-  //       done()
   //     })
   //   })
   //   .catch(done)
   // })
 
-  // xit('should edit the existing claim when passed an id', done => {
+  // xit('should edit the existing claim when passed an id', () => {
   //   editEntity({
   //     id,
   //     claims: { P1: 'ABC' }
@@ -547,7 +523,6 @@ describe('entity edit', () => {
   //       console.log('updatedClaim', updatedClaim)
   //       updatedClaim.mainsnak.datavalue.value.should.equal('DEF')
   //       updatedClaim.rank.should.equal('preferred')
-  //       done()
   //     })
   //   })
   //   .catch(done)

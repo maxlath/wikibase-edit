@@ -5,34 +5,29 @@ const { randomString, someEntityId } = __.require('test/unit/utils')
 const language = 'it'
 
 describe('alias add', () => {
-  it('should reject if not passed an entity', done => {
+  it('should reject if not passed an entity', () => {
     addAlias.bind(null, {}).should.throw('invalid entity')
-    done()
   })
 
-  it('should reject if not passed a language', done => {
+  it('should reject if not passed a language', () => {
     addAlias.bind(null, { id: someEntityId }).should.throw('invalid language')
-    done()
   })
 
-  it('should reject if not passed an alias', done => {
+  it('should reject if not passed an alias', () => {
     addAlias.bind(null, { id: someEntityId, language }).should.throw('empty alias array')
-    done()
   })
 
-  it('should accept a single alias string', done => {
+  it('should accept a single alias string', () => {
     const value = randomString()
     const { action, data } = addAlias({ id: someEntityId, language, value })
     action.should.equal('wbsetaliases')
     data.add.should.deepEqual(value)
-    done()
   })
 
-  it('should accept multiple aliases as an array of strings', done => {
+  it('should accept multiple aliases as an array of strings', () => {
     const value = [ randomString(), randomString() ]
     const { action, data } = addAlias({ id: someEntityId, language, value })
     action.should.equal('wbsetaliases')
     data.add.should.equal(value.join('|'))
-    done()
   })
 })

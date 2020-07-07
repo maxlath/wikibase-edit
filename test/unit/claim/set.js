@@ -8,17 +8,16 @@ const {
 } = __.require('test/unit/utils')
 
 describe('claim set', () => {
-  it('should set the action to wbsetclaim', done => {
+  it('should set the action to wbsetclaim', () => {
     const { action } = setClaim({
       guid,
       property,
       value: 'foo'
     }, properties)
     action.should.equal('wbsetclaim')
-    done()
   })
 
-  it('should return formatted claim data for a string', done => {
+  it('should return formatted claim data for a string', () => {
     const { data } = setClaim({
       guid,
       property,
@@ -36,6 +35,5 @@ describe('claim set', () => {
         }
       }
     })
-    done()
   })
 })

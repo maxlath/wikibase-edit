@@ -5,25 +5,22 @@ const _createEntity = __.require('lib/entity/create')
 const createEntity = params => _createEntity(params, properties, instance)
 
 describe('entity create', () => {
-  it('should reject parameters with an id', done => {
+  it('should reject parameters with an id', () => {
     const params = { id: 'Q3' }
     createEntity.bind(null, params).should.throw("a new entity can't already have an id")
-    done()
   })
 
-  it('should set the action to wbeditentity', done => {
+  it('should set the action to wbeditentity', () => {
     const params = { labels: { fr: 'foo' } }
     createEntity(params).action.should.equal('wbeditentity')
-    done()
   })
 
-  it('should then use entity.edit validation features', done => {
+  it('should then use entity.edit validation features', () => {
     const params = { claims: { P2: 'bla' } }
     createEntity.bind(null, params).should.throw('invalid entity value')
-    done()
   })
 
-  it('should format an item', done => {
+  it('should format an item', () => {
     const label = randomString()
     const description = randomString()
     const frAlias = randomString()
@@ -62,22 +59,19 @@ describe('entity create', () => {
         ]
       }
     })
-    done()
   })
 
-  it('should reject a property creation without type', done => {
+  it('should reject a property creation without type', () => {
     createEntity.bind(null, { datatype: 'string' })
     .should.throw("an item can't have a datatype")
-    done()
   })
 
-  it('should reject a property creation without datatype', done => {
+  it('should reject a property creation without datatype', () => {
     createEntity.bind(null, { type: 'property' })
     .should.throw('missing property datatype')
-    done()
   })
 
-  it('should create a property', done => {
+  it('should create a property', () => {
     const label = randomString()
     const params = {
       type: 'property',
@@ -90,6 +84,5 @@ describe('entity create', () => {
       datatype: 'string',
       labels: { en: { language: 'en', value: label } }
     })
-    done()
   })
 })
