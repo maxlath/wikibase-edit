@@ -47,4 +47,19 @@ describe('reference set', () => {
       snaks: '{"P7":[{"snaktype":"somevalue","property":"P7"}]}'
     })
   })
+
+  it('should accept snaks', () => {
+    const snaks = {
+      P2: 'Q1',
+      P7: [
+        'http://foo.bar',
+        { snaktype: 'somevalue' }
+      ]
+    }
+    const params = { guid, snaks }
+    setReference(params, properties).data.should.deepEqual({
+      statement: guid,
+      snaks: '[{"property":"P2","snaktype":"value","datavalue":{"type":"wikibase-entityid","value":{"entity-type":"item","numeric-id":1}}},{"property":"P7","snaktype":"value","datavalue":{"type":"string","value":"http://foo.bar"}},{"snaktype":"somevalue","property":"P7"}]'
+    })
+  })
 })
