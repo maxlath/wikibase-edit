@@ -1,6 +1,11 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 4.5.0 - 2020-07-07
+* [`reference.set`](https://github.com/maxlath/wikibase-edit/blob/master/docs/how_to.md#set-reference):
+  * Added a snaks object interface to be able to set a whole reference record at once. The previous property/value interface is now deprecated.
+  * Added the possibility to update an existing reference by specifying its current `hash`
+
 ## 4.4.0 - 2020-06-09
 * Added [`qualifier.move`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-qualifier)
 * [`claim.move`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-claim): added [property claims mode](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-all-claims-from-an-entity-property)
