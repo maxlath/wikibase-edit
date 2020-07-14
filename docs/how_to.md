@@ -192,8 +192,9 @@ Different options are available to authentify your requests as a single user. (T
     ```
 
 * Using your username and a bot password:
-  * Any user (not just [bot accounts](https://www.wikidata.org/wiki/Wikidata:Bots) despite the name) can generate passwords with restricted rights. To do anything useful with `wikibase-edit`, you should at the miminum, include the following rights:
+  * Any user (not just [bot accounts](https://www.wikidata.org/wiki/Wikidata:Bots) despite the name) can generate passwords with restricted rights. Recommanded grants:
     * `Edit existing pages`
+    * `Delete pages, revisions, and log entries` (Optional, required by `wbEdit.entity.delete`)
   * :warning: This method is also using the [`API:Login` endpoint](https://www.mediawiki.org/wiki/API:Login), which has been deprecated for a while: for a more long term solution, prefer using an Owner-only OAuth consumer (see below)
   * Your [config object](#general-config) would then look something like:
     ```js
