@@ -48,5 +48,8 @@ module.exports = {
 
   rethrowShouldNotBeCalledErrors: err => {
     if (err.name === 'shouldNotBeCalled') throw err
-  }
+  },
+
+  // See /wiki/Special:BotPasswords
+  isBotPassword: password => password.match(/^\w+@[a-z0-9]{32}$/)
 }

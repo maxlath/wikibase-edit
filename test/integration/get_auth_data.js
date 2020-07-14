@@ -3,6 +3,7 @@ const { instance, credentials, credentialsAlt, __ } = require('config')
 const { username, password } = credentialsAlt
 const GetAuthData = __.require('lib/request/get_auth_data')
 const validateAndEnrichConfig = __.require('lib/validate_and_enrich_config')
+const { isBotPassword } = __.require('test/integration/utils/utils')
 
 describe('get auth data', function () {
   this.timeout(10000)
@@ -13,8 +14,10 @@ describe('get auth data', function () {
     getAuthData.should.be.a.Function()
     const { token, cookie } = await getAuthData()
     token.length.should.equal(42)
+    if (!isBotPassword(password)) {
+      should(/.+UserID=\d+/.test(cookie)).be.true('should contain user ID')
+    }
     should(/.+[sS]ession=\w{32}/.test(cookie)).be.true('should contain session ID')
-    should(/.+UserID=\d+/.test(cookie)).be.true('should contain user ID')
   })
 
   it('should get token from oauth', async () => {

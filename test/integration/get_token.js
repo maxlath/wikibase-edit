@@ -1,7 +1,7 @@
 const should = require('should')
 const { instance, credentials, credentialsAlt, __ } = require('config')
 const { username, password } = credentialsAlt
-const { undesiredRes } = __.require('test/integration/utils/utils')
+const { undesiredRes, isBotPassword } = __.require('test/integration/utils/utils')
 const GetToken = __.require('lib/request/get_token')
 const validateAndEnrichConfig = __.require('lib/validate_and_enrich_config')
 
@@ -14,8 +14,10 @@ describe('get token', function () {
     getToken.should.be.a.Function()
     const { cookie, token } = await getToken()
     token.length.should.be.above(40)
+    if (!isBotPassword(password)) {
+      should(/.+UserID=\d+/.test(cookie)).be.true('should contain user ID')
+    }
     should(/.+[sS]ession=\w{32}/.test(cookie)).be.true('should contain session ID')
-    should(/.+UserID=\d+/.test(cookie)).be.true('should contain user ID')
   })
 
   it('should get token from oauth', async () => {
