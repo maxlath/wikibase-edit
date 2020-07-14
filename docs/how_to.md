@@ -11,6 +11,9 @@
   - [Per-request config](#per-request-config)
   - [Credentials](#credentials)
     - [Single-user setup](#single-user-setup)
+      - [Using your username and password](#using-your-username-and-password)
+      - [Using your username and a bot password:](#using-your-username-and-a-bot-password)
+      - [Owner-only OAuth consumer:](#owner-only-oauth-consumer)
     - [Multi-user setup](#multi-user-setup)
   - [Bot](#bot)
   - [Maxlag](#maxlag)
@@ -177,54 +180,54 @@ Rules:
 
 Different options are available to authentify your requests as a single user. (That's typically what you need unless you are building a web service where multiple users would be making edits in their name. If you are building this kind of web service, see [Multi-user setup](#multi-user-setup)).
 
-* Using your username and password:
-  * That's the least secured way to do it but perfectly fine for prototyping on your local Wikibase instance
-  * :warning: This method is using the [`API:Login` endpoint](https://www.mediawiki.org/wiki/API:Login), which has been deprecated for a while: for a safer and more long term solution, prefer using an Owner-only OAuth consumer (see below)
-  * Your [config object](#general-config) would then look something like:
-    ```js
-    const generalConfig = {
-      instance: 'http://localhost:8181',
-      credentials: {
-        username: 'TestWikibaseUser',
-        password: 'TestWikibaseUserPassword'
-      }
+##### Using your username and password
+* That's the least secured way to do it but perfectly fine for prototyping on your local Wikibase instance
+* :warning: This method is using the [`API:Login` endpoint](https://www.mediawiki.org/wiki/API:Login), which has been deprecated for a while: for a safer and more long term solution, prefer using an Owner-only OAuth consumer (see below)
+* Your [config object](#general-config) would then look something like:
+  ```js
+  const generalConfig = {
+    instance: 'http://localhost:8181',
+    credentials: {
+      username: 'TestWikibaseUser',
+      password: 'TestWikibaseUserPassword'
     }
-    ```
+  }
+  ```
 
-* Using your username and a bot password:
-  * Any user (not just [bot accounts](https://www.wikidata.org/wiki/Wikidata:Bots) despite the name) can generate passwords with restricted rights. Recommanded grants:
-    * `Edit existing pages`
-    * `Delete pages, revisions, and log entries` (Optional, required by `wbEdit.entity.delete`)
-  * :warning: This method is also using the [`API:Login` endpoint](https://www.mediawiki.org/wiki/API:Login), which has been deprecated for a while: for a more long term solution, prefer using an Owner-only OAuth consumer (see below)
-  * Your [config object](#general-config) would then look something like:
-    ```js
-    const generalConfig = {
-      instance: 'https://www.somewikibase.instance',
-      credentials: {
-        username: 'MyUsername',
-        password: 'password_name@jkvbxgq9xiu16yb8vgzjp4gtd6m258os'
-      }
+##### Using your username and a bot password:
+* Any user (not just [bot accounts](https://www.wikidata.org/wiki/Wikidata:Bots) despite the name) can generate passwords with restricted rights. Recommanded grants:
+  * `Edit existing pages`
+  * `Delete pages, revisions, and log entries` (Optional, required by `wbEdit.entity.delete`)
+* :warning: This method is also using the [`API:Login` endpoint](https://www.mediawiki.org/wiki/API:Login), which has been deprecated for a while: for a more long term solution, prefer using an Owner-only OAuth consumer (see below)
+* Your [config object](#general-config) would then look something like:
+  ```js
+  const generalConfig = {
+    instance: 'https://www.somewikibase.instance',
+    credentials: {
+      username: 'MyUsername',
+      password: 'password_name@jkvbxgq9xiu16yb8vgzjp4gtd6m258os'
     }
-    ```
+  }
+  ```
 
-* [Owner-only OAuth consumer](https://www.mediawiki.org/wiki/OAuth/Owner-only_consumers):
-  * Can be created without the validation of an administrator on `/wiki/Special:OAuthConsumerRegistration/propose?wpownerOnly=1`, but **not all users have the permission to do it** (if that's your case, you should probably use the bot password method above).
-  * For Wikimedia instances (`www.wikidata.org`, `test.wikidata.org`), consumer registration is done on meta: https://meta.wikimedia.org/wiki/Special:OAuthConsumerRegistration/propose?wpownerOnly=1
-  * Requires that your Wikibase instance has installed the [Extension:OAuth](https://www.mediawiki.org/wiki/Extension:OAuth#User_rights) (you can check that on `/wiki/Special:Version`).
-  * Your [config object](#general-config) would then look something like:
-    ```js
-    const generalConfig = {
-      instance: 'https://www.somewikibase.instance',
-      credentials: {
-        oauth: {
-          'consumer_key': 'c60acb4f8abfa667ea5bafcdb2b673c7',
-          'consumer_secret': '1adbc98303a0b5b03311ebeee80d6916cbe1bd1f',
-          'token': '8de15abb42b8f9f15444ee4f13bb1f3d',
-          'token_secret': '2ba1e72cb947adda5da196d5d2cc57adf12aeaec'
-        }
+##### [Owner-only OAuth consumer](https://www.mediawiki.org/wiki/OAuth/Owner-only_consumers):
+* Can be created without the validation of an administrator on `/wiki/Special:OAuthConsumerRegistration/propose?wpownerOnly=1`, but **not all users have the permission to do it** (if that's your case, you should probably use the bot password method above).
+* For Wikimedia instances (`www.wikidata.org`, `test.wikidata.org`), consumer registration is done on meta: https://meta.wikimedia.org/wiki/Special:OAuthConsumerRegistration/propose?wpownerOnly=1
+* Requires that your Wikibase instance has installed the [Extension:OAuth](https://www.mediawiki.org/wiki/Extension:OAuth#User_rights) (you can check that on `/wiki/Special:Version`).
+* Your [config object](#general-config) would then look something like:
+  ```js
+  const generalConfig = {
+    instance: 'https://www.somewikibase.instance',
+    credentials: {
+      oauth: {
+        'consumer_key': 'c60acb4f8abfa667ea5bafcdb2b673c7',
+        'consumer_secret': '1adbc98303a0b5b03311ebeee80d6916cbe1bd1f',
+        'token': '8de15abb42b8f9f15444ee4f13bb1f3d',
+        'token_secret': '2ba1e72cb947adda5da196d5d2cc57adf12aeaec'
       }
     }
-    ```
+  }
+  ```
 
 #### Multi-user setup
 
