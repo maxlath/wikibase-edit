@@ -1,6 +1,7 @@
 const config = require('config')
 const { __ } = config
 const wbk = require('wikibase-sdk')({ instance: config.instance })
+const { getEntityIdFromGuid } = wbk
 const wbEdit = __.require('.')(config)
 const { randomString } = __.require('test/unit/utils')
 const getProperty = require('./get_property')
@@ -51,7 +52,7 @@ const getSandboxClaim = (datatype = 'string') => {
 }
 
 const getRefreshedClaim = async guid => {
-  const id = guid.split('$')[0]
+  const id = getEntityIdFromGuid(guid)
   const { claims } = await getRefreshedEntity(id)
   for (const propertyClaims of Object.values(claims)) {
     for (const claim of propertyClaims) {
