@@ -163,5 +163,20 @@ describe('claim update', function () {
       const res = await updateClaim({ guid, property, newValue, rank: 'preferred' })
       res.claim.rank.should.equal('preferred')
     })
+
+    it('should be able to only update a claim rank', async () => {
+      const oldValue = randomString()
+      const { guid } = await addClaim({ datatype: 'string', value: oldValue })
+      const res = await updateClaim({ guid, rank: 'preferred' })
+      res.claim.rank.should.equal('preferred')
+    })
+
+    it('should update a claim snaktype', async () => {
+      const oldValue = randomString()
+      const newValue = { snaktype: 'novalue' }
+      const { guid, property } = await addClaim({ datatype: 'string', value: oldValue })
+      const res = await updateClaim({ guid, property, newValue })
+      res.claim.mainsnak.snaktype.should.equal('novalue')
+    })
   })
 })
