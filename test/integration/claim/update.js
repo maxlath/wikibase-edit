@@ -155,5 +155,13 @@ describe('claim update', function () {
       value.precision.should.equal(newValue.precision)
       value.globe.should.equal(newValue.globe)
     })
+
+    it('should update a claim rank', async () => {
+      const oldValue = randomString()
+      const newValue = randomString()
+      const { guid, property } = await addClaim({ datatype: 'string', value: oldValue })
+      const res = await updateClaim({ guid, property, newValue, rank: 'preferred' })
+      res.claim.rank.should.equal('preferred')
+    })
   })
 })

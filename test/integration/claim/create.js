@@ -24,7 +24,7 @@ describe('claim create', function () {
     res.claim.mainsnak.datavalue.value.should.equal(value)
   })
 
-  it('should create a with a negative year', async () => {
+  it('should create a claim with a negative year', async () => {
     const [ qid, pid ] = await Promise.all([
       getSandboxItemId(),
       getSandboxPropertyId('time')
@@ -35,5 +35,16 @@ describe('claim create', function () {
     res.claim.rank.should.equal('normal')
     res.claim.mainsnak.snaktype.should.equal('value')
     res.claim.mainsnak.datavalue.value.time.should.equal('-0028-00-00T00:00:00Z')
+  })
+
+  // wbcreateclaim currently doesn't take a rank value
+  xit('should create a claim with a preferred rank', async () => {
+    const [ qid, pid ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('string')
+    ])
+    const value = randomString()
+    const res = await wbEdit.claim.create({ id: qid, property: pid, value, rank: 'preferred' })
+    res.claim.rank.should.equal('preferred')
   })
 })
