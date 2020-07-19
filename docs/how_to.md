@@ -28,6 +28,12 @@
     - [set aliases](#set-aliases)
   - [Claim](#claim)
     - [create claim](#create-claim)
+      - [value format for datatype with rich values](#value-format-for-datatype-with-rich-values)
+        - [monolingualtext](#monolingualtext)
+        - [quantity](#quantity)
+        - [time](#time)
+        - [globe-coordinate](#globe-coordinate)
+      - [Special snaktypes](#special-snaktypes)
     - [update claim](#update-claim)
       - [find claim to update by value](#find-claim-to-update-by-value)
       - [find claim to update by claim GUID](#find-claim-to-update-by-claim-guid)
@@ -359,14 +365,32 @@ wbEdit.alias.set({
 ### Claim
 #### create claim
 ```js
+// Simplest case
 wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P2002',
   value: 'bulgroz'
 })
+
+// Advanced case
+wbEdit.claim.create({
+  id: 'Q4115189',
+  property: 'P2002',
+  value: 'bulgroz',
+  qualifiers: {
+    P370: 'foo'
+  },
+  references: [
+    { P143: 'Q8447', P813: '2020-07' },
+    { P143: 'https://some.source/url', P813: '2020-07-19' }
+  ]
+  rank: 'preferred'
+})
 ```
 
-Special cases:
+##### value format for datatype with rich values
+
+###### monolingualtext
 ```js
 // Monolingualtext property
 wbEdit.claim.create({
@@ -374,15 +398,27 @@ wbEdit.claim.create({
   property: 'P1476',
   value: { text: 'bulgroz', language: 'it' }
 })
-
-// Quantity with a unit
-// Example here with the unit 'minute' (Q7727)
+```
+###### quantity
+```js
+// Quantity:
+// pass a single value for a count without a specific unit
 wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P1106',
-  value: { amount: 9001, unit: 'Q7727' }
+  value: 9000
 })
 
+// pass an object for a value with a specific unit. Example here to specify minutes (Q7727)
+wbEdit.claim.create({
+  id: 'Q4115189',
+  property: 'P2097',
+  value: { amount: 9000, unit: 'Q7727' }
+})
+```
+
+###### time
+```js
 // Time property
 // day, with implicit precision
 wbEdit.claim.create({
@@ -473,44 +509,33 @@ wbEdit.claim.create({
   property: 'P569',
   value: { time: '-13000000000', precision: 0 }
 })
+```
 
-// Quantity:
-// pass a single value for a count without a specific unit
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P1106',
-  value: 9000
-})
-
-// pass an object for a value with a specific unit. Example here to specify minutes (Q7727)
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P2097',
-  value: { amount: 9000, unit: 'Q7727' }
-})
-
-// Globe Coordinate:
-// Here with a precision of an arcsecond
+###### globe-coordinate
+```js
+// with a precision of an arcsecond
 wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P626',
   value: { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 }
 })
 
-// somevalue:
+```
+##### Special snaktypes
+```js
+// somevalue
 wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P19',
   value: { snaktype: 'somevalue' }
 })
 
-// novalue:
+// novalue
 wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P27',
   value: { snaktype: 'novalue' }
 })
-
 ```
 
 #### update claim
