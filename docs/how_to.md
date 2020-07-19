@@ -928,7 +928,7 @@ wbEdit.entity.edit({
     // Set a sitelink
     frwiki: 'eviv bulgroz'
     // Remove a sitelink
-    eswikisource: { value: 'aviv sal bulgroz', remove: true },
+    eswikisource: null
   }
 })
 ```

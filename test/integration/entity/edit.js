@@ -73,6 +73,31 @@ describe('entity edit', function () {
     simplifiedPropertyClaims.should.deepEqual(claims[propertyId])
   })
 
+  // Requires setting an instance with sitelinks (such as test.wikidata.org) in config
+  // thus disabled by default
+  xit('should add and remove a sitelink', async () => {
+    const id = await getSandboxItemId()
+    const yearArticleTitle = Math.trunc(Math.random() * 2020).toString()
+    const res = await wbEdit.entity.edit({
+      id,
+      sitelinks: {
+        frwiki: yearArticleTitle,
+        dewiki: yearArticleTitle
+      }
+    })
+    res.entity.sitelinks.frwiki.title.should.equal(yearArticleTitle)
+    res.entity.sitelinks.dewiki.title.should.equal(yearArticleTitle)
+    const res2 = await wbEdit.entity.edit({
+      id,
+      sitelinks: {
+        frwiki: { value: yearArticleTitle, remove: true },
+        dewiki: null
+      }
+    })
+    should(res2.entity.sitelinks.frwiki).not.be.ok()
+    should(res2.entity.sitelinks.dewiki).not.be.ok()
+  })
+
   describe('raw mode', () => {
     it('shoud accept raw data', async () => {
       const [ labelA, labelB, claimValueA, claimValueB ] = [ randomString(), randomString(), randomString(), randomString() ]
