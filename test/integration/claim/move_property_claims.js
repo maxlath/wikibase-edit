@@ -115,7 +115,8 @@ describe('move property claims', function () {
 
   it('should move a claim from one entity to another', async () => {
     const value = Math.trunc(Math.random() * 1000)
-    const { guid, id, property: currentPropertyId } = await addClaim({ datatype: 'quantity', value })
+    const { id: currentPropertyId } = await getProperty({ datatype: 'quantity', reserved: true })
+    const { guid, id } = await addClaim({ property: currentPropertyId, value })
     const propertyClaimsId = `${id}#${currentPropertyId}`
     const { id: otherItemId } = await createItem()
     const { id: otherStringPropertyId } = await getProperty({ datatype: 'quantity', reserved: true })
