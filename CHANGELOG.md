@@ -1,6 +1,11 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 4.6.0 - 2020-07-19
+* [`claim.update`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#update-claim): added possibility to set the claim rank
+* [`claim.create`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#update-claim): added possibility to set the claim rank, add qualifiers and references
+* [`entity.edit`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#edit-entity): allow to remove a sitelink by passing null
+
 ## 4.5.0 - 2020-07-07
 * [`reference.set`](https://github.com/maxlath/wikibase-edit/blob/master/docs/how_to.md#set-reference):
   * Added a snaks object interface to be able to set a whole reference record at once. The previous property/value interface is now deprecated.
