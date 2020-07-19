@@ -31,6 +31,7 @@
     - [update claim](#update-claim)
       - [find claim to update by value](#find-claim-to-update-by-value)
       - [find claim to update by claim GUID](#find-claim-to-update-by-claim-guid)
+      - [update rank](#update-rank)
     - [move claim](#move-claim)
       - [move a single claim](#move-a-single-claim)
       - [move all claims from an entity property](#move-all-claims-from-an-entity-property)
@@ -539,12 +540,29 @@ wbEdit.claim.update({
 ```
 
 ##### find claim to update by claim GUID
-Instead of passing the old value, you can pass the claim GUID
+Instead of passing the old value, you can pass the claim GUID. That's generally considered a more reliable approach.
 ```js
 const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 wbEdit.claim.update({
   guid: claimGuid,
   newValue: 'new-value'
+})
+```
+
+##### update rank
+It is possible to set the claim rank along setting a new value
+```js
+wbEdit.claim.update({
+  guid: claimGuid,
+  rank: 'preferred',
+  newValue: 'new-value'
+})
+```
+but it can change the claim rank alone
+```js
+wbEdit.claim.update({
+  guid: claimGuid,
+  rank: 'preferred'
 })
 ```
 
