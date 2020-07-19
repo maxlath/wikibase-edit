@@ -2,7 +2,7 @@ require('should')
 const config = require('config')
 const { __ } = config
 const wbEdit = __.require('.')(config)
-const { randomString } = __.require('test/unit/utils')
+const { randomString, shouldNotBeCalled } = __.require('test/unit/utils')
 const { getSandboxPropertyId, getSandboxItemId } = __.require('test/integration/utils/sandbox_entities')
 const { isGuid } = require('wikibase-sdk')
 
@@ -11,12 +11,12 @@ describe('claim create', function () {
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
   it('should create a claim', async () => {
-    const [ qid, pid ] = await Promise.all([
+    const [ id, property ] = await Promise.all([
       getSandboxItemId(),
       getSandboxPropertyId('string')
     ])
     const value = randomString()
-    const res = await wbEdit.claim.create({ id: qid, property: pid, value })
+    const res = await wbEdit.claim.create({ id, property, value })
     res.success.should.equal(1)
     isGuid(res.claim.id).should.be.true()
     res.claim.rank.should.equal('normal')
@@ -25,11 +25,11 @@ describe('claim create', function () {
   })
 
   it('should create a claim with a negative year', async () => {
-    const [ qid, pid ] = await Promise.all([
+    const [ id, property ] = await Promise.all([
       getSandboxItemId(),
       getSandboxPropertyId('time')
     ])
-    const res = await wbEdit.claim.create({ id: qid, property: pid, value: '-0028' })
+    const res = await wbEdit.claim.create({ id, property, value: '-0028' })
     res.success.should.equal(1)
     isGuid(res.claim.id).should.be.true()
     res.claim.rank.should.equal('normal')
@@ -37,14 +37,193 @@ describe('claim create', function () {
     res.claim.mainsnak.datavalue.value.time.should.equal('-0028-00-00T00:00:00Z')
   })
 
-  // wbcreateclaim currently doesn't take a rank value
-  xit('should create a claim with a preferred rank', async () => {
-    const [ qid, pid ] = await Promise.all([
+  it('should create a claim with a preferred rank', async () => {
+    const [ id, property ] = await Promise.all([
       getSandboxItemId(),
       getSandboxPropertyId('string')
     ])
     const value = randomString()
-    const res = await wbEdit.claim.create({ id: qid, property: pid, value, rank: 'preferred' })
+    const res = await wbEdit.claim.create({ id, property, value, rank: 'preferred' })
     res.claim.rank.should.equal('preferred')
+  })
+
+  it('should create a claim with qualifiers and references', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('string')
+    ])
+    const value = randomString()
+    const res = await wbEdit.claim.create({
+      id,
+      property,
+      value,
+      rank: 'preferred',
+      qualifiers: {
+        [property]: value
+      },
+      references: [
+        { [property]: value },
+        { [property]: value }
+      ]
+    })
+    res.claim.qualifiers[property][0].datavalue.value.should.equal(value)
+    res.claim.references[0].snaks[property][0].datavalue.value.should.equal(value)
+    res.claim.references[1].snaks[property][0].datavalue.value.should.equal(value)
+  })
+
+  it('should create a time claim with a low precision', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('time')
+    ])
+    const value = { time: '2500000', precision: 4 }
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.datavalue.value.time.should.equal('+2500000-00-00T00:00:00Z')
+    res.claim.mainsnak.datavalue.value.precision.should.equal(4)
+  })
+
+  // time precision not supported by the Wikibase API
+  xit('should create a time claim with a high precision', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('time')
+    ])
+    const value = { time: '1802-02-04T11:22:33Z', precision: 14 }
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.datavalue.value.time.should.equal('+1802-02-04T11:22:33Z')
+    res.claim.mainsnak.datavalue.value.precision.should.equal(14)
+  })
+
+  it('should reject a claim with an invalid time', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('time')
+    ])
+    const value = '1802-22-33'
+    try {
+      await wbEdit.claim.create({ id, property, value }).then(shouldNotBeCalled)
+    } catch (err) {
+      err.message.should.equal('invalid time value')
+      err.context.value.should.equal(value)
+    }
+  })
+
+  it('should create a external id claim', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('external-id')
+    ])
+    const value = 'foo'
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.datavalue.value.should.equal('foo')
+  })
+
+  it('should create a monolingualtext claim', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('monolingualtext')
+    ])
+    const value = { text: 'bulgroz', language: 'fr' }
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.datavalue.value.text.should.equal('bulgroz')
+    res.claim.mainsnak.datavalue.value.language.should.equal('fr')
+  })
+
+  it('should create a url claim', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('url')
+    ])
+    const value = 'http://foo.bar'
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.datavalue.value.should.equal(value)
+  })
+
+  it('should create a quantity claim from a positive number value', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('quantity')
+    ])
+    const value = 9000
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.datavalue.value.amount.should.equal('+9000')
+    res.claim.mainsnak.datavalue.value.unit.should.equal('1')
+  })
+
+  it('should create a quantity claim from a negative number value', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('quantity')
+    ])
+    const value = -9000
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.datavalue.value.amount.should.equal('-9000')
+    res.claim.mainsnak.datavalue.value.unit.should.equal('1')
+  })
+
+  it('should create a quantity claim from a positive string value', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('quantity')
+    ])
+    const value = '9001'
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.datavalue.value.amount.should.equal('+9001')
+    res.claim.mainsnak.datavalue.value.unit.should.equal('1')
+  })
+
+  it('should create a quantity claim from a negative string value', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('quantity')
+    ])
+    const value = '-9001'
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.datavalue.value.amount.should.equal('-9001')
+    res.claim.mainsnak.datavalue.value.unit.should.equal('1')
+  })
+
+  it('should create a quantity claim with a custom unit', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('quantity')
+    ])
+    const value = { amount: 9002, unit: 'Q7727' }
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.datavalue.value.amount.should.equal('+9002')
+    res.claim.mainsnak.datavalue.value.unit.should.endWith('Q7727')
+  })
+
+  it('should create a globe coordinate claim', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('globe-coordinate')
+    ])
+    const value = { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 }
+    const res = await wbEdit.claim.create({ id, property, value })
+    const createdValue = res.claim.mainsnak.datavalue.value
+    createdValue.latitude.should.equal(value.latitude)
+    createdValue.longitude.should.equal(value.longitude)
+    createdValue.precision.should.equal(value.precision)
+  })
+
+  it('should create a claim of snaktype novalue', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('url')
+    ])
+    const value = { snaktype: 'novalue' }
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.snaktype.should.equal('novalue')
+  })
+
+  it('should create a claim of snaktype somevalue', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('url')
+    ])
+    const value = { snaktype: 'somevalue' }
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.snaktype.should.equal('somevalue')
   })
 })
