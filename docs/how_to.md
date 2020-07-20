@@ -567,9 +567,9 @@ wbEdit.claim.update({
 ##### find claim to update by claim GUID
 Instead of passing the old value, you can pass the claim GUID. That's generally considered a more reliable approach.
 ```js
-const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+const guid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 wbEdit.claim.update({
-  guid: claimGuid,
+  guid,
   newValue: 'new-value'
 })
 ```
@@ -578,7 +578,7 @@ wbEdit.claim.update({
 It is possible to set the claim rank along setting a new value
 ```js
 wbEdit.claim.update({
-  guid: claimGuid,
+  guid,
   rank: 'preferred',
   newValue: 'new-value'
 })
@@ -586,7 +586,7 @@ wbEdit.claim.update({
 but it can change the claim rank alone
 ```js
 wbEdit.claim.update({
-  guid: claimGuid,
+  guid,
   rank: 'preferred'
 })
 ```
@@ -603,7 +603,7 @@ const wbEdit.claim.move({
   id: 'Q4115189',
   property: 'P20'
 })
-````
+```
 
 * move the claim to another entity (without changing the property)
 ```js
@@ -613,7 +613,7 @@ const wbEdit.claim.move({
   id: 'Q13406268',
   property: 'P19'
 })
-````
+```
 
 * move the claim to another entity and another property
 ```js
@@ -623,7 +623,7 @@ const wbEdit.claim.move({
   id: 'Q13406268',
   property: 'P20'
 })
-````
+```
 
 ##### move all claims from an entity property
 * change the property of all `Q4115189` `P19` claims (without changing entity)
@@ -633,7 +633,7 @@ const wbEdit.claim.move({
   id: 'Q4115189',
   property: 'P20'
 })
-````
+```
 
 * move `Q4115189` `P19` claims to another entity (without changing the property)
 ```js
@@ -642,7 +642,7 @@ const wbEdit.claim.move({
   id: 'Q13406268',
   property: 'P19'
 })
-````
+```
 
 * move `Q4115189` `P19` claims to another entity and another property
 ```js
@@ -651,20 +651,20 @@ const wbEdit.claim.move({
   id: 'Q13406268',
   property: 'P20'
 })
-````
+```
 
 #### remove claim
 ```js
 // remove one claim
-const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
-wbEdit.claim.remove({ guid: claimGuid })
+const guid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+wbEdit.claim.remove({ guid })
 
 // remove several claims on the same entity
-const claimGuids = [
+const guids = [
   'Q4115189$BB467A9A-9123-4D0C-A87A-B7BF7ACD6477',
   'Q4115189$D2CC0D8C-187C-40CD-8CF3-F6AAFE1496F4'
 ]
-wbEdit.claim.remove({ guid: claimGuids })
+wbEdit.claim.remove({ guid: guids })
 ```
 
 ### Qualifier
@@ -672,65 +672,65 @@ wbEdit.claim.remove({ guid: claimGuids })
 #### set qualifier
 
 ```js
-const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+const guid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 
 // entity qualifier
 wbEdit.qualifier.set({
-  guid: claimGuid,
+  guid,
   property: 'P155',
   value: 'Q4115189'
 })
 
 // string qualifier
 wbEdit.qualifier.set({
-  guid: claimGuid,
+  guid,
   property: 'P1545',
   value: '123'
 })
 
 // time qualifier
 wbEdit.qualifier.set({
-  guid: claimGuid,
+  guid,
   property: 'P580',
   value: '1802-02-26'
 })
 wbEdit.qualifier.set({
-  guid: claimGuid,
+  guid,
   property: 'P580',
   value: { time: '1802-02-26', precision: 11 }
 })
 
 // quantity qualifier
 wbEdit.qualifier.set({
-  guid: claimGuid,
+  guid,
   property: 'P2130',
   value: 13
 })
 
 // quantity qualifier with a unit
 wbEdit.qualifier.set({
-  guid: claimGuid,
+  guid,
   property: 'P2130',
   value: { amount: 123, unit: 'Q4916' }
 })
 
 // monolingualtext qualifier
 wbEdit.qualifier.set({
-  guid: claimGuid,
+  guid,
   property: 'P3132',
   value: { text : "les sanglots long des violons de l'automne", language: 'fr' }
 })
 
 // somevalue
 wbEdit.qualifier.set({
-  guid: claimGuid,
+  guid,
   property: 'P3132',
   value: { snaktype : 'somevalue' }
 })
 
 // novalue
 wbEdit.qualifier.set({
-  guid: claimGuid,
+  guid,
   property: 'P3132',
   value: { snaktype : 'novalue' }
 })
@@ -788,11 +788,11 @@ wbEdit.qualifier.move({
 #### remove qualifier
 
 ```js
-const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+const guid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 // qualifierHash can be either a single hash string or an array of reference hash strings
 const qualifierHash = '239ef1c81ef0c24611d6d7c294d07036e82c4666'
 wbEdit.reference.remove({
-  guid: claimGuid,
+  guid,
   hash: qualifierHash
 })
 ```
@@ -802,9 +802,9 @@ wbEdit.reference.remove({
 #### set reference
 
 ```js
-const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+const guid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 wbEdit.reference.set({
-  guid: claimGuid,
+  guid,
   snaks: {
     // reference url (P854) is 'https://example.org/rise-and-fall-of-the-holy-sand-box'
     P854: 'https://example.org/rise-and-fall-of-the-holy-sand-box'
@@ -823,10 +823,10 @@ wbEdit.reference.set({
 
 To update an existing reference, pass its current hash value:
 ```js
-const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+const guid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 const referenceHash = '239ef1c81ef0c24611d6d7c294d07036e82c4666'
 wbEdit.reference.set({
-  guid: claimGuid,
+  guid,
   hash: referenceHash,
   snaks: {
     // Will override all existing snaks of that reference record with this unique snak
@@ -837,11 +837,11 @@ wbEdit.reference.set({
 
 #### remove reference
 ```js
-const claimGuid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
+const guid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 // referenceHash can be either a single hash string or an array of reference hash strings
 const referenceHash = '239ef1c81ef0c24611d6d7c294d07036e82c4666'
 wbEdit.reference.remove({
-  guid: claimGuid,
+  guid,
   hash: referenceHash
 })
 ```
