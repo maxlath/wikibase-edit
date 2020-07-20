@@ -36,7 +36,7 @@
       - [Special snaktypes](#special-snaktypes)
     - [update claim](#update-claim)
       - [find claim to update by value](#find-claim-to-update-by-value)
-      - [find claim to update by claim GUID](#find-claim-to-update-by-claim-guid)
+      - [find claim to update by claim guid](#find-claim-to-update-by-claim-guid)
       - [update rank](#update-rank)
     - [move claim](#move-claim)
       - [move a single claim](#move-a-single-claim)
@@ -66,6 +66,8 @@
       - [delete item](#delete-item)
       - [delete property](#delete-property)
   - [get auth data](#get-auth-data)
+- [Tips](#tips)
+  - [How to get a claim guid](#how-to-get-a-claim-guid)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -564,8 +566,8 @@ wbEdit.claim.update({
 })
 ```
 
-##### find claim to update by claim GUID
-Instead of passing the old value, you can pass the claim GUID. That's generally considered a more reliable approach.
+##### find claim to update by claim guid
+Instead of passing the old value, you can pass the [claim guid](#how-to-get-a-claim-guid). That's generally considered a more reliable approach.
 ```js
 const guid = 'Q4115189$E66DBC80-CCC1-4899-90D4-510C9922A04F'
 wbEdit.claim.update({
@@ -593,6 +595,8 @@ wbEdit.claim.update({
 
 #### move claim
 Move a claim from an entity to another and/or from a property to another
+
+This function requires to know about [claim guid](#how-to-get-a-claim-guid).
 
 ##### move a single claim
 * change the property of a claim (without changing entity)
@@ -624,6 +628,7 @@ const wbEdit.claim.move({
   property: 'P20'
 })
 ```
+
 
 ##### move all claims from an entity property
 * change the property of all `Q4115189` `P19` claims (without changing entity)
@@ -667,7 +672,11 @@ const guids = [
 wbEdit.claim.remove({ guid: guids })
 ```
 
+See also: [How to get a claim guid](#how-to-get-a-claim-guid)
+
 ### Qualifier
+
+Those functions require to know about [claim guid](#how-to-get-a-claim-guid).
 
 #### set qualifier
 
@@ -736,6 +745,8 @@ wbEdit.qualifier.set({
 })
 ```
 
+See also: [How to get a claim guid](#how-to-get-a-claim-guid)
+
 #### update qualifier
 
 ```js
@@ -798,6 +809,8 @@ wbEdit.reference.remove({
 ```
 
 ### Reference
+
+Those functions require to know about [claim guid](#how-to-get-a-claim-guid).
 
 #### set reference
 
@@ -1018,4 +1031,52 @@ It can also be used as a way to validate credentials:
 require('wikibase-edit')({ instance, credentials }).getAuthData()
 .then(onValidCredentials)
 .catch(onInvalidCredentials)
+```
+
+## Tips
+### How to get a claim guid
+A globally unique identifier, or `guid` for short, is the unique identifier of a [claim](https://www.wikidata.org/wiki/Wikidata:Glossary#Claim). As such, it is used by several functions working with existing claims. While the Wikibase API sometimes just refers to those as ids, `wikibase-edit` always refer to those as guids to avoid the confusion with entities ids.
+
+But "how do I get those guids?" you may ask. There are different pathways:
+
+Maybe you got that id in a response from a previous edit:
+```js
+const res = await wbEdit.claim.create({
+  id: 'Q4115189',
+  property: 'P2002',
+  value: 'bulgroz'
+})
+
+// Here is our new claim guid, ready to be used in our next edit!
+const guid = res.claim.id
+
+const res2 = await wbEdit.claim.remove({ guid }, { summary: 'oops' })
+// res2.claim.id === guid
+```
+
+Maybe you fetched an entity's data:
+```js
+// Example where we try to get the guid of Q1's first P31 claim
+
+const fetch = require('node-fetch')
+const wbk = require('wikibase-sdk')({ instance: 'https://www.wikidata.org', sparqlEndpoint: 'https://query.wikidata.org/sparql' })
+
+const url = wbk.getEntities({ ids: [ 'Q1' ] })
+const { entities } = await fetch(url).then(res => res.json())
+
+const firstP31Claim = entities.Q1.claims.P31[0]
+// Here is our guid!
+const guid = firstP31Claim.id
+```
+
+Maybe you got guids from a SPARQL query:
+```js
+const sparql = 'SELECT ?statement { ?item p:P4033 ?statement . } LIMIT 5'
+const url = wbk.sparqlQuery(sparql)
+const results = await fetch(url)
+  .then(res => res.json())
+  .then(wbk.simplify.sparqlResults)
+
+// Here are our statement guids!
+const guids = results.map(result => result.statement)
 ```
