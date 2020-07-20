@@ -965,7 +965,7 @@ Create an [item](https://www.wikidata.org/wiki/Wikidata:Glossary#Item) from scra
 The item data follow the same rules as [`wbEdit.entity.edit`](#edit-entity), simply without the `id`
 
 ```js
-wbEdit.entity.create({
+const { entity } = await wbEdit.entity.create({
   type: 'item',
   labels,
   descriptions,
@@ -973,17 +973,14 @@ wbEdit.entity.create({
   claims,
   sitelinks
 })
-.then(res => {
-  const { entity } = res
-  console.log('created item id', entity.id)
-})
+console.log('created item id', entity.id)
 ```
 
 ##### create property
 Creating a [property](https://www.wikidata.org/wiki/Wikidata:Glossary#Property) is just like creating an item, but with a `type=property` and a `datatype`
 
 ```js
-wbEdit.entity.create({
+const { entity } = await wbEdit.entity.create({
   type: 'property',
   datatype: 'string',
   labels,
@@ -991,10 +988,7 @@ wbEdit.entity.create({
   aliases,
   claims
 })
-.then(res => {
-  const { entity } = res
-  console.log('created property id', entity.id)
-})
+console.log('created property id', entity.id)
 ```
 
 #### merge entity
@@ -1021,10 +1015,7 @@ wbEdit.entity.delete({ id: 'P1' })
 ### get auth data
 All the functions above handle authentification for you, but you can also access the auth data, that is session cookies and the currently valid [csrf token](https://www.mediawiki.org/wiki/Manual:Edit_token), using the `getAuthData` function.
 ```js
-wbEdit.getAuthData()
-.then(({ cookie, token }) => {
-  // Do some custom stuffs
-})
+const { cookie, token } = await wbEdit.getAuthData()
 ```
 It can also be used as a way to validate credentials:
 ```js
