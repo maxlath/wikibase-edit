@@ -85,6 +85,15 @@ describe('qualifier update', function () {
     simplify.qualifier(qualifier, { timeConverter: 'simple-day' }).should.equal(newValue)
   })
 
+  it('should update a time claim with low precision', async () => {
+    const oldValue = (1000 + randomNumber(3)).toString()
+    const newValue = (1000 + randomNumber(3)).toString()
+    const { guid, property } = await addQualifier({ datatype: 'time', value: oldValue })
+    const res = await updateQualifier({ guid, property, oldValue, newValue })
+    const qualifier = res.claim.qualifiers[property].slice(-1)[0]
+    simplify.qualifier(qualifier, { timeConverter: 'simple-day' }).should.equal(newValue)
+  })
+
   it('should update a globe-coordinate claim', async () => {
     const oldValue = {
       latitude: randomNumber(2),
