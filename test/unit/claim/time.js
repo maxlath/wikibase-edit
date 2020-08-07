@@ -296,4 +296,16 @@ describe('claim time', () => {
       'calendarmodel': 'http://www.wikidata.org/entity/Q1985727'
     })
   })
+
+  it('should set custom calendar', () => {
+    const gregorian = 'http://www.wikidata.org/entity/Q1985727'
+    const julian = 'http://www.wikidata.org/entity/Q1985786'
+    getTimeObject({ time: '2020' }).calendarmodel.should.equal(gregorian)
+    getTimeObject({ time: '2020', calendar: 'gregorian' }).calendarmodel.should.equal(gregorian)
+    getTimeObject({ time: '2020', calendar: 'Q1985727' }).calendarmodel.should.equal(gregorian)
+    getTimeObject({ time: '2020', calendar: gregorian }).calendarmodel.should.equal(gregorian)
+    getTimeObject({ time: '2020', calendar: 'julian' }).calendarmodel.should.equal(julian)
+    getTimeObject({ time: '2020', calendar: 'Q1985786' }).calendarmodel.should.equal(julian)
+    getTimeObject({ time: '2020', calendar: julian }).calendarmodel.should.equal(julian)
+  })
 })

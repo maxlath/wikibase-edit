@@ -28,11 +28,12 @@
     - [set aliases](#set-aliases)
   - [Claim](#claim)
     - [create claim](#create-claim)
-      - [value format for datatype with rich values](#value-format-for-datatype-with-rich-values)
-        - [monolingualtext](#monolingualtext)
-        - [quantity](#quantity)
-        - [time](#time)
-        - [globe-coordinate](#globe-coordinate)
+      - [monolingualtext](#monolingualtext)
+      - [quantity](#quantity)
+      - [time](#time)
+        - [precision](#precision)
+        - [calendar](#calendar)
+      - [globe-coordinate](#globe-coordinate)
       - [Special snaktypes](#special-snaktypes)
     - [update claim](#update-claim)
       - [find claim to update by value](#find-claim-to-update-by-value)
@@ -374,11 +375,19 @@ wbEdit.claim.create({
   value: 'bulgroz'
 })
 
-// Advanced case
+// With a datatype requiring a rich value (see below for the different datatypes)
+wbEdit.claim.create({
+  id: 'Q4115189',
+  property: 'P1476',
+  value: { text: 'bulgroz', language: 'it' }
+})
+
+// Advanced case with a rank, qualifiers, and references
 wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P2002',
   value: 'bulgroz',
+  rank: 'preferred',
   qualifiers: {
     P370: 'foo'
   },
@@ -386,13 +395,10 @@ wbEdit.claim.create({
     { P143: 'Q8447', P813: '2020-07' },
     { P143: 'https://some.source/url', P813: '2020-07-19' }
   ]
-  rank: 'preferred'
 })
 ```
 
-##### value format for datatype with rich values
-
-###### monolingualtext
+##### monolingualtext
 ```js
 // Monolingualtext property
 wbEdit.claim.create({
@@ -401,7 +407,7 @@ wbEdit.claim.create({
   value: { text: 'bulgroz', language: 'it' }
 })
 ```
-###### quantity
+##### quantity
 ```js
 // Quantity:
 // pass a single value for a count without a specific unit
@@ -419,101 +425,66 @@ wbEdit.claim.create({
 })
 ```
 
-###### time
+##### time
 ```js
-// Time property
-// day, with implicit precision
 wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P569',
   value: '1802-02-26'
 })
-
-// day, with explicit precision
-// cf https://www.wikidata.org/wiki/Help:Dates#Precision
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P569',
-  value: { time: '1802-02-26', precision: 11 }
-})
-
-// month
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P569',
-  value: '1802-02'
-})
-
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P569',
-  value: { time: '1802-02', precision: 10 }
-})
-
-// year
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P569',
-  value: '1802'
-})
-
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P569',
-  value: { time: '1802', precision: 9 }
-})
-
-// decade
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P569',
-  value: { time: '1800', precision: 8 }
-})
-
-// century
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P569',
-  value: { time: '1800', precision: 7 }
-})
-
-// millennium
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P569',
-  value: { time: '1000', precision: 6 }
-})
-
-// ten thousand years
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P569',
-  value: { time: '-50000', precision: 5 }
-})
-
-// hundred thousand years
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P569',
-  value: { time: '-100000', precision: 4 }
-})
-
-// million years
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P569',
-  value: { time: '-1000000', precision: 3 }
-})
-
-// billion years
-wbEdit.claim.create({
-  id: 'Q4115189',
-  property: 'P569',
-  value: { time: '-13000000000', precision: 0 }
-})
 ```
 
-###### globe-coordinate
+###### precision
+*see https://www.wikidata.org/wiki/Help:Dates#Precision*
+
+By default, the precision is inferred from the input
+```js
+// Inferred year precision (9)
+wbEdit.claim.create({ id, property, value: '1802' })
+// Inferred month precision (10)
+wbEdit.claim.create({ id, property, value: '1802-02' })
+// Inferred day precision (11)
+wbEdit.claim.create({ id, property, value: '1802-02-26' })
+```
+
+But in some cases it needs to be explicitly specified:
+```js
+// billion years
+wbEdit.claim.create({ id, property, value: { time: '-13000000000', precision: 0 }})
+// million years
+wbEdit.claim.create({ id, property, value: { time: '-1000000', precision: 3 }})
+// hundred thousand years
+wbEdit.claim.create({ id, property, value: { time: '-100000', precision: 4 }})
+// ten thousand years
+wbEdit.claim.create({ id, property, value: { time: '-50000', precision: 5 }})
+// millennium
+wbEdit.claim.create({ id, property, value: { time: '1000', precision: 6 }})
+// century
+wbEdit.claim.create({ id, property, value: { time: '1800', precision: 7 }})
+// decade
+wbEdit.claim.create({ id, property, value: { time: '1800', precision: 8 }})
+// year
+wbEdit.claim.create({ id, property, value: { time: '1802', precision: 9 }})
+// month
+wbEdit.claim.create({ id, property, value: { time: '1802-02', precision: 10 }})
+// day
+wbEdit.claim.create({ id, property, value: { time: '1802-02-26', precision: 11 }})
+```
+
+###### calendar
+Only 2 calendar are currently supported by Wikibase: Gregorian (Q1985727) and Julian (Q1985786)
+```js
+// Default calendar: Gregorian
+wbEdit.claim.create({ id, property, value: '1802-02-26' })
+
+// Use an object value to set a custom calendar. All the following options are valid:
+wbEdit.claim.create({ id, property, value: { time: '1802-02-26', calendar: 'julian' }})
+wbEdit.claim.create({ id, property, value: { time: '1802-02-26', calendar: 'Q1985786' }})
+wbEdit.claim.create({ id, property, value: { time: '1802-02-26', calendar: 'http://www.wikidata.org/entity/Q1985786' }})
+wbEdit.claim.create({ id, property, value: { time: '1802-02-26', calendarmodel: 'http://www.wikidata.org/entity/Q1985786' }})
+```
+
+##### globe-coordinate
 ```js
 // with a precision of an arcsecond
 wbEdit.claim.create({

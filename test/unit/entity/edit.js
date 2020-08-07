@@ -81,7 +81,7 @@ describe('entity edit', () => {
     })
   })
 
-  it('should format an entity with qualifiers', () => {
+  it('should format an entity claim with qualifiers', () => {
     const { data } = editEntity({
       id,
       claims: {
@@ -184,7 +184,7 @@ describe('entity edit', () => {
     ])
   })
 
-  it('should format an entity with rich qualifier', () => {
+  it('should format an entity claim with rich qualifier', () => {
     const qualifiers = {
       P8: [ { value: { amount: 100, unit: 'Q6982035' } } ]
     }
@@ -207,7 +207,7 @@ describe('entity edit', () => {
     })
   })
 
-  it('should format an entity with a qualifier with a special snaktype', () => {
+  it('should format an entity claim with a qualifier with a special snaktype', () => {
     const qualifiers = {
       P4: { snaktype: 'somevalue' }
     }
@@ -223,7 +223,7 @@ describe('entity edit', () => {
     })
   })
 
-  it('should format an entity with a low precision time claim', () => {
+  it('should format an entity claim with a low precision time claim', () => {
     const qualifiers = {
       P4: { value: '2019-04-01T00:00:00.000Z' }
     }
@@ -250,7 +250,7 @@ describe('entity edit', () => {
     })
   })
 
-  it('should format an entity with a time qualifier', () => {
+  it('should format an entity claim with a time qualifier', () => {
     const qualifiers = {
       P4: { value: '2019-04-01T00:00:00.000Z' }
     }
@@ -277,7 +277,7 @@ describe('entity edit', () => {
     })
   })
 
-  it('should format an entity with a reference', () => {
+  it('should format an entity claim with a reference', () => {
     const reference = {
       P7: 'https://example.org',
       P2: 'Q8447'
@@ -305,7 +305,7 @@ describe('entity edit', () => {
     ])
   })
 
-  it('should format an entity with a reference formatted with a snaks object', () => {
+  it('should format an entity claim with a reference formatted with a snaks object', () => {
     const reference = {
       snaks: {
         P7: 'https://example.org',
@@ -322,7 +322,7 @@ describe('entity edit', () => {
     .datavalue.value.should.equal('https://example.org')
   })
 
-  // xit('should format an entity with multiple references', () => {
+  // xit('should format an entity claim with multiple references', () => {
   //   editEntity({
   //     id,
   //     claims: {
@@ -346,7 +346,7 @@ describe('entity edit', () => {
   //   .catch(done)
   // })
 
-  // xit('should format an entity with a monolingual text claim', () => {
+  // xit('should format an entity claim with a monolingual text claim', () => {
   //   editEntity({
   //     id,
   //     claims: { P9: { text: 'Lundeborg', 'language': 'mul' } }
@@ -357,7 +357,7 @@ describe('entity edit', () => {
   //   .catch(done)
   // })
 
-  // xit('should format an entity with a quantity claim', () => {
+  // xit('should format an entity claim with a quantity claim', () => {
   //   editEntity({
   //     id,
   //     claims: { P8: { amount: 9001, unit: 'Q7727' } }
@@ -368,7 +368,7 @@ describe('entity edit', () => {
   //   .catch(done)
   // })
 
-  // xit('should format an entity with a rich value and qualifiers', () => {
+  // xit('should format an entity claim with a rich value and qualifiers', () => {
   //   editEntity({
   //     id,
   //     claims: {
@@ -384,7 +384,7 @@ describe('entity edit', () => {
   //   .catch(done)
   // })
 
-  // xit('should format an entity with a globe coordinate claim', () => {
+  // xit('should format an entity claim with a globe coordinate claim', () => {
   //   editEntity({
   //     id,
   //     claims: { P6: { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 } }
@@ -395,7 +395,7 @@ describe('entity edit', () => {
   //   .catch(done)
   // })
 
-  // xit('should format an entity with special snaktypes', () => {
+  // xit('should format an entity claim with special snaktypes', () => {
   //   editEntity({
   //     id,
   //     claims: {
@@ -411,7 +411,7 @@ describe('entity edit', () => {
   //   .catch(done)
   // })
 
-  // xit('should format an entity with special rank', () => {
+  // xit('should format an entity claim with special rank', () => {
   //   editEntity({
   //     id,
   //     claims: {

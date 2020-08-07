@@ -94,6 +94,17 @@ describe('claim create', function () {
     res.claim.mainsnak.datavalue.value.precision.should.equal(14)
   })
 
+  it('should create a time claim with a custom calendar', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('time')
+    ])
+    const value = { time: '1402-11-12', calendar: 'julian' }
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.datavalue.value.time.should.equal('+1402-11-12T00:00:00Z')
+    res.claim.mainsnak.datavalue.value.calendarmodel.should.equal('http://www.wikidata.org/entity/Q1985786')
+  })
+
   it('should reject a claim with an invalid time', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
