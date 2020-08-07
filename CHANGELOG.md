@@ -1,9 +1,12 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 4.7.0 - 2020-08-07
+* Added support for [custom calendars](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#calendar)
+
 ## 4.6.0 - 2020-07-19
 * [`claim.update`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#update-claim): added possibility to set the claim rank
-* [`claim.create`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#update-claim): added possibility to set the claim rank, add qualifiers and references
+* [`claim.create`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#create-claim): added possibility to set the claim rank, add qualifiers and references
 * [`entity.edit`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#edit-entity): allow to remove a sitelink by passing null
 
 ## 4.5.0 - 2020-07-07
