@@ -478,10 +478,10 @@ Only 2 calendar are currently supported by Wikibase: Gregorian (Q1985727) and Ju
 wbEdit.claim.create({ id, property, value: '1802-02-26' })
 
 // Use an object value to set a custom calendar. All the following options are valid:
-wbEdit.claim.create({ id, property, value: { time: '1802-02-26', calendar: 'julian' }})
-wbEdit.claim.create({ id, property, value: { time: '1802-02-26', calendar: 'Q1985786' }})
-wbEdit.claim.create({ id, property, value: { time: '1802-02-26', calendar: 'http://www.wikidata.org/entity/Q1985786' }})
-wbEdit.claim.create({ id, property, value: { time: '1802-02-26', calendarmodel: 'http://www.wikidata.org/entity/Q1985786' }})
+wbEdit.claim.create({ id, property, value: { time: '0302-05-01', calendar: 'julian' }})
+wbEdit.claim.create({ id, property, value: { time: '0302-05-01', calendar: 'Q1985786' }})
+wbEdit.claim.create({ id, property, value: { time: '0302-05-01', calendar: 'http://www.wikidata.org/entity/Q1985786' }})
+wbEdit.claim.create({ id, property, value: { time: '0302-05-01', calendarmodel: 'http://www.wikidata.org/entity/Q1985786' }})
 ```
 
 ##### globe-coordinate
