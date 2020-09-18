@@ -7,6 +7,6 @@ about: Create a bug report
 
 
 - wikibase-edit version: <!-- the latest version, right? :D >
-- OS version:
+- Environment: <!-- NodeJS or browser version>
 
 <!-- Include steps to reproduce and/or descriptions here. The easiest your bug will be to reproduce, the fastest we can solve it -->
