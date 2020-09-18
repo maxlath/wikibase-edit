@@ -308,4 +308,40 @@ describe('claim time', () => {
     getTimeObject({ time: '2020', calendar: 'Q1985786' }).calendarmodel.should.equal(julian)
     getTimeObject({ time: '2020', calendar: julian }).calendarmodel.should.equal(julian)
   })
+
+  it('should accept full rich value', () => {
+    getTimeObject({
+      time: '2018-04-15T00:00:00.000Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 10,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+    }).should.deepEqual({
+      time: '+2018-04-15T00:00:00Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 10,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+    })
+  })
+
+  it('should accept setting month precision for times that specify a day', () => {
+    getTimeObject({
+      time: '2018-04-15T00:00:00.000Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 10,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+    }).should.deepEqual({
+      time: '+2018-04-15T00:00:00Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 10,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+    })
+  })
 })
