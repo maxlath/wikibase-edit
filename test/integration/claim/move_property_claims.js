@@ -5,17 +5,23 @@ const wbEdit = __.require('.')(config)
 const { move: movePropertyClaims } = wbEdit.claim
 const { shouldNotBeCalled, getLastEditSummary } = __.require('test/integration/utils/utils')
 const { createItem, getSomeEntityId } = __.require('test/integration/utils/sandbox_entities')
-const somePropertyClaimsId = 'Q1#P1'
 const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
 const { randomString } = __.require('test/unit/utils')
 const getProperty = __.require('test/integration/utils/get_property')
+let somePropertyClaimsId
 
-describe('move property claims', () => {
+describe('move property claims', async () => {
+  before(async () => {
+    const { id: propertyId } = await getProperty({ datatype: 'string' })
+    somePropertyClaimsId = `Q1#${propertyId}`
+    console.log('somePropertyClaimsId', somePropertyClaimsId)
+  })
+
   it('should reject invalid property claims id', async () => {
     try {
       await movePropertyClaims({ propertyClaimsId: 'Q1~P31' }).then(shouldNotBeCalled)
     } catch (err) {
-      err.message.should.equal('invalid property claims id')
+      err.message.should.equal('invalid property id')
     }
   })
 
@@ -63,18 +69,18 @@ describe('move property claims', () => {
     }
   })
 
-  it("should reject if properties datatypes don't match", async () => {
+  it("should reject if properties datatypes don't match (and can't be converted)", async () => {
     const { id, property } = await addClaim({ datatype: 'string', value: randomString() })
     const propertyClaimsId = `${id}#${property}`
     const { id: someQuantityProperty } = await getProperty({ datatype: 'quantity' })
     try {
       await movePropertyClaims({ propertyClaimsId, id, property: someQuantityProperty }).then(shouldNotBeCalled)
     } catch (err) {
-      err.message.should.equal("properties datatype don't match")
-      err.context.property.should.equal(someQuantityProperty)
-      err.context.propertyDatatype.should.equal('quantity')
-      err.context.currentProperty.should.equal(property)
-      err.context.currentPropertyDatatype.should.equal('string')
+      err.message.should.startWith("properties datatype don't match")
+      err.context.targetPropertyId.should.equal(someQuantityProperty)
+      err.context.targetDatatype.should.equal('quantity')
+      err.context.originPropertyId.should.equal(property)
+      err.context.originDatatype.should.equal('string')
     }
   })
 
