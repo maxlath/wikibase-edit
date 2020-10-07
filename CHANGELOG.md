@@ -1,6 +1,10 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 4.8.0 - 2020-10-07
+* [`claim.move`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-claim): added capacity to [move claims between properties of different datatypes](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-claims-between-properties-of-different-datatypes)
+* [`claim.qualifier`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-claim): added capacity to [move qualifiers between properties of different datatypes](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-qualifiers-between-properties-of-different-datatypes)
+
 ## 4.7.0 - 2020-08-07
 * Added support for [custom calendars](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#calendar)
 
