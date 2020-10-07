@@ -50,6 +50,7 @@
     - [move qualifier](#move-qualifier)
       - [move a unique qualifier](#move-a-unique-qualifier)
       - [move all qualifiers from a property to another](#move-all-qualifiers-from-a-property-to-another)
+      - [move qualifiers between properties of different datatypes](#move-qualifiers-between-properties-of-different-datatypes)
     - [remove qualifier](#remove-qualifier)
   - [Reference](#reference)
     - [set reference](#set-reference)
@@ -779,6 +780,9 @@ wbEdit.qualifier.move({
   newProperty: 'P156'
 })
 ```
+
+##### move qualifiers between properties of different datatypes
+This will behave in the same way as for [moving claims between properties of different datatypes](#move-claims-between-properties-of-different-datatypes)
 
 #### remove qualifier
 

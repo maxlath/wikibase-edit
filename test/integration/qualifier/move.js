@@ -73,4 +73,142 @@ describe('qualifier move', function () {
     summary.split('*/')[1].trim()
     .should.equal(`moving ${guid} ${oldProperty} qualifiers to ${newProperty}`)
   })
+
+  describe('type conversions', () => {
+    describe('string->quantity', () => {
+      it('should convert a positive string number value to quantity', async () => {
+        await testTypeConversion({
+          originalType: 'string',
+          originalValue: '765.521521',
+          targetType: 'quantity',
+          targetValue: { amount: '+765.521521', unit: '1' },
+        })
+      })
+
+      it('should convert a signed positive string number value to quantity', async () => {
+        await testTypeConversion({
+          originalType: 'string',
+          originalValue: '+123.52',
+          targetType: 'quantity',
+          targetValue: { amount: '+123.52', unit: '1' },
+        })
+      })
+
+      it('should convert a negative string number value to quantity', async () => {
+        await testTypeConversion({
+          originalType: 'string',
+          originalValue: '-5519.521521',
+          targetType: 'quantity',
+          targetValue: { amount: '-5519.521521', unit: '1' },
+        })
+      })
+
+      it('should reject to convert a non-number string', async () => {
+        await testTypeConversion({
+          originalType: 'string',
+          originalValue: '123.abc',
+          targetType: 'quantity'
+        })
+        .then(shouldNotBeCalled)
+        .catch(err => {
+          err.message.should.equal("properties datatype don't match and string->quantity type conversion failed: invalid string number")
+        })
+      })
+    })
+
+    describe('quantity->string', () => {
+      it('should convert a positive integer to a string', async () => {
+        await testTypeConversion({
+          originalType: 'quantity',
+          originalValue: 96,
+          targetType: 'string',
+          targetValue: '96',
+        })
+      })
+
+      it('should convert a positive float to a string', async () => {
+        await testTypeConversion({
+          originalType: 'quantity',
+          originalValue: 987.456,
+          targetType: 'string',
+          targetValue: '987.456',
+        })
+      })
+
+      it('should convert a negative integer to a string', async () => {
+        await testTypeConversion({
+          originalType: 'quantity',
+          originalValue: -654,
+          targetType: 'string',
+          targetValue: '-654',
+        })
+      })
+
+      it('should convert a negative float to a string', async () => {
+        await testTypeConversion({
+          originalType: 'quantity',
+          originalValue: -12.56,
+          targetType: 'string',
+          targetValue: '-12.56',
+        })
+      })
+    })
+
+    describe('external-id->string', () => {
+      it('should convert an external-id to a string', async () => {
+        const value = randomString()
+        await testTypeConversion({
+          originalType: 'external-id',
+          originalValue: value,
+          targetType: 'string',
+          targetValue: value,
+        })
+      })
+    })
+    describe('string->external-id', () => {
+      it('should convert a string to an external-id', async () => {
+        const value = randomString()
+        await testTypeConversion({
+          originalType: 'string',
+          originalValue: value,
+          targetType: 'external-id',
+          targetValue: value,
+        })
+      })
+    })
+    describe('monolingualtext->string', () => {
+      it('should convert a monolingualtext to a string', async () => {
+        const value = randomString()
+        await testTypeConversion({
+          originalType: 'monolingualtext',
+          originalValue: { text: value, language: 'en' },
+          targetType: 'string',
+          targetValue: value,
+        })
+      })
+    })
+
+    describe('monolingualtext->string', () => {
+      it('should not convert a string to a monolingualtext', async () => {
+        await testTypeConversion({
+          originalType: 'string',
+          originalValue: randomString(),
+          targetType: 'monolingualtext'
+        })
+        .then(shouldNotBeCalled)
+        .catch(err => {
+          err.message.should.startWith("properties datatype don't match")
+        })
+      })
+    })
+  })
 })
+
+const testTypeConversion = async ({ originalType, originalValue, targetType, targetValue }) => {
+  const { id: oldProperty } = await getProperty({ datatype: originalType })
+  const { id: newProperty } = await getProperty({ datatype: targetType })
+  const { guid, hash } = await addQualifier({ property: oldProperty, value: originalValue })
+  const { claim } = await moveQualifier({ guid, hash, oldProperty, newProperty })
+  const movedQualifier = claim.qualifiers[newProperty].slice(-1)[0]
+  movedQualifier.datavalue.value.should.deepEqual(targetValue)
+}

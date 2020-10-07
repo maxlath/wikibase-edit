@@ -104,15 +104,13 @@ describe('move claim', function () {
 
   it("should reject if properties datatypes don't match (and don't have a type converter)", async () => {
     const { guid, id, property } = await addClaim({ datatype: 'string', value: randomString() })
-    const { id: someQuantityProperty } = await getProperty({ datatype: 'wikibase-item' })
+    const { id: someUnconvertablePropertyId } = await getProperty({ datatype: 'wikibase-item' })
     try {
-      await moveClaim({ guid, id, property: someQuantityProperty }).then(shouldNotBeCalled)
+      await moveClaim({ guid, id, property: someUnconvertablePropertyId }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.startWith("properties datatype don't match")
-      err.context.property.should.equal(someQuantityProperty)
-      err.context.propertyDatatype.should.equal('wikibase-item')
-      err.context.currentProperty.should.equal(property)
-      err.context.currentPropertyDatatype.should.equal('string')
+      err.context.originPropertyId.should.equal(property)
+      err.context.targetPropertyId.should.equal(someUnconvertablePropertyId)
     }
   })
 
