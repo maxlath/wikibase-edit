@@ -89,15 +89,15 @@ describe('move claim', function () {
     .should.equal(`moving a ${currentProperty} claim to ${otherStringPropertyId}`)
   })
 
-  it("should reject if properties datatypes don't match", async () => {
+  it("should reject if properties datatypes don't match (and don't have a type converter)", async () => {
     const { guid, id, property } = await addClaim({ datatype: 'string', value: randomString() })
-    const { id: someQuantityProperty } = await getProperty({ datatype: 'quantity' })
+    const { id: someQuantityProperty } = await getProperty({ datatype: 'wikibase-item' })
     try {
       await moveClaim({ guid, id, property: someQuantityProperty }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal("properties datatype don't match")
       err.context.property.should.equal(someQuantityProperty)
-      err.context.propertyDatatype.should.equal('quantity')
+      err.context.propertyDatatype.should.equal('wikibase-item')
       err.context.currentProperty.should.equal(property)
       err.context.currentPropertyDatatype.should.equal('string')
     }
@@ -110,5 +110,77 @@ describe('move claim', function () {
     const [ removeClaimRes, addClaimRes ] = res
     removeClaimRes.entity.id.should.equal(id)
     addClaimRes.entity.id.should.equal(otherItemId)
+  })
+
+  describe('type conversions', () => {
+    it('should convert a positive string number value to quantity', async () => {
+      const { id } = await createItem()
+      const { guid } = await addClaim({ id, datatype: 'string', value: '123.521521' })
+      const { id: otherStringPropertyId } = await getProperty({ datatype: 'quantity' })
+      const [ { entity } ] = await moveClaim({ guid, id, property: otherStringPropertyId })
+      const movedClaim = entity.claims[otherStringPropertyId][0]
+      movedClaim.mainsnak.datatype.should.equal('quantity')
+      movedClaim.mainsnak.datavalue.value.amount.should.equal('+123.521521')
+    })
+
+    it('should convert a signed positive string number value to quantity', async () => {
+      const { id } = await createItem()
+      const { guid } = await addClaim({ id, datatype: 'string', value: '+123.521521' })
+      const { id: otherStringPropertyId } = await getProperty({ datatype: 'quantity' })
+      const [ { entity } ] = await moveClaim({ guid, id, property: otherStringPropertyId })
+      const movedClaim = entity.claims[otherStringPropertyId][0]
+      movedClaim.mainsnak.datatype.should.equal('quantity')
+      movedClaim.mainsnak.datavalue.value.amount.should.equal('+123.521521')
+    })
+
+    it('should convert a negative string number value to quantity', async () => {
+      const { id } = await createItem()
+      const { guid } = await addClaim({ id, datatype: 'string', value: '-123.521521' })
+      const { id: otherStringPropertyId } = await getProperty({ datatype: 'quantity' })
+      const [ { entity } ] = await moveClaim({ guid, id, property: otherStringPropertyId })
+      const movedClaim = entity.claims[otherStringPropertyId][0]
+      movedClaim.mainsnak.datatype.should.equal('quantity')
+      movedClaim.mainsnak.datavalue.value.amount.should.equal('-123.521521')
+    })
+
+    it('should convert a positive integer to a string', async () => {
+      const { id } = await createItem()
+      const { guid } = await addClaim({ id, datatype: 'quantity', value: 123 })
+      const { id: otherStringPropertyId } = await getProperty({ datatype: 'string' })
+      const [ { entity } ] = await moveClaim({ guid, id, property: otherStringPropertyId })
+      const movedClaim = entity.claims[otherStringPropertyId][0]
+      movedClaim.mainsnak.datatype.should.equal('string')
+      movedClaim.mainsnak.datavalue.value.should.equal('123')
+    })
+
+    it('should convert a positive float to a string', async () => {
+      const { id } = await createItem()
+      const { guid } = await addClaim({ id, datatype: 'quantity', value: 123.456 })
+      const { id: otherStringPropertyId } = await getProperty({ datatype: 'string' })
+      const [ { entity } ] = await moveClaim({ guid, id, property: otherStringPropertyId })
+      const movedClaim = entity.claims[otherStringPropertyId][0]
+      movedClaim.mainsnak.datatype.should.equal('string')
+      movedClaim.mainsnak.datavalue.value.should.equal('123.456')
+    })
+
+    it('should convert a negative integer to a string', async () => {
+      const { id } = await createItem()
+      const { guid } = await addClaim({ id, datatype: 'quantity', value: -123 })
+      const { id: otherStringPropertyId } = await getProperty({ datatype: 'string' })
+      const [ { entity } ] = await moveClaim({ guid, id, property: otherStringPropertyId })
+      const movedClaim = entity.claims[otherStringPropertyId][0]
+      movedClaim.mainsnak.datatype.should.equal('string')
+      movedClaim.mainsnak.datavalue.value.should.equal('-123')
+    })
+
+    it('should convert a negative float to a string', async () => {
+      const { id } = await createItem()
+      const { guid } = await addClaim({ id, datatype: 'quantity', value: -123.456 })
+      const { id: otherStringPropertyId } = await getProperty({ datatype: 'string' })
+      const [ { entity } ] = await moveClaim({ guid, id, property: otherStringPropertyId })
+      const movedClaim = entity.claims[otherStringPropertyId][0]
+      movedClaim.mainsnak.datatype.should.equal('string')
+      movedClaim.mainsnak.datavalue.value.should.equal('-123.456')
+    })
   })
 })
