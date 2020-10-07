@@ -153,6 +153,18 @@ describe('move claim', function () {
           targetValue: { amount: '-5519.521521', unit: '1' },
         })
       })
+
+      it('should reject to convert a non-number string', async () => {
+        await testTypeConversion({
+          originalType: 'string',
+          originalValue: '123.abc',
+          targetType: 'quantity'
+        })
+        .then(shouldNotBeCalled)
+        .catch(err => {
+          err.message.should.equal("properties datatype don't match and string->quantity type conversion failed: invalid string number")
+        })
+      })
     })
 
     describe('quantity->string', () => {
@@ -248,9 +260,9 @@ const testTypeConversion = async ({ originalType, originalValue, targetType, tar
   // It's safe to reuse the same item as we are using claim guids
   itemId = itemId || (await createItem()).id
   const { guid } = await addClaim({ id: itemId, datatype: originalType, value: originalValue })
-  const { id: otherStringPropertyId } = await getProperty({ datatype: targetType })
-  const [ { entity } ] = await moveClaim({ guid, id: itemId, property: otherStringPropertyId })
-  const movedClaim = entity.claims[otherStringPropertyId].slice(-1)[0]
+  const { id: otherPropertyId } = await getProperty({ datatype: targetType })
+  const [ { entity } ] = await moveClaim({ guid, id: itemId, property: otherPropertyId })
+  const movedClaim = entity.claims[otherPropertyId].slice(-1)[0]
   movedClaim.mainsnak.datatype.should.equal(targetType)
   movedClaim.mainsnak.datavalue.value.should.deepEqual(targetValue)
 }
