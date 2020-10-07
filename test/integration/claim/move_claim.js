@@ -108,7 +108,7 @@ describe('move claim', function () {
     try {
       await moveClaim({ guid, id, property: someQuantityProperty }).then(shouldNotBeCalled)
     } catch (err) {
-      err.message.should.equal("properties datatype don't match")
+      err.message.should.startWith("properties datatype don't match")
       err.context.property.should.equal(someQuantityProperty)
       err.context.propertyDatatype.should.equal('wikibase-item')
       err.context.currentProperty.should.equal(property)
@@ -223,6 +223,20 @@ describe('move claim', function () {
           originalValue: { text: value, language: 'en' },
           targetType: 'string',
           targetValue: value,
+        })
+      })
+    })
+
+    describe('monolingualtext->string', () => {
+      it('should not convert a string to a monolingualtext', async () => {
+        await testTypeConversion({
+          originalType: 'string',
+          originalValue: randomString(),
+          targetType: 'monolingualtext'
+        })
+        .then(shouldNotBeCalled)
+        .catch(err => {
+          err.message.should.startWith("properties datatype don't match")
         })
       })
     })
