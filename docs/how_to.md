@@ -633,13 +633,13 @@ const wbEdit.claim.move({
 ##### move claims between properties of different datatypes
 
 If the origin and target properties are of different datatypes, a type conversions will be attempted in the following cases:
-| origin datatype | target datatype | comment                                                                 |
-|-----------------|-----------------|-------------------------------------------------------------------------|
-| external-id     | string          |                                                                         |
-| monolingualtext | string          |                                                                         |
-| quantity        | string          |                                                                         |
-| string          | external-id     |                                                                         |
-| string          | quantity        | :warning: will throw an error if the string doesn't look like a number  |
+| origin datatype    | target datatype   | comment                                                                 |
+|--------------------|-------------------|-------------------------------------------------------------------------|
+| `external-id`      | `string`          |                                                                         |
+| `monolingualtext`  | `string`          |                                                                         |
+| `quantity`         | `string`          |                                                                         |
+| `string`           | `external-id`     |                                                                         |
+| `string`           | `quantity`        | :warning: will throw an error if the string doesn't look like a number  |
 
 In other cases, an error will be throw: if you think that another type conversion should be possible, please [open a ticket](https://github.com/maxlath/wikibase-edit/issues/new?template=feature_request.md&title=claim.move%3A%20add%20a%20%5Btype-a%5D-%3E%5Btype-b%5D%20type%20converter&body=%20)
 
