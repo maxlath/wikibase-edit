@@ -132,4 +132,18 @@ describe('move property claims', () => {
     newEntity.claims[otherStringPropertyId][0].mainsnak.datavalue.value.amount.should.equal(`+${value}`)
     newEntity.claims[otherStringPropertyId][0].id.should.not.equal(guid)
   })
+
+  it('should convert types', async () => {
+    const { id } = await createItem()
+    const { property: currentPropertyId } = await addClaim({ id, datatype: 'string', value: '123' })
+    await addClaim({ id, property: currentPropertyId, value: '456' })
+    const { id: otherPropertyId } = await getProperty({ datatype: 'quantity' })
+    const propertyClaimsId = `${id}#${currentPropertyId}`
+    const [ { entity } ] = await movePropertyClaims({ propertyClaimsId, id, property: otherPropertyId })
+    const movedClaims = entity.claims[otherPropertyId]
+    movedClaims[0].mainsnak.datatype.should.equal('quantity')
+    movedClaims[0].mainsnak.datavalue.value.should.deepEqual({ amount: '+123', unit: '1' })
+    movedClaims[1].mainsnak.datatype.should.equal('quantity')
+    movedClaims[1].mainsnak.datavalue.value.should.deepEqual({ amount: '+456', unit: '1' })
+  })
 })
