@@ -636,7 +636,7 @@ If the origin and target properties are of different datatypes, a type conversio
 | origin datatype    | target datatype   | comment                                                                 |
 |--------------------|-------------------|-------------------------------------------------------------------------|
 | `external-id`      | `string`          |                                                                         |
-| `monolingualtext`  | `string`          |                                                                         |
+| `monolingualtext`  | `string`          | :warning: the language will be lost                                     |
 | `quantity`         | `string`          |                                                                         |
 | `string`           | `external-id`     |                                                                         |
 | `string`           | `quantity`        | :warning: will throw an error if the string doesn't look like a number  |
