@@ -10,7 +10,7 @@ const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
 const { randomString } = __.require('test/unit/utils')
 const getProperty = __.require('test/integration/utils/get_property')
 
-describe('move property claims', function () {
+describe('move property claims', () => {
   it('should reject invalid property claims id', async () => {
     try {
       await movePropertyClaims({ propertyClaimsId: 'Q1~P31' }).then(shouldNotBeCalled)

@@ -21,7 +21,7 @@ const createEntity = async (data = {}) => {
   return entity
 }
 
-var sandboxItemPromise
+let sandboxItemPromise
 const getSandboxItem = () => {
   sandboxItemPromise = sandboxItemPromise || createEntity()
   return sandboxItemPromise
@@ -33,7 +33,7 @@ const getRefreshedEntity = async id => {
   return res.entities[id]
 }
 
-var claimPromise
+let claimPromise
 const getSandboxClaim = (datatype = 'string') => {
   if (claimPromise) return claimPromise
 

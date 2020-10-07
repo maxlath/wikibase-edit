@@ -40,7 +40,7 @@ describe('entity edit', () => {
     const description = randomString()
     const frAlias = randomString()
     const enAlias = randomString()
-    var { data } = editEntity({
+    const { data } = editEntity({
       id,
       labels: { fr: label },
       aliases: { fr: frAlias, en: [ enAlias ] },

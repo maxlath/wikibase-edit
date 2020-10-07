@@ -7,7 +7,7 @@
     "lib"
   ],
   "scripts": {
-    "lint": "standard",
+    "lint": "eslint -c .eslintrc lib test",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "mocha test/unit/*.js test/unit/*/*.js",
     "test:integration": "mocha test/integration/*.js test/integration/*/*.js",
@@ -41,23 +41,17 @@
   },
   "devDependencies": {
     "config": "^1.31.0",
+    "eslint": "^7.10.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prefer-arrow": "^1.2.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "git-hooks": "^1.1.10",
     "mocha": "^5.2.0",
     "nock": "^12.0.3",
-    "should": "^13.2.3",
-    "standard": "^10.0.3"
-  },
-  "standard": {
-    "ignore": [
-      "dist"
-    ],
-    "globals": [
-      "it",
-      "xit",
-      "describe",
-      "before",
-      "beforeEach"
-    ]
+    "should": "^13.2.3"
   },
   "engines": {
     "node": ">= 7.6"
