@@ -889,11 +889,11 @@ wbEdit.entity.edit({
     // Or a rich value object
     P2093: { text: 'Author Authorson', language: 'en' },
     // Or even an array of mixed simple values and rich object values
-    P1106: [ 42, { amount: 9001, unit: 'Q7727' } ]
+    P1106: [ 42, { amount: 9001, unit: 'Q7727' } ],
     // Add statements with special snaktypes ('novalue' or 'somevalue')
-    P626: { snaktype: 'somevalue' }
+    P626: { snaktype: 'somevalue' },
     // or special rank (Default: 'normal'. Possible values: 'preferred' or 'deprecated')
-    P6089: { rank: 'preferred', value: 123 }
+    P6089: { rank: 'preferred', value: 123 },
     // Add qualifiers and references to value objects
     P369: [
       // Qualifier values can also be passed in those different forms
@@ -920,14 +920,14 @@ wbEdit.entity.edit({
       // Edit an existing claim
       // /!\ Beware that while editing an existing claim,
       //     anything omitted (rank, qualifiers, or references) will be omitted!!
-      { id: 'Q4115189$BC5F4F72-5B49-4991-AB0F-5CC8D4AAB99A', value: 123 }
+      { id: 'Q4115189$BC5F4F72-5B49-4991-AB0F-5CC8D4AAB99A', value: 123 },
       // Remove an existing claim
       { id: 'Q4115189$afc56f6c-4e91-c89d-e287-d5691aeb063a', remove: true }
     ]
   },
   sitelinks: {
     // Set a sitelink
-    frwiki: 'eviv bulgroz'
+    frwiki: 'eviv bulgroz',
     // Remove a sitelink
     eswikisource: null
   }
