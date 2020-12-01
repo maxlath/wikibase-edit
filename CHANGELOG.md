@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 4.9.0 - 2020-12-01
+* [`entity.edit`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#edit-entity): allow to remove labels, descriptions, or aliases in a given language by passing null
+
 ## 4.8.0 - 2020-10-07
 * [`claim.move`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-claim): added capacity to [move claims between properties of different datatypes](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-claims-between-properties-of-different-datatypes)
 * [`claim.qualifier`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-claim): added capacity to [move qualifiers between properties of different datatypes](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#move-qualifiers-between-properties-of-different-datatypes)
