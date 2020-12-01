@@ -864,13 +864,13 @@ wbEdit.entity.edit({
     // Set a label
     en: 'a new label in English',
     // Remove a label
-    fr: { value: 'le label en français', remove: true }
+    fr: null
   },
   descriptions: {
     // Set a description
     en: 'a new description',
     // Remove a description
-    fr: { value: 'la description en français', remove: true }
+    fr: null
   },
   aliases: {
     // Pass aliases as an array
@@ -879,7 +879,9 @@ wbEdit.entity.edit({
     de: 'buzz',
     // /!\ for any language specified, the values you pass will overwrite the existing values,
     // which means that the following empty array will remove all existing aliases in French.
-    fr: []
+    fr: [],
+    // The same effect of clearing all aliases in a given language can be optained by passing null
+    es: null
   },
   claims: {
     // Pass values as an array

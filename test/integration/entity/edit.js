@@ -73,6 +73,25 @@ describe('entity edit', function () {
     simplifiedPropertyClaims.should.deepEqual(claims[propertyId])
   })
 
+  it('should clear language terms by passing null', async () => {
+    const resA = await wbEdit.entity.create({
+      labels: { en: randomString() },
+      description: { en: randomString() },
+      aliases: { en: randomString() },
+    })
+    const resB = await wbEdit.entity.edit({
+      id: resA.entity.id,
+      labels: { en: null },
+      description: { en: null },
+      aliases: { en: null },
+    })
+    resB.success.should.equal(1)
+    const { entity } = resB
+    entity.labels.should.deepEqual({})
+    entity.descriptions.should.deepEqual({})
+    entity.aliases.should.deepEqual({})
+  })
+
   // Requires setting an instance with sitelinks (such as test.wikidata.org) in config
   // thus disabled by default
   xit('should add and remove a sitelink', async () => {
