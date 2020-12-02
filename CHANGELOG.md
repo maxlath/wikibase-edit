@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 4.10.0 - 2020-12-02
+* [`entity.edit`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#edit-entity): allow to add aliases without removing the existing ones
+
 ## 4.9.0 - 2020-12-01
 * [`entity.edit`](https://github.com/maxlath/wikidata-edit/blob/master/docs/how_to.md#edit-entity): allow to remove labels, descriptions, or aliases in a given language by passing null
 
