@@ -880,6 +880,11 @@ wbEdit.entity.edit({
     // /!\ for any language specified, the values you pass will overwrite the existing values,
     // which means that the following empty array will remove all existing aliases in French.
     fr: [],
+    // To add aliases without removing existing values, you must set 'add=true'
+    nl: [
+      { value: 'bul', add: true },
+      { value: 'groz', add: true },
+    ],
     // The same effect of clearing all aliases in a given language can be optained by passing null
     es: null
   },

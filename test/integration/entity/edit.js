@@ -86,10 +86,22 @@ describe('entity edit', function () {
       aliases: { en: null },
     })
     resB.success.should.equal(1)
-    const { entity } = resB
-    entity.labels.should.deepEqual({})
-    entity.descriptions.should.deepEqual({})
-    entity.aliases.should.deepEqual({})
+  })
+
+  it('should add an alias without removing the previous aliases', async () => {
+    const aliasA = randomString()
+    const aliasB = randomString()
+    const { entity } = await wbEdit.entity.create({
+      labels: { en: randomString() },
+      aliases: { en: aliasA },
+    })
+    const resB = await wbEdit.entity.edit({
+      id: entity.id,
+      aliases: {
+        en: { value: aliasB, add: true }
+      },
+    })
+    simplify.aliases(resB.entity.aliases).en.should.deepEqual([ aliasA, aliasB ])
   })
 
   // Requires setting an instance with sitelinks (such as test.wikidata.org) in config
