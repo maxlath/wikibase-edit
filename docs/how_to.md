@@ -558,7 +558,7 @@ wbEdit.claim.update({
   newValue: 'new-value'
 })
 ```
-but it can change the claim rank alone
+It is also possible to change the claim rank alone
 ```js
 wbEdit.claim.update({
   guid,
