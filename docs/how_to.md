@@ -118,6 +118,10 @@ const generalConfig = {
   // Default: on Wikidata [ 'WikibaseJS-edit' ], empty for other Wikibase instances
   tags: [ 'Some general tag' ],
 
+  // An id for the last known revision that can be passed so that the server can detect edit collisions
+  // That id can be found in any edit response as `lastrevid`
+  baserevid: 1234
+
   // Default: `wikidata-edit/${pkg.version} (https://github.com/maxlath/wikidata-edit)`
   userAgent: 'my-project-name/v3.2.5 (https://project.website)',
 
