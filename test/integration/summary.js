@@ -4,7 +4,7 @@ const { instance, credentials, __ } = config
 const WBEdit = __.require('.')
 const { randomString } = require('../unit/utils')
 const { getLastEditSummary } = require('./utils/utils')
-const params = () => ({ labels: { en: randomString() } })
+const params = summary => ({ summary, labels: { en: randomString() } })
 
 describe('summary', function () {
   this.timeout(20 * 1000)
@@ -39,9 +39,16 @@ describe('summary', function () {
     const editSummary2 = await postAndGetEditSummary(wbEdit)
     editSummary2.should.endWith(' */')
   })
+
+  it('should accept a custom summary in the edit object', async () => {
+    const summary = 'and yet another one'
+    const wbEdit = WBEdit({ instance, credentials, summary: 'global summary' })
+    const editSummary = await postAndGetEditSummary(wbEdit, {}, summary)
+    editSummary.should.endWith(` */ ${summary}`)
+  })
 })
 
-const postAndGetEditSummary = (wbEdit, reqConfig) => {
-  return wbEdit.entity.create(params(), reqConfig)
+const postAndGetEditSummary = (wbEdit, reqConfig, paramsArg) => {
+  return wbEdit.entity.create(params(paramsArg), reqConfig)
   .then(getLastEditSummary)
 }
