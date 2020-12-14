@@ -2,7 +2,8 @@ require('should')
 const config = require('config')
 const { __ } = config
 const wbEdit = __.require('.')(config)
-const { randomString, shouldNotBeCalled } = __.require('test/unit/utils')
+const { randomString } = __.require('test/unit/utils')
+const { shouldNotBeCalled } = __.require('test/integration/utils/utils')
 const { getSandboxPropertyId, getSandboxItemId } = __.require('test/integration/utils/sandbox_entities')
 const { isGuid } = require('wikibase-sdk')
 
@@ -83,7 +84,7 @@ describe('claim create', function () {
   })
 
   // time precision not supported by the Wikibase API
-  xit('should create a time claim with a high precision', async () => {
+  it('should create a time claim with a high precision', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
       getSandboxPropertyId('time')

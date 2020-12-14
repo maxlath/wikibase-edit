@@ -2,8 +2,10 @@ const config = require('config')
 const { __ } = config
 const wbEdit = __.require('.')(config)
 const { getSandboxItemId, getSandboxPropertyId, getSandboxClaimId } = require('./sandbox_entities')
+const { randomString } = require('../../unit/utils')
 
-const addClaim = async ({ id, property, datatype, value }) => {
+const addClaim = async (params = {}) => {
+  let { id, property, datatype = 'string', value = randomString() } = params
   id = id || await getSandboxItemId()
   property = property || await getSandboxPropertyId(datatype)
   const res = await wbEdit.claim.create({ id, property, value })
