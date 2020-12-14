@@ -38,4 +38,17 @@ describe('baserevid', function () {
       err.body.error.code.should.equal('cant-load-entity-content')
     })
   })
+
+  it('should pass baserevid from edit object', async () => {
+    const { id } = await getSandboxItem()
+    await wbEdit.entity.edit({
+      id,
+      labels: { la: randomString() },
+      baserevid: 1
+    })
+    .then(shouldNotBeCalled)
+    .catch(err => {
+      err.body.error.code.should.equal('cant-load-entity-content')
+    })
+  })
 })
