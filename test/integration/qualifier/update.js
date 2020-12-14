@@ -126,6 +126,28 @@ describe('qualifier update', function () {
     simplify.qualifier(qualifier, { timeConverter: 'simple-day' }).should.equal(newValue)
   })
 
+  it('should update a time claim when passed a rich value with a simplified time value', async () => {
+    const oldValue = `${1000 + randomNumber(3)}-01`
+    const newValue = `${1000 + randomNumber(3)}-01`
+    const { guid, property } = await addQualifier({ datatype: 'time', value: oldValue })
+    const richOldValue = {
+      time: `${oldValue}-01`,
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 10,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+    }
+    const res = await updateQualifier({
+      guid,
+      property,
+      oldValue: richOldValue,
+      newValue
+    })
+    const qualifier = res.claim.qualifiers[property].slice(-1)[0]
+    simplify.qualifier(qualifier, { timeConverter: 'simple-day' }).should.equal(newValue)
+  })
+
   it('should update a globe-coordinate claim', async () => {
     const oldValue = {
       latitude: randomNumber(2),
