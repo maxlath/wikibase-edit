@@ -84,7 +84,7 @@ describe('claim create', function () {
   })
 
   // time precision not supported by the Wikibase API
-  it('should create a time claim with a high precision', async () => {
+  xit('should create a time claim with a high precision', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
       getSandboxPropertyId('time')

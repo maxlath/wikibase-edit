@@ -108,7 +108,7 @@ describe('summary', function () {
       commentB.should.endWith(summary)
     })
 
-    it.only('should pass a summary in qualifier.update', async () => {
+    it('should pass a summary in qualifier.update', async () => {
       const oldValue = randomString()
       const newValue = randomString()
       const { guid, property } = await addQualifier({ datatype: 'string', value: oldValue })
@@ -118,7 +118,7 @@ describe('summary', function () {
       comment.should.endWith(summary)
     })
 
-    it.only('should pass a summary in qualifier.move', async () => {
+    it('should pass a summary in qualifier.move', async () => {
       const [ valueA, valueB ] = [ randomString(), randomString() ]
       const { id: oldProperty } = await getProperty({ datatype: 'string', reserved: true })
       const { guid, hash } = await addQualifier({ property: oldProperty, value: valueA })
