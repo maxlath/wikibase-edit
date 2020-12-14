@@ -90,9 +90,7 @@ describe('qualifier update', function () {
     const newValue = `${1000 + randomNumber(3)}-01`
     const { guid, property } = await addQualifier({ datatype: 'time', value: oldValue })
     const res = await updateQualifier({ guid, property, oldValue, newValue })
-    console.log('res', res)
     const qualifier = res.claim.qualifiers[property].slice(-1)[0]
-    console.log('qualifier', qualifier)
     simplify.qualifier(qualifier, { timeConverter: 'simple-day' }).should.equal(newValue)
   })
 
