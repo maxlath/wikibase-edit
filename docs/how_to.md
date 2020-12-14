@@ -118,10 +118,6 @@ const generalConfig = {
   // Default: on Wikidata [ 'WikibaseJS-edit' ], empty for other Wikibase instances
   tags: [ 'Some general tag' ],
 
-  // An id for the last known revision that can be passed so that the server can detect edit collisions
-  // That id can be found in any edit response as `lastrevid`
-  baserevid: 1234
-
   // Default: `wikidata-edit/${pkg.version} (https://github.com/maxlath/wikidata-edit)`
   userAgent: 'my-project-name/v3.2.5 (https://project.website)',
 
@@ -176,6 +172,11 @@ const requestConfig = {
   // See https://meta.wikimedia.org/wiki/Help:Edit_summary
   // Default: empty
   summary: 'some request specific edit summary',
+
+  // An id for the last known revision that can be passed per request so that the server can detect edit collisions
+  // That id can be found in any edit response as `lastrevid`
+  // See https://www.mediawiki.org/wiki/Wikibase/API#Request_Format
+  baserevid: 1234,
 
   // See https://www.mediawiki.org/wiki/Manual:Tags
   // Default: on Wikidata [ 'WikibaseJS-edit' ], empty for other Wikibase instances
@@ -941,7 +942,11 @@ wbEdit.entity.edit({
     frwiki: 'eviv bulgroz',
     // Remove a sitelink
     eswikisource: null
-  }
+  },
+
+  // For convenience, the summary and baserevid can also be passed from this edit object
+  summary: 'doing a bunch of edits',
+  baserevid: 1234,
 })
 ```
 
