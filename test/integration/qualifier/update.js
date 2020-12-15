@@ -8,6 +8,8 @@ const { getSandboxPropertyId, getSandboxClaimId } = __.require('test/integration
 const { addQualifier } = __.require('test/integration/utils/sandbox_snaks')
 const { randomString, randomNumber } = __.require('test/unit/utils')
 const { simplify } = require('wikibase-sdk')
+// Use years above 1583 to be sure to default to Gregorian calendar
+const gregorianCalendarYear = 1583
 
 describe('qualifier update', function () {
   this.timeout(20 * 1000)
@@ -86,8 +88,8 @@ describe('qualifier update', function () {
   })
 
   it('should update a time claim with a month precision', async () => {
-    const oldValue = `${1000 + randomNumber(3)}-01`
-    const newValue = `${1000 + randomNumber(3)}-01`
+    const oldValue = `${1000 + randomNumber(3)}-02`
+    const newValue = `${1000 + randomNumber(3)}-03`
     const { guid, property } = await addQualifier({ datatype: 'time', value: oldValue })
     const res = await updateQualifier({ guid, property, oldValue, newValue })
     const qualifier = res.claim.qualifiers[property].slice(-1)[0]
@@ -98,15 +100,14 @@ describe('qualifier update', function () {
     const oldValue = (1000 + randomNumber(3)).toString()
     const newValue = (1000 + randomNumber(3)).toString()
     const { guid, property } = await addQualifier({ datatype: 'time', value: oldValue })
-    console.log({ guid, property, oldValue, newValue })
     const res = await updateQualifier({ guid, property, oldValue, newValue })
     const qualifier = res.claim.qualifiers[property].slice(-1)[0]
     simplify.qualifier(qualifier, { timeConverter: 'simple-day' }).should.equal(newValue)
   })
 
   it('should update a time claim when passed a rich value', async () => {
-    const oldValue = `${1000 + randomNumber(3)}-01`
-    const newValue = `${1000 + randomNumber(3)}-01`
+    const oldValue = `${gregorianCalendarYear + randomNumber(3)}-04`
+    const newValue = `${gregorianCalendarYear + randomNumber(3)}-05`
     const { guid, property } = await addQualifier({ datatype: 'time', value: oldValue })
     const richOldValue = {
       time: `+${oldValue}-01T00:00:00Z`,
@@ -127,8 +128,8 @@ describe('qualifier update', function () {
   })
 
   it('should update a time claim when passed a rich value with a simplified time value', async () => {
-    const oldValue = `${1000 + randomNumber(3)}-01`
-    const newValue = `${1000 + randomNumber(3)}-01`
+    const oldValue = `${gregorianCalendarYear + randomNumber(3)}-06`
+    const newValue = `${gregorianCalendarYear + randomNumber(3)}-07`
     const { guid, property } = await addQualifier({ datatype: 'time', value: oldValue })
     const richOldValue = {
       time: `${oldValue}-01`,

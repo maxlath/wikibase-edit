@@ -18,7 +18,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 9,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -37,7 +37,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 10,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -56,7 +56,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 11,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -75,7 +75,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 9,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -94,7 +94,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 10,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -113,7 +113,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 11,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -132,7 +132,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 12,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -151,7 +151,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 13,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -170,7 +170,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 14,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -189,7 +189,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 8,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -208,7 +208,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 7,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -230,7 +230,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 5,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -241,7 +241,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 9,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
     getTimeObject('10000').should.deepEqual({
       time: '+10000-00-00T00:00:00Z',
@@ -260,7 +260,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 4,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -271,7 +271,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 3,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -282,7 +282,7 @@ describe('claim time', () => {
       before: 0,
       after: 0,
       precision: 0,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
     })
   })
 
@@ -337,6 +337,90 @@ describe('claim time', () => {
       calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
     }).should.deepEqual({
       time: '+2018-04-15T00:00:00Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 10,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+    })
+  })
+
+  it('should default to julian calendar for dates before 1582, 1582 included', () => {
+    getTimeObject('1582').should.deepEqual({
+      time: '+1582-00-00T00:00:00Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 9,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
+    })
+    getTimeObject('1582-11').should.deepEqual({
+      time: '+1582-11-00T00:00:00Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 10,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
+    })
+    getTimeObject('1582-12-04').should.deepEqual({
+      time: '+1582-12-04T00:00:00Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 11,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
+    })
+    getTimeObject({
+      time: '+1582-12-04T00:00:00Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 10,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
+    }).should.deepEqual({
+      time: '+1582-12-04T00:00:00Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 10,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985786'
+    })
+  })
+
+  it('should default to gregorian calendar for dates after 1582', () => {
+    getTimeObject('1583').should.deepEqual({
+      time: '+1583-00-00T00:00:00Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 9,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+    })
+    getTimeObject('1583-02').should.deepEqual({
+      time: '+1583-02-00T00:00:00Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 10,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+    })
+    getTimeObject('1583-10-05').should.deepEqual({
+      time: '+1583-10-05T00:00:00Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 11,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+    })
+    getTimeObject({
+      time: '+1583-10-05T00:00:00Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 10,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+    }).should.deepEqual({
+      time: '+1583-10-05T00:00:00Z',
       timezone: 0,
       before: 0,
       after: 0,
