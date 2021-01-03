@@ -219,6 +219,28 @@ describe('claim create', function () {
     createdValue.precision.should.equal(value.precision)
   })
 
+  it('should create a geo-shape claim', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('geo-shape')
+    ])
+    const value = 'Data:United Kingdom.map'
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.datavalue.value.should.equal(value)
+  })
+
+  it('should create a tabular-data claim', async () => {
+    const [ id, property ] = await Promise.all([
+      getSandboxItemId(),
+      getSandboxPropertyId('tabular-data')
+    ])
+    const value = 'Data:Sandbox/TheDJ/DJ.tab'
+    const res = await wbEdit.claim.create({ id, property, value })
+    res.claim.mainsnak.datavalue.value.should.equal(value)
+  })
+
+  // Math and musical notation datatype aren't available on the wikibase-docker instance.
+
   it('should create a claim of snaktype novalue', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
