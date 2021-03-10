@@ -1,7 +1,7 @@
 require('should')
 const { __, instance } = require('config')
 const { randomString } = __.require('test/unit/utils')
-const wbEdit = __.require('.')({ instance, anonymous: true })
+const WBEdit = __.require('.')
 
 const { getSandboxItemId } = __.require('test/integration/utils/sandbox_entities')
 
@@ -9,10 +9,19 @@ describe('anonymous edit', function () {
   this.timeout(20 * 1000)
   before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
 
-  it('should make an anonymous edit', async () => {
+  it('should make an anonymous edit when general config has anonymous=true', async () => {
+    const wbEdit = WBEdit({ instance, anonymous: true })
     const id = await getSandboxItemId()
     const value = randomString()
     const res = await wbEdit.alias.add({ id, language: 'fr', value })
+    res.success.should.equal(1)
+  })
+
+  it('should make an anonymous edit when request config has anonymous=true', async () => {
+    const wbEdit = WBEdit({ instance })
+    const id = await getSandboxItemId()
+    const value = randomString()
+    const res = await wbEdit.alias.add({ id, language: 'fr', value }, { anonymous: true })
     res.success.should.equal(1)
   })
 })
