@@ -1,3 +1,4 @@
+require('module-alias/register')
 require('should')
 
 const { someEntityId: id } = require('test/unit/utils')

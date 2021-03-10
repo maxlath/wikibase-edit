@@ -1,3 +1,4 @@
+require('module-alias/register')
 require('should')
 const wdEdit = require('root')
 

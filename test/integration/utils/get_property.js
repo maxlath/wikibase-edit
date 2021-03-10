@@ -1,3 +1,4 @@
+require('module-alias/register')
 const config = require('config')
 const wbk = require('wikibase-sdk')({ instance: config.instance })
 const sandboxProperties = {}

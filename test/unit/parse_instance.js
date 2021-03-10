@@ -1,3 +1,4 @@
+require('module-alias/register')
 require('should')
 
 const parseInstance = require('lib/parse_instance')

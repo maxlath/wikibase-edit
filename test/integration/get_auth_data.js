@@ -1,3 +1,4 @@
+require('module-alias/register')
 const should = require('should')
 const { instance, credentials, credentialsAlt } = require('config')
 const { username, password } = credentialsAlt

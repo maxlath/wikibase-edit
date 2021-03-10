@@ -1,3 +1,4 @@
+require('module-alias/register')
 require('should')
 
 const removeReference = require('lib/reference/remove')

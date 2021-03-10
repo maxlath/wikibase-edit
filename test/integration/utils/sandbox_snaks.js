@@ -1,3 +1,4 @@
+require('module-alias/register')
 const config = require('config')
 const wbEdit = require('root')(config)
 const { getSandboxItemId, getSandboxPropertyId, getSandboxClaimId } = require('./sandbox_entities')

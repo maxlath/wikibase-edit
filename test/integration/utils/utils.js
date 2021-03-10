@@ -1,3 +1,4 @@
+require('module-alias/register')
 const { yellow } = require('chalk')
 const { instance } = require('config')
 const WBK = require('wikibase-sdk')

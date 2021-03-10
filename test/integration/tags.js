@@ -1,3 +1,4 @@
+require('module-alias/register')
 require('should')
 const config = require('config')
 const { wdCredentials: credentials } = config

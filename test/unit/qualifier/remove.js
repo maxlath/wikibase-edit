@@ -1,3 +1,4 @@
+require('module-alias/register')
 require('should')
 
 const removeQualifier = require('lib/qualifier/remove')

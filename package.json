@@ -9,8 +9,8 @@
   "scripts": {
     "lint": "eslint -c .eslintrc lib test",
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "mocha $MOCHA_OPTIONS ./node_modules/module-alias/register.js test/unit/*.js test/unit/*/*.js",
-    "test:integration": "mocha $MOCHA_OPTIONS ./node_modules/module-alias/register.js test/integration/*.js test/integration/*/*.js",
+    "test:unit": "mocha $MOCHA_OPTIONS test/unit/*.js test/unit/*/*.js",
+    "test:integration": "mocha $MOCHA_OPTIONS test/integration/*.js test/integration/*/*.js",
     "prepublishOnly": "npm run lint && npm test",
     "postpublish": "git push --tags",
     "update-toc": "./scripts/update_toc"

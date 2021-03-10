@@ -1,3 +1,4 @@
+require('module-alias/register')
 require('should')
 
 const removeAlias = require('lib/alias/remove')
