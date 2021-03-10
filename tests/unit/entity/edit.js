@@ -3,12 +3,24 @@ require('should')
 const { instance } = require('config')
 const { randomString, someEntityId: id, properties } = require('tests/unit/utils')
 const _editEntity = require('lib/entity/edit')
+const { shouldNotBeCalled } = require('root/tests/integration/utils/utils')
 const editEntity = params => _editEntity(params, properties, instance)
 
 describe('entity edit', () => {
   it('should reject a missing id', () => {
     const params = { claims: { someWikibaseItemPropertyId: 'bla' } }
     editEntity.bind(null, params).should.throw('invalid entity id')
+  })
+
+  it('should reject misplaced parameters', () => {
+    const params = { id, P2: 'bla' }
+    try {
+      const res = editEntity(params)
+      shouldNotBeCalled(res)
+    } catch (err) {
+      err.message.should.equal('invalid parameter')
+      err.context.parameter.should.equal('P2')
+    }
   })
 
   it('should reject an edit without data', () => {

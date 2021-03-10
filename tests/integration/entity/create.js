@@ -34,7 +34,7 @@ describe('entity create', function () {
     const res = await wbEdit.entity.create({
       type: 'item',
       labels: { en: randomString() },
-      description: { en: randomString() },
+      descriptions: { en: randomString() },
       aliases: { en: randomString() },
       claims
     })

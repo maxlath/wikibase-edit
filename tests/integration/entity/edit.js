@@ -35,7 +35,7 @@ describe('entity edit', function () {
     claims[pidA].references[pidC] = 'http://foo.bar'
     const params = {
       labels: { en: randomString() },
-      description: { en: randomString() },
+      descriptions: { en: randomString() },
       aliases: { en: randomString() },
       claims
     }
@@ -76,13 +76,13 @@ describe('entity edit', function () {
   it('should clear language terms by passing null', async () => {
     const resA = await wbEdit.entity.create({
       labels: { en: randomString() },
-      description: { en: randomString() },
+      descriptions: { en: randomString() },
       aliases: { en: randomString() },
     })
     const resB = await wbEdit.entity.edit({
       id: resA.entity.id,
       labels: { en: null },
-      description: { en: null },
+      descriptions: { en: null },
       aliases: { en: null },
     })
     resB.success.should.equal(1)
