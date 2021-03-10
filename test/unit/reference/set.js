@@ -1,7 +1,7 @@
 require('should')
-const { __ } = require('config')
-const setReference = __.require('lib/reference/set')
-const { guid, properties, hash } = __.require('test/unit/utils')
+
+const setReference = require('lib/reference/set')
+const { guid, properties, hash } = require('test/unit/utils')
 
 describe('reference set', () => {
   it('should rejected if not passed a claim guid', () => {

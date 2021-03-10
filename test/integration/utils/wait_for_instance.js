@@ -1,7 +1,7 @@
-const { __, instance } = require('config')
-const fetch = __.require('lib/request/fetch')
+const { instance } = require('config')
+const fetch = require('lib/request/fetch')
 const { yellow, grey } = require('chalk')
-const { wait } = __.require('test/integration/utils/utils')
+const { wait } = require('test/integration/utils/utils')
 
 module.exports = () => {
   const check = async () => {

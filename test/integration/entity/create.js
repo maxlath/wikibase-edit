@@ -1,13 +1,12 @@
 require('should')
 const config = require('config')
-const { __ } = config
-const wbEdit = __.require('.')(config)
-const { randomString } = __.require('test/unit/utils')
-const { getSandboxPropertyId } = __.require('test/integration/utils/sandbox_entities')
+const wbEdit = require('root')(config)
+const { randomString } = require('test/unit/utils')
+const { getSandboxPropertyId } = require('test/integration/utils/sandbox_entities')
 
 describe('entity create', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
+  before('wait for instance', require('test/integration/utils/wait_for_instance'))
 
   it('should create a property', async () => {
     const res = await wbEdit.entity.create({

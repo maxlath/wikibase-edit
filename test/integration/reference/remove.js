@@ -1,14 +1,13 @@
 require('should')
 const config = require('config')
-const { __ } = config
-const wbEdit = __.require('.')(config)
+const wbEdit = require('root')(config)
 const removeReference = wbEdit.reference.remove
-const { randomString } = __.require('test/unit/utils')
-const { addReference } = __.require('test/integration/utils/sandbox_snaks')
+const { randomString } = require('test/unit/utils')
+const { addReference } = require('test/integration/utils/sandbox_snaks')
 
 describe('reference remove', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
+  before('wait for instance', require('test/integration/utils/wait_for_instance'))
 
   it('should remove a reference', async () => {
     const { guid, reference } = await addReference({ datatype: 'string', value: randomString() })

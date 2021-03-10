@@ -1,19 +1,18 @@
 require('should')
 const config = require('config')
-const { __ } = config
-const wbEdit = __.require('.')(config)
+const wbEdit = require('root')(config)
 const updateQualifier = wbEdit.qualifier.update
-const { undesiredRes } = __.require('test/integration/utils/utils')
-const { getSandboxPropertyId, getSandboxClaimId } = __.require('test/integration/utils/sandbox_entities')
-const { addQualifier } = __.require('test/integration/utils/sandbox_snaks')
-const { randomString, randomNumber } = __.require('test/unit/utils')
+const { undesiredRes } = require('test/integration/utils/utils')
+const { getSandboxPropertyId, getSandboxClaimId } = require('test/integration/utils/sandbox_entities')
+const { addQualifier } = require('test/integration/utils/sandbox_snaks')
+const { randomString, randomNumber } = require('test/unit/utils')
 const { simplify } = require('wikibase-sdk')
 // Use years above 1583 to be sure to default to Gregorian calendar
 const gregorianCalendarYear = 1583
 
 describe('qualifier update', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
+  before('wait for instance', require('test/integration/utils/wait_for_instance'))
 
   it('should update a qualifier', async () => {
     const oldValue = randomString()

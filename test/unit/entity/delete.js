@@ -1,7 +1,7 @@
 require('should')
-const { __ } = require('config')
-const { someEntityId: id } = __.require('test/unit/utils')
-const deleteEntity = __.require('lib/entity/delete')
+
+const { someEntityId: id } = require('test/unit/utils')
+const deleteEntity = require('lib/entity/delete')
 
 describe('entity delete', () => {
   it('should set the action to delete', () => {

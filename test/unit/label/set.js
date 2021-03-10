@@ -1,8 +1,8 @@
 require('should')
-const { __ } = require('config')
+
 const language = 'fr'
-const setLabel = __.require('lib/label/set')
-const { randomString, someEntityId } = __.require('test/unit/utils')
+const setLabel = require('lib/label/set')
+const { randomString, someEntityId } = require('test/unit/utils')
 
 describe('label', () => {
   it('should throw if not passed an entity', () => {

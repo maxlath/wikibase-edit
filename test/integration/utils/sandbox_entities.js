@@ -1,16 +1,15 @@
 const config = require('config')
-const { __ } = config
 const wbk = require('wikibase-sdk')({ instance: config.instance })
 const { getEntityIdFromGuid } = wbk
-const wbEdit = __.require('.')(config)
-const { randomString } = __.require('test/unit/utils')
+const wbEdit = require('root')(config)
+const { randomString } = require('test/unit/utils')
 const getProperty = require('./get_property')
-const fetch = __.require('lib/request/fetch')
+const fetch = require('lib/request/fetch')
 
 // Working around the circular dependency
 let addClaim
 const lateRequire = () => {
-  ({ addClaim } = __.require('test/integration/utils/sandbox_snaks'))
+  ({ addClaim } = require('test/integration/utils/sandbox_snaks'))
 }
 setTimeout(lateRequire, 0)
 

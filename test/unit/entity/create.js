@@ -1,7 +1,7 @@
 require('should')
-const { __, instance } = require('config')
-const { randomString, properties } = __.require('test/unit/utils')
-const _createEntity = __.require('lib/entity/create')
+const { instance } = require('config')
+const { randomString, properties } = require('test/unit/utils')
+const _createEntity = require('lib/entity/create')
 const createEntity = params => _createEntity(params, properties, instance)
 
 describe('entity create', () => {

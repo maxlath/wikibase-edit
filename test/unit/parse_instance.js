@@ -1,6 +1,6 @@
 require('should')
-const { __ } = require('config')
-const parseInstance = __.require('lib/parse_instance')
+
+const parseInstance = require('lib/parse_instance')
 const instance = 'https://hello.bla'
 const apiEndpoint = `${instance}/w/api.php`
 

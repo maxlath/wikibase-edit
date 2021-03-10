@@ -1,7 +1,7 @@
 require('should')
-const { __ } = require('config')
-const removeClaim = __.require('lib/claim/remove')
-const { guid, guid2 } = __.require('test/unit/utils')
+
+const removeClaim = require('lib/claim/remove')
+const { guid, guid2 } = require('test/unit/utils')
 
 describe('claim remove', () => {
   it('should set the action to wbremoveclaims', () => {

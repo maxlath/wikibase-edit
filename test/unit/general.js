@@ -1,6 +1,5 @@
 require('should')
-const { __ } = require('config')
-const wdEdit = __.require('.')
+const wdEdit = require('root')
 
 describe('general', () => {
   it('should return an object', () => {

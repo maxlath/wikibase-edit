@@ -1,6 +1,6 @@
 require('should')
-const { __ } = require('config')
-const mergeEntity = __.require('lib/entity/merge')
+
+const mergeEntity = require('lib/entity/merge')
 
 describe('entity merge', () => {
   describe('items', () => {

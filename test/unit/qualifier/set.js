@@ -1,7 +1,7 @@
 require('should')
-const { __, instance } = require('config')
-const { guid, hash, properties } = __.require('test/unit/utils')
-const _setQualifier = __.require('lib/qualifier/set')
+const { instance } = require('config')
+const { guid, hash, properties } = require('test/unit/utils')
+const _setQualifier = require('lib/qualifier/set')
 const setQualifier = params => _setQualifier(params, properties, instance)
 
 describe('qualifier set', () => {

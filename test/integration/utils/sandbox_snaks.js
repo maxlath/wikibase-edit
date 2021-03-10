@@ -1,6 +1,5 @@
 const config = require('config')
-const { __ } = config
-const wbEdit = __.require('.')(config)
+const wbEdit = require('root')(config)
 const { getSandboxItemId, getSandboxPropertyId, getSandboxClaimId } = require('./sandbox_entities')
 const { randomString } = require('../../unit/utils')
 

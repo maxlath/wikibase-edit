@@ -1,7 +1,7 @@
 require('should')
-const { __ } = require('config')
-const removeQualifier = __.require('lib/qualifier/remove')
-const { guid, hash } = __.require('test/unit/utils')
+
+const removeQualifier = require('lib/qualifier/remove')
+const { guid, hash } = require('test/unit/utils')
 
 describe('qualifier remove', () => {
   it('should set the action to wbremoveclaims', () => {

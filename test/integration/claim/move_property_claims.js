@@ -1,13 +1,12 @@
 const should = require('should')
 const config = require('config')
-const { __ } = config
-const wbEdit = __.require('.')(config)
+const wbEdit = require('root')(config)
 const { move: movePropertyClaims } = wbEdit.claim
-const { shouldNotBeCalled, getLastEditSummary } = __.require('test/integration/utils/utils')
-const { createItem, getSomeEntityId } = __.require('test/integration/utils/sandbox_entities')
-const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
-const { randomString } = __.require('test/unit/utils')
-const getProperty = __.require('test/integration/utils/get_property')
+const { shouldNotBeCalled, getLastEditSummary } = require('test/integration/utils/utils')
+const { createItem, getSomeEntityId } = require('test/integration/utils/sandbox_entities')
+const { addClaim } = require('test/integration/utils/sandbox_snaks')
+const { randomString } = require('test/unit/utils')
+const getProperty = require('test/integration/utils/get_property')
 let somePropertyClaimsId
 
 describe('move property claims', async () => {

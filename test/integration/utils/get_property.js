@@ -1,10 +1,9 @@
 const config = require('config')
-const { __ } = config
 const wbk = require('wikibase-sdk')({ instance: config.instance })
 const sandboxProperties = {}
-const fetch = __.require('lib/request/fetch')
-const wbEdit = __.require('.')(config)
-const { randomString } = __.require('test/unit/utils')
+const fetch = require('lib/request/fetch')
+const wbEdit = require('root')(config)
+const { randomString } = require('test/unit/utils')
 
 module.exports = async ({ datatype, reserved }) => {
   if (!datatype) throw new Error('missing datatype')

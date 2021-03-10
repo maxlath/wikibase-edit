@@ -1,6 +1,6 @@
 require('should')
-const { __ } = require('config')
-const request = __.require('lib/request/request')
+
+const request = require('lib/request/request')
 const nock = require('nock')
 const { shouldNotBeCalled, rethrowShouldNotBeCalledErrors } = require('../integration/utils/utils')
 

@@ -1,17 +1,16 @@
 const should = require('should')
 const config = require('config')
-const { __ } = config
-const wbEdit = __.require('.')(config)
+const wbEdit = require('root')(config)
 const { simplify } = require('wikibase-sdk')
-const { randomString } = __.require('test/unit/utils')
-const { getSandboxItemId, getSandboxPropertyId, createItem } = __.require('test/integration/utils/sandbox_entities')
-const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
+const { randomString } = require('test/unit/utils')
+const { getSandboxItemId, getSandboxPropertyId, createItem } = require('test/integration/utils/sandbox_entities')
+const { addClaim } = require('test/integration/utils/sandbox_snaks')
 const { getEntity } = require('../utils/utils')
-const getProperty = __.require('test/integration/utils/get_property')
+const getProperty = require('test/integration/utils/get_property')
 
 describe('entity edit', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
+  before('wait for instance', require('test/integration/utils/wait_for_instance'))
 
   it('should edit an item', async () => {
     const label = randomString()

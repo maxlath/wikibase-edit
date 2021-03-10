@@ -1,7 +1,7 @@
 require('should')
 const config = require('config')
-const { __, wdCredentials: credentials } = config
-const WBEdit = __.require('.')
+const { wdCredentials: credentials } = config
+const WBEdit = require('root')
 const { getLastRevision } = require('./utils/utils')
 const { randomString } = require('../unit/utils')
 const sandboxEntityId = 'Q4115189'

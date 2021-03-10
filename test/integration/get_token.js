@@ -1,9 +1,9 @@
 const should = require('should')
-const { instance, credentials, credentialsAlt, __ } = require('config')
+const { instance, credentials, credentialsAlt } = require('config')
 const { username, password } = credentialsAlt
-const { undesiredRes, isBotPassword } = __.require('test/integration/utils/utils')
-const GetToken = __.require('lib/request/get_token')
-const validateAndEnrichConfig = __.require('lib/validate_and_enrich_config')
+const { undesiredRes, isBotPassword } = require('test/integration/utils/utils')
+const GetToken = require('lib/request/get_token')
+const validateAndEnrichConfig = require('lib/validate_and_enrich_config')
 
 describe('get token', function () {
   this.timeout(10000)

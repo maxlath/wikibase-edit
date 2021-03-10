@@ -1,7 +1,7 @@
 require('should')
-const { __, instance } = require('config')
-const { randomString, someEntityId: id, properties } = __.require('test/unit/utils')
-const _editEntity = __.require('lib/entity/edit')
+const { instance } = require('config')
+const { randomString, someEntityId: id, properties } = require('test/unit/utils')
+const _editEntity = require('lib/entity/edit')
 const editEntity = params => _editEntity(params, properties, instance)
 
 describe('entity edit', () => {

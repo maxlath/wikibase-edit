@@ -1,7 +1,6 @@
 require('should')
 const config = require('config')
-const { __ } = config
-const wbEdit = __.require('.')(config)
+const wbEdit = require('root')(config)
 const { randomString } = require('../unit/utils')
 const { shouldNotBeCalled } = require('./utils/utils')
 const { getSandboxItem, getRefreshedEntity, getSandboxItemId, getSandboxPropertyId } = require('./utils/sandbox_entities')
@@ -10,7 +9,7 @@ const getProperty = require('./utils/get_property')
 
 describe('baserevid', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
+  before('wait for instance', require('test/integration/utils/wait_for_instance'))
 
   it('should accept a valid baserevid', async () => {
     const { id } = await getSandboxItem()

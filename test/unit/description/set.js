@@ -1,8 +1,8 @@
 require('should')
-const { __ } = require('config')
+
 const language = 'fr'
-const setDescription = __.require('lib/description/set')
-const { randomString, someEntityId } = __.require('test/unit/utils')
+const setDescription = require('lib/description/set')
+const { randomString, someEntityId } = require('test/unit/utils')
 
 describe('description', () => {
   it('should throw if not passed an entity', () => {

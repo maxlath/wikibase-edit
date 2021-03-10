@@ -1,13 +1,12 @@
 require('should')
 const config = require('config')
-const { __ } = config
 const { undesiredRes } = require('./utils/utils')
-const { getSandboxPropertyId } = __.require('test/integration/utils/sandbox_entities')
-const fetchPropertiesDatatypes = __.require('lib/properties/fetch_properties_datatypes')
+const { getSandboxPropertyId } = require('test/integration/utils/sandbox_entities')
+const fetchPropertiesDatatypes = require('lib/properties/fetch_properties_datatypes')
 
 describe('fetch properties datatypes', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
+  before('wait for instance', require('test/integration/utils/wait_for_instance'))
 
   it('should fetch a property datatype', async () => {
     const propertyId = await getSandboxPropertyId('wikibase-item')

@@ -1,18 +1,17 @@
 require('should')
 const config = require('config')
-const { __ } = config
-const wbEdit = __.require('.')(config)
+const wbEdit = require('root')(config)
 const updateClaim = wbEdit.claim.update
 const editEntity = wbEdit.entity.edit
-const { shouldNotBeCalled } = __.require('test/integration/utils/utils')
-const { getSandboxItemId, getSandboxPropertyId } = __.require('test/integration/utils/sandbox_entities')
-const { addClaim } = __.require('test/integration/utils/sandbox_snaks')
-const { randomString, randomNumber } = __.require('test/unit/utils')
+const { shouldNotBeCalled } = require('test/integration/utils/utils')
+const { getSandboxItemId, getSandboxPropertyId } = require('test/integration/utils/sandbox_entities')
+const { addClaim } = require('test/integration/utils/sandbox_snaks')
+const { randomString, randomNumber } = require('test/unit/utils')
 const { simplify } = require('wikibase-sdk')
 
 describe('claim update', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
+  before('wait for instance', require('test/integration/utils/wait_for_instance'))
 
   describe('find a claim from an item id, a property, and an old value', () => {
     it('should update a claim', async () => {

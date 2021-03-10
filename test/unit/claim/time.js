@@ -1,6 +1,6 @@
 require('should')
-const { __ } = require('config')
-const getTimeObject = __.require('lib/claim/get_time_object')
+
+const getTimeObject = require('lib/claim/get_time_object')
 
 describe('claim time', () => {
   it('should parse year without precision', () => {

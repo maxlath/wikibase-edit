@@ -1,7 +1,7 @@
 require('should')
-const { __ } = require('config')
-const removeAlias = __.require('lib/alias/remove')
-const { randomString, someEntityId } = __.require('test/unit/utils')
+
+const removeAlias = require('lib/alias/remove')
+const { randomString, someEntityId } = require('test/unit/utils')
 const language = 'it'
 
 describe('alias remove', () => {

@@ -1,14 +1,13 @@
 require('should')
 const config = require('config')
-const { __ } = config
-const wbEdit = __.require('.')(config)
+const wbEdit = require('root')(config)
 const removeQualifier = wbEdit.qualifier.remove
-const { randomString } = __.require('test/unit/utils')
-const { addQualifier } = __.require('test/integration/utils/sandbox_snaks')
+const { randomString } = require('test/unit/utils')
+const { addQualifier } = require('test/integration/utils/sandbox_snaks')
 
 describe('qualifier remove', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
+  before('wait for instance', require('test/integration/utils/wait_for_instance'))
 
   it('should remove a qualifier', async () => {
     const { guid, qualifier } = await addQualifier({ datatype: 'string', value: randomString() })

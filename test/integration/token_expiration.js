@@ -1,16 +1,16 @@
 require('should')
 const config = require('config')
-const { __, instance, credentials, credentialsAlt } = config
-const WBEdit = __.require('.')
-const { randomString } = __.require('test/unit/utils')
-const { getSandboxItemId } = __.require('test/integration/utils/sandbox_entities')
+const { instance, credentials, credentialsAlt } = config
+const WBEdit = require('root')
+const { randomString } = require('test/unit/utils')
+const { getSandboxItemId } = require('test/integration/utils/sandbox_entities')
 const language = 'fr'
-const { wait } = __.require('test/integration/utils/utils')
+const { wait } = require('test/integration/utils/utils')
 
 describe('token expiration', function () {
   this.timeout(24 * 60 * 60 * 1000)
 
-  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
+  before('wait for instance', require('test/integration/utils/wait_for_instance'))
 
   xit('should renew tokens (oauth)', async () => {
     const wbEdit = WBEdit({ instance, credentials })

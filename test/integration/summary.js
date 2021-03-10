@@ -1,7 +1,7 @@
 require('should')
 const config = require('config')
-const { instance, credentials, __ } = config
-const WBEdit = __.require('.')
+const { instance, credentials } = config
+const WBEdit = require('root')
 const { randomString } = require('../unit/utils')
 const { getLastEditSummary } = require('./utils/utils')
 const { getSandboxItemId, getSandboxPropertyId, createItem } = require('./utils/sandbox_entities')
@@ -11,7 +11,7 @@ const params = summary => ({ summary, labels: { en: randomString() } })
 
 describe('summary', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
+  before('wait for instance', require('test/integration/utils/wait_for_instance'))
 
   it('should not add a default summary', async () => {
     const wbEdit = WBEdit({ instance, credentials })

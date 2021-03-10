@@ -1,7 +1,7 @@
 require('should')
-const { __ } = require('config')
-const setAlias = __.require('lib/alias/set')
-const { randomString, someEntityId } = __.require('test/unit/utils')
+
+const setAlias = require('lib/alias/set')
+const { randomString, someEntityId } = require('test/unit/utils')
 const language = 'it'
 
 describe('alias set', () => {

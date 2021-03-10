@@ -1,12 +1,11 @@
 require('should')
 const config = require('config')
-const { __ } = config
-const wbEdit = __.require('.')(config)
-const { randomString } = __.require('test/unit/utils')
+const wbEdit = require('root')(config)
+const { randomString } = require('test/unit/utils')
 
 describe('entity merge', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
+  before('wait for instance', require('test/integration/utils/wait_for_instance'))
 
   // Do not run this test on the local instance as it currently fails
   // https://phabricator.wikimedia.org/T232925

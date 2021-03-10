@@ -1,7 +1,7 @@
 require('should')
-const { __ } = require('config')
-const removeReference = __.require('lib/reference/remove')
-const { guid, hash } = __.require('test/unit/utils')
+
+const removeReference = require('lib/reference/remove')
+const { guid, hash } = require('test/unit/utils')
 
 describe('reference remove', () => {
   it('should set the action to wbremovereferences', () => {

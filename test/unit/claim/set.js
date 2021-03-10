@@ -1,11 +1,11 @@
 require('should')
-const { __ } = require('config')
-const setClaim = __.require('lib/claim/set')
+
+const setClaim = require('lib/claim/set')
 const {
   guid,
   sandboxStringProp: property,
   properties
-} = __.require('test/unit/utils')
+} = require('test/unit/utils')
 
 describe('claim set', () => {
   it('should set the action to wbsetclaim', () => {

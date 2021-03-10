@@ -1,9 +1,9 @@
 const should = require('should')
-const { instance, credentials, credentialsAlt, __ } = require('config')
+const { instance, credentials, credentialsAlt } = require('config')
 const { username, password } = credentialsAlt
-const GetAuthData = __.require('lib/request/get_auth_data')
-const validateAndEnrichConfig = __.require('lib/validate_and_enrich_config')
-const { isBotPassword } = __.require('test/integration/utils/utils')
+const GetAuthData = require('lib/request/get_auth_data')
+const validateAndEnrichConfig = require('lib/validate_and_enrich_config')
+const { isBotPassword } = require('test/integration/utils/utils')
 
 describe('get auth data', function () {
   this.timeout(10000)

@@ -1,13 +1,13 @@
 require('should')
-const { __, instance } = require('config')
-const { randomString } = __.require('test/unit/utils')
-const WBEdit = __.require('.')
+const { instance } = require('config')
+const { randomString } = require('test/unit/utils')
+const WBEdit = require('root')
 
-const { getSandboxItemId } = __.require('test/integration/utils/sandbox_entities')
+const { getSandboxItemId } = require('test/integration/utils/sandbox_entities')
 
 describe('anonymous edit', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', __.require('test/integration/utils/wait_for_instance'))
+  before('wait for instance', require('test/integration/utils/wait_for_instance'))
 
   it('should make an anonymous edit when general config has anonymous=true', async () => {
     const wbEdit = WBEdit({ instance, anonymous: true })

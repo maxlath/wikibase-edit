@@ -1,8 +1,8 @@
 const { yellow } = require('chalk')
-const { instance, __ } = require('config')
+const { instance } = require('config')
 const WBK = require('wikibase-sdk')
 const wbk = WBK({ instance })
-const fetch = __.require('lib/request/fetch')
+const fetch = require('lib/request/fetch')
 const resolveTitle = require('../../../lib/resolve_title')
 
 const getLastRevision = async (id, customInstance) => {
