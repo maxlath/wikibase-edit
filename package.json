@@ -7,10 +7,10 @@
     "lib"
   ],
   "scripts": {
-    "lint": "eslint -c .eslintrc lib test",
+    "lint": "eslint -c .eslintrc lib tests",
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "mocha $MOCHA_OPTIONS test/unit/*.js test/unit/*/*.js",
-    "test:integration": "mocha $MOCHA_OPTIONS test/integration/*.js test/integration/*/*.js",
+    "test:unit": "mocha $MOCHA_OPTIONS tests/unit/*.js tests/unit/*/*.js",
+    "test:integration": "mocha $MOCHA_OPTIONS tests/integration/*.js tests/integration/*/*.js",
     "prepublishOnly": "npm run lint && npm test",
     "postpublish": "git push --tags",
     "update-toc": "./scripts/update_toc"
@@ -60,6 +60,6 @@
   "_moduleAliases": {
     "lib": "lib",
     "root": ".",
-    "test": "test"
+    "tests": "tests"
   }
 }
