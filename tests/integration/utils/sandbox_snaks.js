@@ -2,7 +2,7 @@ require('module-alias/register')
 const config = require('config')
 const wbEdit = require('root')(config)
 const { getSandboxItemId, getSandboxPropertyId, getSandboxClaimId } = require('./sandbox_entities')
-const { randomString } = require('../../unit/utils')
+const { randomString } = require('tests/unit/utils')
 
 const addClaim = async (params = {}) => {
   let { id, property, datatype = 'string', value = randomString() } = params

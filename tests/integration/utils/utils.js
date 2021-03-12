@@ -4,7 +4,7 @@ const { instance } = require('config')
 const WBK = require('wikibase-sdk')
 const wbk = WBK({ instance })
 const fetch = require('lib/request/fetch')
-const resolveTitle = require('../../../lib/resolve_title')
+const resolveTitle = require('lib/resolve_title')
 
 const getLastRevision = async (id, customInstance) => {
   customInstance = customInstance || instance
