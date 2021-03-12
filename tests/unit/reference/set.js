@@ -1,6 +1,5 @@
 require('module-alias/register')
 require('should')
-
 const setReference = require('lib/reference/set')
 const { guid, properties, hash } = require('tests/unit/utils')
 

@@ -1,6 +1,5 @@
 require('module-alias/register')
 require('should')
-
 const getTimeObject = require('lib/claim/get_time_object')
 
 describe('claim time', () => {

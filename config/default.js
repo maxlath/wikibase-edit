@@ -1,5 +1,6 @@
 // Log full objects
 require('util').inspect.defaultOptions.depth = null
+require('module-alias/register')
 
 module.exports = {
   // initConfig

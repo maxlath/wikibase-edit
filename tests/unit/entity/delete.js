@@ -1,6 +1,5 @@
 require('module-alias/register')
 require('should')
-
 const { someEntityId: id } = require('tests/unit/utils')
 const deleteEntity = require('lib/entity/delete')
 

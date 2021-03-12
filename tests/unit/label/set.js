@@ -1,6 +1,5 @@
 require('module-alias/register')
 require('should')
-
 const language = 'fr'
 const setLabel = require('lib/label/set')
 const { randomString, someEntityId } = require('tests/unit/utils')

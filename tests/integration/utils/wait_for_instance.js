@@ -1,4 +1,3 @@
-require('module-alias/register')
 const { instance } = require('config')
 const fetch = require('lib/request/fetch')
 const { yellow, grey } = require('chalk')

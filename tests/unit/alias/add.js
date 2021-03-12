@@ -1,6 +1,5 @@
 require('module-alias/register')
 require('should')
-
 const addAlias = require('lib/alias/add')
 const { randomString, someEntityId } = require('tests/unit/utils')
 const language = 'it'

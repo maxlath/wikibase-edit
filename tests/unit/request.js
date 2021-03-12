@@ -1,6 +1,5 @@
 require('module-alias/register')
 require('should')
-
 const request = require('lib/request/request')
 const nock = require('nock')
 const { shouldNotBeCalled, rethrowShouldNotBeCalledErrors } = require('../integration/utils/utils')

@@ -1,6 +1,5 @@
 require('module-alias/register')
 require('should')
-
 const setClaim = require('lib/claim/set')
 const {
   guid,

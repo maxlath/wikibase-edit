@@ -1,4 +1,3 @@
-require('module-alias/register')
 require('should')
 const { instance } = require('config')
 const { guid, hash, properties } = require('tests/unit/utils')

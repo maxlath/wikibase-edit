@@ -1,3 +1,4 @@
+require('module-alias/register')
 const helpers = {
   randomString: () => Math.random().toString(36).slice(2, 10),
   randomNumber: (length = 5) => Math.trunc(Math.random() * Math.pow(10, length))

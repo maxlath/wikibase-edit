@@ -1,6 +1,5 @@
 require('module-alias/register')
 require('should')
-
 const removeQualifier = require('lib/qualifier/remove')
 const { guid, hash } = require('tests/unit/utils')
 

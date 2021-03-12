@@ -1,6 +1,5 @@
 require('module-alias/register')
 require('should')
-
 const removeAlias = require('lib/alias/remove')
 const { randomString, someEntityId } = require('tests/unit/utils')
 const language = 'it'

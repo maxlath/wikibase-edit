@@ -1,6 +1,5 @@
 require('module-alias/register')
 require('should')
-
 const removeReference = require('lib/reference/remove')
 const { guid, hash } = require('tests/unit/utils')
 

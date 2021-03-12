@@ -1,4 +1,3 @@
-require('module-alias/register')
 require('should')
 const { instance, credentials } = require('config')
 const WBEdit = require('root')

@@ -1,4 +1,3 @@
-require('module-alias/register')
 const should = require('should')
 const config = require('config')
 const wbEdit = require('root')(config)

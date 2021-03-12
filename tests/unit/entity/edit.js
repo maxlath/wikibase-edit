@@ -1,4 +1,3 @@
-require('module-alias/register')
 require('should')
 const { instance } = require('config')
 const { randomString, someEntityId: id, properties } = require('tests/unit/utils')

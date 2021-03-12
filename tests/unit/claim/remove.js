@@ -1,6 +1,5 @@
 require('module-alias/register')
 require('should')
-
 const removeClaim = require('lib/claim/remove')
 const { guid, guid2 } = require('tests/unit/utils')
 
