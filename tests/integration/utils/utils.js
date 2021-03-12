@@ -5,13 +5,18 @@ const wbk = WBK({ instance })
 const fetch = require('lib/request/fetch')
 const resolveTitle = require('lib/resolve_title')
 
-const getLastRevision = async (id, customInstance) => {
+const getRevisions = async ({ id, customInstance, limit, props }) => {
   customInstance = customInstance || instance
   const title = await resolveTitle(id, customInstance)
   const customWbk = WBK({ instance: customInstance })
-  const url = customWbk.getRevisions(title, { limit: 1, prop: [ 'comment', 'tags' ] })
+  const url = customWbk.getRevisions(title, { limit, props })
   const { query } = await fetch(url).then(res => res.json())
-  return Object.values(query.pages)[0].revisions[0]
+  return Object.values(query.pages)[0].revisions
+}
+
+const getLastRevision = async (id, customInstance) => {
+  const revisions = await getRevisions({ id, customInstance, limit: 1, props: [ 'comment', 'tags' ] })
+  return revisions[0]
 }
 
 module.exports = {
@@ -21,6 +26,11 @@ module.exports = {
     const url = wbk.getEntities({ ids: id })
     const { entities } = await fetch(url).then(res => res.json())
     return entities[id]
+  },
+
+  getEntityHistory: async (id, customInstance) => {
+    const revisions = await getRevisions({ id, customInstance })
+    return revisions.sort(chronologically)
   },
 
   getLastRevision,
@@ -53,3 +63,5 @@ module.exports = {
   // See /wiki/Special:BotPasswords
   isBotPassword: password => password.match(/^\w+@[a-z0-9]{32}$/)
 }
+
+const chronologically = (a, b) => a.revid - b.revid

@@ -7,16 +7,20 @@ module.exports = {
   instance: 'http://localhost:8181',
   credentials: {
     oauth: {
-      consumer_key: 'your-consumer-token',
-      consumer_secret: 'your-secret-token',
-      token: 'a-user-token',
-      token_secret: 'a-secret-token'
+      consumer_key: 'some-consumer-token',
+      consumer_secret: 'some-secret-token',
+      token: 'some-user-token',
+      token_secret: 'some-secret-token'
     }
   },
   // Used for testing that both means of login work
   // but can be inverted or disabled if you can't get owner-only oauth tokens
   credentialsAlt: {
-    username: 'your-wikidata-username',
-    password: 'your-wikidata-password'
+    username: 'some-username',
+    password: 'some-password'
+  },
+  secondUserCredentials: {
+    username: 'another-username',
+    password: 'another-password'
   }
 }
