@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+echo "build browser tests assets"
+
+browserify node_modules/wikibase-sdk -o tests/browser/wikibase-sdk.js -s WBK
+browserify lib/index.js -o tests/browser/wikibase-edit.js -s WBEdit
+
+printf "window.config = " > tests/browser/config.js
+node -p "JSON.stringify(require('config'), null, 2)" >> tests/browser/config.js
+
+echo "done building browser tests assets"

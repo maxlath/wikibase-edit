@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Wikibase-Edit Browser Tests</title>
+  <link rel="stylesheet" href="/node_modules/mocha/mocha.css">
+  <script src="wikibase-sdk.js"></script>
+  <script src="wikibase-edit.js"></script>
+  <script src="config.js"></script>
+  <style>
+    h1{
+      padding: 0 0.8em;
+    }
+    #warning{
+      margin: 1em;
+      padding: 0.5em;
+      background-color: orange;
+      max-width: 50em;
+      line-height: 1.8em;
+      border-radius: 3px;
+    }
+    pre{
+      display: inline;
+      background-color: #eee;
+      padding: 0.2em;
+      border-radius: 3px;
+    }
+    #mocha{
+      position: relative;
+    }
+    #mocha-stats{
+      position: absolute;
+      top: -50px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Wikibase-Edit Browser Tests</h1>
+  <div id="warning">/!\ There is no watcher to re-update the assets: you need to run <pre>npm run test:browser:build</pre> to update <pre>wikibase-edit</pre> or the <pre>config</pre> used in tests</div>
+  <div id="mocha"></div>
+  <script src="/node_modules/mocha/mocha.js"></script>
+  <script src="/node_modules/should/should.js"></script>
+  <script>
+    mocha.setup({
+      ui: 'bdd',
+      timeout: 20000,
+      slow: 10000,
+    })
+  </script>
+  <script src="tests.js"></script>
+  <script>mocha.run()</script>
+</body>
+</html>

@@ -10,6 +10,8 @@
     "lint": "eslint -c .eslintrc lib tests",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "mocha $MOCHA_OPTIONS tests/unit/*.js tests/unit/*/*.js",
+    "test:browser:build": "./scripts/build_browser_tests",
+    "test:browser:serve": "live-server --cors .",
     "test:integration": "mocha $MOCHA_OPTIONS tests/integration/*.js tests/integration/*/*.js",
     "prepublishOnly": "npm run lint && npm test",
     "postpublish": "git push --tags",
@@ -40,6 +42,7 @@
     "wikibase-sdk": "^7.8.0"
   },
   "devDependencies": {
+    "browserify": "^17.0.0",
     "config": "^1.31.0",
     "eslint": "^7.10.0",
     "eslint-config-standard": "^14.1.1",
@@ -49,6 +52,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "git-hooks": "^1.1.10",
+    "live-server": "^1.2.1",
     "mocha": "^5.2.0",
     "module-alias": "^2.2.2",
     "nock": "^12.0.3",
