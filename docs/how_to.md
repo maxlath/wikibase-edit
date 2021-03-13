@@ -17,8 +17,8 @@
     - [Multi-user setup](#multi-user-setup)
   - [Bot](#bot)
   - [Maxlag](#maxlag)
+  - [Browser](#browser)
 - [API](#api)
-- [Browser](#browser)
   - [Label](#label)
     - [set label](#set-label)
   - [Description](#description)
@@ -299,16 +299,16 @@ The `bot` flag will mark your edits as made by a [bot account](https://www.wikid
 ### Maxlag
 See [`maxlag` parameter documentation](https://www.mediawiki.org/wiki/Manual:Maxlag_parameter). If the Wikibase server returns a `maxlag` error, the request will automatically be re-executed after the amount of seconds recommended by the Wikibase server via the `Retry-After` header. This automatic retry can be disabled by setting `autoRetry` to `false` in the general config or the request config.
 
-## API
-
-All functions return promises.
-See also [Wikidata API documentation](https://www.wikidata.org/w/api.php).
-
-## Browser
+### Browser
 Using `wikibase-edit` from a script running in the browser is possible in some cases:
 - when requests aren't authentified: the general or request config should contain `anonymous=true` and `origin=*` (See [Unauthenticated CORS Requests](https://www.mediawiki.org/wiki/API:Cross-site_requests#Unauthenticated_CORS_Requests))
 - when requests are authentified, and the MediaWiki server allows the origin of the request: the `origin` config parameter should be set to that origin (See [Authenticated CORS Requests](https://www.mediawiki.org/wiki/API:Cross-site_requests#Authenticated_CORS_Requests). Requires `letAgentHandleLoginCookies=true` in config [to be confirmed].
 - when requests are run from a [WebExtension](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions), CORS and the request origin seems to not apply [to be confirmed], but the browser doesn't like that `wikibase-edit` tries to handle cookies itself, thus the need to set `letAgentHandleLoginCookies=true` in config in this case too.
+
+## API
+
+All functions return promises.
+See also [Wikidata API documentation](https://www.wikidata.org/w/api.php).
 
 ### Label
 #### set label
