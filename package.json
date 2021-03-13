@@ -8,13 +8,13 @@
   ],
   "scripts": {
     "lint": "eslint -c .eslintrc lib tests",
+    "prepublishOnly": "npm run lint && npm test",
+    "postpublish": "git push --tags",
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "mocha $MOCHA_OPTIONS tests/unit/*.js tests/unit/*/*.js",
     "test:browser:build": "./scripts/build_browser_tests",
     "test:browser:serve": "live-server --cors .",
     "test:integration": "mocha $MOCHA_OPTIONS tests/integration/*.js tests/integration/*/*.js",
-    "prepublishOnly": "npm run lint && npm test",
-    "postpublish": "git push --tags",
+    "test:unit": "mocha $MOCHA_OPTIONS tests/unit/*.js tests/unit/*/*.js",
     "update-toc": "./scripts/update_toc"
   },
   "repository": {
