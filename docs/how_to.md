@@ -18,6 +18,7 @@
   - [Bot](#bot)
   - [Maxlag](#maxlag)
 - [API](#api)
+- [Browser](#browser)
   - [Label](#label)
     - [set label](#set-label)
   - [Description](#description)
@@ -302,6 +303,20 @@ See [`maxlag` parameter documentation](https://www.mediawiki.org/wiki/Manual:Max
 
 All functions return promises.
 See also [Wikidata API documentation](https://www.wikidata.org/w/api.php).
+
+## Browser
+Additional config parameters can be required to use wikibase-edit with a browser or some other non-NodeJs environement.
+
+```js
+const generalConfig = {
+  // Cookies might be a forbidden header name in your target agent
+  // See https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name
+  letAgentHandleLoginCookies: true,
+  // Setting that might be required to make CORS requests
+  // See https://www.mediawiki.org/wiki/Manual:CORS
+  origin: '*',
+}
+```
 
 ### Label
 #### set label
