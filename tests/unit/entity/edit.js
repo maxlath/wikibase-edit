@@ -177,7 +177,7 @@ describe('entity edit', () => {
               snaktype: 'value',
               datavalue: {
                 type: 'quantity',
-                value: { amount: '+9001', unit: `${instance}/entity/Q7727` }
+                value: { amount: '+9001', unit: `${instance.replace('https:', 'http:')}/entity/Q7727` }
               }
             }
           ],
@@ -213,7 +213,7 @@ describe('entity edit', () => {
         type: 'quantity',
         value: {
           amount: '+100',
-          unit: `${instance}/entity/Q6982035`
+          unit: `${instance.replace('https:', 'http:')}/entity/Q6982035`
         }
       }
     })

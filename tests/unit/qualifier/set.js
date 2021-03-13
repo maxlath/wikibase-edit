@@ -80,7 +80,7 @@ describe('qualifier set', () => {
       claim: guid,
       property: 'P8',
       snaktype: 'value',
-      value: `{"amount":"+123","unit":"${instance}/entity/Q4916"}`
+      value: `{"amount":"+123","unit":"${instance.replace('https:', 'http:')}/entity/Q4916"}`
     })
   })
 
