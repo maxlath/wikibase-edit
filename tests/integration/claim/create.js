@@ -194,14 +194,16 @@ describe('claim create', function () {
     res.claim.mainsnak.datavalue.value.unit.should.equal('1')
   })
 
-  it('should create a quantity claim with a custom unit', async () => {
+  it('should create a quantity claim with a custom unit and bounds', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
       getSandboxPropertyId('quantity')
     ])
-    const value = { amount: 9002, unit: 'Q7727' }
+    const value = { amount: 9002, unit: 'Q7727', lowerBound: 9001, upperBound: 9013 }
     const res = await wbEdit.claim.create({ id, property, value })
     res.claim.mainsnak.datavalue.value.amount.should.equal('+9002')
+    res.claim.mainsnak.datavalue.value.lowerBound.should.equal('+9001')
+    res.claim.mainsnak.datavalue.value.upperBound.should.equal('+9013')
     res.claim.mainsnak.datavalue.value.unit.should.endWith('Q7727')
   })
 

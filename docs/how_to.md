@@ -428,7 +428,7 @@ wbEdit.claim.create({
 wbEdit.claim.create({
   id: 'Q4115189',
   property: 'P2097',
-  value: { amount: 9000, unit: 'Q7727' }
+  value: { amount: 9000, unit: 'Q7727', lowerBound: 9000, upperBound: 9315 }
 })
 ```
 
@@ -898,7 +898,7 @@ wbEdit.entity.edit({
     P1775: [ 'Q3576110', 'Q12206942' ],
     // Or a single value
     P2002: 'bulgroz',
-    // Or a rich value object
+    // Or a rich value object, like a monolingual text
     P2093: { text: 'Author Authorson', language: 'en' },
     // Or even an array of mixed simple values and rich object values
     P1106: [ 42, { amount: 9001, unit: 'Q7727' } ],
@@ -914,7 +914,7 @@ wbEdit.entity.edit({
         qualifiers: {
           P580: '1789-08-04'
           P1416: [ 'Q13406268', 'Q32844021' ],
-          P1106: { amount: 9001, unit: 'Q7727' }
+          P1106: { amount: 9001, unit: 'Q7727', lowerBound: 9000, upperBound: 9315 }
         }
       },
       // References can be passed as a single record group
