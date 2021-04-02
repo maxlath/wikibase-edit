@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 4.12.0 - 2021-04-03
+* Quantity snaks: add support for `lowerBound` and `upperBound`
+
 ## 4.11.0 - 2020-12-14
 * Allow to pass a `baserevid`
 
