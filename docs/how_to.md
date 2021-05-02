@@ -298,6 +298,8 @@ The `bot` flag will mark your edits as made by a [bot account](https://www.wikid
 ### Maxlag
 See [`maxlag` parameter documentation](https://www.mediawiki.org/wiki/Manual:Maxlag_parameter). If the Wikibase server returns a `maxlag` error, the request will automatically be re-executed after the amount of seconds recommended by the Wikibase server via the `Retry-After` header. This automatic retry can be disabled by setting `autoRetry` to `false` in the general config or the request config.
 
+As specified in the MediaWiki documentation *Interactive tasks (where a user is waiting for the result) may omit the maxlag parameter*. To do so, set `maxlag = null` in the config object.
+
 ## API
 
 All functions return promises.
