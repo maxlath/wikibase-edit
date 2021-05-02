@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 4.13.0 - 2021-04-03
+* [`maxlag` parameter](https://github.com/maxlath/wikibase-edit/blob/master/docs/how_to.md#maxlag): allow to disable for interactive tasks.
+
 ## 4.12.0 - 2021-04-03
 * Quantity snaks: add support for `lowerBound` and `upperBound`
 
