@@ -190,7 +190,7 @@ wbEdit.label.set({ id, language, value }, requestConfig)
 ```
 
 Rules:
-* All parameters can either be set in `generalConfig` or `requestConfig`, except `userAgent` which can only be set in `generalConfig`
+* All parameters can either be set in `generalConfig` or `requestConfig`
 
 ### Credentials
 #### Single-user setup
