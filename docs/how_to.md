@@ -83,6 +83,9 @@ const generalConfig = {
   // A Wikibase instance is required
   instance: 'https://www.wikidata.org',
 
+  // The instance script path, used to find the API endpoint is usually `/w`, as with https://www.wikidata.org/w/api.php for instance
+  wgScriptPath: '/w',
+
   // One authorization mean is required (unless in anonymous mode, see below)
   credentials: {
     // either a username and password

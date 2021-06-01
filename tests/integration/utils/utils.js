@@ -7,7 +7,7 @@ const resolveTitle = require('lib/resolve_title')
 
 const getRevisions = async ({ id, customInstance, limit, props }) => {
   customInstance = customInstance || instance
-  const title = await resolveTitle(id, customInstance)
+  const title = await resolveTitle(id, `${customInstance}/w/api.php`)
   const customWbk = WBK({ instance: customInstance })
   const url = customWbk.getRevisions(title, { limit, props })
   const { query } = await fetch(url).then(res => res.json())
