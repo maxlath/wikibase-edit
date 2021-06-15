@@ -6,6 +6,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Install tests dependencies](#install-tests-dependencies)
 - [Unit tests](#unit-tests)
   - [Run a single unit test file](#run-a-single-unit-test-file)
   - [Run all the unit tests](#run-all-the-unit-tests)
@@ -18,8 +19,18 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Install tests dependencies
+```sh
+npm install
+```
+This will install the dependencies we need to run tests, especially:
+* [mocha](https://mochajs.org/): the executable to which we pass test files, and that define the following global functions used in test files: `define`, `it`, `beforeEach`, etc
+* [should.js](https://shouldjs.github.io/): a lib to easily make assertions and throw errors when those assertions aren't true:
+  * `(123).should.be.above(10)` => will not throw
+  * `(123).should.be.below(10)` => will throw
+
 ## Unit tests
-[Unit tests](https://en.wikipedia.org/wiki/Unit_testing) are used to test a single function at once and can be run without much setup: you just need to have run `npm install` to have all the dependencies you need to run the tests.
+[Unit tests](https://en.wikipedia.org/wiki/Unit_testing) are used to test a single function at once, and can be run without any other setup.
 
 ### Run a single unit test file
 ```sh
