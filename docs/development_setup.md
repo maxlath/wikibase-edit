@@ -1,5 +1,7 @@
 # Development setup
 
+Development setup is mostly about getting confortable with [automated tests](https://en.wikipedia.org/wiki/Test_automation): it's nice to add new features, it's better to know that those features won't be broken or removed by mistake. This can be done by adding automated tests: those tests will be run before publishing any new version to guarantee that the new version doesn't introduce any regression.
+
 ## Summary
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -38,6 +40,8 @@ This will install the dependencies we need to run tests, especially:
 ```sh
 ./node_modules/.bin/mocha ./tests/unit/parse_instance.js
 ```
+Just try to run it, you can't break anything! And then try to modify the function it tests, `lib/parse_instance.js`, and see how that makes the tests fail.
+
 To run only one test in that file, replace `it(` by `it.only(`
 
 ### Run all the unit tests
