@@ -61,6 +61,7 @@ That's the easiest option.
 
 **Pros**:
   * zero setup
+
 **Cons**:
   * tests are slowed down by network latency
   * doesn't work when you're offline/on a bad connection
