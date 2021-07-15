@@ -26,7 +26,7 @@ Development setup is mostly about getting confortable with [automated tests](htt
 npm install
 ```
 This will install the dependencies we need to run tests, especially:
-* [mocha](https://mochajs.org/): the executable to which we pass test files, and that defines the following global functions used in test files: `define`, `it`, `beforeEach`, etc
+* [mocha](https://mochajs.org/): the executable to which we pass test files, and that defines the following global functions used in test files: `describe`, `it`, `beforeEach`, etc
 * [should.js](https://shouldjs.github.io/): a lib to easily make assertions and throw errors when those assertions aren't true:
 ```js
 (12).should.be.above(10) // will not throw
@@ -50,7 +50,7 @@ npm run test:unit
 ```
 
 ## Integration tests
-[Integration tests](https://en.wikipedia.org/wiki/Integration_testing) are used to check that the function produce the desired behaviour on a Wikibase instance. We thus need to have a Wikibase instance a hand to run our functions against, thus the more elaborated setup.
+[Integration tests](https://en.wikipedia.org/wiki/Integration_testing) are used to check that the function produce the desired behaviour on a Wikibase instance. We thus need to have a Wikibase instance at hand to run our functions against, thus the more elaborated setup.
 
 ### Setup a test Wikibase instance
 
