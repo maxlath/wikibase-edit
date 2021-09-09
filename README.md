@@ -16,6 +16,8 @@ This project has received a [Wikimedia Project Grant](https://meta.wikimedia.org
 [![Node](https://img.shields.io/badge/node-%3E=%20v7.6.0-brightgreen.svg)](http://nodejs.org)
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
+[Download stats](https://npm-stat.com/charts.html?package=wikibase-edit)
+
 ## Summary
 - [Changelog](CHANGELOG.md)
 - [Install](#install)
