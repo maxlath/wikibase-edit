@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 4.15.0 - 2021-11-05
+* Added support for the `localMedia` datatype (defined by [Extension:Wikibase_Local_Media](https://www.mediawiki.org/wiki/Extension:Wikibase_Local_Media))
+
 ## 4.14.0 - 2021-06-01
 * Added a `wgScriptPath` parameter to the [general config](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#general-config)
 
