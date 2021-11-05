@@ -24,7 +24,6 @@ This project has received a [Wikimedia Project Grant](https://meta.wikimedia.org
 - [How-To](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md)
 - [Development setup](https://github.com/maxlath/wikibase-edit/blob/main/docs/development_setup.md)
 - [Contributing](#contributing)
-- [Donate](#donate)
 - [See Also](#see-also)
 - [You may also like](#you-may-also-like)
 - [License](#license)
@@ -47,10 +46,6 @@ See [Development](docs/development.md) doc
 
 Code contributions and propositions are very welcome, here are some design constraints you should be aware of:
 * `wikibase-edit` focuses on exposing Wikibase write operations. Features about getting and parsing data should rather go to [`wikibase-sdk`](https://github.com/maxlath/wikibase-sdk)
-
-## Donate
-
-We are developing and maintaining tools to work with Wikibase from NodeJS, the browser, or simply the command line, with quality and ease of use at heart. Any donation will be interpreted as a "please keep going, your work is very much needed and awesome. PS: love". [Donate](https://liberapay.com/WikidataJS)
 
 ## See Also
 * [wikibase-sdk](https://github.com/maxlath/wikibase-sdk): a javascript tool suite to query and work with any Wikibase data, heavily used by wikibase-edit and wikibase-cli
