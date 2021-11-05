@@ -219,6 +219,86 @@ describe('entity edit', () => {
     })
   })
 
+  it('should format a rich-value time claim', () => {
+    const { data } = editEntity({
+      id,
+      claims: {
+        P4: [ { time: '1802-02-26', precision: 11 } ]
+      }
+    })
+    JSON.parse(data.data).claims.P4[0].should.deepEqual({
+      rank: 'normal',
+      type: 'statement',
+      mainsnak: {
+        property: 'P4',
+        snaktype: 'value',
+        datavalue: {
+          type: 'time',
+          value: {
+            time: '+1802-02-26T00:00:00Z',
+            timezone: 0,
+            before: 0,
+            after: 0,
+            precision: 11,
+            calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+          }
+        }
+      }
+    })
+  })
+
+  it('should format a rich-value time claim with precision 10 or less', () => {
+    const { data } = editEntity({
+      id,
+      claims: {
+        P4: [
+          { time: '1802-02-00', precision: 10 },
+          { time: '1802-00-00', precision: 9 }
+        ]
+      }
+    })
+    JSON.parse(data.data).claims.P4.should.deepEqual([
+      {
+        rank: 'normal',
+        type: 'statement',
+        mainsnak: {
+          property: 'P4',
+          snaktype: 'value',
+          datavalue: {
+            type: 'time',
+            value: {
+              time: '+1802-02-00T00:00:00Z',
+              timezone: 0,
+              before: 0,
+              after: 0,
+              precision: 10,
+              calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+            }
+          }
+        }
+      },
+      {
+        rank: 'normal',
+        type: 'statement',
+        mainsnak: {
+          property: 'P4',
+          snaktype: 'value',
+          datavalue: {
+            type: 'time',
+            value: {
+              time: '+1802-00-00T00:00:00Z',
+              timezone: 0,
+              before: 0,
+              after: 0,
+              precision: 9,
+              calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+            }
+          }
+        }
+      }
+    ])
+  })
+
   it('should format an entity claim with a qualifier with a special snaktype', () => {
     const qualifiers = {
       P4: { snaktype: 'somevalue' }

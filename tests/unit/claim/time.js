@@ -22,6 +22,17 @@ describe('claim time', () => {
     })
   })
 
+  it('should parse explicitly positive year', () => {
+    getTimeObject('+2018').should.deepEqual({
+      time: '+2018-00-00T00:00:00Z',
+      timezone: 0,
+      before: 0,
+      after: 0,
+      precision: 9,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+    })
+  })
+
   it('should parse month without precision', () => {
     getTimeObject('2018-03').should.deepEqual({
       time: '+2018-03-00T00:00:00Z',
