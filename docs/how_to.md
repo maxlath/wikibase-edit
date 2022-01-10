@@ -936,7 +936,7 @@ wbEdit.entity.edit({
   },
   claims: {
     // Pass values as an array
-    P1775: [ 'Q3576110', 'Q12206942' ],
+    P361: [ 'Q1', 'Q2' ],
     // Or a single value
     P2002: 'bulgroz',
     // Or a rich value object, like a monolingual text
@@ -1125,12 +1125,21 @@ wbEdit.entity.edit({
     mode: 'skip-on-any-value'
   },
   claims: {
-    // If Q4115189 already has a P1775 claim, this won't add anything
-    P1775: [
-      'Q3576110',
+    // If Q4115189 already has a P361 claim, this won't add anything
+    P361: [
+      'Q1',
     ]
   },
 })
+```
+
+If the initial state was
+```js
+{ id: 'Q4115189', claims: { P361: [ 'Q1' ] }
+```
+after this edit it will still be
+```js
+{ id: 'Q4115189', claims: { P361: [ 'Q1' ] }
 ```
 
 #### skip-on-value-match mode
@@ -1144,12 +1153,22 @@ wbEdit.entity.edit({
     mode: 'skip-on-value-match'
   },
   claims: {
-    // Those new values will only be added if there is no P1775 statement with those values
-    P1775: [
-      'Q3576110',
+    // Those new values will only be added if there is no P361 statement with those values
+    P361: [
+      'Q1',
+      'Q2'
     ]
   },
 })
+```
+
+If the initial state was
+```js
+{ id: 'Q4115189', claims: { P361: [ 'Q1' ] }
+```
+after this edit it will still be
+```js
+{ id: 'Q4115189', claims: { P361: [ 'Q1' ] }
 ```
 
 #### merge mode
@@ -1160,7 +1179,7 @@ wbEdit.entity.edit({
 wbEdit.entity.edit({
   id: 'Q4115189',
   claims: {
-    P1775: [ 'Q3576110', 'Q12206942' ]
+    P361: [ 'Q1', 'Q2' ]
   },
   reconciliation: {
     mode: 'merge'
@@ -1169,11 +1188,11 @@ wbEdit.entity.edit({
 ```
 If the initial state was
 ```js
-{ id: 'Q4115189', claims: { P1775: [ 'Q3576110' ] }
+{ id: 'Q4115189', claims: { P361: [ 'Q1' ] }
 ```
 after this edit it will be
 ```js
-{ id: 'Q4115189', claims: { P1775: [ 'Q3576110', 'Q12206942' ] }
+{ id: 'Q4115189', claims: { P361: [ 'Q1', 'Q2' ] }
 ```
 
 ## Tips
