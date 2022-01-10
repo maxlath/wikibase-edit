@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 4.16.0 - 2022-01-10
+* Added [claim reconciliation modes](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#reconciliation)
+
 ## 4.15.0 - 2021-11-05
 * Added support for the `localMedia` datatype (defined by [Extension:Wikibase_Local_Media](https://www.mediawiki.org/wiki/Extension:Wikibase_Local_Media))
 
