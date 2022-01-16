@@ -1071,6 +1071,8 @@ require('wikibase-edit')({ instance, credentials }).getAuthData()
 
 ## Reconciliation
 
+> :warning: *Experimental. You are invited to use with caution: test on a small sample and see if it behaves as expected. Please report any issue, counter-intuitive behavior, or missing capability.*
+
 Several functions accept a `reconciliation` object, allowing to customize how the input is matched to existing claims, and what should be done once a match is established:
 * [`entity.edit`](#edit-entity)
 * [`claim.create`](#create-claim)
@@ -1112,6 +1114,7 @@ Once a claim is determined as matching (be it only from its `mainsnak` value or 
 ```
 
 ### reconciliation modes
+
 Once a claim is determined as matching, several modes can be used to determine what should be done with that matching claim. This also applies to matching references.
 
 #### skip-on-any-value mode
