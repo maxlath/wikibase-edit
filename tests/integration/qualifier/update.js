@@ -3,7 +3,7 @@ const config = require('config')
 const wbEdit = require('root')(config)
 const updateQualifier = wbEdit.qualifier.update
 const { undesiredRes } = require('tests/integration/utils/utils')
-const { getSandboxPropertyId, getSandboxClaimId } = require('tests/integration/utils/sandbox_entities')
+const { getSandboxPropertyId, getSandboxClaimId, getSandboxItemId, createItem } = require('tests/integration/utils/sandbox_entities')
 const { addQualifier } = require('tests/integration/utils/sandbox_snaks')
 const { randomString, randomNumber } = require('tests/unit/utils')
 const { simplify } = require('wikibase-sdk')
@@ -55,6 +55,16 @@ describe('qualifier update', function () {
       })
     })
     .catch(done)
+  })
+
+  it('should update a wikibase-item claim', async () => {
+    const oldValue = await getSandboxItemId()
+    const someItem = await createItem()
+    const newValue = someItem.id
+    const { guid, property } = await addQualifier({ datatype: 'wikibase-item', value: oldValue })
+    const res = await updateQualifier({ guid, property, oldValue, newValue })
+    const qualifier = res.claim.qualifiers[property].slice(-1)[0]
+    qualifier.datavalue.value.id.should.deepEqual(newValue)
   })
 
   it('should update a monolingual text claim', async () => {
