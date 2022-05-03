@@ -38,7 +38,7 @@
     "crypto-js": "^3.1.9-1",
     "lodash.isequal": "^4.5.0",
     "oauth-1.0a": "^2.2.6",
-    "wikibase-sdk": "^7.11.0"
+    "wikibase-sdk": "^8.0.0"
   },
   "devDependencies": {
     "config": "^1.31.0",
@@ -56,7 +56,7 @@
     "should": "^13.2.3"
   },
   "engines": {
-    "node": ">= 7.6"
+    "node": ">= 10.0.0"
   },
   "_moduleAliases": {
     "lib": "lib",
