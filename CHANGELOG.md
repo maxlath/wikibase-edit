@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 5.0.0 - 2022-05-03
+**BREAKING CHANGE**: updated NodeJS minimal version `>= v10.0.0`
+
 ## 4.16.0 - 2022-01-10
 * Added [claim reconciliation modes](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#reconciliation)
 
