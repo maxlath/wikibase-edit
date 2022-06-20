@@ -4,7 +4,7 @@ const wbEdit = require('root')(config)
 const updateClaim = wbEdit.claim.update
 const editEntity = wbEdit.entity.edit
 const { shouldNotBeCalled } = require('tests/integration/utils/utils')
-const { getSandboxItemId, getSandboxPropertyId } = require('tests/integration/utils/sandbox_entities')
+const { getSandboxItemId, getSandboxPropertyId, getReservedItemId } = require('tests/integration/utils/sandbox_entities')
 const { addClaim } = require('tests/integration/utils/sandbox_snaks')
 const { randomString, randomNumber } = require('tests/unit/utils')
 const { simplify } = require('wikibase-sdk')
@@ -14,7 +14,7 @@ describe('claim update', function () {
   before('wait for instance', require('tests/integration/utils/wait_for_instance'))
 
   describe('find a claim from an item id, a property, and an old value', () => {
-    it('should update a claim', async () => {
+    it('should update a string claim', async () => {
       const oldValue = randomString()
       const newValue = randomString()
       const { id, property, guid } = await addClaim({ datatype: 'string', value: oldValue })
@@ -32,6 +32,14 @@ describe('claim update', function () {
       } catch (err) {
         err.message.should.equal('property not found')
       }
+    })
+
+    it('should update a wikibase-item claim', async () => {
+      const [ oldValue, newValue ] = await Promise.all([ getSandboxItemId(), getReservedItemId() ])
+      const { id, guid, property } = await addClaim({ datatype: 'wikibase-item', value: oldValue })
+      const res = await updateClaim({ id, property, oldValue, newValue })
+      res.claim.id.should.equal(guid)
+      simplify.claim(res.claim).should.deepEqual(newValue)
     })
 
     it('should reject if old value is missing', async () => {
@@ -101,6 +109,14 @@ describe('claim update', function () {
       simplifiedClaim.value.should.equal(newValue)
       simplifiedClaim.qualifiers[property][0].should.equal(qualifierValue)
       simplifiedClaim.references[0][property][0].should.equal(referenceValue)
+    })
+
+    it('should update a wikibase-item', async () => {
+      const [ oldValue, newValue ] = await Promise.all([ getSandboxItemId(), getReservedItemId() ])
+      const { guid, property } = await addClaim({ datatype: 'wikibase-item', value: oldValue })
+      const res = await updateClaim({ guid, property, newValue })
+      res.claim.id.should.equal(guid)
+      simplify.claim(res.claim).should.deepEqual(newValue)
     })
 
     it('should update a monolingual text claim', async () => {

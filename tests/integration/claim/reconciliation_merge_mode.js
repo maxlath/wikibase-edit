@@ -3,6 +3,7 @@ const config = require('config')
 const wbEdit = require('root')(config)
 const { getSandboxPropertyId, getReservedItemId } = require('tests/integration/utils/sandbox_entities')
 const { simplify } = require('wikibase-sdk')
+const { randomString } = require('tests/unit/utils')
 
 describe('reconciliation: merge mode', function () {
   this.timeout(20 * 1000)
@@ -40,6 +41,52 @@ describe('reconciliation: merge mode', function () {
     })
     res2.claim.id.should.equal(res.claim.id)
     res2.claim.mainsnak.datavalue.value.should.equal('foo')
+  })
+
+  it('should not re-add an existing wikibase-item statement', async () => {
+    const [ id, value, qualifierValue, property ] = await Promise.all([
+      getReservedItemId(),
+      getReservedItemId(),
+      getReservedItemId(),
+      getSandboxPropertyId('wikibase-item')
+    ])
+    const res = await wbEdit.claim.create({ id, property, value })
+    const res2 = await wbEdit.claim.create({
+      id,
+      property,
+      value,
+      qualifiers: { [property]: qualifierValue },
+      reconciliation: {
+        mode: 'merge',
+      }
+    })
+    res2.claim.id.should.equal(res.claim.id)
+    res2.claim.mainsnak.datavalue.value.id.should.equal(value)
+    res2.claim.qualifiers[property][0].datavalue.value.id.should.equal(qualifierValue)
+  })
+
+  it('should not re-add an existing monolingual text statement', async () => {
+    const [ id, property ] = await Promise.all([
+      getReservedItemId(),
+      getSandboxPropertyId('monolingualtext')
+    ])
+    const value = { text: randomString(), language: 'fr' }
+    const qualifierValue = { text: randomString(), language: 'de' }
+    const res = await wbEdit.claim.create({ id, property, value })
+    const res2 = await wbEdit.claim.create({
+      id,
+      property,
+      value,
+      qualifiers: { [property]: qualifierValue },
+      reconciliation: {
+        mode: 'merge',
+      }
+    })
+    res2.claim.id.should.equal(res.claim.id)
+    res2.claim.mainsnak.datavalue.value.text.should.equal(value.text)
+    res2.claim.mainsnak.datavalue.value.language.should.equal(value.language)
+    res2.claim.qualifiers[property][0].datavalue.value.text.should.equal(qualifierValue.text)
+    res2.claim.qualifiers[property][0].datavalue.value.language.should.equal(qualifierValue.language)
   })
 
   it('should re-add a statement if expected qualifiers do not match', async () => {
