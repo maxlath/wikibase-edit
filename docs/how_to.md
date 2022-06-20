@@ -1176,7 +1176,7 @@ after this edit it will still be
 
 #### merge mode
 * Checks if there is a statement with the specified value
-* If a matching statement is found, no change is performed on that statement, no new statement is added either
+* If a matching statement is found, no change is performed on that statement, missing statements will be added
 
 ```js
 wbEdit.entity.edit({
