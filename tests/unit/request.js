@@ -13,7 +13,7 @@ describe('request', () => {
 
   it('should throw a proper error', async () => {
     try {
-      await request('get', { url: 'https://example.org' }).then(shouldNotBeCalled)
+      await request('get', { url: 'https://example.org', autoRetry: false }).then(shouldNotBeCalled)
     } catch (err) {
       rethrowShouldNotBeCalledErrors(err)
       err.message.should.equal('Could not parse response: <!doctype html>')
