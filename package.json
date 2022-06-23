@@ -1,6 +1,6 @@
 {
   "name": "wikibase-edit",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "Edit Wikibase from NodeJS",
   "main": "lib/index.js",
   "files": [
