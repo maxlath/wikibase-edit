@@ -309,6 +309,24 @@ describe('entity edit', () => {
     ])
   })
 
+  it('should format an entity claim with a special snaktype', async () => {
+    const { data } = await editEntity({
+      id,
+      claims: {
+        P2: [ { value: { snaktype: 'somevalue' } } ],
+        P3: [ { snaktype: 'novalue' } ],
+      }
+    })
+    JSON.parse(data.data).claims.P2[0].mainsnak.should.deepEqual({
+      property: 'P2',
+      snaktype: 'somevalue'
+    })
+    JSON.parse(data.data).claims.P3[0].mainsnak.should.deepEqual({
+      property: 'P3',
+      snaktype: 'novalue'
+    })
+  })
+
   it('should format an entity claim with a qualifier with a special snaktype', async () => {
     const qualifiers = {
       P4: { snaktype: 'somevalue' }
