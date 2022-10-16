@@ -326,6 +326,14 @@ wbEdit.label.set({
   value: 'Bac à sable bulgroz'
 })
 ```
+This can also be used to remove a label
+```js
+wbEdit.label.set({
+  id: 'Q4115189',
+  language: 'fr',
+  value: ''
+})
+```
 
 ### Description
 #### set description
@@ -334,6 +342,14 @@ wbEdit.description.set({
   id: 'Q4115189',
   language: 'fr',
   value: 'description du Bac à sable bulgroz'
+})
+```
+This can also be used to remove a description
+```js
+wbEdit.description.set({
+  id: 'Q4115189',
+  language: 'fr',
+  value: ''
 })
 ```
 
