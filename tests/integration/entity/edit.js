@@ -103,8 +103,8 @@ describe('entity edit', function () {
     simplify.aliases(resB.entity.aliases).en.should.deepEqual([ aliasA, aliasB ])
   })
 
-  // Requires setting an instance with sitelinks (such as test.wikidata.org) in config
-  // thus disabled by default
+  // This test requires setting an instance with sitelinks
+  // (such as test.wikidata.org) in config, and is thus disabled by default
   xit('should add and remove a sitelink', async () => {
     const id = await getSandboxItemId()
     const yearArticleTitle = Math.trunc(Math.random() * 2020).toString()
