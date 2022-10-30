@@ -112,7 +112,7 @@ describe('entity edit', function () {
       id,
       sitelinks: {
         frwiki: yearArticleTitle,
-        dewiki: yearArticleTitle
+        dewiki: { title: yearArticleTitle, badges: [ 'Q608', 'Q609' ] }
       }
     })
     res.entity.sitelinks.frwiki.title.should.equal(yearArticleTitle)
@@ -120,7 +120,7 @@ describe('entity edit', function () {
     const res2 = await wbEdit.entity.edit({
       id,
       sitelinks: {
-        frwiki: { value: yearArticleTitle, remove: true },
+        frwiki: { title: yearArticleTitle, remove: true },
         dewiki: null
       }
     })

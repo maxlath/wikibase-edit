@@ -443,4 +443,76 @@ describe('entity edit', () => {
         .datavalue.value.should.equal('https://example.org')
     })
   })
+
+  describe('sitelinks', () => {
+    it('should format simplified sitelinks', async () => {
+      const { data } = await editEntity({
+        id,
+        sitelinks: {
+          frwiki: 'foo'
+        }
+      })
+      JSON.parse(data.data).sitelinks.should.deepEqual({
+        frwiki: {
+          site: 'frwiki',
+          title: 'foo'
+        }
+      })
+    })
+
+    it('should format rich sitelinks', async () => {
+      const { data } = await editEntity({
+        id,
+        sitelinks: {
+          frwiki: {
+            title: 'foo'
+          }
+        }
+      })
+      JSON.parse(data.data).sitelinks.should.deepEqual({
+        frwiki: {
+          site: 'frwiki',
+          title: 'foo'
+        }
+      })
+    })
+
+    it('should format sitelinks with badges', async () => {
+      const { data } = await editEntity({
+        id,
+        sitelinks: {
+          frwiki: {
+            title: 'foo',
+            badges: [ 'Q608', 'Q609' ],
+          }
+        }
+      })
+      JSON.parse(data.data).sitelinks.should.deepEqual({
+        frwiki: {
+          site: 'frwiki',
+          title: 'foo',
+          badges: [ 'Q608', 'Q609' ],
+        }
+      })
+    })
+
+    it('should format sitelinks with stringified badges', async () => {
+      const { data } = await editEntity({
+        id,
+        sitelinks: {
+          frwiki: {
+            title: 'foo',
+            badges: 'Q608|Q609',
+          }
+        }
+      })
+      JSON.parse(data.data).sitelinks.should.deepEqual({
+        frwiki: {
+          site: 'frwiki',
+          title: 'foo',
+          badges: [ 'Q608', 'Q609' ],
+        }
+      })
+    })
+  })
 })
