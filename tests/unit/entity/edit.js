@@ -30,13 +30,6 @@ describe('entity edit', () => {
     .catch(err => err.message.should.equal('no data was passed'))
   })
 
-  it('should reject invalid claims', async () => {
-    const params = { id, claims: { P2: 'bla' } }
-    await editEntity(params)
-    .then(shouldNotBeCalled)
-    .catch(err => err.message.should.equal('invalid entity value'))
-  })
-
   it('should reject invalid labels', async () => {
     const params = { id, labels: { fr: '' } }
     await editEntity(params)
@@ -103,149 +96,271 @@ describe('entity edit', () => {
     })
   })
 
-  it('should format an entity claim with qualifiers', async () => {
-    const { data } = await editEntity({
-      id,
-      claims: {
-        P2: [
-          { value: 'Q5111731', qualifiers: { P1: '17', P2: [ 'Q13406268' ] } },
-          {
-            value: 'Q2622002',
-            qualifiers: {
-              P4: '1789-08-04',
-              P8: { amount: 9001, unit: 'Q7727' },
-              P9: { text: 'bulgroz', language: 'fr' }
-            }
-          }
-        ]
-      }
+  describe('claims', () => {
+    it('should reject invalid claims', async () => {
+      const params = { id, claims: { P2: 'bla' } }
+      await editEntity(params)
+      .then(shouldNotBeCalled)
+      .catch(err => err.message.should.equal('invalid entity value'))
     })
-    JSON.parse(data.data).claims.P2.should.deepEqual([
-      {
-        rank: 'normal',
-        type: 'statement',
-        mainsnak: {
-          property: 'P2',
-          snaktype: 'value',
-          datavalue: {
-            type: 'wikibase-entityid',
-            value: { 'entity-type': 'item', 'numeric-id': 5111731 }
-          }
-        },
-        qualifiers: {
-          P1: [
-            {
-              property: 'P1',
-              snaktype: 'value',
-              datavalue: { type: 'string', value: '17' }
-            }
-          ],
+
+    it('should format an entity claim with qualifiers', async () => {
+      const { data } = await editEntity({
+        id,
+        claims: {
           P2: [
+            { value: 'Q5111731', qualifiers: { P1: '17', P2: [ 'Q13406268' ] } },
             {
-              property: 'P2',
-              snaktype: 'value',
-              datavalue: {
-                type: 'wikibase-entityid',
-                value: { 'entity-type': 'item', 'numeric-id': 13406268 }
+              value: 'Q2622002',
+              qualifiers: {
+                P4: '1789-08-04',
+                P8: { amount: 9001, unit: 'Q7727' },
+                P9: { text: 'bulgroz', language: 'fr' }
               }
             }
           ]
         }
-      },
-      {
-        rank: 'normal',
-        type: 'statement',
-        mainsnak: {
-          property: 'P2',
-          snaktype: 'value',
-          datavalue: {
-            type: 'wikibase-entityid',
-            value: { 'entity-type': 'item', 'numeric-id': 2622002 }
-          }
-        },
-        qualifiers: {
-          P4: [
-            {
-              property: 'P4',
-              snaktype: 'value',
-              datavalue: {
-                type: 'time',
-                value: {
-                  time: '+1789-08-04T00:00:00Z',
-                  timezone: 0,
-                  before: 0,
-                  after: 0,
-                  precision: 11,
-                  calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      })
+      JSON.parse(data.data).claims.P2.should.deepEqual([
+        {
+          rank: 'normal',
+          type: 'statement',
+          mainsnak: {
+            property: 'P2',
+            snaktype: 'value',
+            datavalue: {
+              type: 'wikibase-entityid',
+              value: { 'entity-type': 'item', 'numeric-id': 5111731 }
+            }
+          },
+          qualifiers: {
+            P1: [
+              {
+                property: 'P1',
+                snaktype: 'value',
+                datavalue: { type: 'string', value: '17' }
+              }
+            ],
+            P2: [
+              {
+                property: 'P2',
+                snaktype: 'value',
+                datavalue: {
+                  type: 'wikibase-entityid',
+                  value: { 'entity-type': 'item', 'numeric-id': 13406268 }
                 }
               }
+            ]
+          }
+        },
+        {
+          rank: 'normal',
+          type: 'statement',
+          mainsnak: {
+            property: 'P2',
+            snaktype: 'value',
+            datavalue: {
+              type: 'wikibase-entityid',
+              value: { 'entity-type': 'item', 'numeric-id': 2622002 }
             }
-          ],
-          P8: [
-            {
-              property: 'P8',
-              snaktype: 'value',
-              datavalue: {
-                type: 'quantity',
-                value: { amount: '+9001', unit: `${instance.replace('https:', 'http:')}/entity/Q7727` }
+          },
+          qualifiers: {
+            P4: [
+              {
+                property: 'P4',
+                snaktype: 'value',
+                datavalue: {
+                  type: 'time',
+                  value: {
+                    time: '+1789-08-04T00:00:00Z',
+                    timezone: 0,
+                    before: 0,
+                    after: 0,
+                    precision: 11,
+                    calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+                  }
+                }
               }
-            }
-          ],
-          P9: [
-            {
-              property: 'P9',
-              snaktype: 'value',
-              datavalue: {
-                type: 'monolingualtext',
-                value: { text: 'bulgroz', language: 'fr' }
+            ],
+            P8: [
+              {
+                property: 'P8',
+                snaktype: 'value',
+                datavalue: {
+                  type: 'quantity',
+                  value: { amount: '+9001', unit: `${instance.replace('https:', 'http:')}/entity/Q7727` }
+                }
               }
+            ],
+            P9: [
+              {
+                property: 'P9',
+                snaktype: 'value',
+                datavalue: {
+                  type: 'monolingualtext',
+                  value: { text: 'bulgroz', language: 'fr' }
+                }
+              }
+            ]
+          }
+        }
+      ])
+    })
+
+    it('should format an entity claim with rich qualifier', async () => {
+      const qualifiers = {
+        P8: [ { value: { amount: 100, unit: 'Q6982035' } } ]
+      }
+      const { data } = await editEntity({
+        id,
+        claims: {
+          P2: [ { value: 'Q54173', qualifiers } ]
+        }
+      })
+      JSON.parse(data.data).claims.P2[0].qualifiers.P8[0].should.deepEqual({
+        property: 'P8',
+        snaktype: 'value',
+        datavalue: {
+          type: 'quantity',
+          value: {
+            amount: '+100',
+            unit: `${instance.replace('https:', 'http:')}/entity/Q6982035`
+          }
+        }
+      })
+    })
+
+    it('should format a rich-value time claim', async () => {
+      const { data } = await editEntity({
+        id,
+        claims: {
+          P4: [ { time: '1802-02-26', precision: 11 } ]
+        }
+      })
+      JSON.parse(data.data).claims.P4[0].should.deepEqual({
+        rank: 'normal',
+        type: 'statement',
+        mainsnak: {
+          property: 'P4',
+          snaktype: 'value',
+          datavalue: {
+            type: 'time',
+            value: {
+              time: '+1802-02-26T00:00:00Z',
+              timezone: 0,
+              before: 0,
+              after: 0,
+              precision: 11,
+              calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
             }
+          }
+        }
+      })
+    })
+
+    it('should format a rich-value time claim with precision 10 or less', async () => {
+      const { data } = await editEntity({
+        id,
+        claims: {
+          P4: [
+            { time: '1802-02-00', precision: 10 },
+            { time: '1802-00-00', precision: 9 }
           ]
         }
-      }
-    ])
-  })
-
-  it('should format an entity claim with rich qualifier', async () => {
-    const qualifiers = {
-      P8: [ { value: { amount: 100, unit: 'Q6982035' } } ]
-    }
-    const { data } = await editEntity({
-      id,
-      claims: {
-        P2: [ { value: 'Q54173', qualifiers } ]
-      }
-    })
-    JSON.parse(data.data).claims.P2[0].qualifiers.P8[0].should.deepEqual({
-      property: 'P8',
-      snaktype: 'value',
-      datavalue: {
-        type: 'quantity',
-        value: {
-          amount: '+100',
-          unit: `${instance.replace('https:', 'http:')}/entity/Q6982035`
+      })
+      JSON.parse(data.data).claims.P4.should.deepEqual([
+        {
+          rank: 'normal',
+          type: 'statement',
+          mainsnak: {
+            property: 'P4',
+            snaktype: 'value',
+            datavalue: {
+              type: 'time',
+              value: {
+                time: '+1802-02-00T00:00:00Z',
+                timezone: 0,
+                before: 0,
+                after: 0,
+                precision: 10,
+                calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+              }
+            }
+          }
+        },
+        {
+          rank: 'normal',
+          type: 'statement',
+          mainsnak: {
+            property: 'P4',
+            snaktype: 'value',
+            datavalue: {
+              type: 'time',
+              value: {
+                time: '+1802-00-00T00:00:00Z',
+                timezone: 0,
+                before: 0,
+                after: 0,
+                precision: 9,
+                calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+              }
+            }
+          }
         }
-      }
+      ])
     })
-  })
 
-  it('should format a rich-value time claim', async () => {
-    const { data } = await editEntity({
-      id,
-      claims: {
-        P4: [ { time: '1802-02-26', precision: 11 } ]
-      }
+    it('should format an entity claim with a special snaktype', async () => {
+      const { data } = await editEntity({
+        id,
+        claims: {
+          P2: [ { value: { snaktype: 'somevalue' } } ],
+          P3: [ { snaktype: 'novalue' } ],
+        }
+      })
+      JSON.parse(data.data).claims.P2[0].mainsnak.should.deepEqual({
+        property: 'P2',
+        snaktype: 'somevalue'
+      })
+      JSON.parse(data.data).claims.P3[0].mainsnak.should.deepEqual({
+        property: 'P3',
+        snaktype: 'novalue'
+      })
     })
-    JSON.parse(data.data).claims.P4[0].should.deepEqual({
-      rank: 'normal',
-      type: 'statement',
-      mainsnak: {
+
+    it('should format an entity claim with a qualifier with a special snaktype', async () => {
+      const qualifiers = {
+        P4: { snaktype: 'somevalue' }
+      }
+      const { data } = await editEntity({
+        id,
+        claims: {
+          P2: [ { value: 'Q54173', qualifiers } ]
+        }
+      })
+      JSON.parse(data.data).claims.P2[0].qualifiers.P4[0].should.deepEqual({
+        property: 'P4',
+        snaktype: 'somevalue'
+      })
+    })
+
+    it('should format an entity claim with a low precision time claim', async () => {
+      const qualifiers = {
+        P4: { value: '2019-04-01T00:00:00.000Z' }
+      }
+      const { data } = await editEntity({
+        id,
+        claims: {
+          P2: [ { value: 'Q54173', qualifiers } ]
+        }
+      })
+      JSON.parse(data.data).claims.P2[0].qualifiers.P4[0].should.deepEqual({
         property: 'P4',
         snaktype: 'value',
         datavalue: {
           type: 'time',
           value: {
-            time: '+1802-02-26T00:00:00Z',
+            time: '+2019-04-01T00:00:00Z',
             timezone: 0,
             before: 0,
             after: 0,
@@ -253,192 +368,79 @@ describe('entity edit', () => {
             calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
           }
         }
-      }
+      })
     })
-  })
 
-  it('should format a rich-value time claim with precision 10 or less', async () => {
-    const { data } = await editEntity({
-      id,
-      claims: {
-        P4: [
-          { time: '1802-02-00', precision: 10 },
-          { time: '1802-00-00', precision: 9 }
-        ]
+    it('should format an entity claim with a time qualifier', async () => {
+      const qualifiers = {
+        P4: { value: '2019-04-01T00:00:00.000Z' }
       }
-    })
-    JSON.parse(data.data).claims.P4.should.deepEqual([
-      {
-        rank: 'normal',
-        type: 'statement',
-        mainsnak: {
-          property: 'P4',
-          snaktype: 'value',
-          datavalue: {
-            type: 'time',
-            value: {
-              time: '+1802-02-00T00:00:00Z',
-              timezone: 0,
-              before: 0,
-              after: 0,
-              precision: 10,
-              calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
-            }
-          }
+      const { data } = await editEntity({
+        id,
+        claims: {
+          P2: [ { value: 'Q54173', qualifiers } ]
         }
-      },
-      {
-        rank: 'normal',
-        type: 'statement',
-        mainsnak: {
-          property: 'P4',
-          snaktype: 'value',
-          datavalue: {
-            type: 'time',
-            value: {
-              time: '+1802-00-00T00:00:00Z',
-              timezone: 0,
-              before: 0,
-              after: 0,
-              precision: 9,
-              calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
-            }
-          }
-        }
-      }
-    ])
-  })
-
-  it('should format an entity claim with a special snaktype', async () => {
-    const { data } = await editEntity({
-      id,
-      claims: {
-        P2: [ { value: { snaktype: 'somevalue' } } ],
-        P3: [ { snaktype: 'novalue' } ],
-      }
-    })
-    JSON.parse(data.data).claims.P2[0].mainsnak.should.deepEqual({
-      property: 'P2',
-      snaktype: 'somevalue'
-    })
-    JSON.parse(data.data).claims.P3[0].mainsnak.should.deepEqual({
-      property: 'P3',
-      snaktype: 'novalue'
-    })
-  })
-
-  it('should format an entity claim with a qualifier with a special snaktype', async () => {
-    const qualifiers = {
-      P4: { snaktype: 'somevalue' }
-    }
-    const { data } = await editEntity({
-      id,
-      claims: {
-        P2: [ { value: 'Q54173', qualifiers } ]
-      }
-    })
-    JSON.parse(data.data).claims.P2[0].qualifiers.P4[0].should.deepEqual({
-      property: 'P4',
-      snaktype: 'somevalue'
-    })
-  })
-
-  it('should format an entity claim with a low precision time claim', async () => {
-    const qualifiers = {
-      P4: { value: '2019-04-01T00:00:00.000Z' }
-    }
-    const { data } = await editEntity({
-      id,
-      claims: {
-        P2: [ { value: 'Q54173', qualifiers } ]
-      }
-    })
-    JSON.parse(data.data).claims.P2[0].qualifiers.P4[0].should.deepEqual({
-      property: 'P4',
-      snaktype: 'value',
-      datavalue: {
-        type: 'time',
-        value: {
-          time: '+2019-04-01T00:00:00Z',
-          timezone: 0,
-          before: 0,
-          after: 0,
-          precision: 11,
-          calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
-        }
-      }
-    })
-  })
-
-  it('should format an entity claim with a time qualifier', async () => {
-    const qualifiers = {
-      P4: { value: '2019-04-01T00:00:00.000Z' }
-    }
-    const { data } = await editEntity({
-      id,
-      claims: {
-        P2: [ { value: 'Q54173', qualifiers } ]
-      }
-    })
-    JSON.parse(data.data).claims.P2[0].qualifiers.P4[0].should.deepEqual({
-      property: 'P4',
-      snaktype: 'value',
-      datavalue: {
-        type: 'time',
-        value: {
-          time: '+2019-04-01T00:00:00Z',
-          timezone: 0,
-          before: 0,
-          after: 0,
-          precision: 11,
-          calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
-        }
-      }
-    })
-  })
-
-  it('should format an entity claim with a reference', async () => {
-    const reference = {
-      P7: 'https://example.org',
-      P2: 'Q8447'
-    }
-    const { data } = await editEntity({
-      id,
-      claims: {
-        P2: { value: 'Q2622002', references: reference }
-      }
-    })
-    JSON.parse(data.data).claims.P2[0].references[0].snaks.should.deepEqual([
-      {
-        property: 'P7',
-        snaktype: 'value',
-        datavalue: { type: 'string', value: 'https://example.org' }
-      },
-      {
-        property: 'P2',
+      })
+      JSON.parse(data.data).claims.P2[0].qualifiers.P4[0].should.deepEqual({
+        property: 'P4',
         snaktype: 'value',
         datavalue: {
-          type: 'wikibase-entityid',
-          value: { 'entity-type': 'item', 'numeric-id': 8447 }
+          type: 'time',
+          value: {
+            time: '+2019-04-01T00:00:00Z',
+            timezone: 0,
+            before: 0,
+            after: 0,
+            precision: 11,
+            calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+          }
         }
-      }
-    ])
-  })
+      })
+    })
 
-  it('should format an entity claim with a reference formatted with a snaks object', async () => {
-    const reference = {
-      snaks: {
+    it('should format an entity claim with a reference', async () => {
+      const reference = {
         P7: 'https://example.org',
         P2: 'Q8447'
       }
-    }
-    const { data } = await editEntity({
-      id,
-      claims: {
-        P2: { value: 'Q2622002', references: [ reference ] }
-      }
+      const { data } = await editEntity({
+        id,
+        claims: {
+          P2: { value: 'Q2622002', references: reference }
+        }
+      })
+      JSON.parse(data.data).claims.P2[0].references[0].snaks.should.deepEqual([
+        {
+          property: 'P7',
+          snaktype: 'value',
+          datavalue: { type: 'string', value: 'https://example.org' }
+        },
+        {
+          property: 'P2',
+          snaktype: 'value',
+          datavalue: {
+            type: 'wikibase-entityid',
+            value: { 'entity-type': 'item', 'numeric-id': 8447 }
+          }
+        }
+      ])
     })
-    JSON.parse(data.data).claims.P2[0].references[0].snaks[0]
-    .datavalue.value.should.equal('https://example.org')
+
+    it('should format an entity claim with a reference formatted with a snaks object', async () => {
+      const reference = {
+        snaks: {
+          P7: 'https://example.org',
+          P2: 'Q8447'
+        }
+      }
+      const { data } = await editEntity({
+        id,
+        claims: {
+          P2: { value: 'Q2622002', references: [ reference ] }
+        }
+      })
+      JSON.parse(data.data).claims.P2[0].references[0].snaks[0]
+        .datavalue.value.should.equal('https://example.org')
+    })
   })
 })
