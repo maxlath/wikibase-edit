@@ -7,7 +7,6 @@ Development setup is mostly about getting confortable with [automated tests](htt
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Install tests dependencies](#install-tests-dependencies)
 - [Unit tests](#unit-tests)
   - [Run a single unit test file](#run-a-single-unit-test-file)

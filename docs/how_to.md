@@ -5,7 +5,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Config](#config)
   - [General config](#general-config)
   - [Per-request config](#per-request-config)
@@ -55,6 +54,10 @@
   - [Reference](#reference)
     - [set reference](#set-reference)
     - [remove reference](#remove-reference)
+  - [Sitelink](#sitelink)
+    - [add or update a sitelink](#add-or-update-a-sitelink)
+    - [add or update a sitelink with badges](#add-or-update-a-sitelink-with-badges)
+    - [remove a sitelink](#remove-a-sitelink)
   - [Entity](#entity)
     - [edit entity](#edit-entity)
       - [incremental mode](#incremental-mode)
@@ -907,6 +910,36 @@ wbEdit.reference.remove({
 })
 ```
 
+### Sitelink
+
+#### add or update a sitelink
+```js
+wbEdit.sitelink.set({
+  id: 'Q123',
+  site: 'frwiki',
+  title: 'Septembre',
+})
+```
+
+#### add or update a sitelink with badges
+```js
+wbEdit.sitelink.set({
+  id: 'Q123',
+  site: 'frwiki',
+  title: 'Septembre',
+  badges: [ 'Q17437796', 'Q17437798' ]
+})
+```
+
+#### remove a sitelink
+```js
+wbEdit.sitelink.set({
+  id: 'Q123',
+  site: 'frwiki',
+  title: null,
+})
+```
+
 ### Entity
 
 #### edit entity
@@ -999,6 +1032,11 @@ wbEdit.entity.edit({
     frwiki: 'eviv bulgroz',
     // Remove a sitelink
     eswikisource: null
+    // Set a sitelink with badges
+    dewiki: {
+      title: 'eviv bulgroz',
+      badges: [ 'Q17437796', 'Q17437798' ]
+    },
   },
 
   // For convenience, the summary and baserevid can also be passed from this edit object
