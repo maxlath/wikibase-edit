@@ -1,6 +1,10 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 5.2.0 - 2022-10-30
+* Add [`sitelink.set`](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#sitelink) function
+* [`entity.edit`](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#edit-entity): allow to set sitelinks badges
+
 ## 5.1.0 - 2022-05-03
 * [`label.set`](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#set-label)/[`label.set`](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#set-description): allow to remove a term by passing an empty string as value
 
