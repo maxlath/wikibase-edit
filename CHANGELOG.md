@@ -1,6 +1,10 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 5.3.0 - 2022-11-01
+* Add [`badge.add`](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#add-badges) function
+* Add [`badge.remove`](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#remove-badges) function
+
 ## 5.2.0 - 2022-10-30
 * Add [`sitelink.set`](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#sitelink) function
 * [`entity.edit`](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#edit-entity): allow to set sitelinks badges
