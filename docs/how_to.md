@@ -58,6 +58,9 @@
     - [add or update a sitelink](#add-or-update-a-sitelink)
     - [add or update a sitelink with badges](#add-or-update-a-sitelink-with-badges)
     - [remove a sitelink](#remove-a-sitelink)
+  - [Badges](#badges)
+    - [add badges](#add-badges)
+    - [remove badges](#remove-badges)
   - [Entity](#entity)
     - [edit entity](#edit-entity)
       - [incremental mode](#incremental-mode)
@@ -937,6 +940,28 @@ wbEdit.sitelink.set({
   id: 'Q123',
   site: 'frwiki',
   title: null,
+})
+```
+
+### Badge
+Handle badges on an existing [sitelink](#sitelink)
+
+#### add badges
+Add badges without removing the badges that might already have been set on the sitelink
+```js
+wbEdit.badge.add({
+  id: 'Q123',
+  site: 'frwiki',
+  badges: [ 'Q17437798', 'Q17437796' ],
+})
+```
+
+#### remove badges
+```js
+wbEdit.badge.remove({
+  id: 'Q123',
+  site: 'frwiki',
+  badges: [ 'Q17437798', 'Q17437796' ],
 })
 ```
 
