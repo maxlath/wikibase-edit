@@ -16,6 +16,7 @@
     "test:integration": "mocha $MOCHA_OPTIONS tests/integration/*.js tests/integration/*/*.js",
     "prepublishOnly": "npm run lint && npm test",
     "postpublish": "git push --tags",
+    "postversion": "./scripts/postversion",
     "update-toc": "./scripts/update_toc"
   },
   "repository": {
