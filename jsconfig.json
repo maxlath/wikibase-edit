@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonJS",
+    "target": "es2022",
+    "module": "esnext",
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "lib/*": [
-        "./lib/*"
+      "#lib/*": [
+        "./lib/*.js"
       ],
-      "root/*": [
-        "*"
+      "#tests/*": [
+        "./tests/*.js"
       ],
-      "tests/*": [
-        "./tests/*"
+      "#root/*": [
+        "./*"
       ],
     }
   },

@@ -1,9 +1,12 @@
-require('should')
-const { instance } = require('config')
-const { randomString, properties } = require('tests/unit/utils')
-const _createEntity = require('lib/entity/create')
-const { shouldNotBeCalled } = require('root/tests/integration/utils/utils')
-const createEntity = params => _createEntity(params, properties, instance)
+import 'should'
+import { instance } from 'config'
+import _createEntity from '#lib/entity/create'
+import { shouldNotBeCalled } from '#tests/integration/utils/utils'
+import { randomString, properties } from '#tests/unit/utils'
+
+const { instance } = config
+
+const createEntity = params => _createEntity(params, properties, instance, config)
 
 describe('entity create', async () => {
   it('should reject parameters with an id', async () => {
@@ -35,7 +38,7 @@ describe('entity create', async () => {
       labels: { en: label },
       aliases: { fr: frAlias, en: [ enAlias ] },
       descriptions: { fr: description },
-      claims: { P2: 'Q166376' }
+      claims: { P2: 'Q166376' },
     }
     const { data } = await createEntity(params)
     data.new.should.equal('item')
@@ -43,10 +46,10 @@ describe('entity create', async () => {
       labels: { en: { language: 'en', value: label } },
       aliases: {
         fr: [ { language: 'fr', value: frAlias } ],
-        en: [ { language: 'en', value: enAlias } ]
+        en: [ { language: 'en', value: enAlias } ],
       },
       descriptions: {
-        fr: { language: 'fr', value: description }
+        fr: { language: 'fr', value: description },
       },
       claims: {
         P2: [
@@ -58,12 +61,12 @@ describe('entity create', async () => {
               snaktype: 'value',
               datavalue: {
                 type: 'wikibase-entityid',
-                value: { 'entity-type': 'item', 'numeric-id': 166376 }
-              }
-            }
-          }
-        ]
-      }
+                value: { 'entity-type': 'item', 'numeric-id': 166376 },
+              },
+            },
+          },
+        ],
+      },
     })
   })
 
@@ -84,13 +87,13 @@ describe('entity create', async () => {
     const params = {
       type: 'property',
       datatype: 'string',
-      labels: { en: label }
+      labels: { en: label },
     }
     const { data } = await createEntity(params)
     data.new.should.equal('property')
     JSON.parse(data.data).should.deepEqual({
       datatype: 'string',
-      labels: { en: { language: 'en', value: label } }
+      labels: { en: { language: 'en', value: label } },
     })
   })
 })

@@ -1,11 +1,14 @@
-const config = require('config')
-const wbk = require('wikibase-sdk')({ instance: config.instance })
-const sandboxProperties = {}
-const fetch = require('lib/request/fetch')
-const wbEdit = require('root')(config)
-const { randomString } = require('tests/unit/utils')
+import config from 'config'
+import wbkFactory from 'wikibase-sdk'
+import fetch from '#lib/request/fetch'
+import { randomString } from '#tests/unit/utils'
+import wbEditFactory from '#root'
 
-module.exports = async ({ datatype, reserved }) => {
+const wbk = wbkFactory({ instance: config.instance })
+const sandboxProperties = {}
+const wbEdit = wbEditFactory(config)
+
+export default async ({ datatype, reserved }) => {
   if (!datatype) throw new Error('missing datatype')
   if (reserved) return createProperty(datatype)
   const property = await getProperty(datatype)
@@ -40,8 +43,8 @@ const createProperty = async datatype => {
     labels: {
       // Including a random string to avoid conflicts in case a property with that pseudoPropertyId
       // already exist but wasn't found due to a problem in ElasticSearch
-      en: `${pseudoPropertyId} (${randomString()})`
-    }
+      en: `${pseudoPropertyId} (${randomString()})`,
+    },
   })
   return res.entity
 }

@@ -1,13 +1,14 @@
-require('should')
-const { instance, credentialsAlt, secondUserCredentials } = require('config')
-const { randomString } = require('tests/unit/utils')
-const WBEdit = require('root')
-const { getSandboxItemId } = require('tests/integration/utils/sandbox_entities')
-const { getEntityHistory } = require('./utils/utils')
+import 'should'
+import { instance, credentialsAlt, secondUserCredentials } from 'config'
+import { getSandboxItemId } from '#tests/integration/utils/sandbox_entities'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '#tests/unit/utils'
+import { getEntityHistory } from './utils/utils.js'
+import WBEdit from '#root'
 
 describe('multi users edits', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should allow to change user at each request', async () => {
     const wbEdit = WBEdit({ instance })
@@ -31,6 +32,6 @@ const addAlias = async (wbEdit, id, reqConfig) => {
   return wbEdit.alias.add({
     id,
     language: 'la',
-    value: randomString()
+    value: randomString(),
   }, reqConfig)
 }

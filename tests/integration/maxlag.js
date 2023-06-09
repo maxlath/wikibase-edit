@@ -1,13 +1,14 @@
-require('should')
-const config = require('config')
-const WBEdit = require('root')
-const { randomString } = require('tests/unit/utils')
-const { undesiredRes } = require('./utils/utils')
-const { getSandboxItemId } = require('tests/integration/utils/sandbox_entities')
+import 'should'
+import config from 'config'
+import { getSandboxItemId } from '#tests/integration/utils/sandbox_entities'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '#tests/unit/utils'
+import { undesiredRes } from './utils/utils.js'
+import WBEdit from '#root'
 
 describe('maxlag', function () {
   this.timeout(120 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should accept a maxlag from initialization configuration', done => {
     const customConfig = Object.assign({ maxlag: -100, autoRetry: false }, config)

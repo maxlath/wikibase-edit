@@ -1,7 +1,6 @@
-require('module-alias/register')
-require('should')
-const { someEntityId: id } = require('tests/unit/utils')
-const deleteEntity = require('lib/entity/delete')
+import 'should'
+import deleteEntity from '#lib/entity/delete'
+import { someEntityId as id } from '#tests/unit/utils'
 
 describe('entity delete', () => {
   it('should set the action to delete', () => {

@@ -1,7 +1,7 @@
-require('module-alias/register')
-require('should')
-const removeAlias = require('lib/alias/remove')
-const { randomString, someEntityId } = require('tests/unit/utils')
+import 'should'
+import removeAlias from '#lib/alias/remove'
+import { randomString, someEntityId } from '#tests/unit/utils'
+
 const language = 'it'
 
 describe('alias remove', () => {

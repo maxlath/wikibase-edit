@@ -1,6 +1,5 @@
-require('module-alias/register')
-require('should')
-const mergeEntity = require('lib/entity/merge')
+import 'should'
+import mergeEntity from '#lib/entity/merge'
 
 describe('entity merge', () => {
   describe('items', () => {

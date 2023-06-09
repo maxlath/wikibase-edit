@@ -1,6 +1,8 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
+import 'should'
+import config from 'config'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 
 // Those tests require setting an instance with sitelinks
 // (such as test.wikidata.org) in config, and are thus disabled by default

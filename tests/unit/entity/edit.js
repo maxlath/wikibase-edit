@@ -1,9 +1,12 @@
-require('should')
-const { instance } = require('config')
-const { randomString, someEntityId: id, properties } = require('tests/unit/utils')
-const _editEntity = require('lib/entity/edit')
-const { shouldNotBeCalled } = require('root/tests/integration/utils/utils')
-const editEntity = params => _editEntity(params, properties, instance)
+import 'should'
+import { instance } from 'config'
+import _editEntity from '#lib/entity/edit'
+import { shouldNotBeCalled } from '#tests/integration/utils/utils'
+import { randomString, someEntityId as id, properties } from '#tests/unit/utils'
+
+const { instance } = config
+
+const editEntity = params => _editEntity(params, properties, instance, config)
 
 describe('entity edit', () => {
   it('should reject a missing id', async () => {
@@ -60,19 +63,19 @@ describe('entity edit', () => {
       labels: { fr: label },
       aliases: { fr: frAlias, en: [ enAlias ] },
       descriptions: { fr: description },
-      claims: { P2: 'Q3576110' }
+      claims: { P2: 'Q3576110' },
     })
     data.id.should.equal(id)
     JSON.parse(data.data).should.deepEqual({
       labels: {
-        fr: { language: 'fr', value: label }
+        fr: { language: 'fr', value: label },
       },
       aliases: {
         fr: [ { language: 'fr', value: frAlias } ],
-        en: [ { language: 'en', value: enAlias } ]
+        en: [ { language: 'en', value: enAlias } ],
       },
       descriptions: {
-        fr: { language: 'fr', value: description }
+        fr: { language: 'fr', value: description },
       },
       claims: {
         P2: [
@@ -86,13 +89,13 @@ describe('entity edit', () => {
                 type: 'wikibase-entityid',
                 value: {
                   'entity-type': 'item',
-                  'numeric-id': 3576110
-                }
-              }
-            }
-          }
-        ]
-      }
+                  'numeric-id': 3576110,
+                },
+              },
+            },
+          },
+        ],
+      },
     })
   })
 
@@ -115,11 +118,11 @@ describe('entity edit', () => {
               qualifiers: {
                 P4: '1789-08-04',
                 P8: { amount: 9001, unit: 'Q7727' },
-                P9: { text: 'bulgroz', language: 'fr' }
-              }
-            }
-          ]
-        }
+                P9: { text: 'bulgroz', language: 'fr' },
+              },
+            },
+          ],
+        },
       })
       JSON.parse(data.data).claims.P2.should.deepEqual([
         {
@@ -130,16 +133,16 @@ describe('entity edit', () => {
             snaktype: 'value',
             datavalue: {
               type: 'wikibase-entityid',
-              value: { 'entity-type': 'item', 'numeric-id': 5111731 }
-            }
+              value: { 'entity-type': 'item', 'numeric-id': 5111731 },
+            },
           },
           qualifiers: {
             P1: [
               {
                 property: 'P1',
                 snaktype: 'value',
-                datavalue: { type: 'string', value: '17' }
-              }
+                datavalue: { type: 'string', value: '17' },
+              },
             ],
             P2: [
               {
@@ -147,11 +150,11 @@ describe('entity edit', () => {
                 snaktype: 'value',
                 datavalue: {
                   type: 'wikibase-entityid',
-                  value: { 'entity-type': 'item', 'numeric-id': 13406268 }
-                }
-              }
-            ]
-          }
+                  value: { 'entity-type': 'item', 'numeric-id': 13406268 },
+                },
+              },
+            ],
+          },
         },
         {
           rank: 'normal',
@@ -161,8 +164,8 @@ describe('entity edit', () => {
             snaktype: 'value',
             datavalue: {
               type: 'wikibase-entityid',
-              value: { 'entity-type': 'item', 'numeric-id': 2622002 }
-            }
+              value: { 'entity-type': 'item', 'numeric-id': 2622002 },
+            },
           },
           qualifiers: {
             P4: [
@@ -177,10 +180,10 @@ describe('entity edit', () => {
                     before: 0,
                     after: 0,
                     precision: 11,
-                    calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
-                  }
-                }
-              }
+                    calendarmodel: 'http://www.wikidata.org/entity/Q1985727',
+                  },
+                },
+              },
             ],
             P8: [
               {
@@ -188,9 +191,9 @@ describe('entity edit', () => {
                 snaktype: 'value',
                 datavalue: {
                   type: 'quantity',
-                  value: { amount: '+9001', unit: `${instance.replace('https:', 'http:')}/entity/Q7727` }
-                }
-              }
+                  value: { amount: '+9001', unit: `${instance.replace('https:', 'http:')}/entity/Q7727` },
+                },
+              },
             ],
             P9: [
               {
@@ -198,24 +201,24 @@ describe('entity edit', () => {
                 snaktype: 'value',
                 datavalue: {
                   type: 'monolingualtext',
-                  value: { text: 'bulgroz', language: 'fr' }
-                }
-              }
-            ]
-          }
-        }
+                  value: { text: 'bulgroz', language: 'fr' },
+                },
+              },
+            ],
+          },
+        },
       ])
     })
 
     it('should format an entity claim with rich qualifier', async () => {
       const qualifiers = {
-        P8: [ { value: { amount: 100, unit: 'Q6982035' } } ]
+        P8: [ { value: { amount: 100, unit: 'Q6982035' } } ],
       }
       const { data } = await editEntity({
         id,
         claims: {
-          P2: [ { value: 'Q54173', qualifiers } ]
-        }
+          P2: [ { value: 'Q54173', qualifiers } ],
+        },
       })
       JSON.parse(data.data).claims.P2[0].qualifiers.P8[0].should.deepEqual({
         property: 'P8',
@@ -224,9 +227,9 @@ describe('entity edit', () => {
           type: 'quantity',
           value: {
             amount: '+100',
-            unit: `${instance.replace('https:', 'http:')}/entity/Q6982035`
-          }
-        }
+            unit: `${instance.replace('https:', 'http:')}/entity/Q6982035`,
+          },
+        },
       })
     })
 
@@ -234,8 +237,8 @@ describe('entity edit', () => {
       const { data } = await editEntity({
         id,
         claims: {
-          P4: [ { time: '1802-02-26', precision: 11 } ]
-        }
+          P4: [ { time: '1802-02-26', precision: 11 } ],
+        },
       })
       JSON.parse(data.data).claims.P4[0].should.deepEqual({
         rank: 'normal',
@@ -251,10 +254,10 @@ describe('entity edit', () => {
               before: 0,
               after: 0,
               precision: 11,
-              calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
-            }
-          }
-        }
+              calendarmodel: 'http://www.wikidata.org/entity/Q1985727',
+            },
+          },
+        },
       })
     })
 
@@ -264,9 +267,9 @@ describe('entity edit', () => {
         claims: {
           P4: [
             { time: '1802-02-00', precision: 10 },
-            { time: '1802-00-00', precision: 9 }
-          ]
-        }
+            { time: '1802-00-00', precision: 9 },
+          ],
+        },
       })
       JSON.parse(data.data).claims.P4.should.deepEqual([
         {
@@ -283,10 +286,10 @@ describe('entity edit', () => {
                 before: 0,
                 after: 0,
                 precision: 10,
-                calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
-              }
-            }
-          }
+                calendarmodel: 'http://www.wikidata.org/entity/Q1985727',
+              },
+            },
+          },
         },
         {
           rank: 'normal',
@@ -302,11 +305,11 @@ describe('entity edit', () => {
                 before: 0,
                 after: 0,
                 precision: 9,
-                calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
-              }
-            }
-          }
-        }
+                calendarmodel: 'http://www.wikidata.org/entity/Q1985727',
+              },
+            },
+          },
+        },
       ])
     })
 
@@ -316,43 +319,43 @@ describe('entity edit', () => {
         claims: {
           P2: [ { value: { snaktype: 'somevalue' } } ],
           P3: [ { snaktype: 'novalue' } ],
-        }
+        },
       })
       JSON.parse(data.data).claims.P2[0].mainsnak.should.deepEqual({
         property: 'P2',
-        snaktype: 'somevalue'
+        snaktype: 'somevalue',
       })
       JSON.parse(data.data).claims.P3[0].mainsnak.should.deepEqual({
         property: 'P3',
-        snaktype: 'novalue'
+        snaktype: 'novalue',
       })
     })
 
     it('should format an entity claim with a qualifier with a special snaktype', async () => {
       const qualifiers = {
-        P4: { snaktype: 'somevalue' }
+        P4: { snaktype: 'somevalue' },
       }
       const { data } = await editEntity({
         id,
         claims: {
-          P2: [ { value: 'Q54173', qualifiers } ]
-        }
+          P2: [ { value: 'Q54173', qualifiers } ],
+        },
       })
       JSON.parse(data.data).claims.P2[0].qualifiers.P4[0].should.deepEqual({
         property: 'P4',
-        snaktype: 'somevalue'
+        snaktype: 'somevalue',
       })
     })
 
     it('should format an entity claim with a low precision time claim', async () => {
       const qualifiers = {
-        P4: { value: '2019-04-01T00:00:00.000Z' }
+        P4: { value: '2019-04-01T00:00:00.000Z' },
       }
       const { data } = await editEntity({
         id,
         claims: {
-          P2: [ { value: 'Q54173', qualifiers } ]
-        }
+          P2: [ { value: 'Q54173', qualifiers } ],
+        },
       })
       JSON.parse(data.data).claims.P2[0].qualifiers.P4[0].should.deepEqual({
         property: 'P4',
@@ -365,21 +368,21 @@ describe('entity edit', () => {
             before: 0,
             after: 0,
             precision: 11,
-            calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
-          }
-        }
+            calendarmodel: 'http://www.wikidata.org/entity/Q1985727',
+          },
+        },
       })
     })
 
     it('should format an entity claim with a time qualifier', async () => {
       const qualifiers = {
-        P4: { value: '2019-04-01T00:00:00.000Z' }
+        P4: { value: '2019-04-01T00:00:00.000Z' },
       }
       const { data } = await editEntity({
         id,
         claims: {
-          P2: [ { value: 'Q54173', qualifiers } ]
-        }
+          P2: [ { value: 'Q54173', qualifiers } ],
+        },
       })
       JSON.parse(data.data).claims.P2[0].qualifiers.P4[0].should.deepEqual({
         property: 'P4',
@@ -392,37 +395,37 @@ describe('entity edit', () => {
             before: 0,
             after: 0,
             precision: 11,
-            calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
-          }
-        }
+            calendarmodel: 'http://www.wikidata.org/entity/Q1985727',
+          },
+        },
       })
     })
 
     it('should format an entity claim with a reference', async () => {
       const reference = {
         P7: 'https://example.org',
-        P2: 'Q8447'
+        P2: 'Q8447',
       }
       const { data } = await editEntity({
         id,
         claims: {
-          P2: { value: 'Q2622002', references: reference }
-        }
+          P2: { value: 'Q2622002', references: reference },
+        },
       })
       JSON.parse(data.data).claims.P2[0].references[0].snaks.should.deepEqual([
         {
           property: 'P7',
           snaktype: 'value',
-          datavalue: { type: 'string', value: 'https://example.org' }
+          datavalue: { type: 'string', value: 'https://example.org' },
         },
         {
           property: 'P2',
           snaktype: 'value',
           datavalue: {
             type: 'wikibase-entityid',
-            value: { 'entity-type': 'item', 'numeric-id': 8447 }
-          }
-        }
+            value: { 'entity-type': 'item', 'numeric-id': 8447 },
+          },
+        },
       ])
     })
 
@@ -430,14 +433,14 @@ describe('entity edit', () => {
       const reference = {
         snaks: {
           P7: 'https://example.org',
-          P2: 'Q8447'
-        }
+          P2: 'Q8447',
+        },
       }
       const { data } = await editEntity({
         id,
         claims: {
-          P2: { value: 'Q2622002', references: [ reference ] }
-        }
+          P2: { value: 'Q2622002', references: [ reference ] },
+        },
       })
       JSON.parse(data.data).claims.P2[0].references[0].snaks[0]
         .datavalue.value.should.equal('https://example.org')
@@ -449,14 +452,14 @@ describe('entity edit', () => {
       const { data } = await editEntity({
         id,
         sitelinks: {
-          frwiki: 'foo'
-        }
+          frwiki: 'foo',
+        },
       })
       JSON.parse(data.data).sitelinks.should.deepEqual({
         frwiki: {
           site: 'frwiki',
-          title: 'foo'
-        }
+          title: 'foo',
+        },
       })
     })
 
@@ -465,15 +468,15 @@ describe('entity edit', () => {
         id,
         sitelinks: {
           frwiki: {
-            title: 'foo'
-          }
-        }
+            title: 'foo',
+          },
+        },
       })
       JSON.parse(data.data).sitelinks.should.deepEqual({
         frwiki: {
           site: 'frwiki',
-          title: 'foo'
-        }
+          title: 'foo',
+        },
       })
     })
 
@@ -484,15 +487,15 @@ describe('entity edit', () => {
           frwiki: {
             title: 'foo',
             badges: [ 'Q608', 'Q609' ],
-          }
-        }
+          },
+        },
       })
       JSON.parse(data.data).sitelinks.should.deepEqual({
         frwiki: {
           site: 'frwiki',
           title: 'foo',
           badges: [ 'Q608', 'Q609' ],
-        }
+        },
       })
     })
 
@@ -503,15 +506,15 @@ describe('entity edit', () => {
           frwiki: {
             title: 'foo',
             badges: 'Q608|Q609',
-          }
-        }
+          },
+        },
       })
       JSON.parse(data.data).sitelinks.should.deepEqual({
         frwiki: {
           site: 'frwiki',
           title: 'foo',
           badges: [ 'Q608', 'Q609' ],
-        }
+        },
       })
     })
   })

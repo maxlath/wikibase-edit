@@ -1,18 +1,21 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
-const { getSandboxPropertyId, getReservedItemId } = require('tests/integration/utils/sandbox_entities')
-const { simplify } = require('wikibase-sdk')
-const { randomString } = require('tests/unit/utils')
+import 'should'
+import config from 'config'
+import { simplify } from 'wikibase-sdk'
+import { getSandboxPropertyId, getReservedItemId } from '#tests/integration/utils/sandbox_entities'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '#tests/unit/utils'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 
 describe('reconciliation: merge mode', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should add a statement when no statement exists', async () => {
     const [ id, property ] = await Promise.all([
       getReservedItemId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     const res = await wbEdit.claim.create({
       id,
@@ -20,7 +23,7 @@ describe('reconciliation: merge mode', function () {
       value: 'foo',
       reconciliation: {
         mode: 'merge',
-      }
+      },
     })
     res.claim.mainsnak.datavalue.value.should.equal('foo')
   })
@@ -28,7 +31,7 @@ describe('reconciliation: merge mode', function () {
   it('should not re-add an existing statement', async () => {
     const [ id, property ] = await Promise.all([
       getReservedItemId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     const res = await wbEdit.claim.create({ id, property, value: 'foo' })
     const res2 = await wbEdit.claim.create({
@@ -37,7 +40,7 @@ describe('reconciliation: merge mode', function () {
       value: 'foo',
       reconciliation: {
         mode: 'merge',
-      }
+      },
     })
     res2.claim.id.should.equal(res.claim.id)
     res2.claim.mainsnak.datavalue.value.should.equal('foo')
@@ -48,7 +51,7 @@ describe('reconciliation: merge mode', function () {
       getReservedItemId(),
       getReservedItemId(),
       getReservedItemId(),
-      getSandboxPropertyId('wikibase-item')
+      getSandboxPropertyId('wikibase-item'),
     ])
     const res = await wbEdit.claim.create({ id, property, value })
     const res2 = await wbEdit.claim.create({
@@ -58,7 +61,7 @@ describe('reconciliation: merge mode', function () {
       qualifiers: { [property]: qualifierValue },
       reconciliation: {
         mode: 'merge',
-      }
+      },
     })
     res2.claim.id.should.equal(res.claim.id)
     res2.claim.mainsnak.datavalue.value.id.should.equal(value)
@@ -68,7 +71,7 @@ describe('reconciliation: merge mode', function () {
   it('should not re-add an existing monolingual text statement', async () => {
     const [ id, property ] = await Promise.all([
       getReservedItemId(),
-      getSandboxPropertyId('monolingualtext')
+      getSandboxPropertyId('monolingualtext'),
     ])
     const value = { text: randomString(), language: 'fr' }
     const qualifierValue = { text: randomString(), language: 'de' }
@@ -80,7 +83,7 @@ describe('reconciliation: merge mode', function () {
       qualifiers: { [property]: qualifierValue },
       reconciliation: {
         mode: 'merge',
-      }
+      },
     })
     res2.claim.id.should.equal(res.claim.id)
     res2.claim.mainsnak.datavalue.value.text.should.equal(value.text)
@@ -92,7 +95,7 @@ describe('reconciliation: merge mode', function () {
   it('should re-add a statement if expected qualifiers do not match', async () => {
     const [ id, property ] = await Promise.all([
       getReservedItemId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     const res = await wbEdit.claim.create({ id, property, value: 'foo', qualifiers: { [property]: 'bar' } })
     const res2 = await wbEdit.claim.create({
@@ -103,7 +106,7 @@ describe('reconciliation: merge mode', function () {
       reconciliation: {
         mode: 'merge',
         matchingQualifiers: [ property ],
-      }
+      },
     })
     res2.claim.id.should.not.equal(res.claim.id)
   })
@@ -121,7 +124,7 @@ describe('reconciliation: merge mode', function () {
       qualifiers: {
         [property]: 'bar',
         [property2]: 123,
-      }
+      },
     })
     const res2 = await wbEdit.claim.create({
       id,
@@ -131,7 +134,7 @@ describe('reconciliation: merge mode', function () {
         [property]: 'buzz',
         [property2]: 123,
       },
-      reconciliation: { mode: 'merge' }
+      reconciliation: { mode: 'merge' },
     })
     res2.claim.id.should.equal(res.claim.id)
     res2.claim.qualifiers[property].map(simplify.qualifier).should.deepEqual([ 'bar', 'buzz' ])
@@ -150,7 +153,7 @@ describe('reconciliation: merge mode', function () {
       value: 'foo',
       references: [
         { [property]: 'bar', [property2]: 123 },
-      ]
+      ],
     })
     const res2 = await wbEdit.claim.create({
       id,
@@ -160,7 +163,7 @@ describe('reconciliation: merge mode', function () {
         { [property]: 'bar', [property2]: 123 },
         { [property]: 'bar' },
       ],
-      reconciliation: { mode: 'merge' }
+      reconciliation: { mode: 'merge' },
     })
     res2.claim.id.should.equal(res.claim.id)
     simplify.references(res2.claim.references).should.deepEqual([
@@ -183,7 +186,7 @@ describe('reconciliation: merge mode', function () {
       references: [
         { [property]: 'bar' },
         { [property2]: 456 },
-      ]
+      ],
     })
     const res2 = await wbEdit.claim.create({
       id,
@@ -196,7 +199,7 @@ describe('reconciliation: merge mode', function () {
       reconciliation: {
         mode: 'merge',
         matchingReferences: [ property ],
-      }
+      },
     })
     simplify.references(res2.claim.references).should.deepEqual([
       { [property2]: [ 123 ], [property]: [ 'bar' ] },
@@ -217,8 +220,8 @@ describe('reconciliation: merge mode', function () {
       value: 'foo',
       references: {
         [property]: 'bar',
-        [property2]: 123
-      }
+        [property2]: 123,
+      },
     })
     const res2 = await wbEdit.claim.create({
       id,
@@ -226,9 +229,9 @@ describe('reconciliation: merge mode', function () {
       value: 'foo',
       references: {
         [property]: 'bar',
-        [property2]: 124
+        [property2]: 124,
       },
-      reconciliation: { mode: 'merge' }
+      reconciliation: { mode: 'merge' },
     })
     res2.claim.id.should.equal(res.claim.id)
     simplify.references(res2.claim.references).should.deepEqual([

@@ -1,12 +1,15 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
-const { randomString } = require('tests/unit/utils')
-const { getSandboxClaim } = require('tests/integration/utils/sandbox_entities')
+import 'should'
+import config from 'config'
+import { getSandboxClaim } from '#tests/integration/utils/sandbox_entities'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '#tests/unit/utils'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 
 describe('claim set', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should set a claim', async () => {
     const claim = await getSandboxClaim()

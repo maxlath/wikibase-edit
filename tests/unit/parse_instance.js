@@ -1,6 +1,6 @@
-require('module-alias/register')
-require('should')
-const parseInstance = require('lib/parse_instance')
+import 'should'
+import parseInstance from '#lib/parse_instance'
+
 const instance = 'https://hello.bla'
 const apiEndpoint = `${instance}/w/api.php`
 

@@ -1,9 +1,10 @@
-require('should')
-const config = require('config')
+import 'should'
+import config from 'config'
+import { randomString } from '../unit/utils.js'
+import { getLastRevision } from './utils/utils.js'
+import WBEdit from '#root'
+
 const { wdCredentials: credentials } = config
-const WBEdit = require('root')
-const { getLastRevision } = require('./utils/utils')
-const { randomString } = require('../unit/utils')
 const sandboxEntityId = 'Q4115189'
 const instance = 'https://www.wikidata.org'
 

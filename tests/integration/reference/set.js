@@ -1,18 +1,21 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
+import 'should'
+import config from 'config'
+import { getSandboxClaimId, getSandboxPropertyId, getRefreshedClaim } from '#tests/integration/utils/sandbox_entities'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '#tests/unit/utils'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 const setReference = wbEdit.reference.set
-const { randomString } = require('tests/unit/utils')
-const { getSandboxClaimId, getSandboxPropertyId, getRefreshedClaim } = require('tests/integration/utils/sandbox_entities')
 
 describe('reference set', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should set a reference with the property/value interface', async () => {
     const [ guid, property ] = await Promise.all([
       getSandboxClaimId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     const value = randomString()
     const res = await setReference({ guid, property, value })
@@ -24,16 +27,16 @@ describe('reference set', function () {
     const [ guid, stringProperty, quantityProperty ] = await Promise.all([
       getSandboxClaimId(),
       getSandboxPropertyId('string'),
-      getSandboxPropertyId('quantity')
+      getSandboxPropertyId('quantity'),
     ])
     const stringValue = randomString()
     const quantityValue = Math.random()
     const snaks = {
       [stringProperty]: [
         { snaktype: 'novalue' },
-        stringValue
+        stringValue,
       ],
-      [quantityProperty]: quantityValue
+      [quantityProperty]: quantityValue,
     }
     const res = await setReference({ guid, snaks })
     res.success.should.equal(1)
@@ -46,20 +49,20 @@ describe('reference set', function () {
     const [ guid, stringProperty, quantityProperty ] = await Promise.all([
       getSandboxClaimId(),
       getSandboxPropertyId('string'),
-      getSandboxPropertyId('quantity')
+      getSandboxPropertyId('quantity'),
     ])
     const initialClaim = await getRefreshedClaim(guid)
     const stringValue = randomString()
     const quantityValue = Math.random()
     const initialSnaks = {
-      [stringProperty]: { snaktype: 'novalue' }
+      [stringProperty]: { snaktype: 'novalue' },
     }
     const res1 = await setReference({ guid, snaks: initialSnaks })
     res1.reference.snaks[stringProperty][0].snaktype.should.equal('novalue')
     const { hash } = res1.reference
     const updatedSnaks = {
       [stringProperty]: stringValue,
-      [quantityProperty]: quantityValue
+      [quantityProperty]: quantityValue,
     }
     const res2 = await setReference({ guid, hash, snaks: updatedSnaks }, { summary: 'here' })
     res2.reference.snaks[stringProperty][0].datavalue.value.should.equal(stringValue)

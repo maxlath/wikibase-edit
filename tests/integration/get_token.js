@@ -1,9 +1,10 @@
-const should = require('should')
-const { instance, credentials, credentialsAlt } = require('config')
+import { instance, credentials, credentialsAlt } from 'config'
+import should from 'should'
+import GetToken from '#lib/request/get_token'
+import validateAndEnrichConfig from '#lib/validate_and_enrich_config'
+import { undesiredRes, isBotPassword } from '#tests/integration/utils/utils'
+
 const { username, password } = credentialsAlt
-const { undesiredRes, isBotPassword } = require('tests/integration/utils/utils')
-const GetToken = require('lib/request/get_token')
-const validateAndEnrichConfig = require('lib/validate_and_enrich_config')
 
 describe('get token', function () {
   this.timeout(10000)
@@ -48,8 +49,8 @@ describe('get token', function () {
         consumer_key: 'in',
         consumer_secret: 'va',
         token: 'li',
-        token_secret: 'd'
-      }
+        token_secret: 'd',
+      },
     }
     const config = validateAndEnrichConfig({ instance, credentials: { oauth: invalidCreds } })
     const getToken = GetToken(config)

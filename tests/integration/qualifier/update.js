@@ -1,18 +1,21 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
+import 'should'
+import config from 'config'
+import { simplify } from 'wikibase-sdk'
+import { getSandboxPropertyId, getSandboxClaimId, getSandboxItemId, createItem } from '#tests/integration/utils/sandbox_entities'
+import { addQualifier } from '#tests/integration/utils/sandbox_snaks'
+import { undesiredRes } from '#tests/integration/utils/utils'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString, randomNumber } from '#tests/unit/utils'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 const updateQualifier = wbEdit.qualifier.update
-const { undesiredRes } = require('tests/integration/utils/utils')
-const { getSandboxPropertyId, getSandboxClaimId, getSandboxItemId, createItem } = require('tests/integration/utils/sandbox_entities')
-const { addQualifier } = require('tests/integration/utils/sandbox_snaks')
-const { randomString, randomNumber } = require('tests/unit/utils')
-const { simplify } = require('wikibase-sdk')
 // Use years above 1583 to be sure to default to Gregorian calendar
 const gregorianCalendarYear = 1583
 
 describe('qualifier update', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should update a qualifier', async () => {
     const oldValue = randomString()
@@ -43,7 +46,7 @@ describe('qualifier update', function () {
     const newValue = randomString()
     Promise.all([
       getSandboxClaimId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     .then(([ guid, property ]) => {
       return updateQualifier({ guid, property, oldValue, newValue })
@@ -124,13 +127,13 @@ describe('qualifier update', function () {
       before: 0,
       after: 0,
       precision: 10,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727',
     }
     const res = await updateQualifier({
       guid,
       property,
       oldValue: richOldValue,
-      newValue
+      newValue,
     })
     const qualifier = res.claim.qualifiers[property].slice(-1)[0]
     simplify.qualifier(qualifier, { timeConverter: 'simple-day' }).should.equal(newValue)
@@ -146,13 +149,13 @@ describe('qualifier update', function () {
       before: 0,
       after: 0,
       precision: 10,
-      calendarmodel: 'http://www.wikidata.org/entity/Q1985727'
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727',
     }
     const res = await updateQualifier({
       guid,
       property,
       oldValue: richOldValue,
-      newValue
+      newValue,
     })
     const qualifier = res.claim.qualifiers[property].slice(-1)[0]
     simplify.qualifier(qualifier, { timeConverter: 'simple-day' }).should.equal(newValue)
@@ -163,13 +166,13 @@ describe('qualifier update', function () {
       latitude: randomNumber(2),
       longitude: randomNumber(2),
       precision: 0.01,
-      globe: 'http://www.wikidata.org/entity/Q111'
+      globe: 'http://www.wikidata.org/entity/Q111',
     }
     const newValue = {
       latitude: randomNumber(2),
       longitude: randomNumber(2),
       precision: 0.01,
-      globe: 'http://www.wikidata.org/entity/Q112'
+      globe: 'http://www.wikidata.org/entity/Q112',
     }
     const { guid, property } = await addQualifier({ datatype: 'globe-coordinate', value: oldValue })
     const res = await updateQualifier({ guid, property, oldValue, newValue })

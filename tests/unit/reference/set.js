@@ -1,7 +1,6 @@
-require('module-alias/register')
-require('should')
-const setReference = require('lib/reference/set')
-const { guid, properties, hash } = require('tests/unit/utils')
+import 'should'
+import setReference from '#lib/reference/set'
+import { guid, properties, hash } from '#tests/unit/utils'
 
 describe('reference set', () => {
   it('should rejected if not passed a claim guid', () => {
@@ -36,7 +35,7 @@ describe('reference set', () => {
     const params = { guid, property: 'P7', value: 'http://foo.bar' }
     setReference(params, properties).data.should.deepEqual({
       statement: guid,
-      snaks: '{"P7":[{"property":"P7","snaktype":"value","datavalue":{"type":"string","value":"http://foo.bar"}}]}'
+      snaks: '{"P7":[{"property":"P7","snaktype":"value","datavalue":{"type":"string","value":"http://foo.bar"}}]}',
     })
   })
 
@@ -44,7 +43,7 @@ describe('reference set', () => {
     const params = { guid, property: 'P7', value: { snaktype: 'somevalue' } }
     setReference(params, properties).data.should.deepEqual({
       statement: guid,
-      snaks: '{"P7":[{"snaktype":"somevalue","property":"P7"}]}'
+      snaks: '{"P7":[{"snaktype":"somevalue","property":"P7"}]}',
     })
   })
 
@@ -53,13 +52,13 @@ describe('reference set', () => {
       P2: 'Q1',
       P7: [
         'http://foo.bar',
-        { snaktype: 'somevalue' }
-      ]
+        { snaktype: 'somevalue' },
+      ],
     }
     const params = { guid, snaks }
     setReference(params, properties).data.should.deepEqual({
       statement: guid,
-      snaks: '[{"property":"P2","snaktype":"value","datavalue":{"type":"wikibase-entityid","value":{"entity-type":"item","numeric-id":1}}},{"property":"P7","snaktype":"value","datavalue":{"type":"string","value":"http://foo.bar"}},{"snaktype":"somevalue","property":"P7"}]'
+      snaks: '[{"property":"P2","snaktype":"value","datavalue":{"type":"wikibase-entityid","value":{"entity-type":"item","numeric-id":1}}},{"property":"P7","snaktype":"value","datavalue":{"type":"string","value":"http://foo.bar"}},{"snaktype":"somevalue","property":"P7"}]',
     })
   })
 

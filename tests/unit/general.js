@@ -1,6 +1,5 @@
-require('module-alias/register')
-require('should')
-const wdEdit = require('root')
+import 'should'
+import wdEdit from '#root'
 
 describe('general', () => {
   it('should return an object', () => {

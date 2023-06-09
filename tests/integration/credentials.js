@@ -1,13 +1,15 @@
-require('should')
-const { instance, credentials } = require('config')
-const WBEdit = require('root')
-const { randomString } = require('tests/unit/utils')
-const { undesiredRes, shouldNotBeCalled, rethrowShouldNotBeCalledErrors } = require('./utils/utils')
+import 'should'
+import { instance, credentials } from 'config'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '#tests/unit/utils'
+import { undesiredRes, shouldNotBeCalled, rethrowShouldNotBeCalledErrors } from './utils/utils.js'
+import WBEdit from '#root'
+
 const params = () => ({ labels: { en: randomString() } })
 
 describe('credentials', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should accept config at initialization', async () => {
     const wbEdit = WBEdit({ instance, credentials })

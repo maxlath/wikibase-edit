@@ -1,9 +1,9 @@
-const { instance } = require('config')
-const fetch = require('lib/request/fetch')
-const { yellow, grey } = require('chalk')
-const { wait } = require('tests/integration/utils/utils')
+import { yellow, grey } from 'chalk'
+import { instance } from 'config'
+import fetch from '#lib/request/fetch'
+import { wait } from '#tests/integration/utils/utils'
 
-module.exports = () => {
+export function waitForInstance () {
   const check = async () => {
     return fetch(instance, { timeout: 2000 })
     .catch(err => {

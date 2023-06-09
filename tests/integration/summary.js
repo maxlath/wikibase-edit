@@ -1,17 +1,19 @@
-require('should')
-const config = require('config')
+import 'should'
+import config from 'config'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '../unit/utils.js'
+import getProperty from './utils/get_property.js'
+import { getSandboxItemId, getSandboxPropertyId, createItem } from './utils/sandbox_entities.js'
+import { addClaim, addQualifier } from './utils/sandbox_snaks.js'
+import { getLastEditSummary } from './utils/utils.js'
+import WBEdit from '#root'
+
 const { instance, credentials } = config
-const WBEdit = require('root')
-const { randomString } = require('../unit/utils')
-const { getLastEditSummary } = require('./utils/utils')
-const { getSandboxItemId, getSandboxPropertyId, createItem } = require('./utils/sandbox_entities')
-const { addClaim, addQualifier } = require('./utils/sandbox_snaks')
-const getProperty = require('./utils/get_property')
 const params = summary => ({ summary, labels: { en: randomString() } })
 
 describe('summary', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should not add a default summary', async () => {
     const wbEdit = WBEdit({ instance, credentials })
@@ -68,7 +70,7 @@ describe('summary', function () {
     it('should pass a summary in claim.create', async () => {
       const [ id, property ] = await Promise.all([
         getSandboxItemId(),
-        getSandboxPropertyId('string')
+        getSandboxPropertyId('string'),
       ])
       const value = randomString()
       const summary = randomString()

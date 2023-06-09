@@ -1,38 +1,41 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
-const { getSandboxPropertyId, getReservedItemId } = require('tests/integration/utils/sandbox_entities')
-const { simplify } = require('wikibase-sdk')
+import 'should'
+import config from 'config'
+import { simplify } from 'wikibase-sdk'
+import { getSandboxPropertyId, getReservedItemId } from '#tests/integration/utils/sandbox_entities'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 
 describe('reconciliation: matching', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   describe('qualifiers', () => {
     it('should match on all specified qualifiers properties by default', async () => {
       const [ id, property ] = await Promise.all([
         getReservedItemId(),
-        getSandboxPropertyId('string')
+        getSandboxPropertyId('string'),
       ])
       const res = await wbEdit.claim.create({
         id,
         property,
         value: 'foo',
         qualifiers: {
-          [property]: [ 'bar', 'buzz' ]
-        }
+          [property]: [ 'bar', 'buzz' ],
+        },
       })
       const res2 = await wbEdit.claim.create({
         id,
         property,
         value: 'foo',
         qualifiers: {
-          [property]: [ 'bar' ]
+          [property]: [ 'bar' ],
         },
         reconciliation: {
           mode: 'skip-on-value-match',
-          matchingQualifiers: [ property ]
-        }
+          matchingQualifiers: [ property ],
+        },
       })
       res2.claim.id.should.not.equal(res.claim.id)
       const res3 = await wbEdit.claim.create({
@@ -40,12 +43,12 @@ describe('reconciliation: matching', function () {
         property,
         value: 'foo',
         qualifiers: {
-          [property]: [ 'bar', 'buzz', 'bla' ]
+          [property]: [ 'bar', 'buzz', 'bla' ],
         },
         reconciliation: {
           mode: 'skip-on-value-match',
-          matchingQualifiers: [ property ]
-        }
+          matchingQualifiers: [ property ],
+        },
       })
       res3.claim.id.should.not.equal(res.claim.id)
       res3.claim.id.should.not.equal(res2.claim.id)
@@ -54,27 +57,27 @@ describe('reconciliation: matching', function () {
     it('should match on any specified qualifiers properties when requested', async () => {
       const [ id, property ] = await Promise.all([
         getReservedItemId(),
-        getSandboxPropertyId('string')
+        getSandboxPropertyId('string'),
       ])
       const res = await wbEdit.claim.create({
         id,
         property,
         value: 'foo',
         qualifiers: {
-          [property]: [ 'bar', 'buzz' ]
-        }
+          [property]: [ 'bar', 'buzz' ],
+        },
       })
       const res2 = await wbEdit.claim.create({
         id,
         property,
         value: 'foo',
         qualifiers: {
-          [property]: [ 'bar' ]
+          [property]: [ 'bar' ],
         },
         reconciliation: {
           mode: 'skip-on-value-match',
-          matchingQualifiers: [ `${property}:any` ]
-        }
+          matchingQualifiers: [ `${property}:any` ],
+        },
       })
       res2.claim.id.should.equal(res.claim.id)
       const res3 = await wbEdit.claim.create({
@@ -82,12 +85,12 @@ describe('reconciliation: matching', function () {
         property,
         value: 'foo',
         qualifiers: {
-          [property]: [ 'bar', 'buzz', 'bla' ]
+          [property]: [ 'bar', 'buzz', 'bla' ],
         },
         reconciliation: {
           mode: 'skip-on-value-match',
-          matchingQualifiers: [ `${property}:any` ]
-        }
+          matchingQualifiers: [ `${property}:any` ],
+        },
       })
       res3.claim.id.should.equal(res.claim.id)
     })
@@ -106,8 +109,8 @@ describe('reconciliation: matching', function () {
         value: 'foo',
         references: {
           [property]: [ 'bar', 'buzz' ],
-          [property2]: 123
-        }
+          [property2]: 123,
+        },
       })
       const res2 = await wbEdit.claim.create({
         id,
@@ -115,12 +118,12 @@ describe('reconciliation: matching', function () {
         value: 'foo',
         references: {
           [property]: [ 'bar', 'buzz' ],
-          [property2]: 456
+          [property2]: 456,
         },
         reconciliation: {
           mode: 'merge',
-          matchingReferences: [ property ]
-        }
+          matchingReferences: [ property ],
+        },
       })
       res2.claim.id.should.equal(res.claim.id)
       simplify.references(res2.claim.references).should.deepEqual([
@@ -132,12 +135,12 @@ describe('reconciliation: matching', function () {
         value: 'foo',
         references: {
           [property]: [ 'bar', 'buzz', 'bla' ],
-          [property2]: 789
+          [property2]: 789,
         },
         reconciliation: {
           mode: 'merge',
-          matchingReferences: [ property ]
-        }
+          matchingReferences: [ property ],
+        },
       })
       res3.claim.id.should.equal(res.claim.id)
       simplify.references(res3.claim.references).should.deepEqual([
@@ -159,7 +162,7 @@ describe('reconciliation: matching', function () {
         references: {
           [property]: [ 'bar', 'buzz' ],
           [property2]: 123,
-        }
+        },
       })
       const res2 = await wbEdit.claim.create({
         id,
@@ -171,12 +174,12 @@ describe('reconciliation: matching', function () {
         },
         reconciliation: {
           mode: 'merge',
-          matchingReferences: [ `${property}:any` ]
-        }
+          matchingReferences: [ `${property}:any` ],
+        },
       })
       res2.claim.id.should.equal(res.claim.id)
       simplify.references(res2.claim.references).should.deepEqual([
-        { [property]: [ 'bar', 'buzz' ], [property2]: [ 123 ] }
+        { [property]: [ 'bar', 'buzz' ], [property2]: [ 123 ] },
       ])
       const res3 = await wbEdit.claim.create({
         id,
@@ -188,8 +191,8 @@ describe('reconciliation: matching', function () {
         },
         reconciliation: {
           mode: 'merge',
-          matchingReferences: [ `${property}:any` ]
-        }
+          matchingReferences: [ `${property}:any` ],
+        },
       })
       res3.claim.id.should.equal(res.claim.id)
       simplify.references(res3.claim.references).should.deepEqual([

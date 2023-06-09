@@ -1,19 +1,22 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
-const { randomString } = require('tests/unit/utils')
-const { shouldNotBeCalled } = require('tests/integration/utils/utils')
-const { getSandboxPropertyId, getSandboxItemId } = require('tests/integration/utils/sandbox_entities')
-const { isGuid } = require('wikibase-sdk')
+import 'should'
+import config from 'config'
+import { isGuid } from 'wikibase-sdk'
+import { getSandboxPropertyId, getSandboxItemId } from '#tests/integration/utils/sandbox_entities'
+import { shouldNotBeCalled } from '#tests/integration/utils/utils'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '#tests/unit/utils'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 
 describe('claim create', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should create a claim', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     const value = randomString()
     const res = await wbEdit.claim.create({ id, property, value })
@@ -27,7 +30,7 @@ describe('claim create', function () {
   it('should create a claim with a negative year', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('time')
+      getSandboxPropertyId('time'),
     ])
     const res = await wbEdit.claim.create({ id, property, value: '-0028' })
     res.success.should.equal(1)
@@ -40,7 +43,7 @@ describe('claim create', function () {
   it('should create a claim with a preferred rank', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     const value = randomString()
     const res = await wbEdit.claim.create({ id, property, value, rank: 'preferred' })
@@ -50,7 +53,7 @@ describe('claim create', function () {
   it('should create a claim with qualifiers and references', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     const value = randomString()
     const res = await wbEdit.claim.create({
@@ -59,12 +62,12 @@ describe('claim create', function () {
       value,
       rank: 'preferred',
       qualifiers: {
-        [property]: value
+        [property]: value,
       },
       references: [
         { [property]: value },
-        { [property]: value }
-      ]
+        { [property]: value },
+      ],
     })
     res.claim.qualifiers[property][0].datavalue.value.should.equal(value)
     res.claim.references[0].snaks[property][0].datavalue.value.should.equal(value)
@@ -74,7 +77,7 @@ describe('claim create', function () {
   it('should create a time claim with a low precision', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('time')
+      getSandboxPropertyId('time'),
     ])
     const value = { time: '2500000', precision: 4 }
     const res = await wbEdit.claim.create({ id, property, value })
@@ -86,7 +89,7 @@ describe('claim create', function () {
   xit('should create a time claim with a high precision', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('time')
+      getSandboxPropertyId('time'),
     ])
     const value = { time: '1802-02-04T11:22:33Z', precision: 14 }
     const res = await wbEdit.claim.create({ id, property, value })
@@ -97,7 +100,7 @@ describe('claim create', function () {
   it('should create a time claim with a custom calendar', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('time')
+      getSandboxPropertyId('time'),
     ])
     const value = { time: '1402-11-12', calendar: 'julian' }
     const res = await wbEdit.claim.create({ id, property, value })
@@ -108,7 +111,7 @@ describe('claim create', function () {
   it('should reject a claim with an invalid time', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('time')
+      getSandboxPropertyId('time'),
     ])
     const value = '1802-22-33'
     try {
@@ -122,7 +125,7 @@ describe('claim create', function () {
   it('should create a external id claim', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('external-id')
+      getSandboxPropertyId('external-id'),
     ])
     const value = 'foo'
     const res = await wbEdit.claim.create({ id, property, value })
@@ -132,7 +135,7 @@ describe('claim create', function () {
   it('should create a monolingualtext claim', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('monolingualtext')
+      getSandboxPropertyId('monolingualtext'),
     ])
     const value = { text: 'bulgroz', language: 'fr' }
     const res = await wbEdit.claim.create({ id, property, value })
@@ -143,7 +146,7 @@ describe('claim create', function () {
   it('should create a url claim', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('url')
+      getSandboxPropertyId('url'),
     ])
     const value = 'http://foo.bar'
     const res = await wbEdit.claim.create({ id, property, value })
@@ -153,7 +156,7 @@ describe('claim create', function () {
   it('should create a quantity claim from a positive number value', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('quantity')
+      getSandboxPropertyId('quantity'),
     ])
     const value = 9000
     const res = await wbEdit.claim.create({ id, property, value })
@@ -164,7 +167,7 @@ describe('claim create', function () {
   it('should create a quantity claim from a negative number value', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('quantity')
+      getSandboxPropertyId('quantity'),
     ])
     const value = -9000
     const res = await wbEdit.claim.create({ id, property, value })
@@ -175,7 +178,7 @@ describe('claim create', function () {
   it('should create a quantity claim from a positive string value', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('quantity')
+      getSandboxPropertyId('quantity'),
     ])
     const value = '9001'
     const res = await wbEdit.claim.create({ id, property, value })
@@ -186,7 +189,7 @@ describe('claim create', function () {
   it('should create a quantity claim from a negative string value', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('quantity')
+      getSandboxPropertyId('quantity'),
     ])
     const value = '-9001'
     const res = await wbEdit.claim.create({ id, property, value })
@@ -197,7 +200,7 @@ describe('claim create', function () {
   it('should create a quantity claim with a custom unit and bounds', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('quantity')
+      getSandboxPropertyId('quantity'),
     ])
     const value = { amount: 9002, unit: 'Q7727', lowerBound: 9001, upperBound: 9013 }
     const res = await wbEdit.claim.create({ id, property, value })
@@ -210,7 +213,7 @@ describe('claim create', function () {
   it('should create a globe coordinate claim', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('globe-coordinate')
+      getSandboxPropertyId('globe-coordinate'),
     ])
     const value = { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 }
     const res = await wbEdit.claim.create({ id, property, value })
@@ -223,7 +226,7 @@ describe('claim create', function () {
   it('should create a geo-shape claim', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('geo-shape')
+      getSandboxPropertyId('geo-shape'),
     ])
     const value = 'Data:United Kingdom.map'
     const res = await wbEdit.claim.create({ id, property, value })
@@ -233,7 +236,7 @@ describe('claim create', function () {
   it('should create a tabular-data claim', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('tabular-data')
+      getSandboxPropertyId('tabular-data'),
     ])
     const value = 'Data:Sandbox/TheDJ/DJ.tab'
     const res = await wbEdit.claim.create({ id, property, value })
@@ -245,7 +248,7 @@ describe('claim create', function () {
   it('should create a claim of snaktype novalue', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('url')
+      getSandboxPropertyId('url'),
     ])
     const value = { snaktype: 'novalue' }
     const res = await wbEdit.claim.create({ id, property, value })
@@ -255,7 +258,7 @@ describe('claim create', function () {
   it('should create a claim of snaktype somevalue', async () => {
     const [ id, property ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('url')
+      getSandboxPropertyId('url'),
     ])
     const value = { snaktype: 'somevalue' }
     const res = await wbEdit.claim.create({ id, property, value })

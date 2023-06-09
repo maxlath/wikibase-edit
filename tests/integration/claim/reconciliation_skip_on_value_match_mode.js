@@ -1,17 +1,20 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
-const { getSandboxPropertyId, getReservedItemId } = require('tests/integration/utils/sandbox_entities')
-const { simplify } = require('wikibase-sdk')
+import 'should'
+import config from 'config'
+import { simplify } from 'wikibase-sdk'
+import { getSandboxPropertyId, getReservedItemId } from '#tests/integration/utils/sandbox_entities'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 
 describe('reconciliation: skip-on-value-match mode', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should add a statement when no statement exists', async () => {
     const [ id, property ] = await Promise.all([
       getReservedItemId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     const res = await wbEdit.claim.create({
       id,
@@ -19,7 +22,7 @@ describe('reconciliation: skip-on-value-match mode', function () {
       value: 'foo',
       reconciliation: {
         mode: 'skip-on-value-match',
-      }
+      },
     })
     res.claim.mainsnak.datavalue.value.should.equal('foo')
   })
@@ -27,7 +30,7 @@ describe('reconciliation: skip-on-value-match mode', function () {
   it('should not re-add an existing statement', async () => {
     const [ id, property ] = await Promise.all([
       getReservedItemId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     const res = await wbEdit.claim.create({ id, property, value: 'foo' })
     const res2 = await wbEdit.claim.create({
@@ -36,7 +39,7 @@ describe('reconciliation: skip-on-value-match mode', function () {
       value: 'foo',
       reconciliation: {
         mode: 'skip-on-value-match',
-      }
+      },
     })
     res2.claim.id.should.equal(res.claim.id)
     res2.claim.mainsnak.datavalue.value.should.equal('foo')
@@ -45,7 +48,7 @@ describe('reconciliation: skip-on-value-match mode', function () {
   it('should not merge qualifiers and references', async () => {
     const [ id, property ] = await Promise.all([
       getReservedItemId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     const res = await wbEdit.claim.create({
       id,
@@ -62,7 +65,7 @@ describe('reconciliation: skip-on-value-match mode', function () {
       references: { [property]: 'blu' },
       reconciliation: {
         mode: 'skip-on-value-match',
-      }
+      },
     })
     res2.claim.id.should.equal(res.claim.id)
     res2.claim.mainsnak.datavalue.value.should.equal('foo')

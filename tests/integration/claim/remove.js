@@ -1,14 +1,17 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
-const { randomString } = require('tests/unit/utils')
-const { getSandboxPropertyId } = require('tests/integration/utils/sandbox_entities')
-const { addClaim } = require('tests/integration/utils/sandbox_snaks')
-const { shouldNotBeCalled } = require('../utils/utils')
+import 'should'
+import config from 'config'
+import { getSandboxPropertyId } from '#tests/integration/utils/sandbox_entities'
+import { addClaim } from '#tests/integration/utils/sandbox_snaks'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '#tests/unit/utils'
+import { shouldNotBeCalled } from '../utils/utils.js'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 
 describe('claim create', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should remove a claim', async () => {
     const { guid } = await addClaim({ datatype: 'string', value: randomString() })
@@ -74,8 +77,8 @@ describe('claim create', function () {
       value,
       qualifiers: { [somePropertyId]: qualifierValue },
       reconciliation: {
-        matchingQualifiers: [ somePropertyId ]
-      }
+        matchingQualifiers: [ somePropertyId ],
+      },
     })
     res.success.should.equal(1)
     res.claims.should.deepEqual([ guid ])
@@ -97,8 +100,8 @@ describe('claim create', function () {
       value,
       qualifiers: { [somePropertyId]: randomString() },
       reconciliation: {
-        matchingQualifiers: [ somePropertyId ]
-      }
+        matchingQualifiers: [ somePropertyId ],
+      },
     })
     .then(shouldNotBeCalled)
     .catch(err => {
@@ -128,7 +131,7 @@ describe('claim create', function () {
 const createEntity = claims => {
   return wbEdit.entity.create({
     labels: { en: randomString() },
-    claims
+    claims,
   })
 }
 

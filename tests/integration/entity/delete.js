@@ -1,14 +1,18 @@
-require('should')
-const config = require('config')
-const { instance, credentialsAlt } = config
+import 'should'
+import config from 'config'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 // Use credentialsAlt as the OAuth token might miss the permission to delete pages
 // thus getting a 'permissiondenied' error
-const wbEdit = require('root')({ instance, credentials: credentialsAlt })
-const { randomString } = require('tests/unit/utils')
+import { randomString } from '#tests/unit/utils'
+import wbEditFactory from '#root'
+
+const { instance, credentialsAlt } = config
+
+const wbEdit = wbEditFactory({ instance, credentials: credentialsAlt })
 
 describe('entity delete', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should delete an item', async () => {
     const resA = await wbEdit.entity.create({ labels: { en: randomString() } })
@@ -21,7 +25,7 @@ describe('entity delete', function () {
     const resA = await wbEdit.entity.create({
       type: 'property',
       datatype: 'string',
-      labels: { en: randomString() }
+      labels: { en: randomString() },
     })
     const { id } = resA.entity
     const resB = await wbEdit.entity.delete({ id })

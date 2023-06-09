@@ -1,7 +1,7 @@
-require('module-alias/register')
-require('should')
-const addAlias = require('lib/alias/add')
-const { randomString, someEntityId } = require('tests/unit/utils')
+import 'should'
+import addAlias from '#lib/alias/add'
+import { randomString, someEntityId } from '#tests/unit/utils'
+
 const language = 'it'
 
 describe('alias add', () => {

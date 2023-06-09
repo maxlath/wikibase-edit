@@ -1,18 +1,21 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
-const { getSandboxPropertyId, getReservedItemId } = require('tests/integration/utils/sandbox_entities')
-const { simplify } = require('wikibase-sdk')
-const { shouldNotBeCalled } = require('../utils/utils')
+import 'should'
+import config from 'config'
+import { simplify } from 'wikibase-sdk'
+import { getSandboxPropertyId, getReservedItemId } from '#tests/integration/utils/sandbox_entities'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { shouldNotBeCalled } from '../utils/utils.js'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 
 describe('reconciliation:remove claims', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should remove matching claims', async () => {
     const [ id, property ] = await Promise.all([
       getReservedItemId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     await wbEdit.entity.edit({
       id,
@@ -22,8 +25,8 @@ describe('reconciliation:remove claims', function () {
           { value: 'foo' },
           { value: 'bar', qualifiers: { [property]: [ 'buzz' ] } },
           { value: 'bar', qualifiers: { [property]: [ 'bla' ] } },
-        ]
-      }
+        ],
+      },
     })
     const res2 = await wbEdit.entity.edit({
       id,
@@ -34,30 +37,30 @@ describe('reconciliation:remove claims', function () {
             value: 'bar',
             qualifiers: { [property]: [ 'bla' ] },
             remove: true,
-            reconciliation: { matchingQualifiers: [ property ] }
+            reconciliation: { matchingQualifiers: [ property ] },
           },
-        ]
+        ],
       },
     })
     simplify.claims(res2.entity.claims, { keepQualifiers: true }).should.deepEqual({
       [property]: [
         { value: 'bar', qualifiers: { [property]: [ 'buzz' ] } },
-      ]
+      ],
     })
   })
 
   it('should reject matching several times the same claim', async () => {
     const [ id, property ] = await Promise.all([
       getReservedItemId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     await wbEdit.entity.edit({
       id,
       claims: {
         [property]: [
           { value: 'foo' },
-        ]
-      }
+        ],
+      },
     })
     await wbEdit.entity.edit({
       id,
@@ -65,7 +68,7 @@ describe('reconciliation:remove claims', function () {
         [property]: [
           { value: 'foo', remove: true, reconciliation: {} },
           { value: 'foo', remove: true, reconciliation: {} },
-        ]
+        ],
       },
     })
     .then(shouldNotBeCalled)

@@ -1,8 +1,7 @@
-require('module-alias/register')
-require('should')
-const request = require('lib/request/request')
-const nock = require('nock')
-const { shouldNotBeCalled, rethrowShouldNotBeCalledErrors } = require('../integration/utils/utils')
+import 'should'
+import nock from 'nock'
+import request from '#lib/request/request'
+import { shouldNotBeCalled, rethrowShouldNotBeCalledErrors } from '../integration/utils/utils.js'
 
 describe('request', () => {
   beforeEach(() => {

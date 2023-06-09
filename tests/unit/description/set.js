@@ -1,8 +1,8 @@
-require('module-alias/register')
-require('should')
+import 'should'
+import setDescription from '#lib/description/set'
+import { randomString, someEntityId } from '#tests/unit/utils'
+
 const language = 'fr'
-const setDescription = require('lib/description/set')
-const { randomString, someEntityId } = require('tests/unit/utils')
 
 describe('description', () => {
   it('should throw if not passed an entity', () => {

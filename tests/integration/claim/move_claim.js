@@ -1,16 +1,19 @@
-const should = require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
+import config from 'config'
+import should from 'should'
+import getProperty from '#tests/integration/utils/get_property'
+import { createItem, getSomeEntityId, getSomeGuid } from '#tests/integration/utils/sandbox_entities'
+import { addClaim } from '#tests/integration/utils/sandbox_snaks'
+import { shouldNotBeCalled, getLastEditSummary } from '#tests/integration/utils/utils'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '#tests/unit/utils'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 const { move: moveClaim } = wbEdit.claim
-const { shouldNotBeCalled, getLastEditSummary } = require('tests/integration/utils/utils')
-const { createItem, getSomeEntityId, getSomeGuid } = require('tests/integration/utils/sandbox_entities')
-const { addClaim } = require('tests/integration/utils/sandbox_snaks')
-const { randomString } = require('tests/unit/utils')
-const getProperty = require('tests/integration/utils/get_property')
 
 describe('move claim', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should reject missing guid', async () => {
     try {
@@ -155,7 +158,7 @@ describe('move claim', function () {
         await testTypeConversion({
           originalType: 'string',
           originalValue: '123.abc',
-          targetType: 'quantity'
+          targetType: 'quantity',
         })
         .then(shouldNotBeCalled)
         .catch(err => {
@@ -241,7 +244,7 @@ describe('move claim', function () {
         await testTypeConversion({
           originalType: 'string',
           originalValue: randomString(),
-          targetType: 'monolingualtext'
+          targetType: 'monolingualtext',
         })
         .then(shouldNotBeCalled)
         .catch(err => {

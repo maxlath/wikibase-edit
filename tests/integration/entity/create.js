@@ -1,20 +1,23 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
-const { randomString } = require('tests/unit/utils')
-const { getSandboxPropertyId } = require('tests/integration/utils/sandbox_entities')
+import 'should'
+import config from 'config'
+import { getSandboxPropertyId } from '#tests/integration/utils/sandbox_entities'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '#tests/unit/utils'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 
 describe('entity create', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should create a property', async () => {
     const res = await wbEdit.entity.create({
       type: 'property',
       datatype: 'external-id',
       labels: {
-        en: randomString()
-      }
+        en: randomString(),
+      },
     })
     res.success.should.equal(1)
     res.entity.type.should.equal('property')
@@ -24,7 +27,7 @@ describe('entity create', function () {
     const [ pidA, pidB, pidC ] = await Promise.all([
       getSandboxPropertyId('string'),
       getSandboxPropertyId('external-id'),
-      getSandboxPropertyId('url')
+      getSandboxPropertyId('url'),
     ])
     const claims = {}
     claims[pidA] = { value: randomString(), qualifiers: {}, references: {} }
@@ -35,7 +38,7 @@ describe('entity create', function () {
       labels: { en: randomString() },
       descriptions: { en: randomString() },
       aliases: { en: randomString() },
-      claims
+      claims,
     })
     res.success.should.equal(1)
   })

@@ -1,7 +1,6 @@
-require('module-alias/register')
-const should = require('should')
-const setSitelink = require('lib/sitelink/set')
-const { shouldNotBeCalled } = require('root/tests/integration/utils/utils')
+import should from 'should'
+import setSitelink from '#lib/sitelink/set'
+import { shouldNotBeCalled } from '#tests/integration/utils/utils'
 
 describe('set sitelink', () => {
   it('should return wbsetsitelink params', () => {

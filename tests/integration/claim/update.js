@@ -1,17 +1,20 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
+import 'should'
+import config from 'config'
+import { simplify } from 'wikibase-sdk'
+import { getSandboxItemId, getSandboxPropertyId, getReservedItemId } from '#tests/integration/utils/sandbox_entities'
+import { addClaim } from '#tests/integration/utils/sandbox_snaks'
+import { shouldNotBeCalled } from '#tests/integration/utils/utils'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString, randomNumber } from '#tests/unit/utils'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 const updateClaim = wbEdit.claim.update
 const editEntity = wbEdit.entity.edit
-const { shouldNotBeCalled } = require('tests/integration/utils/utils')
-const { getSandboxItemId, getSandboxPropertyId, getReservedItemId } = require('tests/integration/utils/sandbox_entities')
-const { addClaim } = require('tests/integration/utils/sandbox_snaks')
-const { randomString, randomNumber } = require('tests/unit/utils')
-const { simplify } = require('wikibase-sdk')
 
 describe('claim update', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   describe('find a claim from an item id, a property, and an old value', () => {
     it('should update a string claim', async () => {
@@ -47,7 +50,7 @@ describe('claim update', function () {
       const newValue = randomString()
       const [ id, property ] = await Promise.all([
         getSandboxItemId(),
-        getSandboxPropertyId('string')
+        getSandboxPropertyId('string'),
       ])
       try {
         await updateClaim({ id, property, oldValue, newValue }).then(shouldNotBeCalled)
@@ -63,7 +66,7 @@ describe('claim update', function () {
       const newValue = randomString()
       const [ res1 ] = await Promise.all([
         addClaim({ datatype: 'string', value: oldValue }),
-        addClaim({ datatype: 'string', value: oldValue })
+        addClaim({ datatype: 'string', value: oldValue }),
       ])
       const { id, property } = res1
       try {
@@ -93,7 +96,7 @@ describe('claim update', function () {
       const referenceValue = randomString()
       const [ id, property ] = await Promise.all([
         getSandboxItemId(),
-        getSandboxPropertyId('string')
+        getSandboxPropertyId('string'),
       ])
       const claim = { value: oldValue, qualifiers: {}, references: {} }
       claim.qualifiers[property] = qualifierValue
@@ -153,13 +156,13 @@ describe('claim update', function () {
         latitude: randomNumber(2),
         longitude: randomNumber(2),
         precision: 0.01,
-        globe: 'http://www.wikidata.org/entity/Q111'
+        globe: 'http://www.wikidata.org/entity/Q111',
       }
       const newValue = {
         latitude: randomNumber(2),
         longitude: randomNumber(2),
         precision: 0.01,
-        globe: 'http://www.wikidata.org/entity/Q112'
+        globe: 'http://www.wikidata.org/entity/Q112',
       }
       const { guid, property } = await addClaim({ datatype: 'globe-coordinate', value: oldValue })
       const res = await updateClaim({ guid, property, newValue })

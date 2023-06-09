@@ -1,23 +1,26 @@
-const should = require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
-const { simplify } = require('wikibase-sdk')
-const { randomString } = require('tests/unit/utils')
-const { getSandboxItemId, getSandboxPropertyId, createItem } = require('tests/integration/utils/sandbox_entities')
-const { addClaim } = require('tests/integration/utils/sandbox_snaks')
-const { getEntity } = require('../utils/utils')
-const getProperty = require('tests/integration/utils/get_property')
+import config from 'config'
+import should from 'should'
+import { simplify } from 'wikibase-sdk'
+import getProperty from '#tests/integration/utils/get_property'
+import { getSandboxItemId, getSandboxPropertyId, createItem } from '#tests/integration/utils/sandbox_entities'
+import { addClaim } from '#tests/integration/utils/sandbox_snaks'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '#tests/unit/utils'
+import { getEntity } from '../utils/utils.js'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 
 describe('entity edit', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should edit an item', async () => {
     const label = randomString()
     const id = await getSandboxItemId()
     const res = await wbEdit.entity.edit({
       id,
-      labels: { nl: label }
+      labels: { nl: label },
     })
     res.entity.labels.nl.value.should.equal(label)
   })
@@ -26,7 +29,7 @@ describe('entity edit', function () {
     const [ pidA, pidB, pidC ] = await Promise.all([
       getSandboxPropertyId('string'),
       getSandboxPropertyId('external-id'),
-      getSandboxPropertyId('url')
+      getSandboxPropertyId('url'),
     ])
     const claims = {}
     claims[pidA] = { value: randomString(), qualifiers: {}, references: {} }
@@ -36,7 +39,7 @@ describe('entity edit', function () {
       labels: { en: randomString() },
       descriptions: { en: randomString() },
       aliases: { en: randomString() },
-      claims
+      claims,
     }
     const resA = await wbEdit.entity.create(params)
     const newLabel = randomString()
@@ -44,8 +47,8 @@ describe('entity edit', function () {
       id: resA.entity.id,
       clear: true,
       labels: {
-        en: newLabel
-      }
+        en: newLabel,
+      },
     })
     resB.success.should.equal(1)
     const { entity } = resB
@@ -58,13 +61,13 @@ describe('entity edit', function () {
   it('should set an item claim rank', async () => {
     const [ id, propertyId ] = await Promise.all([
       getSandboxItemId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     const claims = {}
     claims[propertyId] = [
       { rank: 'preferred', value: 'foo' },
       { rank: 'normal', value: 'bar' },
-      { rank: 'deprecated', value: 'buzz' }
+      { rank: 'deprecated', value: 'buzz' },
     ]
     const res = await wbEdit.entity.edit({ id, claims })
     const propertyClaims = res.entity.claims[propertyId].slice(-3)
@@ -97,7 +100,7 @@ describe('entity edit', function () {
     const resB = await wbEdit.entity.edit({
       id: entity.id,
       aliases: {
-        en: { value: aliasB, add: true }
+        en: { value: aliasB, add: true },
       },
     })
     simplify.aliases(resB.entity.aliases).en.should.deepEqual([ aliasA, aliasB ])
@@ -112,8 +115,8 @@ describe('entity edit', function () {
       id,
       sitelinks: {
         frwiki: yearArticleTitle,
-        dewiki: { title: yearArticleTitle, badges: [ 'Q608', 'Q609' ] }
-      }
+        dewiki: { title: yearArticleTitle, badges: [ 'Q608', 'Q609' ] },
+      },
     })
     res.entity.sitelinks.frwiki.title.should.equal(yearArticleTitle)
     res.entity.sitelinks.dewiki.title.should.equal(yearArticleTitle)
@@ -121,8 +124,8 @@ describe('entity edit', function () {
       id,
       sitelinks: {
         frwiki: { title: yearArticleTitle, remove: true },
-        dewiki: null
-      }
+        dewiki: null,
+      },
     })
     should(res2.entity.sitelinks.frwiki).not.be.ok()
     should(res2.entity.sitelinks.dewiki).not.be.ok()
@@ -146,7 +149,7 @@ describe('entity edit', function () {
         rawMode: true,
         id,
         labels,
-        claims: [ removedClaim, claim ]
+        claims: [ removedClaim, claim ],
       })
       res.entity.labels.en.value.should.equal(labelB)
       should(res.entity.claims[property]).not.be.ok()

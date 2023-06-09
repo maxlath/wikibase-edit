@@ -1,7 +1,6 @@
-require('module-alias/register')
-require('should')
-const removeClaim = require('lib/claim/remove')
-const { guid, guid2 } = require('tests/unit/utils')
+import 'should'
+import removeClaim from '#lib/claim/remove'
+import { guid, guid2 } from '#tests/unit/utils'
 
 describe('claim remove', () => {
   it('should set the action to wbremoveclaims', async () => {

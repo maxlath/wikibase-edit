@@ -1,13 +1,16 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
-const { randomString } = require('tests/unit/utils')
-const { getSandboxItemId } = require('tests/integration/utils/sandbox_entities')
+import 'should'
+import config from 'config'
+import { getSandboxItemId } from 'tests/integration/utils/sandbox_entities'
+import { randomString } from 'tests/unit/utils'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 const language = 'fr'
 
 describe('alias remove', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should remove an alias', async () => {
     const id = await getSandboxItemId()

@@ -1,18 +1,21 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
-const { getSandboxPropertyId, getReservedItemId } = require('tests/integration/utils/sandbox_entities')
-const { simplify } = require('wikibase-sdk')
-const { shouldNotBeCalled } = require('../utils/utils')
+import 'should'
+import config from 'config'
+import { simplify } from 'wikibase-sdk'
+import { getSandboxPropertyId, getReservedItemId } from '#tests/integration/utils/sandbox_entities'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { shouldNotBeCalled } from '../utils/utils.js'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 
 describe('reconciliation: general', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should reject a reconciliation object with a typo', async () => {
     const [ id, property ] = await Promise.all([
       getReservedItemId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     await wbEdit.claim.create({ id, property, value: 'foo', reconciliationz: {} })
     .then(shouldNotBeCalled)
@@ -23,9 +26,9 @@ describe('reconciliation: general', function () {
     await wbEdit.entity.edit({
       id,
       claims: {
-        [property]: 'foo'
+        [property]: 'foo',
       },
-      reconciliationz: {}
+      reconciliationz: {},
     })
     .then(shouldNotBeCalled)
     .catch(err => {
@@ -37,8 +40,8 @@ describe('reconciliation: general', function () {
       claims: {
         [property]: {
           value: 'foo',
-          reconciliationz: {}
-        }
+          reconciliationz: {},
+        },
       },
     })
     .then(shouldNotBeCalled)
@@ -51,7 +54,7 @@ describe('reconciliation: general', function () {
     it('should accept per-claim reconciliation settings', async () => {
       const [ id, property ] = await Promise.all([
         getReservedItemId(),
-        getSandboxPropertyId('string')
+        getSandboxPropertyId('string'),
       ])
       await wbEdit.entity.edit({
         id,
@@ -59,8 +62,8 @@ describe('reconciliation: general', function () {
           [property]: [
             { value: 'foo', qualifiers: { [property]: 'buzz' } },
             { value: 'bar', qualifiers: { [property]: 'bla' } },
-          ]
-        }
+          ],
+        },
       })
       const res2 = await wbEdit.entity.edit({
         id,
@@ -68,17 +71,17 @@ describe('reconciliation: general', function () {
           [property]: [
             { value: 'foo', qualifiers: { [property]: 'blo' } },
             { value: 'bar', qualifiers: { [property]: 'bli' }, reconciliation: { mode: 'skip-on-value-match' } },
-          ]
+          ],
         },
         reconciliation: {
           mode: 'merge',
-        }
+        },
       })
       simplify.claims(res2.entity.claims, { keepQualifiers: true }).should.deepEqual({
         [property]: [
           { value: 'foo', qualifiers: { [property]: [ 'buzz', 'blo' ] } },
           { value: 'bar', qualifiers: { [property]: [ 'bla' ] } },
-        ]
+        ],
       })
     })
   })

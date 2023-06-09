@@ -1,15 +1,18 @@
-const config = require('config')
-const wbk = require('wikibase-sdk')({ instance: config.instance })
+import config from 'config'
+import wbkFactory from 'wikibase-sdk'
+import fetch from '#lib/request/fetch'
+import { randomString } from '#tests/unit/utils'
+import getProperty from './get_property.js'
+import wbEditFactory from '#root'
+
+const wbk = wbkFactory({ instance: config.instance })
 const { getEntityIdFromGuid } = wbk
-const wbEdit = require('root')(config)
-const { randomString } = require('tests/unit/utils')
-const getProperty = require('./get_property')
-const fetch = require('lib/request/fetch')
+const wbEdit = wbEditFactory(config)
 
 // Working around the circular dependency
 let addClaim
-const lateRequire = () => {
-  ({ addClaim } = require('tests/integration/utils/sandbox_snaks'))
+const lateRequire = async () => {
+  ({ addClaim } = await import('tests/integration/utils/sandbox_snaks'))
 }
 setTimeout(lateRequire, 0)
 
@@ -21,24 +24,24 @@ const createEntity = async (data = {}) => {
 }
 
 let sandboxItemPromise
-const getSandboxItem = () => {
+export const getSandboxItem = () => {
   sandboxItemPromise = sandboxItemPromise || createEntity()
   return sandboxItemPromise
 }
 
-const getRefreshedEntity = async id => {
+export const getRefreshedEntity = async id => {
   const url = wbk.getEntities({ ids: id })
   const res = await fetch(url).then(res => res.json())
   return res.entities[id]
 }
 
 let claimPromise
-const getSandboxClaim = (datatype = 'string') => {
+export const getSandboxClaim = (datatype = 'string') => {
   if (claimPromise) return claimPromise
 
   claimPromise = Promise.all([
     getSandboxItem(),
-    getSandboxPropertyId(datatype)
+    getSandboxPropertyId(datatype),
   ])
   .then(([ item, propertyId ]) => {
     const propertyClaims = item.claims[propertyId]
@@ -50,7 +53,7 @@ const getSandboxClaim = (datatype = 'string') => {
   return claimPromise
 }
 
-const getRefreshedClaim = async guid => {
+export const getRefreshedClaim = async guid => {
   const id = getEntityIdFromGuid(guid)
   const { claims } = await getRefreshedEntity(id)
   for (const propertyClaims of Object.values(claims)) {
@@ -60,41 +63,29 @@ const getRefreshedClaim = async guid => {
   }
 }
 
-const getSandboxItemId = () => getSandboxItem().then(getId)
-const getSandboxPropertyId = datatype => getProperty({ datatype }).then(getId)
-const getSandboxClaimId = () => getSandboxClaim().then(getId)
+export const getSandboxItemId = () => getSandboxItem().then(getId)
+export const getSandboxPropertyId = datatype => getProperty({ datatype }).then(getId)
+export const getSandboxClaimId = () => getSandboxClaim().then(getId)
 const getId = obj => obj.id
 
-const createItem = (data = {}) => {
+export const createItem = (data = {}) => {
   data.type = 'item'
   return createEntity(data)
 }
 
 let someEntityId
-const getSomeEntityId = async () => {
-  someEntityId = someEntityId || await getSandboxItemId()
+export const getSomeEntityId = async () => {
+  someEntityId = someEntityId || (await getSandboxItemId())
   return someEntityId
 }
 
 let someGuid
-const getSomeGuid = async () => {
+export const getSomeGuid = async () => {
   if (someGuid) return someGuid
   const { guid } = await addClaim({ datatype: 'string', value: randomString() })
   someGuid = guid
   return guid
 }
 
-module.exports = {
-  getSandboxItem,
-  getSandboxItemId,
-  getReservedItem: createItem,
-  getReservedItemId: () => createItem().then(entity => entity.id),
-  getSandboxPropertyId,
-  getRefreshedEntity,
-  getRefreshedClaim,
-  getSandboxClaim,
-  getSandboxClaimId,
-  createItem,
-  getSomeEntityId,
-  getSomeGuid
-}
+export const getReservedItem = createItem
+export const getReservedItemId = () => createItem().then(entity => entity.id)

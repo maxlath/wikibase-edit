@@ -1,7 +1,8 @@
-require('should')
-const { instance } = require('config')
-const { guid, hash, properties } = require('tests/unit/utils')
-const _setQualifier = require('lib/qualifier/set')
+import 'should'
+import { instance } from 'config'
+import _setQualifier from '#lib/qualifier/set'
+import { guid, hash, properties } from '#tests/unit/utils'
+
 const setQualifier = params => _setQualifier(params, properties, instance)
 
 describe('qualifier set', () => {
@@ -50,7 +51,7 @@ describe('qualifier set', () => {
       claim: guid,
       property: 'P1',
       snaktype: 'value',
-      value: '"123"'
+      value: '"123"',
     })
   })
 
@@ -60,7 +61,7 @@ describe('qualifier set', () => {
       claim: guid,
       property: 'P4',
       snaktype: 'value',
-      value: '{"time":"+1802-02-00T00:00:00Z","timezone":0,"before":0,"after":0,"precision":10,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}'
+      value: '{"time":"+1802-02-00T00:00:00Z","timezone":0,"before":0,"after":0,"precision":10,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}',
     })
   })
 
@@ -70,7 +71,7 @@ describe('qualifier set', () => {
       claim: guid,
       property: 'P4',
       snaktype: 'value',
-      value: '{"time":"+1802-02-00T00:00:00Z","timezone":0,"before":0,"after":0,"precision":10,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}'
+      value: '{"time":"+1802-02-00T00:00:00Z","timezone":0,"before":0,"after":0,"precision":10,"calendarmodel":"http://www.wikidata.org/entity/Q1985727"}',
     })
   })
 
@@ -80,7 +81,7 @@ describe('qualifier set', () => {
       claim: guid,
       property: 'P8',
       snaktype: 'value',
-      value: `{"amount":"+123","unit":"${instance.replace('https:', 'http:')}/entity/Q4916"}`
+      value: `{"amount":"+123","unit":"${instance.replace('https:', 'http:')}/entity/Q4916"}`,
     })
   })
 
@@ -90,7 +91,7 @@ describe('qualifier set', () => {
       claim: guid,
       property: 'P9',
       snaktype: 'value',
-      value: '{"text":"foo","language":"fr"}'
+      value: '{"text":"foo","language":"fr"}',
     })
   })
 
@@ -99,7 +100,7 @@ describe('qualifier set', () => {
     setQualifier(params).data.should.deepEqual({
       claim: guid,
       property: 'P4',
-      snaktype: 'novalue'
+      snaktype: 'novalue',
     })
   })
 })

@@ -1,15 +1,18 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
-const { randomString } = require('../unit/utils')
-const { shouldNotBeCalled } = require('./utils/utils')
-const { getSandboxItem, getRefreshedEntity, getSandboxItemId, getSandboxPropertyId } = require('./utils/sandbox_entities')
-const { addClaim, addQualifier } = require('./utils/sandbox_snaks')
-const getProperty = require('./utils/get_property')
+import 'should'
+import config from 'config'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '../unit/utils.js'
+import getProperty from './utils/get_property.js'
+import { getSandboxItem, getRefreshedEntity, getSandboxItemId, getSandboxPropertyId } from './utils/sandbox_entities.js'
+import { addClaim, addQualifier } from './utils/sandbox_snaks.js'
+import { shouldNotBeCalled } from './utils/utils.js'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 
 describe('baserevid', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should accept a valid baserevid', async () => {
     const { id } = await getSandboxItem()
@@ -19,7 +22,7 @@ describe('baserevid', function () {
       language: 'fr',
       value: randomString(),
     }, {
-      baserevid: lastrevid
+      baserevid: lastrevid,
     })
     res.success.should.equal(1)
     res.entity.lastrevid.should.equal(lastrevid + 1)
@@ -32,7 +35,7 @@ describe('baserevid', function () {
       language: 'fr',
       value: randomString(),
     }, {
-      baserevid: 1
+      baserevid: 1,
     })
     .then(shouldNotBeCalled)
     .catch(err => {
@@ -45,7 +48,7 @@ describe('baserevid', function () {
     await wbEdit.entity.edit({
       id,
       labels: { la: randomString() },
-      baserevid: 1
+      baserevid: 1,
     })
     .then(shouldNotBeCalled)
     .catch(err => {
@@ -73,7 +76,7 @@ describe('baserevid', function () {
     it('should pass a baserevid in claim.create', async () => {
       const [ id, property ] = await Promise.all([
         getSandboxItemId(),
-        getSandboxPropertyId('string')
+        getSandboxPropertyId('string'),
       ])
       const value = randomString()
       await wbEdit.claim.create({ id, property, value, baserevid: 1 })
@@ -90,7 +93,7 @@ describe('baserevid', function () {
         guid,
         id,
         property: stringProperty,
-        baserevid: 1
+        baserevid: 1,
       })
       .then(shouldNotBeCalled)
       .catch(err => {
@@ -104,7 +107,7 @@ describe('baserevid', function () {
         guid,
         id: 'Q1',
         property,
-        baserevid: 1
+        baserevid: 1,
       })
       .then(shouldNotBeCalled)
       .catch(err => {

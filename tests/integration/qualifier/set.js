@@ -1,18 +1,21 @@
-require('should')
-const config = require('config')
-const wbEdit = require('root')(config)
+import 'should'
+import config from 'config'
+import { getSandboxClaimId, getSandboxPropertyId } from '#tests/integration/utils/sandbox_entities'
+import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '#tests/unit/utils'
+import wbEditFactory from '#root'
+
+const wbEdit = wbEditFactory(config)
 const setQualifier = wbEdit.qualifier.set
-const { randomString } = require('tests/unit/utils')
-const { getSandboxClaimId, getSandboxPropertyId } = require('tests/integration/utils/sandbox_entities')
 
 describe('qualifier set', function () {
   this.timeout(20 * 1000)
-  before('wait for instance', require('tests/integration/utils/wait_for_instance'))
+  before('wait for instance', waitForInstance)
 
   it('should set a qualifier', async () => {
     const [ guid, property ] = await Promise.all([
       getSandboxClaimId(),
-      getSandboxPropertyId('string')
+      getSandboxPropertyId('string'),
     ])
     const value = randomString()
     const res = await setQualifier({ guid, property, value })
@@ -24,7 +27,7 @@ describe('qualifier set', function () {
   it('should set a qualifier with a custom calendar', async () => {
     const [ guid, property ] = await Promise.all([
       getSandboxClaimId(),
-      getSandboxPropertyId('time')
+      getSandboxPropertyId('time'),
     ])
     const res = await setQualifier({ guid, property, value: { time: '1802-02-26', calendar: 'julian' } })
     res.success.should.equal(1)
