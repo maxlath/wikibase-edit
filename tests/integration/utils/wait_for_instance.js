@@ -1,7 +1,9 @@
-import { yellow, grey } from 'chalk'
-import { instance } from 'config'
+import config from 'config'
+import { yellow, grey } from 'tiny-chalk'
 import fetch from '#lib/request/fetch'
 import { wait } from '#tests/integration/utils/utils'
+
+const { instance } = config
 
 export function waitForInstance () {
   const check = async () => {

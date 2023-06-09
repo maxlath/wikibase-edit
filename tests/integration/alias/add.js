@@ -1,7 +1,7 @@
 import 'should'
 import config from 'config'
-import { getSandboxItemId } from 'tests/integration/utils/sandbox_entities'
-import { randomString } from 'tests/unit/utils'
+import { getSandboxItemId } from '#tests/integration/utils/sandbox_entities'
+import { randomString } from '#tests/unit/utils'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import wbEditFactory from '#root'
 

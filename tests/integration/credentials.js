@@ -1,9 +1,11 @@
 import 'should'
-import { instance, credentials } from 'config'
+import config from 'config'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
 import { undesiredRes, shouldNotBeCalled, rethrowShouldNotBeCalledErrors } from './utils/utils.js'
 import WBEdit from '#root'
+
+const { instance, credentials } = config
 
 const params = () => ({ labels: { en: randomString() } })
 

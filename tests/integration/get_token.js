@@ -1,8 +1,10 @@
-import { instance, credentials, credentialsAlt } from 'config'
+import config from 'config'
 import should from 'should'
 import GetToken from '#lib/request/get_token'
 import validateAndEnrichConfig from '#lib/validate_and_enrich_config'
 import { undesiredRes, isBotPassword } from '#tests/integration/utils/utils'
+
+const { instance, credentials, credentialsAlt } = config
 
 const { username, password } = credentialsAlt
 

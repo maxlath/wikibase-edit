@@ -38,22 +38,24 @@
   },
   "homepage": "https://github.com/maxlath/wikibase-edit",
   "dependencies": {
-    "crypto-js": "^3.1.9-1",
+    "cross-fetch": "^3.1.6",
+    "crypto-js": "^4.1.1",
     "lodash.isequal": "^4.5.0",
     "oauth-1.0a": "^2.2.6",
-    "wikibase-sdk": "^8.0.0"
+    "wikibase-sdk": "^9.1.3"
   },
   "devDependencies": {
     "@vercel/git-hooks": "^1.0.0",
-    "config": "^1.31.0",
+    "config": "^3.3.9",
     "eslint": "^8.42.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^16.0.0",
     "eslint-plugin-promise": "^6.1.1",
     "mocha": "^10.2.0",
-    "nock": "^12.0.3",
-    "should": "^13.2.3"
+    "nock": "^13.3.1",
+    "should": "^13.2.3",
+    "tiny-chalk": "^3.0.2"
   },
   "engines": {
     "node": ">= 13.2.0"

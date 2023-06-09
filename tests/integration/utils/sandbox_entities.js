@@ -12,7 +12,7 @@ const wbEdit = wbEditFactory(config)
 // Working around the circular dependency
 let addClaim
 const lateRequire = async () => {
-  ({ addClaim } = await import('tests/integration/utils/sandbox_snaks'))
+  ({ addClaim } = await import('#tests/integration/utils/sandbox_snaks'))
 }
 setTimeout(lateRequire, 0)
 

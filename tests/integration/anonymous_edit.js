@@ -1,9 +1,11 @@
 import 'should'
-import { instance } from 'config'
+import config from 'config'
 import { getSandboxItemId } from '#tests/integration/utils/sandbox_entities'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
+
+const { instance } = config
 
 describe('anonymous edit', function () {
   this.timeout(20 * 1000)

@@ -1,5 +1,5 @@
 import 'should'
-import { instance } from 'config'
+import config from 'config'
 import _editEntity from '#lib/entity/edit'
 import { shouldNotBeCalled } from '#tests/integration/utils/utils'
 import { randomString, someEntityId as id, properties } from '#tests/unit/utils'
