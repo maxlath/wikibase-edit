@@ -1,8 +1,8 @@
 import config from 'config'
 import should from 'should'
 import { getSandboxItemId, getRefreshedEntity } from '#tests/integration/utils/sandbox_entities'
-import { randomString } from '#tests/unit/utils'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import { randomString } from '#tests/unit/utils'
 import wbEditFactory from '#root'
 
 const wbEdit = wbEditFactory(config)
