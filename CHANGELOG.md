@@ -1,6 +1,10 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 6.0.0 - 2023-07-16
+**BREAKING CHANGE**: `wikibase-edit` now uses the [ES module](https://nodejs.org/api/esm.html) syntax. This also requires to bump the minimal NodeJS version to `>= v14.0.0`.
+* Add support for `entity.statements` to support Wikibase-ish instances such as https://commons.wikimedia.org. See https://phabricator.wikimedia.org/T149410 for more on this oddity.
+
 ## 5.3.0 - 2022-11-01
 * Add [`badge.add`](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#add-badges) function
 * Add [`badge.remove`](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#remove-badges) function
