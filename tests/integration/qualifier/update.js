@@ -6,9 +6,9 @@ import { addQualifier } from '#tests/integration/utils/sandbox_snaks'
 import { undesiredRes } from '#tests/integration/utils/utils'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString, randomNumber } from '#tests/unit/utils'
-import wbEditFactory from '#root'
+import WBEdit from '#root'
 
-const wbEdit = wbEditFactory(config)
+const wbEdit = WBEdit(config)
 const updateQualifier = wbEdit.qualifier.update
 // Use years above 1583 to be sure to default to Gregorian calendar
 const gregorianCalendarYear = 1583

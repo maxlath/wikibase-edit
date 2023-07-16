@@ -6,9 +6,9 @@ import getProperty from './utils/get_property.js'
 import { getSandboxItem, getRefreshedEntity, getSandboxItemId, getSandboxPropertyId } from './utils/sandbox_entities.js'
 import { addClaim, addQualifier } from './utils/sandbox_snaks.js'
 import { shouldNotBeCalled } from './utils/utils.js'
-import wbEditFactory from '#root'
+import WBEdit from '#root'
 
-const wbEdit = wbEditFactory(config)
+const wbEdit = WBEdit(config)
 
 describe('baserevid', function () {
   this.timeout(20 * 1000)

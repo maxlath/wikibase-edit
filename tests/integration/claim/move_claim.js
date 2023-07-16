@@ -6,9 +6,9 @@ import { addClaim } from '#tests/integration/utils/sandbox_snaks'
 import { shouldNotBeCalled, getLastEditSummary } from '#tests/integration/utils/utils'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
-import wbEditFactory from '#root'
+import WBEdit from '#root'
 
-const wbEdit = wbEditFactory(config)
+const wbEdit = WBEdit(config)
 const { move: moveClaim } = wbEdit.claim
 
 describe('move claim', function () {

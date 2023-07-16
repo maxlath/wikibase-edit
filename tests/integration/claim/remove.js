@@ -5,9 +5,9 @@ import { addClaim } from '#tests/integration/utils/sandbox_snaks'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
 import { shouldNotBeCalled } from '../utils/utils.js'
-import wbEditFactory from '#root'
+import WBEdit from '#root'
 
-const wbEdit = wbEditFactory(config)
+const wbEdit = WBEdit(config)
 
 describe('claim create', function () {
   this.timeout(20 * 1000)

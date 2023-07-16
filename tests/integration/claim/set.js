@@ -3,9 +3,9 @@ import config from 'config'
 import { getSandboxClaim } from '#tests/integration/utils/sandbox_entities'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
-import wbEditFactory from '#root'
+import WBEdit from '#root'
 
-const wbEdit = wbEditFactory(config)
+const wbEdit = WBEdit(config)
 
 describe('claim set', function () {
   this.timeout(20 * 1000)

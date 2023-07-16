@@ -1,9 +1,9 @@
 import config from 'config'
 import { randomString } from '#tests/unit/utils'
 import { getSandboxItemId, getSandboxPropertyId, getSandboxClaimId } from './sandbox_entities.js'
-import wbEditFactory from '#root'
+import WBEdit from '#root'
 
-const wbEdit = wbEditFactory(config)
+const wbEdit = WBEdit(config)
 
 export const addClaim = async (params = {}) => {
   let { id, property, datatype = 'string', value = randomString(), qualifiers } = params

@@ -2,11 +2,11 @@ import config from 'config'
 import wbkFactory from 'wikibase-sdk'
 import fetch from '#lib/request/fetch'
 import { randomString } from '#tests/unit/utils'
-import wbEditFactory from '#root'
+import WBEdit from '#root'
 
 const wbk = wbkFactory({ instance: config.instance })
 const sandboxProperties = {}
-const wbEdit = wbEditFactory(config)
+const wbEdit = WBEdit(config)
 
 export default async ({ datatype, reserved }) => {
   if (!datatype) throw new Error('missing datatype')

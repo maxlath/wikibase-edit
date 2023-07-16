@@ -1,8 +1,8 @@
 import 'should'
 import config from 'config'
-import wbEditFactory from '#root'
+import WBEdit from '#root'
 
-const wbEdit = wbEditFactory(config)
+const wbEdit = WBEdit(config)
 
 // Those tests require setting an instance with sitelinks
 // (such as test.wikidata.org) in config, and are thus disabled by default

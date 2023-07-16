@@ -2,9 +2,9 @@ import 'should'
 import config from 'config'
 import { getSandboxPropertyId, getReservedItemId } from '#tests/integration/utils/sandbox_entities'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import wbEditFactory from '#root'
+import WBEdit from '#root'
 
-const wbEdit = wbEditFactory(config)
+const wbEdit = WBEdit(config)
 
 describe('reconciliation: skip-on-any-value mode', function () {
   this.timeout(20 * 1000)

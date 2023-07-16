@@ -3,9 +3,9 @@ import config from 'config'
 import { getSandboxClaimId, getSandboxPropertyId } from '#tests/integration/utils/sandbox_entities'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
-import wbEditFactory from '#root'
+import WBEdit from '#root'
 
-const wbEdit = wbEditFactory(config)
+const wbEdit = WBEdit(config)
 const setQualifier = wbEdit.qualifier.set
 
 describe('qualifier set', function () {

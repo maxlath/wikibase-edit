@@ -4,11 +4,11 @@ import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 // Use credentialsAlt as the OAuth token might miss the permission to delete pages
 // thus getting a 'permissiondenied' error
 import { randomString } from '#tests/unit/utils'
-import wbEditFactory from '#root'
+import WBEdit from '#root'
 
 const { instance, credentialsAlt } = config
 
-const wbEdit = wbEditFactory({ instance, credentials: credentialsAlt })
+const wbEdit = WBEdit({ instance, credentials: credentialsAlt })
 
 describe('entity delete', function () {
   this.timeout(20 * 1000)

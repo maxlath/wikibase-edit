@@ -3,9 +3,9 @@ import config from 'config'
 import { addReference } from '#tests/integration/utils/sandbox_snaks'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
-import wbEditFactory from '#root'
+import WBEdit from '#root'
 
-const wbEdit = wbEditFactory(config)
+const wbEdit = WBEdit(config)
 const removeReference = wbEdit.reference.remove
 
 describe('reference remove', function () {
