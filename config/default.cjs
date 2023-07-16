@@ -4,6 +4,7 @@ require('util').inspect.defaultOptions.depth = null
 module.exports = {
   // initConfig
   instance: 'http://localhost:8181',
+  statementsKey: 'claims',
   credentials: {
     oauth: {
       consumer_key: 'some-consumer-token',
