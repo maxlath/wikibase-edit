@@ -5,6 +5,7 @@
   "type": "module",
   "main": "lib/index.js",
   "files": [
+    "assets",
     "lib"
   ],
   "scripts": {
