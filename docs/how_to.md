@@ -93,6 +93,8 @@
 ### General config
 If all your edits are made on the same Wikibase instance with the same credentials, simply pass it all at initialization
 ```js
+import WBEdit from 'wikibase-edit'
+
 const generalConfig = {
   // A Wikibase instance is required
   instance: 'https://www.wikidata.org',
@@ -148,12 +150,15 @@ const generalConfig = {
   maxlag: 2
 }
 
-const wbEdit = require('wikibase-edit')(generalConfig)
+
+const wbEdit = WBEdit(generalConfig)
 wbEdit.label.set({ id, language, value })
 ```
 
 So if you have a local Wikibase instance installed via [`wikibase-docker`](https://github.com/wmde/wikibase-docker) with the default settings, that would look something like:
 ```js
+import WBEdit from 'wikibase-edit'
+
 const generalConfig = {
   instance: 'http://localhost:8181',
   credentials: {
@@ -162,14 +167,16 @@ const generalConfig = {
   }
 }
 
-const wbEdit = require('wikibase-edit')(generalConfig)
+const wbEdit = WBEdit(generalConfig)
 ```
 
 ### Per-request config
 If you make requests to different Wikibase instances or with different credentials (typically when using different users OAuth keys), you can pass those specific configuration parameter per function call:
 ```js
+import WBEdit from 'wikibase-edit'
+
 const generalConfig = { userAgent }
-const wbEdit = require('wikibase-edit')(generalConfig)
+const wbEdit = WBEdit(generalConfig)
 const requestConfig = {
   instance: 'https://project-915215.wikibase.farm',
   credentials: {
@@ -274,6 +281,8 @@ If you are running a web service that lets people other than yourself make edits
 * Then you will need to setup an OAuth authentification process to allow users of your web service to authorize your consumer to make edits in their name. That's the tricky part. Some libraries should help you to do that, such as [`passport-mediawiki-oauth`](https://www.npmjs.com/package/passport-mediawiki-oauth) (see [Help:Toolforge/My first NodeJS OAuth tool](https://wikitech.wikimedia.org/wiki/Help:Toolforge/My_first_NodeJS_OAuth_tool)), but some people just prefer rolling their own (ex: [inventaire.io implementation](https://github.com/inventaire/inventaire/blob/3dbec57/server/controllers/auth/wikidata_oauth.coffee)). (If you go for this later option, :warning: beware of the documentation [footnotes](https://www.mediawiki.org/wiki/OAuth/For_Developers#Notes): make sure to use the right URLs before loosing hours at a `invalid signature` error message).
   * As your requests might now be done in the name of different users each time, you will the need to pass the credentials in the [request config objects](#request-config) rather than the [general config objects](#general-config):
     ```js
+    import WBEdit from 'wikibase-edit'
+
     // At initialization
     const generalConfig = {
       instance: 'https://www.somewikibase.instance',
@@ -290,7 +299,7 @@ If you are running a web service that lets people other than yourself make edits
       'consumer_secret': '1adbc98303a0b5b03311ebeee80d6916cbe1bd1f',
     }
 
-    const wbEdit = require('wikibase-edit')(generalConfig)
+    const wbEdit = WBEdit(generalConfig)
 
     // Later, when a user with OAuth tokens already setup (see previous step) makes an edit request
     const requestOauth = {
@@ -1139,11 +1148,15 @@ wbEdit.entity.delete({ id: 'P1' })
 ### get auth data
 All the functions above handle authentification for you, but you can also access the auth data, that is session cookies and the currently valid [csrf token](https://www.mediawiki.org/wiki/Manual:Edit_token), using the `getAuthData` function.
 ```js
+import WBEdit from 'wikibase-edit'
+const wbEdit = WBEdit({ instance, credentials })
 const { cookie, token } = await wbEdit.getAuthData()
 ```
 It can also be used as a way to validate credentials:
 ```js
-require('wikibase-edit')({ instance, credentials }).getAuthData()
+import WBEdit from 'wikibase-edit'
+const wbEdit = WBEdit({ instance, credentials })
+wbEdit.getAuthData()
 .then(onValidCredentials)
 .catch(onInvalidCredentials)
 ```
@@ -1301,10 +1314,8 @@ const res2 = await wbEdit.claim.remove({ guid }, { summary: 'oops' })
 Maybe you fetched an entity's data:
 ```js
 // Example where we try to get the guid of Q1's first P31 claim
-
-const fetch = require('node-fetch')
-const wbk = require('wikibase-sdk')({ instance: 'https://www.wikidata.org', sparqlEndpoint: 'https://query.wikidata.org/sparql' })
-
+import { WBK } from 'wikibase-sdk'
+const wbk = WBK({ instance: 'https://www.wikidata.org', sparqlEndpoint: 'https://query.wikidata.org/sparql' })
 const url = wbk.getEntities({ ids: [ 'Q1' ] })
 const { entities } = await fetch(url).then(res => res.json())
 

@@ -36,6 +36,11 @@ See [CHANGELOG.md](CHANGELOG.md) for version info
 npm install wikibase-edit
 ```
 
+Since `v6.0.0`, `wikibase-edit` uses the [ES module](https://nodejs.org/api/esm.html) syntax. If you would like to use CommonJS instead, you can install the latest version before that change:
+```sh
+npm install wikibase-edit@v5
+```
+
 ## How-To
 See [How-to](docs/how_to.md) doc
 
