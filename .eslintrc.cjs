@@ -4,23 +4,21 @@
 // Inspect the generated config:
 //    eslint --print-config .eslintrc.cjs
 module.exports = {
-  "root": true,
-  "extends": [
+  root: true,
+  extends: [
     // See https://github.com/standard/eslint-config-standard/blob/master/.eslintrc.json
-    "standard"
+    'standard',
   ],
-  "env": {
-      "browser": true,
-      "commonjs": true,
-      "es2022": true
+  env: {
+    es2022: true,
   },
-  "parserOptions": {
-    "ecmaVersion": 2022,
-    "ecmaFeatures": {
-      "jsx": false
-    }
+  parserOptions: {
+    ecmaVersion: 2022,
+    ecmaFeatures: {
+      jsx: false,
+    },
   },
-  "rules": {
+  rules: {
     'array-bracket-spacing': [ 'error', 'always' ],
     'arrow-parens': [ 'error', 'as-needed' ],
     'comma-dangle': [ 'error', {
@@ -56,4 +54,3 @@ module.exports = {
     'prefer-const': [ 'error' ],
   },
 }
-
