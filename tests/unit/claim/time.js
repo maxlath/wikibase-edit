@@ -438,4 +438,23 @@ describe('claim time', () => {
       calendarmodel: 'http://www.wikidata.org/entity/Q1985727',
     })
   })
+
+  // cf https://www.wikidata.org/wiki/Help:Dates#Time_datatype
+  it('should preserve custom timezone/before/after', () => {
+    getTimeObject({
+      time: '+1583-10-05T00:00:00Z',
+      timezone: 60,
+      before: 1,
+      after: 2,
+      precision: 10,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727',
+    }).should.deepEqual({
+      time: '+1583-10-05T00:00:00Z',
+      timezone: 60,
+      before: 1,
+      after: 2,
+      precision: 10,
+      calendarmodel: 'http://www.wikidata.org/entity/Q1985727',
+    })
+  })
 })

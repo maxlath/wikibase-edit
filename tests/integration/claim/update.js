@@ -1,8 +1,8 @@
-import 'should'
 import config from 'config'
+import should from 'should'
 import { simplify } from 'wikibase-sdk'
 import { getSandboxItemId, getSandboxPropertyId, getReservedItemId } from '#tests/integration/utils/sandbox_entities'
-import { addClaim } from '#tests/integration/utils/sandbox_snaks'
+import { addClaim, addReference } from '#tests/integration/utils/sandbox_snaks'
 import { shouldNotBeCalled } from '#tests/integration/utils/utils'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString, randomNumber } from '#tests/unit/utils'
@@ -141,14 +141,23 @@ describe('claim update', function () {
     })
 
     it('should update a time claim', async () => {
-      const oldYear = 1000 + randomNumber(3)
-      const newYear = 1000 + randomNumber(3)
+      // Use years after change from Julian to Gregorian calendar
+      const oldYear = 1800 + randomNumber(2)
+      const newYear = 1800 + randomNumber(2)
       const oldValue = `${oldYear}-02-26`
       const newValue = `${newYear}-10-25`
-      const { guid, property } = await addClaim({ datatype: 'time', value: oldValue })
-      const res = await updateClaim({ guid, property, newValue })
+      const { guid, property } = await addClaim({ datatype: 'time', value: { time: oldValue, precision: 10, timezone: -60, before: 2, after: 3 } })
+      const res = await updateClaim({ guid, property, newValue: { time: newValue, precision: 11, before: 5 } })
       res.claim.id.should.equal(guid)
-      simplify.claim(res.claim).split('T')[0].should.equal(newValue)
+      should(res.claim.mainsnak.datavalue.value).deepEqual({
+        time: `+${newValue}T00:00:00Z`,
+        before: 5,
+        precision: 11,
+        calendarmodel: 'http://www.wikidata.org/entity/Q1985727',
+        // It doesn't preserve old values
+        timezone: 0,
+        after: 0,
+      })
     })
 
     it('should update a globe-coordinate claim', async () => {
@@ -195,6 +204,23 @@ describe('claim update', function () {
       const { guid, property } = await addClaim({ datatype: 'string', value: oldValue })
       const res = await updateClaim({ guid, property, newValue })
       res.claim.mainsnak.snaktype.should.equal('novalue')
+    })
+
+    it('should preserve references rich time values', async () => {
+      const oldValue = randomString()
+      const newValue = randomString()
+      const { id, property, guid } = await addClaim({ datatype: 'string', value: oldValue })
+      await addReference({ guid, datatype: 'time', value: { time: '2024-01-12', timezone: 60 } })
+      const res = await updateClaim({ id, property, oldValue, newValue })
+      const referenceTimeValue = Object.values(res.claim.references[0].snaks)[0][0].datavalue.value
+      referenceTimeValue.should.deepEqual({
+        time: '+2024-01-12T00:00:00Z',
+        timezone: 60,
+        before: 0,
+        after: 0,
+        precision: 11,
+        calendarmodel: 'http://www.wikidata.org/entity/Q1985727',
+      })
     })
   })
 })
