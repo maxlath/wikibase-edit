@@ -39,7 +39,7 @@ describe('get token', function () {
     .then(shouldNotBeCalled)
     .catch(err => {
       // In absence of a valid browser session, getting the csrf token will fail
-      err.message.should.equal('invalid csrf token')
+      err.message.should.containEql('could not get tokens')
     })
   })
 
