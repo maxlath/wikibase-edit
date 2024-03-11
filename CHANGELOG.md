@@ -1,6 +1,10 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 7.0.0 - 2024-03-11
+**BREAKING CHANGE**: This minimal NodeJS version is now `>= v18.0.0` (to be able to use the standard `fetch` function)
+* Add `config.credentials.browserSession` flag, to let `fetch` use credentials available in the browser as session cookies.
+
 ## 6.0.0 - 2023-07-16
 **BREAKING CHANGE**: `wikibase-edit` now uses the [ES module](https://nodejs.org/api/esm.html) syntax. This also requires to bump the minimal NodeJS version to `>= v14.0.0`.
 * Add support for `entity.statements` as an alias for `entity.claims`, to support Wikibase-ish instances such as https://commons.wikimedia.org. See https://phabricator.wikimedia.org/T149410 for more on this oddity.
