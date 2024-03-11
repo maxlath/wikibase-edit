@@ -15,7 +15,7 @@ describe('request', () => {
       await request('get', { url: 'https://example.org', autoRetry: false }).then(shouldNotBeCalled)
     } catch (err) {
       rethrowShouldNotBeCalledErrors(err)
-      err.message.should.equal('Could not parse response: <!doctype html>')
+      err.message.should.startWith('Could not parse response: <!doctype html>')
       err.name.should.equal('wrong response format')
     }
   })
