@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Test wikibase-edit in the browser</title>
+  <script type="module" src="./main.js" async></script>
+  <style>
+    input, button{
+      padding: 0.5em;
+      margin: 0.5em 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Test wikibase-edit in the browser</h1>
+  <label>
+    Add an English Alias to <a href="https://www.wikidata.org/entity/Q112795079">Wikidata Sandbox 4 : Q112795079</a>
+    <br>
+    <input id="text" type="text" placeholder="foo" />
+  </label>
+  <button>Add</button>
+  <pre id="response"></pre>
+</body>
+</html>

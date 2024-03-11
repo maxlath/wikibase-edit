@@ -1,4 +1,6 @@
 node_modules
 config/local.js
 assets
+pnpm-lock.yaml
+browser-demo/wikibase-edit.js
 

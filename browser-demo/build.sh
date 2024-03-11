@@ -1,0 +1,1 @@
+esbuild ../lib/index.js --bundle --outfile=./wikibase-edit.js --format=esm
