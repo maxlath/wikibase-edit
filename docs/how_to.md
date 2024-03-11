@@ -319,7 +319,7 @@ If you are running a web service that lets people other than yourself make edits
     ```
 
 #### Cookie browser session
-When running `wikibase-edit` in the browser, it should be possible to simply use the browser session. If that's your intent, set the config as follow:
+When running `wikibase-edit` in the browser, it should be possible to use the browser session, but for it to work, the Wikibase instance needs to support CORS (unless your script is doing the request from the Wikibase instance domain itself). If that's your intent, set the config as follow:
   ```js
   const generalConfig = {
     // Note that it will only work for domains on HTTPS
