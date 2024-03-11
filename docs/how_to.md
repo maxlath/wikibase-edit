@@ -330,6 +330,16 @@ When running `wikibase-edit` in the browser, it should be possible to simply use
   }
   ```
 
+#### Anonymous mode
+It is also possible to use `wikibase-edit` without credentials at all: it currently means that your edits will then be signed with your IP address, but [that might change in the future}(https://meta.wikimedia.org/wiki/IP_Editing:_Privacy_Enhancement_and_Abuse_Mitigation).
+  ```js
+  const generalConfig = {
+    // Note that it will only work for domains on HTTPS
+    instance: 'https://www.wikidata.org',
+    anonymous: true
+  }
+  ```
+
 ### Bot
 The `bot` flag will mark your edits as made by a [bot account](https://www.wikidata.org/wiki/Wikidata:Bots)
 
