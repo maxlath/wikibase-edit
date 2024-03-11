@@ -1,6 +1,6 @@
 import config from 'config'
 import wbkFactory from 'wikibase-sdk'
-import fetch from '#lib/request/fetch'
+import { customFetch } from '#lib/request/fetch'
 import { randomString } from '#tests/unit/utils'
 import getProperty from './get_property.js'
 import WBEdit from '#root'
@@ -31,7 +31,7 @@ export const getSandboxItem = () => {
 
 export const getRefreshedEntity = async id => {
   const url = wbk.getEntities({ ids: id })
-  const res = await fetch(url).then(res => res.json())
+  const res = await customFetch(url).then(res => res.json())
   return res.entities[id]
 }
 

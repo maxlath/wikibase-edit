@@ -1,7 +1,7 @@
 import config from 'config'
 import { yellow } from 'tiny-chalk'
 import { WBK } from 'wikibase-sdk'
-import fetch from '#lib/request/fetch'
+import { customFetch } from '#lib/request/fetch'
 import resolveTitle from '#lib/resolve_title'
 
 const { instance } = config
@@ -13,7 +13,7 @@ const getRevisions = async ({ id, customInstance, limit, props }) => {
   const title = await resolveTitle(id, `${customInstance}/w/api.php`)
   const customWbk = WBK({ instance: customInstance })
   const url = customWbk.getRevisions({ ids: title, limit, props })
-  const { query } = await fetch(url).then(res => res.json())
+  const { query } = await customFetch(url).then(res => res.json())
   return Object.values(query.pages)[0].revisions
 }
 
@@ -26,7 +26,7 @@ export const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 export const getEntity = async id => {
   const url = wbk.getEntities({ ids: id })
-  const { entities } = await fetch(url).then(res => res.json())
+  const { entities } = await customFetch(url).then(res => res.json())
   return entities[id]
 }
 

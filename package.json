@@ -39,7 +39,6 @@
   },
   "homepage": "https://github.com/maxlath/wikibase-edit",
   "dependencies": {
-    "cross-fetch": "^3.1.6",
     "crypto-js": "^4.1.1",
     "lodash.isequal": "^4.5.0",
     "oauth-1.0a": "^2.2.6",
@@ -59,7 +58,7 @@
     "tiny-chalk": "^3.0.2"
   },
   "engines": {
-    "node": ">= 13.2.0"
+    "node": ">= 18"
   },
   "imports": {
     "#lib/*": "./lib/*.js",

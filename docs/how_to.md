@@ -1317,7 +1317,7 @@ Maybe you fetched an entity's data:
 import { WBK } from 'wikibase-sdk'
 const wbk = WBK({ instance: 'https://www.wikidata.org', sparqlEndpoint: 'https://query.wikidata.org/sparql' })
 const url = wbk.getEntities({ ids: [ 'Q1' ] })
-const { entities } = await fetch(url).then(res => res.json())
+const { entities } = await customFetch(url).then(res => res.json())
 
 const firstP31Claim = entities.Q1.claims.P31[0]
 // Here is our guid!
@@ -1328,7 +1328,7 @@ Maybe you got guids from a SPARQL query:
 ```js
 const sparql = 'SELECT ?statement { ?item p:P4033 ?statement . } LIMIT 5'
 const url = wbk.sparqlQuery(sparql)
-const results = await fetch(url)
+const results = await customFetch(url)
   .then(res => res.json())
   .then(wbk.simplify.sparqlResults)
 

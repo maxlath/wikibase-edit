@@ -1,6 +1,6 @@
 import config from 'config'
 import wbkFactory from 'wikibase-sdk'
-import fetch from '#lib/request/fetch'
+import { customFetch } from '#lib/request/fetch'
 import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 
@@ -30,7 +30,7 @@ const getProperty = async datatype => {
 
 const findOnWikibase = async pseudoPropertyId => {
   const url = wbk.searchEntities({ search: pseudoPropertyId, type: 'property' })
-  const body = await fetch(url).then(res => res.json())
+  const body = await customFetch(url).then(res => res.json())
   const firstWbResult = body.search[0]
   if (firstWbResult) return firstWbResult
 }
