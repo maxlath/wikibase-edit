@@ -318,6 +318,17 @@ If you are running a web service that lets people other than yourself make edits
     wbEdit.label.set({ id, language, value }, requestConfig)
     ```
 
+#### Cookie browser session
+When running `wikibase-edit` in the browser, it should be possible to simply use the browser session. If that's your intent, set the config as follow:
+  ```js
+  const generalConfig = {
+    // Note that it will only work for domains on HTTPS
+    instance: 'https://www.wikidata.org',
+    credentials: {
+      browserSession: true
+    }
+  }
+  ```
 
 ### Bot
 The `bot` flag will mark your edits as made by a [bot account](https://www.wikidata.org/wiki/Wikidata:Bots)

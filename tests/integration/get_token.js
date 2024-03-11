@@ -2,7 +2,7 @@ import config from 'config'
 import should from 'should'
 import GetToken from '#lib/request/get_token'
 import validateAndEnrichConfig from '#lib/validate_and_enrich_config'
-import { undesiredRes, isBotPassword } from '#tests/integration/utils/utils'
+import { undesiredRes, isBotPassword, shouldNotBeCalled } from '#tests/integration/utils/utils'
 
 const { instance, credentials, credentialsAlt } = config
 
@@ -29,6 +29,18 @@ describe('get token', function () {
     getToken.should.be.a.Function()
     const { token } = await getToken()
     token.length.should.be.above(40)
+  })
+
+  it('should get token from browser session', async () => {
+    const config = validateAndEnrichConfig({ instance, credentials: { browserSession: true } })
+    const getToken = GetToken(config)
+    getToken.should.be.a.Function()
+    await getToken()
+    .then(shouldNotBeCalled)
+    .catch(err => {
+      // In absence of a valid browser session, getting the csrf token will fail
+      err.message.should.equal('invalid csrf token')
+    })
   })
 
   it('should reject on invalid username/password credentials', done => {
