@@ -125,6 +125,20 @@ describe('move claim', function () {
     addClaimRes.entity.id.should.equal(otherItemId)
   })
 
+  it('should update the value if a new value is passed', async () => {
+    const { id } = await createItem()
+    const { guid, property: currentProperty } = await addClaim({ id, datatype: 'string', value: randomString() })
+    const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
+    const newValue = randomString()
+    const [ res ] = await moveClaim({ guid, id, property: otherStringPropertyId, newValue })
+    const { entity } = res
+    entity.id.should.equal(id)
+    should(entity.claims[currentProperty]).not.be.ok()
+    const movedClaim = entity.claims[otherStringPropertyId][0]
+    movedClaim.id.should.not.equal(guid)
+    movedClaim.mainsnak.datavalue.value.should.equal(newValue)
+  })
+
   describe('type conversions', () => {
     describe('string->quantity', () => {
       it('should convert a positive string number value to quantity', async () => {

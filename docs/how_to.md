@@ -675,6 +675,17 @@ const wbEdit.claim.move({
 })
 ```
 
+* move the claim to another entity, another property, and change the value (but, as before, keeping qualifiers and references unchanged)
+```js
+const wbEdit.claim.move({
+  // This guid identifies a P19 claim on Q4115189
+  guid: 'Q4115189$13681798-47F7-4D51-B3B4-BA8C7E044E1F',
+  id: 'Q13406268',
+  property: 'P20',
+  newValue: 'foo'
+})
+```
+
 ##### move all claims from an entity property
 * change the property of all `Q4115189` `P19` claims (without changing entity)
 ```js
