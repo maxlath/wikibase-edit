@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 7.1.0 - 2024-08-11
+* [`claim.move`](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#move-claim): added capacity to update the moved claim mainsnak value
+
 ## 7.0.0 - 2024-03-11
 **BREAKING CHANGE**: This minimal NodeJS version is now `>= v18.0.0` (to be able to use the standard `fetch` function)
 * Add `config.credentials.browserSession` flag, to let `fetch` use credentials available in the browser as session cookies.
