@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 7.2.0 - 2024-11-04
+* Add support for [Extended Date/Time Format](https://github.com/ProfessionalWiki/WikibaseEdtf), thank to [@larjohn's PR](https://github.com/maxlath/wikibase-edit/pull/84)
+
 ## 7.1.0 - 2024-08-11
 * [`claim.move`](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#move-claim): added capacity to update the moved claim mainsnak value
 
