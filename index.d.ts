@@ -1,4 +1,42 @@
 declare module "wikibase-edit" {
+  export interface WikibaseError extends Error {
+    statusCode: number;
+    context?: any;
+    body?: {
+      error: {
+        code: string;
+        info: string;
+        messages?: Array<{ name: string }>;
+      };
+    };
+  }
+
+  interface SuccessResponse {
+    success: number;
+  }
+
+  interface EntityIdResponse extends SuccessResponse {
+    entity: {
+      id: string;
+      lastrevid: number;
+    };
+  }
+
+  interface SnakBase {
+    snaktype: "value" | "novalue" | "somevalue";
+    property: string;
+    datatype: string;
+  }
+
+  interface DataValue {
+    datavalue?: {
+      type: string;
+      value: any;
+    };
+  }
+
+  type Snak = SnakBase & DataValue;
+
   export interface WikibaseEditConfig {
     instance?: string;
     wgScriptPath?: string;
@@ -35,17 +73,6 @@ declare module "wikibase-edit" {
     baserevid?: number;
   }
 
-  export interface ClaimData {
-    id?: string;
-    type?: string;
-    rank?: "normal" | "preferred" | "deprecated";
-    value?: any;
-    qualifiers?: Record<string, QualifierData[]>;
-    references?: ReferenceData[];
-    remove?: boolean;
-    snaktype?: "value" | "novalue" | "somevalue";
-  }
-
   export interface QualifierData {
     property: string;
     value: any;
@@ -57,7 +84,35 @@ declare module "wikibase-edit" {
     snaks: Record<string, any[]>;
   }
 
-  export interface EntityResponse {
+  export interface ClaimData {
+    id?: string;
+    type?: string;
+    rank?: "normal" | "preferred" | "deprecated";
+    value?: any;
+    qualifiers?: Record<string, QualifierData[]>;
+    references?: ReferenceData[];
+    remove?: boolean;
+    snaktype?: "value" | "novalue" | "somevalue";
+  }
+
+  export interface Claim {
+    id: string;
+    mainsnak: Snak;
+    type: "statement";
+    rank: "normal" | "preferred" | "deprecated";
+    qualifiers?: Record<string, Qualifier[]>;
+    references?: Reference[];
+  }
+
+  export type Qualifier = Snak & { hash: string };
+
+  export interface Reference {
+    hash: string;
+    snaks: Record<string, Array<Snak & { property: string }>>;
+    "snaks-order": string[];
+  }
+
+  export interface EntityResponse extends SuccessResponse {
     entity: {
       id: string;
       type: "item" | "property";
@@ -71,115 +126,46 @@ declare module "wikibase-edit" {
       >;
       lastrevid: number;
     };
-    success: number;
   }
 
-  export interface Claim {
-    id: string;
-    mainsnak: {
-      snaktype: "value" | "novalue" | "somevalue";
-      property: string;
-      datatype: string;
-      datavalue?: {
-        type: string;
-        value: any;
-      };
-    };
-    type: "statement";
-    rank: "normal" | "preferred" | "deprecated";
-    qualifiers?: Record<string, Qualifier[]>;
-    references?: Reference[];
-  }
-
-  export interface Qualifier {
-    hash: string;
-    snaktype: "value" | "novalue" | "somevalue";
-    property: string;
-    datatype: string;
-    datavalue?: {
-      type: string;
-      value: any;
-    };
-  }
-
-  export interface Reference {
-    hash: string;
-    snaks: Record<
-      string,
-      {
-        property: string;
-        snaktype: string;
-        datavalue: {
-          type: string;
-          value: any;
-        };
-      }[]
-    >;
-    "snaks-order": string[];
-  }
-
-  export interface ClaimResponse {
+  export interface ClaimResponse extends SuccessResponse {
     claim: Claim;
-    success: number;
   }
 
   export interface WikibaseEditAPI {
     entity: {
       create: (params: EntityEdit) => Promise<EntityResponse>;
       edit: (params: EntityEdit) => Promise<EntityResponse>;
-      merge: (params: { from: string; to: string }) => Promise<{
-        from: { id: string; lastrevid: number };
-        to: { id: string; lastrevid: number };
-        success: number;
-      }>;
-      delete: (params: { id: string }) => Promise<{ success: number }>;
+      merge: (params: { from: string; to: string }) => Promise<
+        {
+          from: { id: string; lastrevid: number };
+          to: { id: string; lastrevid: number };
+        } & SuccessResponse
+      >;
+      delete: (params: { id: string }) => Promise<SuccessResponse>;
     };
     label: {
       set: (params: {
         id: string;
         language: string;
         value: string;
-      }) => Promise<{
-        entity: { id: string; lastrevid: number };
-        success: number;
-      }>;
+      }) => Promise<EntityIdResponse>;
     };
     description: {
       set: (params: {
         id: string;
         language: string;
         value: string;
-      }) => Promise<{
-        entity: { id: string; lastrevid: number };
-        success: number;
-      }>;
+      }) => Promise<EntityIdResponse>;
     };
-    alias: {
-      add: (params: {
+    alias: Record<
+      "add" | "remove" | "set",
+      (params: {
         id: string;
         language: string;
         value: string | string[];
-      }) => Promise<{
-        entity: { id: string; lastrevid: number };
-        success: number;
-      }>;
-      remove: (params: {
-        id: string;
-        language: string;
-        value: string | string[];
-      }) => Promise<{
-        entity: { id: string; lastrevid: number };
-        success: number;
-      }>;
-      set: (params: {
-        id: string;
-        language: string;
-        value: string | string[];
-      }) => Promise<{
-        entity: { id: string; lastrevid: number };
-        success: number;
-      }>;
-    };
+      }) => Promise<EntityIdResponse>
+    >;
     claim: {
       create: (params: {
         id: string;
@@ -190,9 +176,7 @@ declare module "wikibase-edit" {
       }) => Promise<ClaimResponse>;
       remove: (
         params: { guid: string } | { id: string; property: string; value: any },
-      ) => Promise<{
-        success: number;
-      }>;
+      ) => Promise<SuccessResponse>;
       update: (params: {
         guid: string;
         property: string;
@@ -216,7 +200,7 @@ declare module "wikibase-edit" {
       remove: (params: {
         guid: string;
         hash: string | string[];
-      }) => Promise<{ success: number }>;
+      }) => Promise<SuccessResponse>;
       update: (params: {
         guid: string;
         property: string;
@@ -239,7 +223,7 @@ declare module "wikibase-edit" {
       remove: (params: {
         guid: string;
         hash: string | string[];
-      }) => Promise<{ success: number }>;
+      }) => Promise<SuccessResponse>;
     };
     sitelink: {
       set: (params: {
