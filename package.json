@@ -6,8 +6,10 @@
   "main": "lib/index.js",
   "files": [
     "assets",
-    "lib"
+    "lib",
+    "index.d.ts"
   ],
+  "types": "index.d.ts",
   "scripts": {
     "git-pre-commit": "./scripts/githooks/pre-commit",
     "lint": "eslint -c .eslintrc.cjs lib tests",
