@@ -9,6 +9,7 @@
 
 ## 7.0.0 - 2024-03-11
 **BREAKING CHANGE**: This minimal NodeJS version is now `>= v18.0.0` (to be able to use the standard `fetch` function)
+  ⚠️ This change was later reverted in `v7.2.3` to recover the possibility to use a custom http request agent
 * Add `config.credentials.browserSession` flag, to let `fetch` use credentials available in the browser as session cookies.
 
 ## 6.0.0 - 2023-07-16
