@@ -17,8 +17,8 @@
   "scripts": {
     "build": "tsc",
     "git-pre-commit": "./scripts/githooks/pre-commit",
-    "lint": "eslint -c .eslintrc.cjs lib tests",
-    "lint:fix": "eslint -c .eslintrc.cjs --fix lib tests",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "mocha $MOCHA_OPTIONS tests/unit/*.ts tests/unit/*/*.ts",
     "test:integration": "mocha $MOCHA_OPTIONS tests/integration/*.ts tests/integration/*/*.ts",
@@ -55,19 +55,26 @@
     "wikibase-sdk": "^10.1.0"
   },
   "devDependencies": {
+    "@eslint/config-helpers": "^0.3.0",
+    "@eslint/js": "^9.32.0",
+    "@stylistic/eslint-plugin": "^5.2.2",
     "@types/mocha": "^10.0.10",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
     "@vercel/git-hooks": "^1.0.0",
     "config": "^3.3.9",
-    "eslint": "^8.42.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-n": "^16.0.0",
-    "eslint-plugin-promise": "^6.1.1",
+    "eslint": "^9.34.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import-x": "^4.16.1",
+    "eslint-plugin-n": "^17.21.3",
+    "eslint-plugin-promise": "^7.2.1",
+    "globals": "^16.3.0",
     "mocha": "^10.2.0",
     "nock": "^13.3.1",
     "should": "^13.2.3",
     "tiny-chalk": "^3.0.2",
-    "tsx": "^4.20.4"
+    "tsx": "^4.20.4",
+    "typescript-eslint": "^8.40.0"
   },
   "engines": {
     "node": ">= 18"
