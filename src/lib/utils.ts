@@ -24,7 +24,7 @@ export const isPlainObject = obj => {
   return typeof obj === 'object'
 }
 export const isntEmpty = value => value != null
-export const flatten = arrays => [].concat.apply([], arrays)
+export const flatten = arrays => [].concat(...arrays)
 export const map = (obj, fn) => {
   const aggregator = (index, key) => {
     index[key] = fn(key, obj[key])

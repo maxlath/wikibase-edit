@@ -1,8 +1,8 @@
 import 'should'
 import config from 'config'
+import WBEdit from '#root'
 import { randomString } from '../unit/utils.js'
 import { getLastRevision } from './utils/utils.js'
-import WBEdit from '#root'
 
 const { wdCredentials: credentials } = config
 const sandboxEntityId = 'Q4115189'

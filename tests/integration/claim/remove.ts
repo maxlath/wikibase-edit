@@ -4,8 +4,8 @@ import { getSandboxPropertyId } from '#tests/integration/utils/sandbox_entities'
 import { addClaim } from '#tests/integration/utils/sandbox_snaks'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
-import { shouldNotBeCalled } from '../utils/utils.js'
 import WBEdit from '#root'
+import { shouldNotBeCalled } from '../utils/utils.js'
 
 const wbEdit = WBEdit(config)
 

@@ -85,7 +85,7 @@ const actionPost = async ({ action, data, config, authData }) => {
 }
 
 const mayBeSolvedByTokenRefresh = err => {
-  if (!(err && err.body && err.body.error)) return false
+  if (!(err?.body?.error)) return false
   const errorCode = err.body.error.code || ''
   return tokenErrors.includes(errorCode)
 }

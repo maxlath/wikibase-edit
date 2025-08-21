@@ -3,8 +3,8 @@ import config from 'config'
 import { simplify } from 'wikibase-sdk'
 import { getSandboxPropertyId, getReservedItemId } from '#tests/integration/utils/sandbox_entities'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { shouldNotBeCalled } from '../utils/utils.js'
 import WBEdit from '#root'
+import { shouldNotBeCalled } from '../utils/utils.js'
 
 const wbEdit = WBEdit(config)
 

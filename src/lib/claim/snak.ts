@@ -5,7 +5,7 @@ import { entityEditBuilders as builders } from './builders.js'
 
 export const buildSnak = (property, datatype, value, instance) => {
   value = value.value || value
-  if (value && value.snaktype && value.snaktype !== 'value') {
+  if (value?.snaktype && value.snaktype !== 'value') {
     return { snaktype: value.snaktype, property }
   }
   const builderDatatype = datatypesToBuilderDatatypes(datatype)

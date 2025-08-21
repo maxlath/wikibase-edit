@@ -1,12 +1,7 @@
 import fetch from 'cross-fetch'
 import { debug, debugMode } from '../debug.js'
 
-let isNode
-try {
-  isNode = process.versions.node != null
-} catch (err) {
-  isNode = false
-}
+const isNode = globalThis.process?.versions?.node != null
 
 let agent
 
@@ -14,7 +9,9 @@ if (isNode) {
   // Using a custom agent to set keepAlive=true
   // https://nodejs.org/api/http.html#http_class_http_agent
   // https://github.com/bitinn/node-fetch#custom-agent
+  // @ts-expect-error only valid in node context
   const http = await import('node:http')
+  // @ts-expect-error only valid in node context
   const https = await import('node:https')
   const httpAgent = new http.Agent({ keepAlive: true })
   const httpsAgent = new https.Agent({ keepAlive: true })

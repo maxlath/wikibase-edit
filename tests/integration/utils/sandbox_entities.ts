@@ -2,8 +2,8 @@ import config from 'config'
 import wbkFactory from 'wikibase-sdk'
 import { customFetch } from '#lib/request/fetch'
 import { randomString } from '#tests/unit/utils'
-import getProperty from './get_property.js'
 import WBEdit from '#root'
+import getProperty from './get_property.js'
 
 const wbk = wbkFactory({ instance: config.instance })
 const { getEntityIdFromGuid } = wbk

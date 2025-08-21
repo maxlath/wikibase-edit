@@ -1,12 +1,12 @@
 import 'should'
 import config from 'config'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import WBEdit from '#root'
 import { randomString } from '../unit/utils.js'
 import getProperty from './utils/get_property.js'
 import { getSandboxItem, getRefreshedEntity, getSandboxItemId, getSandboxPropertyId } from './utils/sandbox_entities.js'
 import { addClaim, addQualifier } from './utils/sandbox_snaks.js'
 import { shouldNotBeCalled } from './utils/utils.js'
-import WBEdit from '#root'
 
 const wbEdit = WBEdit(config)
 

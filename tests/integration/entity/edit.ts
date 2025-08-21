@@ -6,8 +6,8 @@ import { getSandboxItemId, getSandboxPropertyId, createItem } from '#tests/integ
 import { addClaim } from '#tests/integration/utils/sandbox_snaks'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
-import { getEntity } from '../utils/utils.js'
 import WBEdit from '#root'
+import { getEntity } from '../utils/utils.js'
 
 const wbEdit = WBEdit(config)
 

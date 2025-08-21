@@ -1,7 +1,7 @@
 import config from 'config'
 import { randomString } from '#tests/unit/utils'
-import { getSandboxItemId, getSandboxPropertyId, getSandboxClaimId } from './sandbox_entities.js'
 import WBEdit from '#root'
+import { getSandboxItemId, getSandboxPropertyId, getSandboxClaimId } from './sandbox_entities.js'
 
 const wbEdit = WBEdit(config)
 

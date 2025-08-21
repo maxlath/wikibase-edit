@@ -47,7 +47,8 @@ export const time = time => {
       }
       new Date(isoTime).toISOString()
     } catch (err) {
-      return false
+      if (err.name === 'RangeError') return false
+      else throw err
     }
   }
   if (precision != null && precision > 11) {

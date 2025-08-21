@@ -57,7 +57,7 @@ const formatClaim = (claims, properties, instance, reconciliation, existingClaim
   const values = forceArray(claims[property])
   obj[property] = obj[property] || []
   obj[property] = values.map(value => buildClaim(property, properties, value, instance))
-  if (existingClaims != null && existingClaims[property] != null) {
+  if (existingClaims?.[property] != null) {
     obj[property] = obj[property]
       .map(reconcileClaim(reconciliation, existingClaims[property]))
       .filter(isntEmpty)

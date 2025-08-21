@@ -39,6 +39,6 @@ const parseResponse = ({ entities, error }) => {
 
 const addMissingProperty = (entities, properties, instance) => propertyId => {
   const property = entities[propertyId]
-  if (!(property && property.datatype)) throw newError('property not found', { propertyId, instance })
+  if (!(property?.datatype)) throw newError('property not found', { propertyId, instance })
   properties[propertyId] = property.datatype
 }

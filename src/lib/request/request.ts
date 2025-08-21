@@ -83,7 +83,7 @@ const nonRecoverableFailedSaveMessageNames = new Set([
 
 const defaultRetryDelay = 5
 const getRetryDelay = headers => {
-  const retryAfterSeconds = headers && headers['retry-after']
+  const retryAfterSeconds = headers?.['retry-after']
   if (/^\d+$/.test(retryAfterSeconds)) return parseInt(retryAfterSeconds)
   else return defaultRetryDelay
 }

@@ -3,8 +3,8 @@ import config from 'config'
 import { getSandboxItemId } from '#tests/integration/utils/sandbox_entities'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
-import { undesiredRes } from './utils/utils.js'
 import WBEdit from '#root'
+import { undesiredRes } from './utils/utils.js'
 
 describe('maxlag', function () {
   this.timeout(120 * 1000)

@@ -39,7 +39,7 @@ const fullClaimBuilder = params => {
   }
 
   let claim
-  if (value && value.snaktype) {
+  if (value?.snaktype) {
     claimData.snaktype = snaktype = value.snaktype
   }
   if (hasSpecialSnaktype(claimData)) {

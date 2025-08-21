@@ -57,7 +57,7 @@ export default (generalConfig, requestConfig) => {
 }
 
 const checkType = (name, value, type) => {
-  if (typeof value !== type) { // eslint-disable-line valid-typeof
+  if (typeof value !== type) {
     throw newError(`invalid config ${name}`, { [name]: value, type: typeof summary })
   }
 }

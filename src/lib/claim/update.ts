@@ -30,7 +30,7 @@ export default async (params, config, API) => {
   let claim
   if (guid) {
     claim = findClaimByGuid(claims, guid)
-    property = claim && claim.mainsnak.property
+    property = claim?.mainsnak.property
   } else {
     claim = findSnak(property, claims[property], oldValue)
   }

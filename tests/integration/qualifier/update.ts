@@ -30,7 +30,7 @@ describe('qualifier update', function () {
     const oldValue = randomString()
     const newValue = randomString()
     addQualifier({ datatype: 'string', value: oldValue })
-    .then(({ guid, property, qualifier }) => {
+    .then(({ guid }) => {
       return updateQualifier({ guid, property: 'P999999', oldValue, newValue })
       .then(undesiredRes(done))
       .catch(err => {

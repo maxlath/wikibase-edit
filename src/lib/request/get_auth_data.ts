@@ -18,7 +18,7 @@ export default config => {
   }
 
   return params => {
-    if (params && params.refresh) return refreshToken(true)
+    if (params?.refresh) return refreshToken(true)
     else return tokenPromise || refreshToken()
   }
 }

@@ -56,4 +56,4 @@ const findClaim = (claims, guid) => {
   }
 }
 
-const getSnakValue = snak => snak.datavalue && snak.datavalue.value
+const getSnakValue = snak => snak.datavalue?.value

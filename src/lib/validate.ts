@@ -61,6 +61,7 @@ export const snakValue = (property, datatype, value) => {
 
   const builderDatatype = datatypesToBuilderDatatypes(datatype)
 
+  // eslint-disable-next-line import-x/namespace
   if (datatypeTests[builderDatatype] == null) {
     const context = { property, value, datatype, builderDatatype }
     const featureRequestMessage = inviteToOpenAFeatureRequest({
@@ -70,6 +71,7 @@ export const snakValue = (property, datatype, value) => {
     throw newError(`unsupported datatype: ${datatype}\n${featureRequestMessage}`, context)
   }
 
+  // eslint-disable-next-line import-x/namespace
   if (!datatypeTests[builderDatatype](value)) {
     throw newError(`invalid ${builderDatatype} value`, { property, value })
   }
@@ -107,7 +109,7 @@ export const hash = hash => {
   }
 }
 export const rank = rank => {
-  if (possibleRanks.indexOf(rank) === -1) {
+  if (!possibleRanks.includes(rank)) {
     throw newError('invalid rank', { rank })
   }
 }
