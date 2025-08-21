@@ -1,4 +1,4 @@
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import { stringifyQuery } from '../utils.js'
 import getJson from './get_json.js'
 import { getSignatureHeaders } from './oauth.js'
@@ -40,13 +40,13 @@ const parseTokens = async (loginCookies, instanceApiEndpoint, body) => {
   if (error) throw formatError(error, body, instanceApiEndpoint)
 
   if (!query?.tokens) {
-    throw error_.new('could not get tokens', { body })
+    throw newError('could not get tokens', { body })
   }
 
   const { csrftoken } = query.tokens
 
   if (csrftoken.length < 40) {
-    throw error_.new('invalid csrf token', { loginCookies, body })
+    throw newError('invalid csrf token', { loginCookies, body })
   }
 
   return {
@@ -56,7 +56,7 @@ const parseTokens = async (loginCookies, instanceApiEndpoint, body) => {
 }
 
 const formatError = (error, body, instanceApiEndpoint) => {
-  const err = error_.new(`${instanceApiEndpoint} error response: ${error.info}`, { body })
+  const err = newError(`${instanceApiEndpoint} error response: ${error.info}`, { body })
   Object.assign(err, error)
 
   if (error.code === 'mwoauth-invalid-authorization' && error['*'] != null) {

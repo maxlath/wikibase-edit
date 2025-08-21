@@ -1,10 +1,10 @@
 import { isEntityId } from 'wikibase-sdk'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 
 export default params => {
   const { id } = params
 
-  if (!isEntityId(id)) throw error_.new('invalid entity id', params)
+  if (!isEntityId(id)) throw newError('invalid entity id', params)
 
   return {
     action: 'delete',

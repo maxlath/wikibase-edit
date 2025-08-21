@@ -1,7 +1,7 @@
 import { isEntityId, isItemId } from 'wikibase-sdk'
 import parseCalendar from './claim/parse_calendar.js'
 import { parseUnit } from './claim/quantity.js'
-import error_ from './error.js'
+import { newError } from './error.js'
 import { isNonEmptyString, isNumber, isPlainObject, isStringNumber } from './utils.js'
 
 export const string = isNonEmptyString
@@ -17,10 +17,10 @@ export const time = time => {
     if (typeof precision === 'number' && (precision < 0 || precision > 14)) {
       return false
     }
-    if (precision > 11) throw error_.new('time precision not supported by the Wikibase API', dateObject)
+    if (precision > 11) throw newError('time precision not supported by the Wikibase API', dateObject)
     calendarmodel = calendarmodel || calendar
     if (calendarmodel && !parseCalendar(calendarmodel, time)) {
-      throw error_.new('invalid calendar', dateObject)
+      throw newError('invalid calendar', dateObject)
     }
   }
   time = time.toString()

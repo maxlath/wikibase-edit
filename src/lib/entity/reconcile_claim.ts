@@ -2,7 +2,7 @@ import isEqual from 'lodash.isequal'
 import { simplifyReferences, simplifySnak } from 'wikibase-sdk'
 import isMatchingClaim from '../claim/is_matching_claim.js'
 import isMatchingSnak from '../claim/is_matching_snak.js'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import validateReconciliationObject from './validate_reconciliation_object.js'
 
 export default (reconciliation, existingPropertyClaims) => claim => {
@@ -23,7 +23,7 @@ export default (reconciliation, existingPropertyClaims) => claim => {
     if (existingClaims.length > 0) {
       return existingClaims.map(({ id }) => ({ id, remove: true }))
     } else {
-      throw error_.new("can't remove claim: claim not found", claim)
+      throw newError("can't remove claim: claim not found", claim)
     }
   }
 
@@ -33,7 +33,7 @@ export default (reconciliation, existingPropertyClaims) => claim => {
     console.warn(`[wikibase-edit] skipping claim: a similar claim already exists\n${JSON.stringify({ claim, existingClaims })}`)
   } else if (mode === 'merge') {
     if (existingClaims.length > 1) {
-      throw error_.new('too many matching claims found', { claim, existingClaims })
+      throw newError('too many matching claims found', { claim, existingClaims })
     }
     const existingClaim = existingClaims[0]
 
@@ -53,7 +53,7 @@ export default (reconciliation, existingPropertyClaims) => claim => {
     }
     return existingClaim
   } else {
-    throw error_.new('unexpected reconciliation mode', 500, { reconciliation })
+    throw newError('unexpected reconciliation mode', 500, { reconciliation })
   }
 }
 

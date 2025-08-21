@@ -14,7 +14,7 @@ import createEntity from './entity/create.js'
 import deleteEntity from './entity/delete.js'
 import editEntity from './entity/edit.js'
 import mergeEntity from './entity/merge.js'
-import error_ from './error.js'
+import { newError } from './error.js'
 import setLabel from './label/set.js'
 import moveQualifier from './qualifier/move.js'
 import removeQualifier from './qualifier/remove.js'
@@ -84,7 +84,7 @@ const bundledRequestsBuilders = {
 
 export default function WBEdit (generalConfig = {}) {
   if (typeof generalConfig !== 'object') {
-    throw error_.new('invalid general config object', { generalConfig, type: typeof generalConfig })
+    throw newError('invalid general config object', { generalConfig, type: typeof generalConfig })
   }
 
   const API = {}

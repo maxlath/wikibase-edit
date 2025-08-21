@@ -1,4 +1,4 @@
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import { buildUrl, wait } from '../utils.js'
 import request from './request.js'
 
@@ -77,7 +77,7 @@ const actionPost = async ({ action, data, config, authData }) => {
   const body = await request('post', params)
   if (body.error) {
     const errMessage = `action=${action} error: ${body.error.info}`
-    const err = error_.new(errMessage, { params, body })
+    const err = newError(errMessage, { params, body })
     err.body = body
     throw err
   }

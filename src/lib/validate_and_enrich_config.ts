@@ -1,5 +1,5 @@
 import { name, version, homepage } from '../assets/metadata.js'
-import error_ from './error.js'
+import { newError } from './error.js'
 import parseInstance from './parse_instance.js'
 import { forceArray } from './utils.js'
 
@@ -15,19 +15,19 @@ export default (generalConfig, requestConfig) => {
   }
 
   parseInstance(config)
-  if (config.instance == null) throw error_.new('invalid config object', { config })
+  if (config.instance == null) throw newError('invalid config object', { config })
 
   config.anonymous = config.anonymous === true
 
-  if (!config.credentials && !config.anonymous) throw error_.new('missing credentials', { config })
+  if (!config.credentials && !config.anonymous) throw newError('missing credentials', { config })
 
   if (config.credentials) {
     if (!config.credentials.oauth && !config.credentials.browserSession && (!config.credentials.username || !config.credentials.password)) {
-      throw error_.new('missing credentials')
+      throw newError('missing credentials')
     }
 
     if (config.credentials.oauth && (config.credentials.username || config.credentials.password)) {
-      throw error_.new('credentials can not be both oauth tokens, and a username and password')
+      throw newError('credentials can not be both oauth tokens, and a username and password')
     }
 
     // Making sure that the 'bot' flag was explicitly set to true
@@ -58,6 +58,6 @@ export default (generalConfig, requestConfig) => {
 
 const checkType = (name, value, type) => {
   if (typeof value !== type) { // eslint-disable-line valid-typeof
-    throw error_.new(`invalid config ${name}`, { [name]: value, type: typeof summary })
+    throw newError(`invalid config ${name}`, { [name]: value, type: typeof summary })
   }
 }

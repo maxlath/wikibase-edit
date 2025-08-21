@@ -1,10 +1,10 @@
-import error_ from '../error.js'
+import { newError } from '../error.js'
 
 export default async (params, config, API) => {
   const { id, property, value, qualifiers, references, rank, reconciliation } = params
   const { statementsKey } = config
 
-  if (value == null) throw error_.new('missing value', 400, params)
+  if (value == null) throw newError('missing value', 400, params)
 
   const claim = { rank, qualifiers, references }
   if (value.snaktype && value.snaktype !== 'value') {

@@ -1,16 +1,16 @@
 import { isPropertyId } from 'wikibase-sdk'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 
 export default (reconciliation, claim) => {
-  if (typeof reconciliation !== 'object') throw error_.new('reconciliation should be an object', { reconciliation })
+  if (typeof reconciliation !== 'object') throw newError('reconciliation should be an object', { reconciliation })
   for (const key of Object.keys(reconciliation)) {
     if (!validReconciliationKeys.includes(key)) {
-      throw error_.new('invalid reconciliation object key', { key, reconciliation, validReconciliationKeys })
+      throw newError('invalid reconciliation object key', { key, reconciliation, validReconciliationKeys })
     }
   }
   const { mode, matchingQualifiers, matchingReferences } = reconciliation
   if (!claim.remove && !validReconciliationModes.includes(mode)) {
-    throw error_.new('invalid reconciliation mode', { mode, validReconciliationModes })
+    throw newError('invalid reconciliation mode', { mode, validReconciliationModes })
   }
 
   validateMatchingPropertyArray('matchingQualifiers', matchingQualifiers)
@@ -20,15 +20,15 @@ export default (reconciliation, claim) => {
 const validateMatchingPropertyArray = (name, array) => {
   if (array) {
     if (!(array instanceof Array)) {
-      throw error_.new(`invalid ${name} array`, { [name]: array })
+      throw newError(`invalid ${name} array`, { [name]: array })
     }
     for (const id of array) {
       const [ pid, option ] = id.split(':')
       if (!isPropertyId(pid)) {
-        throw error_.new(`invalid ${name} property id`, { property: pid })
+        throw newError(`invalid ${name} property id`, { property: pid })
       }
       if (option && !validOptions.includes(option)) {
-        throw error_.new(`invalid ${name} property id option: ${option}`, { id, pid, option })
+        throw newError(`invalid ${name} property id option: ${option}`, { id, pid, option })
       }
     }
   }

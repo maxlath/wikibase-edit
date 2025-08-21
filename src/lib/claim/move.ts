@@ -1,5 +1,5 @@
 import { isGuid, isEntityId, isPropertyId, getEntityIdFromGuid } from 'wikibase-sdk'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import formatClaimValue from './format_claim_value.js'
 import { findClaimByGuid } from './helpers.js'
@@ -13,21 +13,21 @@ export default async (params, config, API) => {
   let originEntityId, originPropertyId
 
   if (guid) {
-    if (!isGuid(guid)) throw error_.new('invalid claim guid', 400, params)
+    if (!isGuid(guid)) throw newError('invalid claim guid', 400, params)
     originEntityId = getEntityIdFromGuid(guid)
   } else if (propertyClaimsId) {
     ([ originEntityId, originPropertyId ] = propertyClaimsId.split('#'))
     if (!(isEntityId(originEntityId) && isPropertyId(originPropertyId))) {
-      throw error_.new('invalid property claims id', 400, params)
+      throw newError('invalid property claims id', 400, params)
     }
   } else {
-    throw error_.new('missing claim guid or property claims id', 400, params)
+    throw newError('missing claim guid or property claims id', 400, params)
   }
 
-  if (!targetEntityId) throw error_.new('missing target entity id', 400, params)
-  if (!isEntityId(targetEntityId)) throw error_.new('invalid target entity id', 400, params)
+  if (!targetEntityId) throw newError('missing target entity id', 400, params)
+  if (!isEntityId(targetEntityId)) throw newError('invalid target entity id', 400, params)
 
-  if (!targetPropertyId) throw error_.new('missing property id', 400, params)
+  if (!targetPropertyId) throw newError('missing property id', 400, params)
   const propertyDatatype = config.properties[targetPropertyId]
 
   const claims = await getEntityClaims(originEntityId, config)
@@ -35,16 +35,16 @@ export default async (params, config, API) => {
   let movedClaims
   if (guid) {
     const claim = findClaimByGuid(claims, guid)
-    if (!claim) throw error_.new('claim not found', 400, params)
+    if (!claim) throw newError('claim not found', 400, params)
     originPropertyId = claim.mainsnak.property
     movedClaims = [ claim ]
   } else {
     movedClaims = claims[originPropertyId]
-    if (!movedClaims) throw error_.new('no property claims found', 400, params)
+    if (!movedClaims) throw newError('no property claims found', 400, params)
   }
 
   if (originEntityId === targetEntityId && originPropertyId === targetPropertyId && newValue == null) {
-    throw error_.new("move operation wouldn't have any effect: same entity, same property", 400, params)
+    throw newError("move operation wouldn't have any effect: same entity, same property", 400, params)
   }
 
   const { datatype: currentPropertyDatatype } = movedClaims[0].mainsnak
@@ -82,7 +82,7 @@ export default async (params, config, API) => {
     const res = await API.entity.edit(currentEntityData, config)
     return [ res ]
   } else {
-    if (baserevid) throw error_.new('commands editing multiple entities can not have a baserevid', 400, params)
+    if (baserevid) throw newError('commands editing multiple entities can not have a baserevid', 400, params)
     const targetEntityData = {
       rawMode: true,
       id: targetEntityId,

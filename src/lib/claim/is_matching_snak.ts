@@ -1,5 +1,5 @@
 import { simplifySnak } from 'wikibase-sdk'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import { inviteToOpenAFeatureRequest } from '../issues.js'
 import { isPlainObject, isString } from '../utils.js'
 import { parseUnit } from './quantity.js'
@@ -19,7 +19,7 @@ export default (existingSnak, searchedValue) => {
       title: `claim reconciliation: add support for ${datatype} datatype`,
       context,
     })
-    throw error_.new(`unsupported datatype: ${datatype}\n${featureRequestMessage}`, context)
+    throw newError(`unsupported datatype: ${datatype}\n${featureRequestMessage}`, context)
   }
   return comparatorsByDatatype[datatype](existingSnak, searchedValue)
 }

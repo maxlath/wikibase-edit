@@ -1,5 +1,5 @@
 import { isGuid, getEntityIdFromGuid } from 'wikibase-sdk'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import findSnak from './find_snak.js'
 import { findClaimByGuid, isGuidClaim, simplifyClaimForEdit } from './helpers.js'
@@ -10,7 +10,7 @@ export default async (params, config, API) => {
   const { statementsKey } = config
 
   if (!(rank != null || newValue != null)) {
-    throw error_.new('expected a rank or a newValue', 400, params)
+    throw newError('expected a rank or a newValue', 400, params)
   }
 
   if (isGuid(guid)) {
@@ -18,10 +18,10 @@ export default async (params, config, API) => {
   } else {
     const values = { oldValue, newValue }
     if (oldValue === newValue) {
-      throw error_.new("old and new claim values can't be the same", 400, values)
+      throw newError("old and new claim values can't be the same", 400, values)
     }
     if (typeof oldValue !== typeof newValue) {
-      throw error_.new('old and new claim should have the same type', 400, values)
+      throw newError('old and new claim should have the same type', 400, values)
     }
   }
 
@@ -36,7 +36,7 @@ export default async (params, config, API) => {
   }
 
   if (!claim) {
-    throw error_.new('claim not found', 400, params)
+    throw newError('claim not found', 400, params)
   }
 
   const simplifiedClaim = simplifyClaimForEdit(claim)

@@ -1,32 +1,32 @@
 import { isGuid, isPropertyId, isHash, getEntityIdFromGuid } from 'wikibase-sdk'
 import { findClaimByGuid } from '../claim/helpers.js'
 import { propertiesDatatypesDontMatch } from '../claim/move_commons.js'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 
 export default async (params, config, API) => {
   const { guid, oldProperty, newProperty, hash } = params
 
-  if (!guid) throw error_.new('missing claim guid', 400, params)
-  if (!isGuid(guid)) throw error_.new('invalid claim guid', 400, params)
+  if (!guid) throw newError('missing claim guid', 400, params)
+  if (!isGuid(guid)) throw newError('invalid claim guid', 400, params)
 
-  if (!oldProperty) throw error_.new('missing old property', 400, params)
-  if (!isPropertyId(oldProperty)) throw error_.new('invalid old property', 400, params)
+  if (!oldProperty) throw newError('missing old property', 400, params)
+  if (!isPropertyId(oldProperty)) throw newError('invalid old property', 400, params)
 
-  if (!newProperty) throw error_.new('missing new property', 400, params)
-  if (!isPropertyId(newProperty)) throw error_.new('invalid new property', 400, params)
+  if (!newProperty) throw newError('missing new property', 400, params)
+  if (!isPropertyId(newProperty)) throw newError('invalid new property', 400, params)
 
-  if (hash != null && !isHash(hash)) throw error_.new('invalid hash', 400, params)
+  if (hash != null && !isHash(hash)) throw newError('invalid hash', 400, params)
 
   const currentEntityId = getEntityIdFromGuid(guid)
   const claims = await getEntityClaims(currentEntityId, config)
   const claim = findClaimByGuid(claims, guid)
 
-  if (!claim) throw error_.new('claim not found', 400, params)
+  if (!claim) throw newError('claim not found', 400, params)
 
   if (!claim.qualifiers[oldProperty]) {
     params.foundQualifiers = Object.keys(claim.qualifiers)
-    throw error_.new('no qualifiers found for this property', 400, params)
+    throw newError('no qualifiers found for this property', 400, params)
   }
 
   const originDatatype = config.properties[oldProperty]
@@ -48,7 +48,7 @@ export default async (params, config, API) => {
     const qualifier = claim.qualifiers[oldProperty].find(findByHash(hash))
     if (!qualifier) {
       params.foundHashes = claim.qualifiers[oldProperty].map(qualifier => qualifier.hash)
-      throw error_.new('qualifier not found', 400, params)
+      throw newError('qualifier not found', 400, params)
     }
     recoverDatatypesMismatch([ qualifier ])
     claim.qualifiers[newProperty] = claim.qualifiers[newProperty] || []

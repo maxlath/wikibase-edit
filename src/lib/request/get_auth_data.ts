@@ -1,4 +1,4 @@
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import GetToken from './get_token.js'
 
 export default config => {
@@ -10,7 +10,7 @@ export default config => {
   const refreshToken = refresh => {
     const now = Date.now()
     if (!refresh && now - lastTokenRefresh < 5000) {
-      throw error_.new("last token refreshed less than 10 seconds ago: won't retry", { config })
+      throw newError("last token refreshed less than 10 seconds ago: won't retry", { config })
     }
     lastTokenRefresh = now
     tokenPromise = getToken()

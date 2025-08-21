@@ -1,4 +1,4 @@
-import error_ from './error.js'
+import { newError } from './error.js'
 import WBK from './get_instance_wikibase_sdk.js'
 import getJson from './request/get_json.js'
 
@@ -9,7 +9,7 @@ const getEntity = async (id, props, config) => {
   const { entities } = await getJson(url, { headers })
   const entity = entities[id]
   if (!entity || entity.missing != null) {
-    throw error_.new('entity not found', { id, props, instance: config.instance })
+    throw newError('entity not found', { id, props, instance: config.instance })
   }
   return entity
 }

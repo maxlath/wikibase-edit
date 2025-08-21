@@ -1,4 +1,4 @@
-import error_ from './error.js'
+import { newError } from './error.js'
 import fetchUsedPropertiesDatatypes from './properties/fetch_used_properties_datatypes.js'
 import initializeConfigAuth from './request/initialize_config_auth.js'
 import post from './request/post.js'
@@ -14,7 +14,7 @@ export default (fn, generalConfig) => async (params, reqConfig) => {
 
   await fetchUsedPropertiesDatatypes(params, config)
 
-  if (!config.properties) throw error_.new('properties not found', config)
+  if (!config.properties) throw newError('properties not found', config)
 
   const { action, data } = await fn(params, config.properties, config.instance, config)
 

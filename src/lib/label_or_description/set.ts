@@ -1,4 +1,4 @@
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import * as validate from '../validate.js'
 
 export default name => params => {
@@ -8,7 +8,7 @@ export default name => params => {
 
   validate.entity(id)
   validate.language(language)
-  if (value === undefined) throw error_.new(`missing ${name}`, params)
+  if (value === undefined) throw newError(`missing ${name}`, params)
   if (value === null) value = ''
 
   return {

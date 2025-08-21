@@ -1,5 +1,5 @@
 import { simplifySnak } from 'wikibase-sdk'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import { parseQuantity } from './quantity.js'
 
 const issuesUrl = 'https://github.com/maxlath/wikibase-edit/issues'
@@ -17,7 +17,7 @@ export const propertiesDatatypesDontMatch = params => {
         } catch (err) {
           const errMessage = `properties datatype don't match and ${typeConverterKey} type conversion failed: ${err.message}`
           params.failingSnak = snak
-          const customErr = error_.new(errMessage, 400, params)
+          const customErr = newError(errMessage, 400, params)
           customErr.cause = err
           throw customErr
         }
@@ -28,7 +28,7 @@ export const propertiesDatatypesDontMatch = params => {
     No ${typeConverterKey} type converter found
     If you think that should be possible, please open a ticket:
     ${issuesUrl}/new?template=feature_request.md&title=${encodeURIComponent(`claim.move: add a ${typeConverterKey} type converter`)}&body=%20`
-    throw error_.new(errMessage, 400, params)
+    throw newError(errMessage, 400, params)
   }
 }
 

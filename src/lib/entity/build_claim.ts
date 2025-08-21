@@ -1,7 +1,7 @@
 import { entityEditBuilders as builders } from '../claim/builders.js'
 import { buildReference, buildPropSnaks } from '../claim/snak.js'
 import { hasSpecialSnaktype } from '../claim/special_snaktype.js'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import datatypesToBuilderDatatypes from '../properties/datatypes_to_builder_datatypes.js'
 import { isString, isNumber, isPlainObject, map, forceArray } from '../utils.js'
 import * as validate from '../validate.js'
@@ -17,7 +17,7 @@ export default (property, properties, claimData, instance) => {
   if (isString(claimData) || isNumber(claimData)) {
     return simpleClaimBuilder(params)
   } else {
-    if (!isPlainObject(claimData)) throw error_.new('invalid claim data', { property, claimData })
+    if (!isPlainObject(claimData)) throw newError('invalid claim data', { property, claimData })
     return fullClaimBuilder(params)
   }
 }
@@ -34,7 +34,7 @@ const fullClaimBuilder = params => {
   let { id, value, snaktype, rank, qualifiers, references, remove, reconciliation } = claimData
 
   if (remove === true) {
-    if (!(id || reconciliation)) throw error_.new("can't remove a claim without an id or reconciliation settings", claimData)
+    if (!(id || reconciliation)) throw newError("can't remove a claim without an id or reconciliation settings", claimData)
     if (id) return { id, remove: true }
   }
 
@@ -111,7 +111,7 @@ const validClaimParametersSet = new Set(validClaimParameters)
 const validateClaimParameters = claimData => {
   for (const key in claimData) {
     if (!validClaimParametersSet.has(key)) {
-      throw error_.new(`invalid claim parameter: ${key}`, { claimData, validClaimParameters })
+      throw newError(`invalid claim parameter: ${key}`, { claimData, validClaimParameters })
     }
   }
 }

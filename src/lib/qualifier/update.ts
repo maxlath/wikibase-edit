@@ -1,6 +1,6 @@
 import { getEntityIdFromGuid } from 'wikibase-sdk'
 import findSnak from '../claim/find_snak.js'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { flatten, values } from '../utils.js'
 import * as validate from '../validate.js'
@@ -15,7 +15,7 @@ export default async (params, config, API) => {
   validate.snakValue(property, datatype, newValue)
 
   if (oldValue === newValue) {
-    throw error_.new('same value', 400, oldValue, newValue)
+    throw newError('same value', 400, oldValue, newValue)
   }
 
   // Get current value snak hash
@@ -35,8 +35,8 @@ const getSnakHash = async (guid, property, oldValue, config) => {
   const claims = await getEntityClaims(entityId, config)
   const claim = findClaim(claims, guid)
 
-  if (!claim) throw error_.new('claim not found', 400, guid)
-  if (!claim.qualifiers) throw error_.new('claim qualifiers not found', 400, guid)
+  if (!claim) throw newError('claim not found', 400, guid)
+  if (!claim.qualifiers) throw newError('claim qualifiers not found', 400, guid)
 
   const propSnaks = claim.qualifiers[property]
 
@@ -44,7 +44,7 @@ const getSnakHash = async (guid, property, oldValue, config) => {
 
   if (!qualifier) {
     const actualValues = propSnaks ? propSnaks.map(getSnakValue) : null
-    throw error_.new('qualifier not found', 400, { guid, property, expectedValue: oldValue, actualValues })
+    throw newError('qualifier not found', 400, { guid, property, expectedValue: oldValue, actualValues })
   }
   return qualifier.hash
 }

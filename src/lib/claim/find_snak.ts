@@ -1,4 +1,4 @@
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import isMatchingSnak from './is_matching_snak.js'
 
 export default (property, propSnaks, searchedValue) => {
@@ -10,5 +10,5 @@ export default (property, propSnaks, searchedValue) => {
   if (matchingSnaks.length === 1) return matchingSnaks[0]
 
   const context = { property, propSnaks, searchedValue }
-  throw error_.new('snak not found: too many matching snaks', 400, context)
+  throw newError('snak not found: too many matching snaks', 400, context)
 }

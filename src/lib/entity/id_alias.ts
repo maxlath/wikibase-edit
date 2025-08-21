@@ -1,5 +1,5 @@
 import { WBK, isPropertyId } from 'wikibase-sdk'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import request from '../request/request.js'
 import { isNonEmptyString } from '../utils.js'
 
@@ -20,5 +20,5 @@ export const resolveIdAlias = async (idAlias, instance) => {
   const res = await request('get', { url })
   const ids = res.query.search.map(result => result.title)
   if (ids.length === 1) return ids[0]
-  else throw error_.new('id alias could not be resolved', 400, { idAlias, instance, foundIds: ids })
+  else throw newError('id alias could not be resolved', 400, { idAlias, instance, foundIds: ids })
 }

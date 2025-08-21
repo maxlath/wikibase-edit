@@ -1,4 +1,4 @@
-import error_ from './error.js'
+import { newError } from './error.js'
 import fetchUsedPropertiesDatatypes from './properties/fetch_used_properties_datatypes.js'
 import validateAndEnrichConfig from './validate_and_enrich_config.js'
 
@@ -9,10 +9,10 @@ export default (fn, generalConfig, API) => async (params, reqConfig) => {
   return fn(params, config, API)
 }
 
-const validateParams = params => {
+function validateParams (params) {
   for (const parameter in params) {
     if (!validParametersKeysSet.has(parameter)) {
-      throw error_.new(`invalid parameter: ${parameter}`, { parameter, validParametersKeys })
+      throw newError(`invalid parameter: ${parameter}`, { parameter, validParametersKeys })
     }
   }
 }

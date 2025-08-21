@@ -1,4 +1,4 @@
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import { stringifyQuery } from '../utils.js'
 import { customFetch } from './fetch.js'
 import parseResponseBody from './parse_response_body.js'
@@ -44,17 +44,17 @@ const getSessionCookies = async (loginUrl, config, headers, loginCookies) => {
 
   const resBody = await parseResponseBody(res)
   if (resBody.login.result !== 'Success') {
-    throw error_.new('failed to login: invalid username/password')
+    throw newError('failed to login: invalid username/password')
   }
 
   const resCookies = res.headers.get('set-cookie')
 
   if (!resCookies) {
-    throw error_.new('login error', res.statusCode, { body: resBody })
+    throw newError('login error', res.statusCode, { body: resBody })
   }
 
   if (!sessionCookiePattern.test(resCookies)) {
-    throw error_.new('invalid login cookies', { cookies: resCookies })
+    throw newError('invalid login cookies', { cookies: resCookies })
   }
 
   return parseSessionCookies(resCookies)

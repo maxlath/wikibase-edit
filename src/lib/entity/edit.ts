@@ -1,5 +1,5 @@
 import { isEntityId } from 'wikibase-sdk'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { forceArray } from '../utils.js'
 import * as format from './format.js'
@@ -14,22 +14,22 @@ export default async (data, properties, instance, config) => {
   let existingClaims
 
   if (type && type !== 'property' && type !== 'item') {
-    throw error_.new('invalid entity type', { type })
+    throw newError('invalid entity type', { type })
   }
 
   const statements = data.claims || data.statements
 
   if (create) {
     if (type === 'property') {
-      if (!datatype) throw error_.new('missing property datatype', { datatype })
+      if (!datatype) throw newError('missing property datatype', { datatype })
       if (!datatypes.has(datatype)) {
-        throw error_.new('invalid property datatype', { datatype, knownDatatypes: datatypes })
+        throw newError('invalid property datatype', { datatype, knownDatatypes: datatypes })
       }
       params.new = 'property'
       params.data.datatype = datatype
     } else {
       if (datatype) {
-        throw error_.new("an item can't have a datatype", { datatype })
+        throw newError("an item can't have a datatype", { datatype })
       }
       params.new = 'item'
     }
@@ -42,7 +42,7 @@ export default async (data, properties, instance, config) => {
       existingClaims = await getEntityClaims(id, config)
     }
   } else {
-    throw error_.new('invalid entity id', { id })
+    throw newError('invalid entity id', { id })
   }
 
   const { labels, aliases, descriptions, sitelinks } = data
@@ -64,7 +64,7 @@ export default async (data, properties, instance, config) => {
   if (clear === true) params.clear = true
 
   if (!clear && Object.keys(params.data).length === 0) {
-    throw error_.new('no data was passed', { id })
+    throw newError('no data was passed', { id })
   }
 
   // stringify as it will be passed as form data
@@ -107,7 +107,7 @@ const allowedParameters = new Set([
 const validateParameters = data => {
   for (const parameter in data) {
     if (!allowedParameters.has(parameter)) {
-      throw error_.new(`invalid parameter: ${parameter}`, 400, { parameter, allowedParameters, data })
+      throw newError(`invalid parameter: ${parameter}`, 400, { parameter, allowedParameters, data })
     }
   }
 }

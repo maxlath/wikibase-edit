@@ -1,4 +1,4 @@
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import { isString, forceArray, isntEmpty, flatten } from '../utils.js'
 import * as validate from '../validate.js'
 import buildClaim from './build_claim.js'
@@ -29,7 +29,7 @@ export const values = (name, values) => {
   return obj
 }
 export const claims = (claims, properties, instance, reconciliation, existingClaims) => {
-  if (!properties) throw error_.new('expected properties')
+  if (!properties) throw newError('expected properties')
   return Object.keys(claims)
   .reduce(formatClaim(claims, properties, instance, reconciliation, existingClaims), {})
 }
@@ -51,8 +51,8 @@ export const sitelinks = sitelinks => {
 export const badges = formatBadgesArray
 
 const formatClaim = (claims, properties, instance, reconciliation, existingClaims) => (obj, property) => {
-  if (!properties) throw error_.new('expected properties')
-  if (!instance) throw error_.new('expected instance')
+  if (!properties) throw newError('expected properties')
+  if (!instance) throw newError('expected instance')
   validate.property(property)
   const values = forceArray(claims[property])
   obj[property] = obj[property] || []
@@ -103,7 +103,7 @@ const validateReconciledClaims = propertyClaims => {
     const { id } = claim
     if (id) {
       if (claimsByGuid[id] != null) {
-        throw error_.new('can not match several times the same claim', { claim })
+        throw newError('can not match several times the same claim', { claim })
       } else {
         claimsByGuid[id] = claim
       }

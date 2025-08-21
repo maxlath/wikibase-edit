@@ -1,5 +1,5 @@
 import { isPropertyId } from 'wikibase-sdk'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import WBK from '../get_instance_wikibase_sdk.js'
 import getJson from '../request/get_json.js'
 
@@ -9,7 +9,7 @@ export default async (config, propertyIds = []) => {
   let { instance, properties } = config
 
   propertyIds.forEach(propertyId => {
-    if (!isPropertyId(propertyId)) throw error_.new('invalid property id', { propertyId })
+    if (!isPropertyId(propertyId)) throw newError('invalid property id', { propertyId })
   })
 
   if (!properties) {
@@ -33,12 +33,12 @@ export default async (config, propertyIds = []) => {
 const notIn = object => key => object[key] == null
 
 const parseResponse = ({ entities, error }) => {
-  if (error) throw error_.new(error.info, 400, error)
+  if (error) throw newError(error.info, 400, error)
   return entities
 }
 
 const addMissingProperty = (entities, properties, instance) => propertyId => {
   const property = entities[propertyId]
-  if (!(property && property.datatype)) throw error_.new('property not found', { propertyId, instance })
+  if (!(property && property.datatype)) throw newError('property not found', { propertyId, instance })
   properties[propertyId] = property.datatype
 }

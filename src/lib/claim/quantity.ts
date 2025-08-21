@@ -1,5 +1,5 @@
 import { isItemId } from 'wikibase-sdk'
-import error_ from '../error.js'
+import { newError } from '../error.js'
 import { isPlainObject, isSignedStringNumber, isString, isStringNumber } from '../utils.js'
 
 const itemUnitPattern = /^http.*\/entity\/(Q\d+)$/
@@ -30,6 +30,6 @@ const forceHttp = instance => instance.replace('https:', 'http:')
 
 const validateNumber = (label, num) => {
   if (isString(num) && !isStringNumber(num)) {
-    throw error_.new('invalid string number', { [label]: num })
+    throw newError('invalid string number', { [label]: num })
   }
 }
