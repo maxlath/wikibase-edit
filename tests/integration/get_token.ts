@@ -1,7 +1,7 @@
 import config from 'config'
 import should from 'should'
 import GetToken from '#lib/request/get_token'
-import validateAndEnrichConfig from '#lib/validate_and_enrich_config'
+import { validateAndEnrichConfig } from '#lib/validate_and_enrich_config'
 import { undesiredRes, isBotPassword, shouldNotBeCalled } from '#tests/integration/utils/utils'
 
 const { instance, credentials, credentialsAlt } = config

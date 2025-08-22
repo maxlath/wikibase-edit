@@ -1,5 +1,5 @@
 import 'should'
-import deleteEntity from '#lib/entity/delete'
+import { deleteEntity } from '#lib/entity/delete'
 import { someEntityId as id } from '#tests/unit/utils'
 
 describe('entity delete', () => {

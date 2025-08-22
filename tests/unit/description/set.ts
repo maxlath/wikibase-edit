@@ -1,5 +1,5 @@
 import 'should'
-import setDescription from '#lib/description/set'
+import { setDescription } from '#lib/description/set'
 import { randomString, someEntityId } from '#tests/unit/utils'
 
 const language = 'fr'

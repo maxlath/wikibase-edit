@@ -1,5 +1,5 @@
 import 'should'
-import setClaim from '#lib/claim/set'
+import { setClaim } from '#lib/claim/set'
 import { guid, sandboxStringProp as property, properties } from '#tests/unit/utils'
 
 describe('claim set', () => {

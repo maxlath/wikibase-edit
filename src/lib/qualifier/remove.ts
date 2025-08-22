@@ -1,7 +1,7 @@
 import { isArray } from '../utils.js'
 import * as validate from '../validate.js'
 
-export default params => {
+export function removeQualifier (params) {
   let { guid, hash } = params
   validate.guid(guid)
 

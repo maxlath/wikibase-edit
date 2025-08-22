@@ -1,3 +1,3 @@
 import setLabelOrDescriptionFactory from '../label_or_description/set.js'
 
-export default setLabelOrDescriptionFactory('label')
+export const setLabel = setLabelOrDescriptionFactory('label')

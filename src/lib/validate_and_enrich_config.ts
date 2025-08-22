@@ -3,7 +3,7 @@ import { newError } from './error.js'
 import parseInstance from './parse_instance.js'
 import { forceArray } from './utils.js'
 
-export default (generalConfig, requestConfig) => {
+export function validateAndEnrichConfig (generalConfig, requestConfig) {
   generalConfig.userAgent = generalConfig.userAgent || `${name}/v${version} (${homepage})`
 
   let config

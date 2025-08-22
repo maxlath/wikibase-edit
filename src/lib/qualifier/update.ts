@@ -5,7 +5,7 @@ import { getEntityClaims } from '../get_entity.js'
 import { flatten, values } from '../utils.js'
 import * as validate from '../validate.js'
 
-export default async (params, config, API) => {
+export async function updateQualifier (params, config, API) {
   const { guid, property, oldValue, newValue } = params
 
   validate.guid(guid)

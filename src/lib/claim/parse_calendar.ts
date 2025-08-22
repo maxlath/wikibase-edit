@@ -6,16 +6,18 @@ const calendarAliases = {
   gregorian,
   Q1985727: gregorian,
   Q1985786: julian,
-}
+} as const
 
-export default (calendar, wikidataTimeString) => {
+export type CalendarAlias = keyof typeof calendarAliases
+
+export function parseCalendar (calendar: string, wikidataTimeString: string) {
   if (!calendar) return getDefaultCalendar(wikidataTimeString)
   const normalizedCalendar = calendar.replace(wdUrlBase, '')
   return calendarAliases[normalizedCalendar]
 }
 
-const getDefaultCalendar = wikidataTimeString => {
-  if (wikidataTimeString[0] === '-') return julian
+function getDefaultCalendar (wikidataTimeString: string) {
+  if (wikidataTimeString.startsWith('-')) return julian
   const [ year ] = wikidataTimeString
     .replace('+', '')
     .split('-')

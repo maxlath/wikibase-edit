@@ -1,5 +1,5 @@
 import 'should'
-import removeQualifier from '#lib/qualifier/remove'
+import { removeQualifier } from '#lib/qualifier/remove'
 import { guid, hash } from '#tests/unit/utils'
 
 describe('qualifier remove', () => {

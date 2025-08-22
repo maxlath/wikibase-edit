@@ -1,13 +1,13 @@
 import { newError } from '../error.js'
 import GetToken from './get_token.js'
 
-export default config => {
+export function getAuthDataFactory (config) {
   const getToken = GetToken(config)
 
   let tokenPromise
   let lastTokenRefresh = 0
 
-  const refreshToken = refresh => {
+  function refreshToken (refresh: boolean) {
     const now = Date.now()
     if (!refresh && now - lastTokenRefresh < 5000) {
       throw newError("last token refreshed less than 10 seconds ago: won't retry", { config })
@@ -17,7 +17,7 @@ export default config => {
     return tokenPromise
   }
 
-  return params => {
+  return function getAuthData (params) {
     if (params?.refresh) return refreshToken(true)
     else return tokenPromise || refreshToken()
   }

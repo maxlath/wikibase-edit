@@ -1,7 +1,7 @@
 import config from 'config'
 import should from 'should'
-import GetAuthData from '#lib/request/get_auth_data'
-import validateAndEnrichConfig from '#lib/validate_and_enrich_config'
+import { getAuthDataFactory } from '#lib/request/get_auth_data'
+import { validateAndEnrichConfig } from '#lib/validate_and_enrich_config'
 import { isBotPassword } from '#tests/integration/utils/utils'
 
 const { instance, credentials, credentialsAlt } = config
@@ -13,7 +13,7 @@ describe('get auth data', function () {
 
   it('should get token from username and password', async () => {
     const config = validateAndEnrichConfig({ instance, credentials: { username, password } })
-    const getAuthData = GetAuthData(config)
+    const getAuthData = getAuthDataFactory(config)
     getAuthData.should.be.a.Function()
     const { token, cookie } = await getAuthData()
     token.length.should.equal(42)
@@ -25,14 +25,14 @@ describe('get auth data', function () {
 
   it('should get token from oauth', async () => {
     const config = validateAndEnrichConfig({ instance, credentials })
-    const getAuthData = GetAuthData(config)
+    const getAuthData = getAuthDataFactory(config)
     const { token } = await getAuthData()
     token.length.should.equal(42)
   })
 
   it('should return the same data when called before the token expired', async () => {
     const config = validateAndEnrichConfig({ instance, credentials })
-    const getAuthData = GetAuthData(config)
+    const getAuthData = getAuthDataFactory(config)
     const dataA = await getAuthData()
     const dataB = await getAuthData()
     dataA.should.equal(dataB)
@@ -41,7 +41,7 @@ describe('get auth data', function () {
 
   it('should return refresh data if requested', async () => {
     const config = validateAndEnrichConfig({ instance, credentials })
-    const getAuthData = GetAuthData(config)
+    const getAuthData = getAuthDataFactory(config)
     const dataA = await getAuthData()
     const dataB = await getAuthData({ refresh: true })
     dataA.should.not.equal(dataB)

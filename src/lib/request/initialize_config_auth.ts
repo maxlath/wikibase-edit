@@ -1,4 +1,4 @@
-import GetAuthData from './get_auth_data.js'
+import { getAuthDataFactory } from './get_auth_data.js'
 
 export default config => {
   if (!config) throw new Error('missing config')
@@ -10,7 +10,7 @@ export default config => {
   // Generate the function only once per credentials
   if (credentials._getAuthData && credentialsKey === credentials._credentialsKey) return
 
-  credentials._getAuthData = GetAuthData(config)
+  credentials._getAuthData = getAuthDataFactory(config)
   credentials._credentialsKey = credentialsKey
 }
 

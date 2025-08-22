@@ -1,12 +1,14 @@
 import { newError } from './error.js'
 import fetchUsedPropertiesDatatypes from './properties/fetch_used_properties_datatypes.js'
-import validateAndEnrichConfig from './validate_and_enrich_config.js'
+import { validateAndEnrichConfig } from './validate_and_enrich_config.js'
 
-export default (fn, generalConfig, API) => async (params, reqConfig) => {
-  validateParams(params)
-  const config = validateAndEnrichConfig(generalConfig, reqConfig)
-  await fetchUsedPropertiesDatatypes(params, config)
-  return fn(params, config, API)
+export function bundleWrapper (fn, generalConfig, API) {
+  return async function (params, reqConfig) {
+    validateParams(params)
+    const config = validateAndEnrichConfig(generalConfig, reqConfig)
+    await fetchUsedPropertiesDatatypes(params, config)
+    return fn(params, config, API)
+  }
 }
 
 function validateParams (params) {

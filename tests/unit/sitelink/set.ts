@@ -1,5 +1,5 @@
 import should from 'should'
-import setSitelink from '#lib/sitelink/set'
+import { setSitelink } from '#lib/sitelink/set'
 import { shouldNotBeCalled } from '#tests/integration/utils/utils'
 
 describe('set sitelink', () => {

@@ -1,5 +1,5 @@
 import 'should'
-import removeReference from '#lib/reference/remove'
+import { removeReference } from '#lib/reference/remove'
 import { guid, hash } from '#tests/unit/utils'
 
 describe('reference remove', () => {

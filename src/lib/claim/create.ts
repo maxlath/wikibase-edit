@@ -1,6 +1,6 @@
 import { newError } from '../error.js'
 
-export default async (params, config, API) => {
+export async function createClaim (params, config, API) {
   const { id, property, value, qualifiers, references, rank, reconciliation } = params
   const { statementsKey } = config
 

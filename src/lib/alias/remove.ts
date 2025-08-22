@@ -1,3 +1,3 @@
 import actionFactory from './action.js'
 
-export default actionFactory('remove')
+export const removeAlias = actionFactory('remove')

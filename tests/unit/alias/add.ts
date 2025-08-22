@@ -1,5 +1,5 @@
 import 'should'
-import addAlias from '#lib/alias/add'
+import { addAlias } from '#lib/alias/add'
 import { randomString, someEntityId } from '#tests/unit/utils'
 
 const language = 'it'

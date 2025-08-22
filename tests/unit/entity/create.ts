@@ -1,6 +1,6 @@
 import 'should'
 import config from 'config'
-import _createEntity from '#lib/entity/create'
+import { createEntity as _createEntity } from '#lib/entity/create'
 import { shouldNotBeCalled } from '#tests/integration/utils/utils'
 import { randomString, properties } from '#tests/unit/utils'
 
@@ -61,7 +61,7 @@ describe('entity create', async () => {
               snaktype: 'value',
               datavalue: {
                 type: 'wikibase-entityid',
-                value: { 'entity-type': 'item', 'numeric-id': 166376 },
+                value: { id: 'Q166376', 'entity-type': 'item' },
               },
             },
           },

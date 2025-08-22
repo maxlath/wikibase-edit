@@ -1,5 +1,5 @@
 import 'should'
-import setLabel from '#lib/label/set'
+import { setLabel } from '#lib/label/set'
 import { randomString, someEntityId } from '#tests/unit/utils'
 
 const language = 'fr'

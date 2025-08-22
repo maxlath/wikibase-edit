@@ -5,7 +5,7 @@ import { forceArray } from '../utils.js'
 import * as validate from '../validate.js'
 import isMatchingClaim from './is_matching_claim.js'
 
-export default async (params, properties, instance, config) => {
+export async function removeClaim (params, properties, instance, config) {
   let { guid } = params
   const { id, property, value, qualifiers, reconciliation = {} } = params
   if (!(guid || (id && property && value))) {

@@ -2,7 +2,7 @@ import * as validate from '../validate.js'
 import formatClaimValue from './format_claim_value.js'
 import { buildSnak } from './snak.js'
 
-export default (params, properties, instance) => {
+export function setClaim (params, properties, instance) {
   const { guid, property, value: rawValue } = params
   const datatype = properties[property]
 

@@ -1,5 +1,5 @@
 import 'should'
-import getTimeObject from '#lib/claim/get_time_object'
+import { getTimeObject } from '#lib/claim/get_time_object'
 
 describe('claim time', () => {
   it('should parse year without precision', () => {

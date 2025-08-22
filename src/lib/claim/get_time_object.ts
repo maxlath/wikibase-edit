@@ -1,7 +1,13 @@
 import { isPlainObject } from '../utils.js'
-import parseCalendar from './parse_calendar.js'
+import { parseCalendar, type CalendarAlias } from './parse_calendar.js'
+import type { TimeSnakDataValue } from 'wikibase-sdk'
 
-export default value => {
+type TimeSnakDataValueValue = TimeSnakDataValue['value']
+export interface CustomTimeSnakDataValueValue extends TimeSnakDataValueValue {
+  calendar: CalendarAlias
+}
+
+export function getTimeObject (value: CustomTimeSnakDataValueValue | string | number) {
   let time, precision, calendar, calendarmodel, timezone, before, after
   if (isPlainObject(value)) {
     ({ time, precision, calendar, calendarmodel, timezone, before, after } = value)
@@ -21,7 +27,7 @@ export default value => {
   return getPrecisionTimeObject(timeStringBase, precision, calendarmodel, timezone, before, after)
 }
 
-const getTimeStringBase = (time, precision) => {
+function getTimeStringBase (time: string, precision: number) {
   if (precision > 10) return time
   if (precision === 10) {
     if (time.match(/^-?\d+-\d+$/)) return time + '-00'
@@ -39,12 +45,12 @@ const getTimeStringBase = (time, precision) => {
 // 2018 (year): 9
 // 2018-03 (month): 10
 // 2018-03-03 (day): 11
-const getPrecision = time => {
+function getPrecision (time: string) {
   const unsignedTime = time.replace(/^-/, '')
   return unsignedTime.split('-').length + 8
 }
 
-const getPrecisionTimeObject = (time, precision, calendarmodel, timezone = 0, before = 0, after = 0) => {
+function getPrecisionTimeObject (time: string, precision: number, calendarmodel?: string, timezone = 0, before = 0, after = 0) {
   const sign = time[0]
 
   // The Wikidata API expects signed years

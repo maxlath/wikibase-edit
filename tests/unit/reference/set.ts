@@ -1,5 +1,5 @@
 import 'should'
-import setReference from '#lib/reference/set'
+import { setReference } from '#lib/reference/set'
 import { guid, properties, hash } from '#tests/unit/utils'
 
 describe('reference set', () => {
@@ -58,7 +58,7 @@ describe('reference set', () => {
     const params = { guid, snaks }
     setReference(params, properties).data.should.deepEqual({
       statement: guid,
-      snaks: '[{"property":"P2","snaktype":"value","datavalue":{"type":"wikibase-entityid","value":{"entity-type":"item","numeric-id":1}}},{"property":"P7","snaktype":"value","datavalue":{"type":"string","value":"http://foo.bar"}},{"snaktype":"somevalue","property":"P7"}]',
+      snaks: '[{"property":"P2","snaktype":"value","datavalue":{"type":"wikibase-entityid","value":{"id":"Q1","entity-type":"item"}}},{"property":"P7","snaktype":"value","datavalue":{"type":"string","value":"http://foo.bar"}},{"snaktype":"somevalue","property":"P7"}]',
     })
   })
 

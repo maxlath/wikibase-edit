@@ -1,6 +1,6 @@
 import 'should'
 import config from 'config'
-import _editEntity from '#lib/entity/edit'
+import { editEntity as _editEntity } from '#lib/entity/edit'
 import { shouldNotBeCalled } from '#tests/integration/utils/utils'
 import { randomString, someEntityId as id, properties } from '#tests/unit/utils'
 
@@ -88,8 +88,8 @@ describe('entity edit', () => {
               datavalue: {
                 type: 'wikibase-entityid',
                 value: {
+                  id: 'Q3576110',
                   'entity-type': 'item',
-                  'numeric-id': 3576110,
                 },
               },
             },
@@ -133,7 +133,7 @@ describe('entity edit', () => {
             snaktype: 'value',
             datavalue: {
               type: 'wikibase-entityid',
-              value: { 'entity-type': 'item', 'numeric-id': 5111731 },
+              value: { 'entity-type': 'item', id: 'Q5111731' },
             },
           },
           qualifiers: {
@@ -150,7 +150,7 @@ describe('entity edit', () => {
                 snaktype: 'value',
                 datavalue: {
                   type: 'wikibase-entityid',
-                  value: { 'entity-type': 'item', 'numeric-id': 13406268 },
+                  value: { 'entity-type': 'item', id: 'Q13406268' },
                 },
               },
             ],
@@ -164,7 +164,7 @@ describe('entity edit', () => {
             snaktype: 'value',
             datavalue: {
               type: 'wikibase-entityid',
-              value: { 'entity-type': 'item', 'numeric-id': 2622002 },
+              value: { 'entity-type': 'item', id: 'Q2622002' },
             },
           },
           qualifiers: {
@@ -423,7 +423,7 @@ describe('entity edit', () => {
           snaktype: 'value',
           datavalue: {
             type: 'wikibase-entityid',
-            value: { 'entity-type': 'item', 'numeric-id': 8447 },
+            value: { 'entity-type': 'item', id: 'Q8447' },
           },
         },
       ])

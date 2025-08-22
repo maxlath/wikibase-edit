@@ -2,7 +2,7 @@
 import * as format from '../entity/format.js'
 import * as validate from '../validate.js'
 
-export default ({ id, site, title, badges }) => {
+export function setSitelink ({ id, site, title, badges }) {
   validate.entity(id)
   validate.site(site)
   validate.siteTitle(title)

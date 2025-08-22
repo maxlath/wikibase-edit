@@ -4,7 +4,7 @@ import { propertiesDatatypesDontMatch } from '../claim/move_commons.js'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 
-export default async (params, config, API) => {
+export async function moveQualifier (params, config, API) {
   const { guid, oldProperty, newProperty, hash } = params
 
   if (!guid) throw newError('missing claim guid', 400, params)

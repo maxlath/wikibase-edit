@@ -6,7 +6,7 @@ import { getEntitySitelinks } from '../get_entity.js'
 import { difference } from '../utils.js'
 import * as validate from '../validate.js'
 
-export default async (params, config, API) => {
+export async function removeBadge (params, config, API) {
   let { id, site, badges } = params
   validate.entity(id)
   validate.site(site)

@@ -1,3 +1,3 @@
 import actionFactory from './action.js'
 
-export default actionFactory('add')
+export const addAlias = actionFactory('add')

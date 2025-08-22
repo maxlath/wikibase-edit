@@ -1,7 +1,7 @@
 import { buildSnak, buildReference } from '../claim/snak.js'
 import * as validate from '../validate.js'
 
-export default (params, properties) => {
+export function setReference (params, properties) {
   const { guid, property, value, hash } = params
   let { snaks } = params
   if (snaks) {

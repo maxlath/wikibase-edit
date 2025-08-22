@@ -1,5 +1,5 @@
 import 'should'
-import removeClaim from '#lib/claim/remove'
+import { removeClaim } from '#lib/claim/remove'
 import { guid, guid2 } from '#tests/unit/utils'
 
 describe('claim remove', () => {

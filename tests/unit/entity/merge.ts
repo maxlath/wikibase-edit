@@ -1,5 +1,5 @@
 import 'should'
-import mergeEntity from '#lib/entity/merge'
+import { mergeEntity } from '#lib/entity/merge'
 
 describe('entity merge', () => {
   describe('items', () => {

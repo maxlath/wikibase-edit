@@ -5,7 +5,7 @@ import { forceArray } from '../utils.js'
 import * as format from './format.js'
 import { isIdAliasPattern, resolveIdAlias } from './id_alias.js'
 
-export default async (data, properties, instance, config) => {
+export async function editEntity (data, properties, instance, config) {
   validateParameters(data)
 
   let { id } = data

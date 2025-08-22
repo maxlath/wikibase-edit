@@ -6,7 +6,7 @@ import { findClaimByGuid } from './helpers.js'
 import { propertiesDatatypesDontMatch } from './move_commons.js'
 import { buildSnak } from './snak.js'
 
-export default async (params, config, API) => {
+export async function moveClaim (params, config, API) {
   const { guid, propertyClaimsId, id: targetEntityId, property: targetPropertyId, newValue, baserevid } = params
   const { instance } = config
 

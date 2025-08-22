@@ -1,5 +1,5 @@
 import { isEntityId, isItemId } from 'wikibase-sdk'
-import parseCalendar from './claim/parse_calendar.js'
+import { parseCalendar } from './claim/parse_calendar.js'
 import { parseUnit } from './claim/quantity.js'
 import { newError } from './error.js'
 import { isNonEmptyString, isNumber, isPlainObject, isStringNumber } from './utils.js'

@@ -1,7 +1,7 @@
-import snakPostData from '../claim/snak_post_data.js'
+import { snakPostData, type SnakPostDataParams } from '../claim/snak_post_data.js'
 import * as validate from '../validate.js'
 
-export default (params, properties, instance) => {
+export function setQualifier (params, properties, instance) {
   const { guid, hash, property, value } = params
 
   validate.guid(guid)
@@ -9,7 +9,7 @@ export default (params, properties, instance) => {
   const datatype = properties[property]
   validate.snakValue(property, datatype, value)
 
-  const data = {
+  const data: SnakPostDataParams['data'] = {
     claim: guid,
     property,
   }

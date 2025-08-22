@@ -1,7 +1,7 @@
 import { isEntityId } from 'wikibase-sdk'
 import { newError } from '../error.js'
 
-export default params => {
+export function deleteEntity (params) {
   const { id } = params
 
   if (!isEntityId(id)) throw newError('invalid entity id', params)

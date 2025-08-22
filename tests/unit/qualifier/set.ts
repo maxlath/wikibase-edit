@@ -1,6 +1,6 @@
 import 'should'
 import config from 'config'
-import _setQualifier from '#lib/qualifier/set'
+import { setQualifier as _setQualifier } from '#lib/qualifier/set'
 import { guid, hash, properties } from '#tests/unit/utils'
 
 const { instance } = config

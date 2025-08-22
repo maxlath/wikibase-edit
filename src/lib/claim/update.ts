@@ -4,7 +4,7 @@ import { getEntityClaims } from '../get_entity.js'
 import findSnak from './find_snak.js'
 import { findClaimByGuid, isGuidClaim, simplifyClaimForEdit } from './helpers.js'
 
-export default async (params, config, API) => {
+export async function updateClaim (params, config, API) {
   let { id, guid, property } = params
   const { oldValue, newValue, rank } = params
   const { statementsKey } = config

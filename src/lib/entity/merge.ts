@@ -1,7 +1,7 @@
 import { isEntityId, isItemId } from 'wikibase-sdk'
 import { newError } from '../error.js'
 
-export default params => {
+export function mergeEntity (params) {
   const { from, to } = params
 
   if (!isEntityId(from)) throw newError('invalid "from" entity id', params)

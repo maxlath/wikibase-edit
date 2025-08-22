@@ -1,31 +1,31 @@
-import addAlias from './alias/add.js'
-import removeAlias from './alias/remove.js'
-import setAlias from './alias/set.js'
-import addBadge from './badge/add.js'
-import removeBadge from './badge/remove.js'
-import bundleWrapper from './bundle_wrapper.js'
-import createClaim from './claim/create.js'
-import moveClaim from './claim/move.js'
-import removeClaim from './claim/remove.js'
-import setClaim from './claim/set.js'
-import updateClaim from './claim/update.js'
-import setDescription from './description/set.js'
-import createEntity from './entity/create.js'
-import deleteEntity from './entity/delete.js'
-import editEntity from './entity/edit.js'
-import mergeEntity from './entity/merge.js'
+import { addAlias } from './alias/add.js'
+import { removeAlias } from './alias/remove.js'
+import { setAlias } from './alias/set.js'
+import { addBadge } from './badge/add.js'
+import { removeBadge } from './badge/remove.js'
+import { bundleWrapper } from './bundle_wrapper.js'
+import { createClaim } from './claim/create.js'
+import { moveClaim } from './claim/move.js'
+import { removeClaim } from './claim/remove.js'
+import { setClaim } from './claim/set.js'
+import { updateClaim } from './claim/update.js'
+import { setDescription } from './description/set.js'
+import { createEntity } from './entity/create.js'
+import { deleteEntity } from './entity/delete.js'
+import { editEntity } from './entity/edit.js'
+import { mergeEntity } from './entity/merge.js'
 import { newError } from './error.js'
-import setLabel from './label/set.js'
-import moveQualifier from './qualifier/move.js'
-import removeQualifier from './qualifier/remove.js'
-import setQualifier from './qualifier/set.js'
-import updateQualifier from './qualifier/update.js'
-import removeReference from './reference/remove.js'
-import setReference from './reference/set.js'
-import GetAuthData from './request/get_auth_data.js'
-import requestWrapper from './request_wrapper.js'
-import setSitelink from './sitelink/set.js'
-import validateAndEnrichConfig from './validate_and_enrich_config.js'
+import { setLabel } from './label/set.js'
+import { moveQualifier } from './qualifier/move.js'
+import { removeQualifier } from './qualifier/remove.js'
+import { setQualifier } from './qualifier/set.js'
+import { updateQualifier } from './qualifier/update.js'
+import { removeReference } from './reference/remove.js'
+import { setReference } from './reference/set.js'
+import { getAuthDataFactory } from './request/get_auth_data.js'
+import { requestWrapper } from './request_wrapper.js'
+import { setSitelink } from './sitelink/set.js'
+import { validateAndEnrichConfig } from './validate_and_enrich_config.js'
 
 // Primitives: sync or async functions that return an { action, params } object
 //             passed to request.post by requestWrapper
@@ -106,7 +106,7 @@ export default function WBEdit (generalConfig = {}) {
 
   API.getAuthData = reqConfig => {
     const config = validateAndEnrichConfig(generalConfig, reqConfig)
-    return GetAuthData(config)
+    return getAuthDataFactory(config)
   }
 
   // Legacy aliases

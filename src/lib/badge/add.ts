@@ -4,7 +4,7 @@ import { getEntitySitelinks } from '../get_entity.js'
 import { uniq } from '../utils.js'
 import * as validate from '../validate.js'
 
-export default async (params, config, API) => {
+export async function addBadge (params, config, API) {
   let { id, site, badges } = params
   validate.entity(id)
   validate.site(site)
