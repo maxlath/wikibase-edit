@@ -1,3 +1,4 @@
+import { merge } from 'lodash-es'
 import { addAlias } from './alias/add.js'
 import { removeAlias } from './alias/remove.js'
 import { setAlias } from './alias/set.js'
@@ -26,94 +27,74 @@ import { getAuthDataFactory } from './request/get_auth_data.js'
 import { requestWrapper } from './request_wrapper.js'
 import { setSitelink } from './sitelink/set.js'
 import { validateAndEnrichConfig } from './validate_and_enrich_config.js'
-import type { GeneralConfig } from './types/config.js'
-
-// Primitives: sync or async functions that return an { action, params } object
-//             passed to request.post by requestWrapper
-const rawRequestBuilders = {
-  label: {
-    set: setLabel,
-  },
-  description: {
-    set: setDescription,
-  },
-  alias: {
-    set: setAlias,
-    add: addAlias,
-    remove: removeAlias,
-  },
-  claim: {
-    set: setClaim,
-    remove: removeClaim,
-  },
-  qualifier: {
-    set: setQualifier,
-    remove: removeQualifier,
-  },
-  reference: {
-    set: setReference,
-    remove: removeReference,
-  },
-  entity: {
-    create: createEntity,
-    edit: editEntity,
-    merge: mergeEntity,
-    delete: deleteEntity,
-  },
-  sitelink: {
-    set: setSitelink,
-  },
-  badge: {},
-}
-
-// Bundles: async functions that make use of the primitives to offer more sophisticated behaviors
-const bundledRequestsBuilders = {
-  claim: {
-    create: createClaim,
-    update: updateClaim,
-    move: moveClaim,
-  },
-  qualifier: {
-    update: updateQualifier,
-    move: moveQualifier,
-  },
-  badge: {
-    add: addBadge,
-    remove: removeBadge,
-  },
-}
+import type { GeneralConfig, RequestConfig } from './types/config.js'
 
 export default function WBEdit (generalConfig: GeneralConfig) {
   if (typeof generalConfig !== 'object') {
     throw newError('invalid general config object', { generalConfig, type: typeof generalConfig })
   }
 
-  const API = {}
+  // Primitives: sync or async functions that return an { action, params } object
+  //             passed to request.post by requestWrapper
+  const primaryAPI = {
+    label: {
+      set: requestWrapper(setLabel, generalConfig),
+    },
+    description: {
+      set: requestWrapper(setDescription, generalConfig),
+    },
+    alias: {
+      set: requestWrapper(setAlias, generalConfig),
+      add: requestWrapper(addAlias, generalConfig),
+      remove: requestWrapper(removeAlias, generalConfig),
+    },
+    claim: {
+      set: requestWrapper(setClaim, generalConfig),
+      remove: requestWrapper(removeClaim, generalConfig),
+    },
+    qualifier: {
+      set: requestWrapper(setQualifier, generalConfig),
+      remove: requestWrapper(removeQualifier, generalConfig),
+    },
+    reference: {
+      set: requestWrapper(setReference, generalConfig),
+      remove: requestWrapper(removeReference, generalConfig),
+    },
+    entity: {
+      create: requestWrapper(createEntity, generalConfig),
+      edit: requestWrapper(editEntity, generalConfig),
+      merge: requestWrapper(mergeEntity, generalConfig),
+      delete: requestWrapper(deleteEntity, generalConfig),
+    },
+    sitelink: {
+      set: requestWrapper(setSitelink, generalConfig),
+    },
+    badge: {},
+  } as const
 
-  for (const sectionKey in rawRequestBuilders) {
-    API[sectionKey] = {}
-    for (const functionName in rawRequestBuilders[sectionKey]) {
-      const fn = rawRequestBuilders[sectionKey][functionName]
-      API[sectionKey][functionName] = requestWrapper(fn, generalConfig)
-    }
+  // Bundles: async functions that make use of the primitives to offer more sophisticated behaviors
+  const secondaryAPI = {
+    claim: {
+      create: bundleWrapper(createClaim, generalConfig, primaryAPI),
+      update: bundleWrapper(updateClaim, generalConfig, primaryAPI),
+      move: bundleWrapper(moveClaim, generalConfig, primaryAPI),
+    },
+    qualifier: {
+      update: bundleWrapper(updateQualifier, generalConfig, primaryAPI),
+      move: bundleWrapper(moveQualifier, generalConfig, primaryAPI),
+    },
+    badge: {
+      add: bundleWrapper(addBadge, generalConfig, primaryAPI),
+      remove: bundleWrapper(removeBadge, generalConfig, primaryAPI),
+    },
+  } as const
+
+  return {
+    ...merge(primaryAPI, secondaryAPI),
+
+    getAuthData (reqConfig: RequestConfig) {
+      const config = validateAndEnrichConfig(generalConfig, reqConfig)
+      return getAuthDataFactory(config)
+    },
   }
-
-  for (const sectionKey in bundledRequestsBuilders) {
-    for (const functionName in bundledRequestsBuilders[sectionKey]) {
-      const fn = bundledRequestsBuilders[sectionKey][functionName]
-      API[sectionKey][functionName] = bundleWrapper(fn, generalConfig, API)
-    }
-  }
-
-  API.getAuthData = reqConfig => {
-    const config = validateAndEnrichConfig(generalConfig, reqConfig)
-    return getAuthDataFactory(config)
-  }
-
-  // Legacy aliases
-  API.claim.add = API.claim.create
-  API.qualifier.add = API.qualifier.set
-  API.reference.add = API.reference.set
-
-  return API
 }
