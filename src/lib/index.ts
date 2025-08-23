@@ -11,24 +11,28 @@ import { removeClaim } from './claim/remove.js'
 import { setClaim } from './claim/set.js'
 import { updateClaim } from './claim/update.js'
 import { setDescription } from './description/set.js'
-import { createEntity } from './entity/create.js'
-import { deleteEntity } from './entity/delete.js'
-import { editEntity } from './entity/edit.js'
-import { mergeEntity } from './entity/merge.js'
+import { createEntity, type CreateEntityParams, type CreateEntityResponse } from './entity/create.js'
+import { deleteEntity, type DeleteEntityParams, type DeleteEntityResponse } from './entity/delete.js'
+import { editEntity, type EditEntityParams, type EditEntityResponse } from './entity/edit.js'
+import { mergeEntity, type MergeEntityParams, type MergeEntityResponse } from './entity/merge.js'
 import { newError } from './error.js'
 import { setLabel } from './label/set.js'
 import { moveQualifier } from './qualifier/move.js'
-import { removeQualifier } from './qualifier/remove.js'
-import { setQualifier } from './qualifier/set.js'
+import { removeQualifier, type RemoveQualifierParams, type RemoveQualifierResponse } from './qualifier/remove.js'
+import { setQualifier, type SetQualifierParams, type SetQualifierResponse } from './qualifier/set.js'
 import { updateQualifier } from './qualifier/update.js'
-import { removeReference } from './reference/remove.js'
-import { setReference } from './reference/set.js'
+import { removeReference, type RemoveReferenceParams, type RemoveReferenceResponse } from './reference/remove.js'
+import { setReference, type SetReferenceParams, type SetReferenceResponse } from './reference/set.js'
 import { getAuthDataFactory } from './request/get_auth_data.js'
 import { requestWrapper } from './request_wrapper.js'
-import { setSitelink } from './sitelink/set.js'
+import { setSitelink, type SetSitelinkParams, type SetSitelinkResponse } from './sitelink/set.js'
 import { validateAndEnrichConfig } from './validate_and_enrich_config.js'
+import type { AliasActionResponse } from './alias/action.js'
 import type { GeneralConfig, RequestConfig } from './types/config.js'
 
+/**
+ * See https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#config
+ */
 export default function WBEdit (generalConfig: GeneralConfig) {
   if (typeof generalConfig !== 'object') {
     throw newError('invalid general config object', { generalConfig, type: typeof generalConfig })
@@ -44,30 +48,30 @@ export default function WBEdit (generalConfig: GeneralConfig) {
       set: requestWrapper(setDescription, generalConfig),
     },
     alias: {
-      set: requestWrapper(setAlias, generalConfig),
-      add: requestWrapper(addAlias, generalConfig),
-      remove: requestWrapper(removeAlias, generalConfig),
+      set: requestWrapper<AliasActionResponse>(setAlias, generalConfig),
+      add: requestWrapper<AliasActionResponse>(addAlias, generalConfig),
+      remove: requestWrapper<AliasActionResponse>(removeAlias, generalConfig),
     },
     claim: {
       set: requestWrapper(setClaim, generalConfig),
       remove: requestWrapper(removeClaim, generalConfig),
     },
     qualifier: {
-      set: requestWrapper(setQualifier, generalConfig),
-      remove: requestWrapper(removeQualifier, generalConfig),
+      set: requestWrapper<SetQualifierParams, SetQualifierResponse>(setQualifier, generalConfig),
+      remove: requestWrapper<RemoveQualifierParams, RemoveQualifierResponse>(removeQualifier, generalConfig),
     },
     reference: {
-      set: requestWrapper(setReference, generalConfig),
-      remove: requestWrapper(removeReference, generalConfig),
+      set: requestWrapper<SetReferenceParams, SetReferenceResponse>(setReference, generalConfig),
+      remove: requestWrapper<RemoveReferenceParams, RemoveReferenceResponse>(removeReference, generalConfig),
     },
     entity: {
-      create: requestWrapper(createEntity, generalConfig),
-      edit: requestWrapper(editEntity, generalConfig),
-      merge: requestWrapper(mergeEntity, generalConfig),
-      delete: requestWrapper(deleteEntity, generalConfig),
+      create: requestWrapper<CreateEntityParams, CreateEntityResponse>(createEntity, generalConfig),
+      edit: requestWrapper<EditEntityParams, EditEntityResponse>(editEntity, generalConfig),
+      merge: requestWrapper<MergeEntityParams, MergeEntityResponse>(mergeEntity, generalConfig),
+      delete: requestWrapper<DeleteEntityParams, DeleteEntityResponse>(deleteEntity, generalConfig),
     },
     sitelink: {
-      set: requestWrapper(setSitelink, generalConfig),
+      set: requestWrapper<SetSitelinkParams, SetSitelinkResponse>(setSitelink, generalConfig),
     },
     badge: {},
   } as const
@@ -98,3 +102,5 @@ export default function WBEdit (generalConfig: GeneralConfig) {
     },
   }
 }
+
+export type WikibaseEditAPI = ReturnType<typeof WBEdit>

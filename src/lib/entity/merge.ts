@@ -1,5 +1,10 @@
-import { isEntityId, isItemId } from 'wikibase-sdk'
+import { isEntityId, isItemId, type EntityId } from 'wikibase-sdk'
 import { newError } from '../error.js'
+
+export interface MergeEntityParams {
+  from: EntityId
+  to: EntityId
+}
 
 export function mergeEntity (params) {
   const { from, to } = params
@@ -14,4 +19,11 @@ export function mergeEntity (params) {
     action: 'wbmergeitems',
     data: { fromid: from, toid: to },
   }
+}
+
+export interface MergeEntityResponse {
+  success: 1
+  redirected: 1
+  from: { id: EntityId }
+  to: { id: EntityId }
 }

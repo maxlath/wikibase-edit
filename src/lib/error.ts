@@ -1,4 +1,4 @@
-export type ErrorContext = Record<string, unknown>
+export type ErrorContext = object
 
 interface ContextualizedError extends Error {
   statusCode?: number

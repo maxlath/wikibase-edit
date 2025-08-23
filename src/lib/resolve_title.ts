@@ -4,10 +4,11 @@
 
 import { isEntityId } from 'wikibase-sdk'
 import getJson from './request/get_json.js'
+import type { AbsoluteUrl } from './types/common.js'
 
 let prefixesMapPromise
 
-export default async (title, instanceApiEndpoint) => {
+export async function resolveTitle (title: string, instanceApiEndpoint: AbsoluteUrl) {
   if (!isEntityId(title)) return
   prefixesMapPromise = prefixesMapPromise || getPrefixesMap(instanceApiEndpoint)
   const prefixesMap = await prefixesMapPromise

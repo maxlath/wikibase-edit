@@ -5,8 +5,16 @@ import { newError } from '../error.js'
 import { getEntitySitelinks } from '../get_entity.js'
 import { difference } from '../utils.js'
 import * as validate from '../validate.js'
+import type { SerializedConfig } from '../types/config.js'
+import type { EntityId, ItemId } from 'wikibase-sdk'
 
-export async function removeBadge (params, config, API) {
+export interface RemoveBadgeParams {
+  id: EntityId
+  site: string
+  badges: ItemId | ItemId[]
+}
+
+export async function removeBadge (params: RemoveBadgeParams, config: SerializedConfig, API) {
   let { id, site, badges } = params
   validate.entity(id)
   validate.site(site)

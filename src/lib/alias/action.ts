@@ -1,5 +1,5 @@
 import * as validate from '../validate.js'
-import type { EntityId, WikimediaLanguageCode } from 'wikibase-sdk'
+import type { Aliases, EntityId, EntityType, WikimediaLanguageCode } from 'wikibase-sdk'
 
 export interface AliasActionParams {
   id: EntityId
@@ -21,4 +21,15 @@ export function actionFactory (action: 'add' | 'remove' | 'set') {
 
     return { action: 'wbsetaliases', data }
   }
+}
+
+export interface AliasActionResponse {
+  entity: {
+    aliases: Aliases
+    id: EntityId
+    type: EntityType
+    lastrevid: number
+    nochange?: ''
+  }
+  success: 1
 }

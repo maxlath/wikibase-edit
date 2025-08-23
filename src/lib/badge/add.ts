@@ -3,8 +3,17 @@ import { newError } from '../error.js'
 import { getEntitySitelinks } from '../get_entity.js'
 import { uniq } from '../utils.js'
 import * as validate from '../validate.js'
+import type { WikibaseEditAPI } from '../index.js'
+import type { SerializedConfig } from '../types/config.js'
+import type { EntityId, ItemId } from 'wikibase-sdk'
 
-export async function addBadge (params, config, API) {
+export interface AddBadgeParams {
+  id: EntityId
+  site: string
+  badges: ItemId | ItemId[]
+}
+
+export async function addBadge (params: AddBadgeParams, config: SerializedConfig, API: WikibaseEditAPI) {
   let { id, site, badges } = params
   validate.entity(id)
   validate.site(site)

@@ -1,5 +1,5 @@
 import { entityEditBuilders as builders } from '../claim/builders.js'
-import { buildReference, buildPropSnaks } from '../claim/snak.js'
+import { buildReferenceFactory, buildPropSnaksFactory } from '../claim/snak.js'
 import { hasSpecialSnaktype } from '../claim/special_snaktype.js'
 import { newError } from '../error.js'
 import datatypesToBuilderDatatypes from '../properties/datatypes_to_builder_datatypes.js'
@@ -64,11 +64,11 @@ const fullClaimBuilder = params => {
   }
 
   if (qualifiers) {
-    claim.qualifiers = map(qualifiers, buildPropSnaks(properties, instance))
+    claim.qualifiers = map(qualifiers, buildPropSnaksFactory(properties, instance))
   }
 
   if (references) {
-    claim.references = forceArray(references).map(buildReference(properties, instance))
+    claim.references = forceArray(references).map(buildReferenceFactory(properties, instance))
   }
 
   if (reconciliation) claim.reconciliation = reconciliation

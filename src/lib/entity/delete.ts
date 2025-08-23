@@ -1,5 +1,9 @@
-import { isEntityId } from 'wikibase-sdk'
+import { isEntityId, type EntityId, type EntityPageTitle } from 'wikibase-sdk'
 import { newError } from '../error.js'
+
+export interface DeleteEntityParams {
+  id: EntityId
+}
 
 export function deleteEntity (params) {
   const { id } = params
@@ -13,4 +17,10 @@ export function deleteEntity (params) {
       title: id,
     },
   }
+}
+
+export interface DeleteEntityResponse {
+  title: EntityPageTitle
+  reason: string
+  logid: number
 }

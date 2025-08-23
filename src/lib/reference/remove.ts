@@ -1,5 +1,11 @@
 import { isArray } from '../utils.js'
 import * as validate from '../validate.js'
+import type { Guid, Hash } from 'wikibase-sdk'
+
+export interface RemoveReferenceParams {
+  guid: Guid
+  hash: Hash
+}
 
 export function removeReference (params) {
   let { guid, hash } = params
@@ -19,4 +25,9 @@ export function removeReference (params) {
       references: hash,
     },
   }
+}
+
+export interface RemoveReferenceResponse {
+  pageinfo: { lastrevid: number }
+  success: 1
 }

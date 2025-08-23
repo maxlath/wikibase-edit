@@ -2,6 +2,9 @@ import datatypesToBuilderDatatypes from '../properties/datatypes_to_builder_data
 import { flatten, forceArray, map, values } from '../utils.js'
 import * as validate from '../validate.js'
 import { entityEditBuilders as builders } from './builders.js'
+import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
+import type { AbsoluteUrl } from '../types/common.js'
+import type { PropertyId, SimplifiedReference, SnakDataValue } from 'wikibase-sdk'
 
 export const buildSnak = (property, datatype, value, instance) => {
   value = value.value || value
@@ -12,19 +15,23 @@ export const buildSnak = (property, datatype, value, instance) => {
   return builders[builderDatatype](property, value, instance).mainsnak
 }
 
-export const buildReference = (properties, instance) => reference => {
-  const hash = reference.hash
-  const referenceSnaks = reference.snaks || reference
-  const snaksPerProperty = map(referenceSnaks, buildPropSnaks(properties, instance))
-  const snaks = flatten(values(snaksPerProperty))
-  return { snaks, hash }
+export function buildReferenceFactory (properties: PropertiesDatatypes, instance: AbsoluteUrl) {
+  return function buildReference (reference: SimplifiedReference) {
+    const hash = reference.hash
+    const referenceSnaks = reference.snaks || reference
+    const snaksPerProperty = map(referenceSnaks, buildPropSnaksFactory(properties, instance))
+    const snaks = flatten(values(snaksPerProperty))
+    return { snaks, hash }
+  }
 }
 
-export const buildPropSnaks = (properties, instance) => (prop, propSnakValues) => {
-  validate.property(prop)
-  return forceArray(propSnakValues).map(snakValue => {
-    const datatype = properties[prop]
-    validate.snakValue(prop, datatype, snakValue)
-    return buildSnak(prop, datatype, snakValue, instance)
-  })
+export function buildPropSnaksFactory (properties: PropertiesDatatypes, instance: AbsoluteUrl) {
+  return function buildPropSnaks (prop: PropertyId, propSnakValues: SnakDataValue | SnakDataValue[]) {
+    validate.property(prop)
+    return forceArray(propSnakValues).map(snakValue => {
+      const datatype = properties[prop]
+      validate.snakValue(prop, datatype, snakValue)
+      return buildSnak(prop, datatype, snakValue, instance)
+    })
+  }
 }

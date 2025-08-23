@@ -3,7 +3,11 @@ const signedStringNumberPattern = /^(-|\+)\d+(\.\d+)?$/
 
 export const stringifyQuery = query => new URLSearchParams(query).toString()
 
-export const isNonEmptyString = str => typeof str === 'string' && str.length > 0
+export type NonEmptyString = Exclude<string, ''>
+export function isNonEmptyString (str: unknown): str is NonEmptyString {
+  return typeof str === 'string' && str.length > 0
+}
+
 export function buildUrl (base, query) {
   return `${base}?${stringifyQuery(query)}`
 }

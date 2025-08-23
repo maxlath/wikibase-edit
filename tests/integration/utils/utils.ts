@@ -2,7 +2,7 @@ import config from 'config'
 import { yellow } from 'tiny-chalk'
 import { WBK } from 'wikibase-sdk'
 import { customFetch } from '#lib/request/fetch'
-import resolveTitle from '#lib/resolve_title'
+import { resolveTitle } from '#lib/resolve_title'
 
 const { instance } = config
 

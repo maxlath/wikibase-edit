@@ -1,11 +1,24 @@
-import { isEntityId } from 'wikibase-sdk'
+import { isEntityId, type EntityId } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { forceArray } from '../utils.js'
 import * as format from './format.js'
 import { isIdAliasPattern, resolveIdAlias } from './id_alias.js'
+import type { CreateEntityParams, CreateEntityResponse } from './create.js'
+import type { Reconciliation } from './validate_reconciliation_object.js'
+import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
+import type { AbsoluteUrl } from '../types/common.js'
+import type { SerializedConfig } from '../types/config.js'
 
-export async function editEntity (data, properties, instance, config) {
+export interface EditEntityParams extends CreateEntityParams {
+  id?: EntityId
+  clear?: boolean
+  create?: boolean
+  rawMode?: boolean
+  reconciliation?: Reconciliation
+}
+
+export async function editEntity (data: EditEntityParams, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig) {
   validateParameters(data)
 
   let { id } = data
@@ -121,3 +134,5 @@ const hasReconciliationSettings = (reconciliation, claims) => {
   }
   return false
 }
+
+export type EditEntityResponse = CreateEntityResponse

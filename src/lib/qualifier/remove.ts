@@ -1,7 +1,13 @@
 import { isArray } from '../utils.js'
 import * as validate from '../validate.js'
+import type { Guid, Hash } from 'wikibase-sdk'
 
-export function removeQualifier (params) {
+export interface RemoveQualifierParams {
+  guid: Guid
+  hash?: Hash
+}
+
+export function removeQualifier (params: RemoveQualifierParams) {
   let { guid, hash } = params
   validate.guid(guid)
 
@@ -19,4 +25,9 @@ export function removeQualifier (params) {
       qualifiers: hash,
     },
   }
+}
+
+export interface RemoveQualifierResponse {
+  pageinfo: { lastrevid: number }
+  success: 1
 }

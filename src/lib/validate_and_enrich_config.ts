@@ -2,9 +2,9 @@ import { name, version, homepage } from '../assets/metadata.js'
 import { newError } from './error.js'
 import parseInstance from './parse_instance.js'
 import { forceArray } from './utils.js'
-import type { GeneralConfig, RequestConfig } from './types/config.js'
+import type { GeneralConfig, RequestConfig, SerializedConfig } from './types/config.js'
 
-export function validateAndEnrichConfig (generalConfig: GeneralConfig, requestConfig: RequestConfig) {
+export function validateAndEnrichConfig (generalConfig: GeneralConfig, requestConfig?: RequestConfig): SerializedConfig {
   generalConfig.userAgent = generalConfig.userAgent || `${name}/v${version} (${homepage})`
 
   let config
@@ -57,8 +57,8 @@ export function validateAndEnrichConfig (generalConfig: GeneralConfig, requestCo
   return config
 }
 
-const checkType = (name, value, type) => {
+function checkType (name: string, value: string | number, type: 'string' | 'number') {
   if (typeof value !== type) {
-    throw newError(`invalid config ${name}`, { [name]: value, type: typeof summary })
+    throw newError(`invalid config ${name}`, { [name]: value, type: typeof value })
   }
 }
