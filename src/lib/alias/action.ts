@@ -1,15 +1,24 @@
 import * as validate from '../validate.js'
+import type { EntityId, WikimediaLanguageCode } from 'wikibase-sdk'
 
-export default action => params => {
-  const { id, language, value } = params
+export interface AliasActionParams {
+  id: EntityId
+  language: WikimediaLanguageCode
+  value: string | string[]
+}
 
-  validate.entity(id)
-  validate.language(language)
-  validate.aliases(value)
+export function actionFactory (action: 'add' | 'remove' | 'set') {
+  return function (params: AliasActionParams) {
+    const { id, language, value } = params
 
-  const data = { id, language }
+    validate.entity(id)
+    validate.language(language)
+    validate.aliases(value)
 
-  data[action] = value instanceof Array ? value.join('|') : value
+    const data = { id, language }
 
-  return { action: 'wbsetaliases', data }
+    data[action] = value instanceof Array ? value.join('|') : value
+
+    return { action: 'wbsetaliases', data }
+  }
 }
