@@ -2,8 +2,9 @@ import { name, version, homepage } from '../assets/metadata.js'
 import { newError } from './error.js'
 import parseInstance from './parse_instance.js'
 import { forceArray } from './utils.js'
+import type { GeneralConfig, RequestConfig } from './types/config.js'
 
-export function validateAndEnrichConfig (generalConfig, requestConfig) {
+export function validateAndEnrichConfig (generalConfig: GeneralConfig, requestConfig: RequestConfig) {
   generalConfig.userAgent = generalConfig.userAgent || `${name}/v${version} (${homepage})`
 
   let config

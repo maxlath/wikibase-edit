@@ -1,9 +1,12 @@
-import { isPropertyId } from 'wikibase-sdk'
+import { isPropertyId, type DataType, type PropertyId } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import WBK from '../get_instance_wikibase_sdk.js'
 import getJson from '../request/get_json.js'
+import type { AbsoluteUrl } from '../types/common.js'
 
-const propertiesByInstance = {}
+export type PropertiesDatatypes = Record<PropertyId, DataType>
+
+const propertiesByInstance: Record<AbsoluteUrl, PropertiesDatatypes> = {}
 
 export default async (config, propertyIds = []) => {
   let { instance, properties } = config

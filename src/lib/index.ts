@@ -26,6 +26,7 @@ import { getAuthDataFactory } from './request/get_auth_data.js'
 import { requestWrapper } from './request_wrapper.js'
 import { setSitelink } from './sitelink/set.js'
 import { validateAndEnrichConfig } from './validate_and_enrich_config.js'
+import type { GeneralConfig } from './types/config.js'
 
 // Primitives: sync or async functions that return an { action, params } object
 //             passed to request.post by requestWrapper
@@ -82,7 +83,7 @@ const bundledRequestsBuilders = {
   },
 }
 
-export default function WBEdit (generalConfig = {}) {
+export default function WBEdit (generalConfig: GeneralConfig) {
   if (typeof generalConfig !== 'object') {
     throw newError('invalid general config object', { generalConfig, type: typeof generalConfig })
   }
