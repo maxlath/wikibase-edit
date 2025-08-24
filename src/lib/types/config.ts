@@ -87,4 +87,5 @@ export interface SerializedConfig extends RequestConfig {
   _validatedAndEnriched?: boolean
   instanceApiEndpoint: AbsoluteUrl
   properties: PropertiesDatatypes
+  statementsKey: 'claims' | 'statements'
 }

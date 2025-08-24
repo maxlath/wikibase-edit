@@ -2,14 +2,14 @@ import { merge } from 'lodash-es'
 import { addAlias } from './alias/add.js'
 import { removeAlias } from './alias/remove.js'
 import { setAlias } from './alias/set.js'
-import { addBadge } from './badge/add.js'
-import { removeBadge } from './badge/remove.js'
+import { addBadge, type AddBadgeParams, type AddBadgeResponse } from './badge/add.js'
+import { removeBadge, type RemoveBadgeParams, type RemoveBadgeResponse } from './badge/remove.js'
 import { bundleWrapper } from './bundle_wrapper.js'
-import { createClaim } from './claim/create.js'
-import { moveClaim } from './claim/move.js'
+import { createClaim, type CreateClaimParams, type CreateClaimResponse } from './claim/create.js'
+import { moveClaim, type MoveClaimParams, type MoveClaimResponse } from './claim/move.js'
 import { removeClaim, type RemoveClaimParams, type RemoveClaimResponse } from './claim/remove.js'
 import { setClaim, type SetClaimParams, type SetClaimResponse } from './claim/set.js'
-import { updateClaim } from './claim/update.js'
+import { updateClaim, type UpdateClaimParams, type UpdateClaimResponse } from './claim/update.js'
 import { setDescription } from './description/set.js'
 import { createEntity, type CreateEntityParams, type CreateEntityResponse } from './entity/create.js'
 import { deleteEntity, type DeleteEntityParams, type DeleteEntityResponse } from './entity/delete.js'
@@ -17,10 +17,10 @@ import { editEntity, type EditEntityParams, type EditEntityResponse } from './en
 import { mergeEntity, type MergeEntityParams, type MergeEntityResponse } from './entity/merge.js'
 import { newError } from './error.js'
 import { setLabel } from './label/set.js'
-import { moveQualifier } from './qualifier/move.js'
+import { moveQualifier, type MoveQualifierParams, type MoveQualifierResponse } from './qualifier/move.js'
 import { removeQualifier, type RemoveQualifierParams, type RemoveQualifierResponse } from './qualifier/remove.js'
 import { setQualifier, type SetQualifierParams, type SetQualifierResponse } from './qualifier/set.js'
-import { updateQualifier } from './qualifier/update.js'
+import { updateQualifier, type UpdateQualifierParams, type UpdateQualifierResponse } from './qualifier/update.js'
 import { removeReference, type RemoveReferenceParams, type RemoveReferenceResponse } from './reference/remove.js'
 import { setReference, type SetReferenceParams, type SetReferenceResponse } from './reference/set.js'
 import { getAuthDataFactory } from './request/get_auth_data.js'
@@ -80,17 +80,17 @@ export default function WBEdit (generalConfig: GeneralConfig) {
   // Bundles: async functions that make use of the primitives to offer more sophisticated behaviors
   const secondaryAPI = {
     claim: {
-      create: bundleWrapper(createClaim, generalConfig, primaryAPI),
-      update: bundleWrapper(updateClaim, generalConfig, primaryAPI),
-      move: bundleWrapper(moveClaim, generalConfig, primaryAPI),
+      create: bundleWrapper<CreateClaimParams, CreateClaimResponse>(createClaim, generalConfig, primaryAPI),
+      update: bundleWrapper<UpdateClaimParams, UpdateClaimResponse>(updateClaim, generalConfig, primaryAPI),
+      move: bundleWrapper<MoveClaimParams, MoveClaimResponse>(moveClaim, generalConfig, primaryAPI),
     },
     qualifier: {
-      update: bundleWrapper(updateQualifier, generalConfig, primaryAPI),
-      move: bundleWrapper(moveQualifier, generalConfig, primaryAPI),
+      update: bundleWrapper<UpdateQualifierParams, UpdateQualifierResponse>(updateQualifier, generalConfig, primaryAPI),
+      move: bundleWrapper<MoveQualifierParams, MoveQualifierResponse>(moveQualifier, generalConfig, primaryAPI),
     },
     badge: {
-      add: bundleWrapper(addBadge, generalConfig, primaryAPI),
-      remove: bundleWrapper(removeBadge, generalConfig, primaryAPI),
+      add: bundleWrapper<AddBadgeParams, AddBadgeResponse>(addBadge, generalConfig, primaryAPI),
+      remove: bundleWrapper<RemoveBadgeParams, RemoveBadgeResponse>(removeBadge, generalConfig, primaryAPI),
     },
   } as const
 

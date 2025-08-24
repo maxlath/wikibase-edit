@@ -1,11 +1,21 @@
-import { getEntityIdFromGuid } from 'wikibase-sdk'
+import { getEntityIdFromGuid, type Guid, type PropertyId, type SimplifiedQualifier } from 'wikibase-sdk'
 import findSnak from '../claim/find_snak.js'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { flatten, values } from '../utils.js'
 import * as validate from '../validate.js'
+import type { WikibaseEditAPI } from '../index.js'
+import type { SetQualifierResponse } from './set.js'
+import type { SerializedConfig } from '../types/config.js'
 
-export async function updateQualifier (params, config, API) {
+export interface UpdateQualifierParams {
+  guid: Guid
+  property: PropertyId
+  oldValue: SimplifiedQualifier
+  newValue: SimplifiedQualifier
+}
+
+export async function updateQualifier (params: UpdateQualifierParams, config: SerializedConfig, API: WikibaseEditAPI) {
   const { guid, property, oldValue, newValue } = params
 
   validate.guid(guid)
@@ -15,7 +25,7 @@ export async function updateQualifier (params, config, API) {
   validate.snakValue(property, datatype, newValue)
 
   if (oldValue === newValue) {
-    throw newError('same value', 400, oldValue, newValue)
+    throw newError('same value', 400, { oldValue, newValue })
   }
 
   // Get current value snak hash
@@ -57,3 +67,5 @@ const findClaim = (claims, guid) => {
 }
 
 const getSnakValue = snak => snak.datavalue?.value
+
+export type UpdateQualifierResponse = SetQualifierResponse

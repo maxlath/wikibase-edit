@@ -1,10 +1,19 @@
-import { isGuid, isPropertyId, isHash, getEntityIdFromGuid } from 'wikibase-sdk'
+import { isGuid, isPropertyId, isHash, getEntityIdFromGuid, type Guid, type PropertyId, type Hash, type Claim } from 'wikibase-sdk'
 import { findClaimByGuid } from '../claim/helpers.js'
 import { propertiesDatatypesDontMatch } from '../claim/move_commons.js'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
+import type { WikibaseEditAPI } from '../index.js'
+import type { SerializedConfig } from '../types/config.js'
 
-export async function moveQualifier (params, config, API) {
+export interface MoveQualifierParams {
+  guid: Guid
+  oldProperty: PropertyId
+  newProperty: PropertyId
+  hash: Hash
+}
+
+export async function moveQualifier (params: MoveQualifierParams, config: SerializedConfig, API: WikibaseEditAPI) {
   const { guid, oldProperty, newProperty, hash } = params
 
   if (!guid) throw newError('missing claim guid', 400, params)
@@ -91,4 +100,8 @@ const generateSummary = (guid, oldProperty, newProperty, hash) => {
   } else {
     return `moving ${guid} ${oldProperty} qualifiers to ${newProperty}`
   }
+}
+
+export interface MoveQualifierResponse {
+  claim: Claim
 }

@@ -1,12 +1,24 @@
-import { isGuid, isEntityId, isPropertyId, getEntityIdFromGuid } from 'wikibase-sdk'
+import { isGuid, isEntityId, isPropertyId, getEntityIdFromGuid, type Guid, type PropertyClaimsId, type EntityId, type PropertyId, type SimplifiedClaim } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import formatClaimValue from './format_claim_value.js'
 import { findClaimByGuid } from './helpers.js'
 import { propertiesDatatypesDontMatch } from './move_commons.js'
 import { buildSnak } from './snak.js'
+import type { EditEntityResponse } from '../entity/edit.js'
+import type { WikibaseEditAPI } from '../index.js'
+import type { SerializedConfig } from '../types/config.js'
 
-export async function moveClaim (params, config, API) {
+export interface MoveClaimParams {
+  guid?: Guid
+  propertyClaimsId?: PropertyClaimsId
+  id?: EntityId
+  property?: PropertyId
+  newValue?: SimplifiedClaim
+  baserevid?: number
+}
+
+export async function moveClaim (params: MoveClaimParams, config: SerializedConfig, API: WikibaseEditAPI) {
   const { guid, propertyClaimsId, id: targetEntityId, property: targetPropertyId, newValue, baserevid } = params
   const { instance } = config
 
@@ -118,3 +130,5 @@ const generateTargetEntitySummary = (guid, originEntityId, originPropertyId, tar
     return `moving ${originEntityId}#${originPropertyId} claims from ${targetEntityId}#${targetPropertyId}`
   }
 }
+
+export type MoveClaimResponse = EditEntityResponse[]

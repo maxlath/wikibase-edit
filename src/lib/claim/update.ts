@@ -1,10 +1,21 @@
-import { isGuid, getEntityIdFromGuid } from 'wikibase-sdk'
+import { isGuid, getEntityIdFromGuid, type EntityId, type Guid, type PropertyId, type SimplifiedClaim, type Rank, type Claim } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import findSnak from './find_snak.js'
 import { findClaimByGuid, isGuidClaim, simplifyClaimForEdit } from './helpers.js'
+import type { WikibaseEditAPI } from '../index.js'
+import type { SerializedConfig } from '../types/config.js'
 
-export async function updateClaim (params, config, API) {
+export interface UpdateClaimParams {
+  id: EntityId
+  guid: Guid
+  property: PropertyId
+  oldValue: SimplifiedClaim
+  newValue: SimplifiedClaim
+  rank: Rank
+}
+
+export async function updateClaim (params: UpdateClaimParams, config: SerializedConfig, API: WikibaseEditAPI) {
   let { id, guid, property } = params
   const { oldValue, newValue, rank } = params
   const { statementsKey } = config
@@ -69,4 +80,9 @@ export async function updateClaim (params, config, API) {
   const updatedClaim = entity[statementsKey][property].find(isGuidClaim(guid))
   // Mimick claim actions responses
   return { claim: updatedClaim, success }
+}
+
+export interface UpdateClaimResponse {
+  claim: Claim
+  success: 1
 }
