@@ -3,7 +3,7 @@ import { simplifyReferences, simplifySnak } from 'wikibase-sdk'
 import isMatchingClaim from '../claim/is_matching_claim.js'
 import isMatchingSnak from '../claim/is_matching_snak.js'
 import { newError } from '../error.js'
-import validateReconciliationObject from './validate_reconciliation_object.js'
+import { validateReconciliationObject } from './validate_reconciliation_object.js'
 
 export default (reconciliation, existingPropertyClaims) => claim => {
   reconciliation = claim.reconciliation || reconciliation

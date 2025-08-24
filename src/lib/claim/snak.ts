@@ -4,9 +4,9 @@ import * as validate from '../validate.js'
 import { entityEditBuilders as builders } from './builders.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
-import type { PropertyId, SimplifiedReference, SnakDataValue } from 'wikibase-sdk'
+import type { PropertyId, SimplifiedReference, SnakDataValue, DataType, SimplifiedClaim } from 'wikibase-sdk'
 
-export const buildSnak = (property, datatype, value, instance) => {
+export function buildSnak (property: PropertyId, datatype: DataType, value: SimplifiedClaim, instance: AbsoluteUrl) {
   value = value.value || value
   if (value?.snaktype && value.snaktype !== 'value') {
     return { snaktype: value.snaktype, property }

@@ -26,8 +26,9 @@ import type { GeneralConfig, RequestConfig, SerializedConfig } from './types/con
 
 type ActionFunction = typeof addAlias | typeof removeAlias | typeof setAlias | typeof removeClaim | typeof setClaim | typeof setDescription | typeof createEntity | typeof deleteEntity | typeof editEntity | typeof mergeEntity | typeof setLabel | typeof removeQualifier | typeof setQualifier | typeof removeReference | typeof setReference | typeof setSitelink
 
-export function requestWrapper <Response extends object, F extends ActionFunction = ActionFunction> (actionFn: F, generalConfig: GeneralConfig) {
-  return async function request (params: Parameters<ActionFunction>[0], reqConfig?: RequestConfig) {
+// Params could be captured with Parameters<ActionFunction>[0], but the resulting typing isn't great
+export function requestWrapper <Params extends object, Response extends object, F extends ActionFunction = ActionFunction> (actionFn: F, generalConfig: GeneralConfig) {
+  return async function request (params: Params, reqConfig?: RequestConfig) {
     const config = validateAndEnrichConfig(generalConfig, reqConfig)
     validateParameters(params)
     initializeConfigAuth(config)

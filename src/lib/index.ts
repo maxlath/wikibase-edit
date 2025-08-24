@@ -7,8 +7,8 @@ import { removeBadge } from './badge/remove.js'
 import { bundleWrapper } from './bundle_wrapper.js'
 import { createClaim } from './claim/create.js'
 import { moveClaim } from './claim/move.js'
-import { removeClaim } from './claim/remove.js'
-import { setClaim } from './claim/set.js'
+import { removeClaim, type RemoveClaimParams, type RemoveClaimResponse } from './claim/remove.js'
+import { setClaim, type SetClaimParams, type SetClaimResponse } from './claim/set.js'
 import { updateClaim } from './claim/update.js'
 import { setDescription } from './description/set.js'
 import { createEntity, type CreateEntityParams, type CreateEntityResponse } from './entity/create.js'
@@ -27,7 +27,8 @@ import { getAuthDataFactory } from './request/get_auth_data.js'
 import { requestWrapper } from './request_wrapper.js'
 import { setSitelink, type SetSitelinkParams, type SetSitelinkResponse } from './sitelink/set.js'
 import { validateAndEnrichConfig } from './validate_and_enrich_config.js'
-import type { AliasActionResponse } from './alias/action.js'
+import type { AliasActionParams, AliasActionResponse } from './alias/action.js'
+import type { TermActionParams, TermActionResponse } from './label_or_description/set.js'
 import type { GeneralConfig, RequestConfig } from './types/config.js'
 
 /**
@@ -42,19 +43,19 @@ export default function WBEdit (generalConfig: GeneralConfig) {
   //             passed to request.post by requestWrapper
   const primaryAPI = {
     label: {
-      set: requestWrapper(setLabel, generalConfig),
+      set: requestWrapper<TermActionParams, TermActionResponse>(setLabel, generalConfig),
     },
     description: {
-      set: requestWrapper(setDescription, generalConfig),
+      set: requestWrapper<TermActionParams, TermActionResponse>(setDescription, generalConfig),
     },
     alias: {
-      set: requestWrapper<AliasActionResponse>(setAlias, generalConfig),
-      add: requestWrapper<AliasActionResponse>(addAlias, generalConfig),
-      remove: requestWrapper<AliasActionResponse>(removeAlias, generalConfig),
+      set: requestWrapper<AliasActionParams, AliasActionResponse>(setAlias, generalConfig),
+      add: requestWrapper<AliasActionParams, AliasActionResponse>(addAlias, generalConfig),
+      remove: requestWrapper<AliasActionParams, AliasActionResponse>(removeAlias, generalConfig),
     },
     claim: {
-      set: requestWrapper(setClaim, generalConfig),
-      remove: requestWrapper(removeClaim, generalConfig),
+      set: requestWrapper<SetClaimParams, SetClaimResponse>(setClaim, generalConfig),
+      remove: requestWrapper<RemoveClaimParams, RemoveClaimResponse>(removeClaim, generalConfig),
     },
     qualifier: {
       set: requestWrapper<SetQualifierParams, SetQualifierResponse>(setQualifier, generalConfig),
