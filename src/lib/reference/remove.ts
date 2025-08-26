@@ -1,5 +1,5 @@
 import { isArray } from '../utils.js'
-import * as validate from '../validate.js'
+import { validateGuid, validateHash } from '../validate.js'
 import type { Guid, Hash } from 'wikibase-sdk'
 
 export interface RemoveReferenceParams {
@@ -9,13 +9,13 @@ export interface RemoveReferenceParams {
 
 export function removeReference (params) {
   let { guid, hash } = params
-  validate.guid(guid)
+  validateGuid(guid)
 
   if (isArray(hash)) {
-    hash.forEach(validate.hash)
+    hash.forEach(validateHash)
     hash = hash.join('|')
   } else {
-    validate.hash(hash)
+    validateHash(hash)
   }
 
   return {

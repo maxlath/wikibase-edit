@@ -3,7 +3,7 @@ import findSnak from '../claim/find_snak.js'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { flatten, values } from '../utils.js'
-import * as validate from '../validate.js'
+import { validateGuid, validateProperty, validateSnakValue } from '../validate.js'
 import type { WikibaseEditAPI } from '../index.js'
 import type { SetQualifierResponse } from './set.js'
 import type { SerializedConfig } from '../types/config.js'
@@ -18,11 +18,11 @@ export interface UpdateQualifierParams {
 export async function updateQualifier (params: UpdateQualifierParams, config: SerializedConfig, API: WikibaseEditAPI) {
   const { guid, property, oldValue, newValue } = params
 
-  validate.guid(guid)
-  validate.property(property)
+  validateGuid(guid)
+  validateProperty(property)
   const datatype = config.properties[property]
-  validate.snakValue(property, datatype, oldValue)
-  validate.snakValue(property, datatype, newValue)
+  validateSnakValue(property, datatype, oldValue)
+  validateSnakValue(property, datatype, newValue)
 
   if (oldValue === newValue) {
     throw newError('same value', 400, { oldValue, newValue })

@@ -1,73 +1,81 @@
 import { newError } from '../error.js'
 import { isString, forceArray, isntEmpty, flatten } from '../utils.js'
-import * as validate from '../validate.js'
+import { validateAliases, validateBadges, validateLabelOrDescription, validateLanguage, validateProperty, validateSite, validateSiteTitle } from '../validate.js'
 import buildClaim from './build_claim.js'
 import reconcileClaim from './reconcile_claim.js'
+import type { SitelinkBadges } from 'wikibase-sdk'
 
-const formatBadgesArray = badges => {
+function formatBadgesArray (badges: SitelinkBadges | string) {
+  let badgeArray: SitelinkBadges
   if (isString(badges)) {
-    badges = badges.split('|')
+    badgeArray = badges.split('|') as SitelinkBadges
+  } else {
+    badgeArray = badges
   }
-  validate.badges(badges)
-  return badges
+  validateBadges(badgeArray)
+  return badgeArray
 }
 
-export const values = (name, values) => {
+export function formatValues (name: string, values: string | string) {
   const obj = {}
   Object.keys(values).forEach(lang => {
     let value = values[lang]
-    validate.language(lang)
+    validateLanguage(lang)
     if (name === 'alias') {
       value = forceArray(value)
-      validate.aliases(value, { allowEmptyArray: true })
+      validateAliases(value, { allowEmptyArray: true })
       obj[lang] = value.map(alias => buildLanguageValue(alias, lang))
     } else {
-      validate.labelOrDescription(name, value)
+      validateLabelOrDescription(name, value)
       obj[lang] = buildLanguageValue(value, lang)
     }
   })
   return obj
 }
-export const claims = (claims, properties, instance, reconciliation, existingClaims) => {
+
+export function formatClaims (claims, properties, instance, reconciliation, existingClaims) {
   if (!properties) throw newError('expected properties')
   return Object.keys(claims)
-  .reduce(formatClaim(claims, properties, instance, reconciliation, existingClaims), {})
+  .reduce(formatClaimFactory(claims, properties, instance, reconciliation, existingClaims), {})
 }
-export const sitelinks = sitelinks => {
+
+export function formatSitelinks (sitelinks) {
   const obj = {}
   Object.keys(sitelinks).forEach(site => {
-    validate.site(site)
+    validateSite(site)
     const title = sitelinks[site]
     if (title === null) {
       // Passing an empty string removes the sitelink
       obj[site] = buildSiteTitle('', site)
     } else {
-      validate.siteTitle(title)
+      validateSiteTitle(title)
       obj[site] = buildSiteTitle(title, site)
     }
   })
   return obj
 }
-export const badges = formatBadgesArray
+export const formatBadges = formatBadgesArray
 
-const formatClaim = (claims, properties, instance, reconciliation, existingClaims) => (obj, property) => {
-  if (!properties) throw newError('expected properties')
-  if (!instance) throw newError('expected instance')
-  validate.property(property)
-  const values = forceArray(claims[property])
-  obj[property] = obj[property] || []
-  obj[property] = values.map(value => buildClaim(property, properties, value, instance))
-  if (existingClaims?.[property] != null) {
-    obj[property] = obj[property]
+function formatClaimFactory (claims, properties, instance, reconciliation, existingClaims) {
+  return function formatClaim (obj, property) {
+    if (!properties) throw newError('expected properties')
+    if (!instance) throw newError('expected instance')
+    validateProperty(property)
+    const values = forceArray(claims[property])
+    obj[property] = obj[property] || []
+    obj[property] = values.map(value => buildClaim(property, properties, value, instance))
+    if (existingClaims?.[property] != null) {
+      obj[property] = obj[property]
       .map(reconcileClaim(reconciliation, existingClaims[property]))
       .filter(isntEmpty)
-    obj[property] = flatten(obj[property])
-    validateReconciledClaims(obj[property])
+      obj[property] = flatten(obj[property])
+      validateReconciledClaims(obj[property])
+    }
+    return obj
   }
-  return obj
 }
 
-const buildLanguageValue = (value, language) => {
+function buildLanguageValue (value, language) {
   // Re-building an object to avoid passing any undesired key/value
   const valueObj = { language }
   if (isString(value)) {
@@ -82,7 +90,7 @@ const buildLanguageValue = (value, language) => {
   return valueObj
 }
 
-const buildSiteTitle = (title, site) => {
+function buildSiteTitle (title, site) {
   // Re-building an object to avoid passing any undesired key/value
   const valueObj = { site }
   if (isString(title)) {
@@ -97,7 +105,7 @@ const buildSiteTitle = (title, site) => {
   return valueObj
 }
 
-const validateReconciledClaims = propertyClaims => {
+function validateReconciledClaims (propertyClaims) {
   const claimsByGuid = {}
   for (const claim of propertyClaims) {
     const { id } = claim

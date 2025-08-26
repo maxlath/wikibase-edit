@@ -1,4 +1,4 @@
-import * as validate from '../validate.js'
+import { validateAliases, validateEntity, validateLanguage } from '../validate'
 import type { Aliases, EntityId, EntityType, WikimediaLanguageCode } from 'wikibase-sdk'
 
 export interface AliasActionParams {
@@ -11,9 +11,9 @@ export function actionFactory (action: 'add' | 'remove' | 'set') {
   return function (params: AliasActionParams) {
     const { id, language, value } = params
 
-    validate.entity(id)
-    validate.language(language)
-    validate.aliases(value)
+    validateEntity(id)
+    validateLanguage(language)
+    validateAliases(value)
 
     const data = { id, language }
 

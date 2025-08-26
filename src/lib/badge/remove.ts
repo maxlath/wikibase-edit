@@ -1,10 +1,11 @@
 // Doc https://www.wikidata.org/w/api.php?action=help&modules=wbsetsitelink
 
-import * as format from '../entity/format.js'
+import { formatBadges } from '../entity/format.js'
 import { newError } from '../error.js'
 import { getEntitySitelinks } from '../get_entity.js'
 import { difference } from '../utils.js'
-import * as validate from '../validate.js'
+import { validateEntity, validateSite } from '../validate.js'
+import type { WikibaseEditAPI } from '../index.js'
 import type { SetSitelinkResponse } from '../sitelink/set.js'
 import type { SerializedConfig } from '../types/config.js'
 import type { EntityId, ItemId } from 'wikibase-sdk'
@@ -15,11 +16,11 @@ export interface RemoveBadgeParams {
   badges: ItemId | ItemId[]
 }
 
-export async function removeBadge (params: RemoveBadgeParams, config: SerializedConfig, API) {
+export async function removeBadge (params: RemoveBadgeParams, config: SerializedConfig, API: WikibaseEditAPI) {
   let { id, site, badges } = params
-  validate.entity(id)
-  validate.site(site)
-  badges = format.badges(badges)
+  validateEntity(id)
+  validateSite(site)
+  badges = formatBadges(badges)
 
   const sitelinks = await getEntitySitelinks(id, config)
   const siteObj = sitelinks[site]

@@ -4,7 +4,7 @@ import { hasSpecialSnaktype } from '../claim/special_snaktype.js'
 import { newError } from '../error.js'
 import datatypesToBuilderDatatypes from '../properties/datatypes_to_builder_datatypes.js'
 import { isString, isNumber, isPlainObject, map, forceArray } from '../utils.js'
-import * as validate from '../validate.js'
+import { validateGuid, validateRank, validateSnakValue } from '../validate.js'
 
 export default (property, properties, claimData, instance) => {
   const datatype = properties[property]
@@ -24,7 +24,7 @@ export default (property, properties, claimData, instance) => {
 
 const simpleClaimBuilder = params => {
   const { property, datatype, claimData: value, builder, instance } = params
-  validate.snakValue(property, datatype, value)
+  validateSnakValue(property, datatype, value)
   return builder(property, value, instance)
 }
 
@@ -49,17 +49,17 @@ const fullClaimBuilder = params => {
     if (value == null && (claimData.text || claimData.amount || claimData.latitude || claimData.time)) {
       value = claimData
     }
-    validate.snakValue(property, datatype, value)
+    validateSnakValue(property, datatype, value)
     claim = builder(property, value, instance)
   }
 
   if (id) {
-    validate.guid(id)
+    validateGuid(id)
     claim.id = id
   }
 
   if (rank) {
-    validate.rank(rank)
+    validateRank(rank)
     claim.rank = rank
   }
 

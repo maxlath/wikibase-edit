@@ -1,4 +1,4 @@
-import * as validate from '../validate.js'
+import { validateGuid, validateProperty, validateSnakValue } from '../validate.js'
 import formatClaimValue from './format_claim_value.js'
 import { buildSnak } from './snak.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
@@ -15,14 +15,14 @@ export function setClaim (params: SetClaimParams, properties: PropertiesDatatype
   const { guid, property, value: rawValue } = params
   const datatype = properties[property]
 
-  validate.guid(guid)
-  validate.property(property)
+  validateGuid(guid)
+  validateProperty(property)
 
   // Format before testing validity to avoid throwing on type errors
   // that could be recovered
   const value = formatClaimValue(datatype, rawValue, instance)
 
-  validate.snakValue(property, datatype, value)
+  validateSnakValue(property, datatype, value)
 
   const claim = {
     id: guid,

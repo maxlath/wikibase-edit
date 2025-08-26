@@ -1,8 +1,8 @@
-import * as format from '../entity/format.js'
+import { formatBadges } from '../entity/format.js'
 import { newError } from '../error.js'
 import { getEntitySitelinks } from '../get_entity.js'
 import { uniq } from '../utils.js'
-import * as validate from '../validate.js'
+import { validateEntity, validateSite } from '../validate.js'
 import type { WikibaseEditAPI } from '../index.js'
 import type { SetSitelinkResponse } from '../sitelink/set.js'
 import type { SerializedConfig } from '../types/config.js'
@@ -16,9 +16,9 @@ export interface AddBadgeParams {
 
 export async function addBadge (params: AddBadgeParams, config: SerializedConfig, API: WikibaseEditAPI) {
   let { id, site, badges } = params
-  validate.entity(id)
-  validate.site(site)
-  badges = format.badges(badges)
+  validateEntity(id)
+  validateSite(site)
+  badges = formatBadges(badges)
 
   const sitelinks = await getEntitySitelinks(id, config)
   const siteObj = sitelinks[site]

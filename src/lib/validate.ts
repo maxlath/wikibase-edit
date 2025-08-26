@@ -11,7 +11,7 @@ const langRegex = /^\w{2,3}(-[\w-]{2,10})?$/
 const siteRegex = /^[a-z_]{2,20}$/
 const possibleRanks = [ 'normal', 'preferred', 'deprecated' ]
 
-const validateStringValue = (name, str) => {
+function validateStringValue (name, str) {
   if (str === null) return
   if (isPlainObject(str)) {
     if (str.remove === true) return
@@ -26,12 +26,12 @@ const validateStringValue = (name, str) => {
   }
 }
 
-export const entity = entity => {
+export function validateEntity (entity) {
   if (!isEntityId(entity)) {
     throw newError('invalid entity', { entity })
   }
 }
-export const property = property => {
+export function validateProperty (property) {
   if (!isNonEmptyString(property)) {
     throw newError('missing property', { property })
   }
@@ -39,20 +39,20 @@ export const property = property => {
     throw newError('invalid property', { property })
   }
 }
-export const language = language => {
+export function validateLanguage (language) {
   if (!(isNonEmptyString(language) && langRegex.test(language))) {
     throw newError('invalid language', { language })
   }
 }
-export const labelOrDescription = validateStringValue
-export const aliases = (value, options = {}) => {
+export const validateLabelOrDescription = validateStringValue
+export function validateAliases (value, options = {}) {
   const { allowEmptyArray = false } = options
   value = forceArray(value)
   if (!allowEmptyArray && value.length === 0) throw newError('empty alias array', { value })
   // Yes, it's not an label or a description, but it works the same
   value.forEach(validateStringValue.bind(null, 'alias'))
 }
-export const snakValue = (property, datatype, value) => {
+export function validateSnakValue (property, datatype, value) {
   if (hasSpecialSnaktype(value)) return
   if (value == null) {
     throw newError('missing snak value', { property, value })
@@ -76,13 +76,13 @@ export const snakValue = (property, datatype, value) => {
     throw newError(`invalid ${builderDatatype} value`, { property, value })
   }
 }
-export const site = site => {
+export function validateSite (site) {
   if (!(isNonEmptyString(site) && siteRegex.test(site))) {
     throw newError('invalid site', { site })
   }
 }
-export const siteTitle = validateStringValue.bind(null, 'title')
-export const badges = badges => {
+export const validateSiteTitle = validateStringValue.bind(null, 'title')
+export function validateBadges (badges) {
   if (!isArray(badges)) {
     throw newError('invalid badges', { badges })
   }
@@ -92,7 +92,7 @@ export const badges = badges => {
     }
   }
 }
-export const guid = guid => {
+export function validateGuid (guid) {
   if (!isNonEmptyString(guid)) {
     throw newError('missing guid', { guid })
   }
@@ -101,14 +101,14 @@ export const guid = guid => {
     throw newError('invalid guid', { guid })
   }
 }
-export const hash = hash => {
+export function validateHash (hash) {
   // Couldn't find the hash length range
   // but it looks to be somewhere around 40 characters
   if (!/^[0-9a-f]{20,80}$/.test(hash)) {
     throw newError('invalid hash', { hash })
   }
 }
-export const rank = rank => {
+export function validateRank (rank) {
   if (!possibleRanks.includes(rank)) {
     throw newError('invalid rank', { rank })
   }

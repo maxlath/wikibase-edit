@@ -1,5 +1,5 @@
 import { buildSnak, buildReferenceFactory } from '../claim/snak.js'
-import * as validate from '../validate.js'
+import { validateGuid, validateHash, validateProperty, validateSnakValue } from '../validate.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
 import type { Guid, Hash, PropertyId, Reference, SimplifiedReference, SimplifiedSnaks } from 'wikibase-sdk'
@@ -21,10 +21,10 @@ export function setReference (params: SetReferenceParams, properties: Properties
     snaks = buildReferenceFactory(properties, instance)(snaks).snaks
   } else {
     // Legacy interface
-    validate.guid(guid)
-    validate.property(property)
+    validateGuid(guid)
+    validateProperty(property)
     const datatype = properties[property]
-    validate.snakValue(property, datatype, value)
+    validateSnakValue(property, datatype, value)
     snaks = {}
     snaks[property] = [ buildSnak(property, datatype, value, instance) ]
   }
@@ -35,7 +35,7 @@ export function setReference (params: SetReferenceParams, properties: Properties
   }
 
   if (hash) {
-    validate.hash(hash)
+    validateHash(hash)
     data.reference = hash
   }
 

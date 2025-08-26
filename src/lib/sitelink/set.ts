@@ -1,6 +1,6 @@
 // Doc https://www.wikidata.org/w/api.php?action=help&modules=wbsetsitelink
-import * as format from '../entity/format.js'
-import * as validate from '../validate.js'
+import { formatBadges } from '../entity/format.js'
+import { validateEntity, validateSite, validateSiteTitle } from '../validate.js'
 import type { Entity, EntityId, SitelinkBadges } from 'wikibase-sdk'
 
 export interface SetSitelinkParams {
@@ -11,9 +11,9 @@ export interface SetSitelinkParams {
 }
 
 export function setSitelink ({ id, site, title, badges }) {
-  validate.entity(id)
-  validate.site(site)
-  validate.siteTitle(title)
+  validateEntity(id)
+  validateSite(site)
+  validateSiteTitle(title)
 
   const params = {
     action: 'wbsetsitelink',
@@ -30,7 +30,7 @@ export function setSitelink ({ id, site, title, badges }) {
   }
 
   if (badges != null) {
-    params.data.badges = format.badges(badges).join('|')
+    params.data.badges = formatBadges(badges).join('|')
   }
 
   return params

@@ -1,6 +1,6 @@
 import datatypesToBuilderDatatypes from '../properties/datatypes_to_builder_datatypes.js'
 import { flatten, forceArray, map, values } from '../utils.js'
-import * as validate from '../validate.js'
+import { validateProperty, validateSnakValue } from '../validate.js'
 import { entityEditBuilders as builders } from './builders.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
@@ -27,10 +27,10 @@ export function buildReferenceFactory (properties: PropertiesDatatypes, instance
 
 export function buildPropSnaksFactory (properties: PropertiesDatatypes, instance: AbsoluteUrl) {
   return function buildPropSnaks (prop: PropertyId, propSnakValues: SnakDataValue | SnakDataValue[]) {
-    validate.property(prop)
+    validateProperty(prop)
     return forceArray(propSnakValues).map(snakValue => {
       const datatype = properties[prop]
-      validate.snakValue(prop, datatype, snakValue)
+      validateSnakValue(prop, datatype, snakValue)
       return buildSnak(prop, datatype, snakValue, instance)
     })
   }

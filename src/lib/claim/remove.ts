@@ -2,7 +2,7 @@ import buildClaim from '../entity/build_claim.js'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { forceArray } from '../utils.js'
-import * as validate from '../validate.js'
+import { validateGuid } from '../validate.js'
 import isMatchingClaim from './is_matching_claim.js'
 import type { Reconciliation } from '../entity/validate_reconciliation_object.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
@@ -37,7 +37,7 @@ export async function removeClaim (params: RemoveClaimParams, properties: Proper
   }
 
   const guids = forceArray(guid)
-  guids.forEach(validate.guid)
+  guids.forEach(validateGuid)
 
   return {
     action: 'wbremoveclaims',

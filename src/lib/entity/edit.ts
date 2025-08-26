@@ -2,7 +2,7 @@ import { isEntityId, type EntityId } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { forceArray } from '../utils.js'
-import * as format from './format.js'
+import { formatClaims, formatSitelinks, formatValues } from './format.js'
 import { isIdAliasPattern, resolveIdAlias } from './id_alias.js'
 import type { CreateEntityParams, CreateEntityResponse } from './create.js'
 import type { Reconciliation } from './validate_reconciliation_object.js'
@@ -67,11 +67,11 @@ export async function editEntity (data: EditEntityParams, properties: Properties
     if (statements) params.data.claims = statements
     if (sitelinks) params.data.sitelinks = sitelinks
   } else {
-    if (labels) params.data.labels = format.values('label', labels)
-    if (aliases) params.data.aliases = format.values('alias', aliases)
-    if (descriptions) params.data.descriptions = format.values('description', descriptions)
-    if (statements) params.data.claims = format.claims(statements, properties, instance, reconciliation, existingClaims)
-    if (sitelinks) params.data.sitelinks = format.sitelinks(sitelinks)
+    if (labels) params.data.labels = formatValues('label', labels)
+    if (aliases) params.data.aliases = formatValues('alias', aliases)
+    if (descriptions) params.data.descriptions = formatValues('description', descriptions)
+    if (statements) params.data.claims = formatClaims(statements, properties, instance, reconciliation, existingClaims)
+    if (sitelinks) params.data.sitelinks = formatSitelinks(sitelinks)
   }
 
   if (clear === true) params.clear = true
