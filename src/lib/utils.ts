@@ -1,4 +1,5 @@
 import type { AbsoluteUrl } from './types/common'
+import type { ObjectEntries } from 'type-fest/source/entries.js'
 
 const stringNumberPattern = /^(-|\+)?\d+(\.\d+)?$/
 const signedStringNumberPattern = /^(-|\+)\d+(\.\d+)?$/
@@ -74,4 +75,16 @@ export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, m
 export function arrayIncludes <T extends (string | number)> (array: readonly T[], value: string | number): value is T {
   const arrayT: readonly (string | number)[] = array
   return arrayT.includes(value)
+}
+
+export function objectEntries <Obj> (obj: Obj) {
+  return Object.entries(obj) as ObjectEntries<Obj>
+}
+
+export function objectFromEntries <K extends string, V> (entries: [ K, V ][]) {
+  return Object.fromEntries(entries) as Record<K, V>
+}
+
+export function objectValues <Obj> (obj: Obj) {
+  return Object.values(obj) as Obj[keyof Obj][]
 }

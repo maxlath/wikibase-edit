@@ -1,8 +1,8 @@
 import { omit } from 'lodash-es'
-import { isEntityId, type Entity, type Item, type ItemId, type Lexeme, type LexemeId, type MediaInfo, type MediaInfoId, type Property, type PropertyId, type SimplifiedClaims, type SimplifiedEntity } from 'wikibase-sdk'
+import { isEntityId, type Entity, type EntityType, type Item, type ItemId, type Lexeme, type LexemeId, type MediaInfo, type MediaInfoId, type Property, type PropertyId, type SimplifiedClaims, type SimplifiedEntity } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
-import { arrayIncludes, forceArray } from '../utils.js'
+import { arrayIncludes, forceArray, objectEntries } from '../utils.js'
 import { formatClaims, formatSitelinks, formatValues } from './format.js'
 import { isIdAliasPattern, resolveIdAlias } from './id_alias.js'
 import type { CreateEntityResponse } from './create.js'
@@ -97,34 +97,20 @@ export async function editEntity (inputParams: EditEntityParams, properties: Pro
     throw newError('invalid entity id', { id })
   }
 
-  // @ts-expect-error
-  const { labels, aliases, descriptions, claims, statements, sitelinks } = inputParams
-
-  if (rawMode) {
-    if (params.type === 'item' || params.type === 'property') {
-      if (labels) params.data.labels = labels
-      if (aliases) params.data.aliases = aliases
-      if (descriptions) params.data.descriptions = descriptions
-      if (claims) params.data.claims = claims
-    }
-    if (params.type === 'mediainfo') {
-      if (statements) params.data.statements = statements
-    }
-    if (params.type === 'item') {
-      if (sitelinks) params.data.sitelinks = sitelinks
-    }
-  } else {
-    if (params.type === 'item' || params.type === 'property') {
-      if (labels) params.data.labels = formatValues('label', labels)
-      if (aliases) params.data.aliases = formatValues('alias', aliases)
-      if (descriptions) params.data.descriptions = formatValues('description', descriptions)
-      if (claims) params.data.claims = formatClaims(claims, properties, instance, reconciliation, existingClaims)
-    }
-    if (params.type === 'mediainfo') {
-      if (statements) params.data.statements = formatClaims(statements, properties, instance, reconciliation, existingClaims)
-    }
-    if (params.type === 'item') {
-      if (sitelinks) params.data.sitelinks = formatSitelinks(sitelinks)
+  for (const [ attribute, types ] of objectEntries(attributesPerEntityType)) {
+    if (arrayIncludes(types, params.type)) {
+      if (attribute in inputParams) {
+        const inputParam = inputParams[attribute]
+        if (rawMode) {
+          params.data[attribute] = inputParam
+        } else {
+          if (attribute === 'claims' || attribute === 'statements') {
+            params.data[attribute] = formatClaims(inputParam, properties, instance, reconciliation, existingClaims)
+          } else {
+            params.data[attribute] = simplifiedInputFormatters[attribute](inputParam)
+          }
+        }
+      }
     }
   }
 
@@ -142,6 +128,24 @@ export async function editEntity (inputParams: EditEntityParams, properties: Pro
       data: JSON.stringify(omit(params.data, 'type')),
     },
   }
+}
+
+const attributesPerEntityType = {
+  aliases: [ 'item', 'property' ],
+  claims: [ 'item', 'property', 'lexeme' ],
+  descriptions: [ 'item', 'property', 'mediainfo' ],
+  labels: [ 'item', 'property', 'mediainfo' ],
+  statements: [ 'mediainfo' ],
+  sitelinks: [ 'item' ],
+} satisfies Partial<Record<keyof Item | keyof Property | keyof Lexeme | keyof MediaInfo, EntityType[]>>
+
+type HasSimplifiedInputFormatters = Exclude<keyof typeof attributesPerEntityType, 'claims' | 'statements'>
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+const simplifiedInputFormatters: Record<HasSimplifiedInputFormatters, Function> = {
+  aliases: formatValues.bind(null, 'alias'),
+  descriptions: formatValues.bind(null, 'description'),
+  labels: formatValues.bind(null, 'label'),
+  sitelinks: formatSitelinks,
 }
 
 const datatypes = new Set([
