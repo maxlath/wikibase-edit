@@ -1,6 +1,6 @@
 import config from 'config'
 import should from 'should'
-import getProperty from '#tests/integration/utils/get_property'
+import { getProperty } from '#tests/integration/utils/get_property'
 import { getSomeGuid } from '#tests/integration/utils/sandbox_entities'
 import { addClaim, addQualifier } from '#tests/integration/utils/sandbox_snaks'
 import { shouldNotBeCalled, getLastEditSummary } from '#tests/integration/utils/utils'

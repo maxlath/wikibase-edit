@@ -1,4 +1,4 @@
-import buildClaim from '../entity/build_claim.js'
+import { buildClaim } from '../entity/build_claim.js'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { forceArray } from '../utils.js'

@@ -3,7 +3,7 @@ import { hasSpecialSnaktype } from './claim/special_snaktype.js'
 import * as datatypeTests from './datatype_tests.js'
 import { newError } from './error.js'
 import { inviteToOpenAFeatureRequest } from './issues.js'
-import datatypesToBuilderDatatypes from './properties/datatypes_to_builder_datatypes.js'
+import { normalizeDatatype } from './properties/datatypes_to_builder_datatypes.js'
 import { isPlainObject, isNonEmptyString, forceArray, isArray } from './utils.js'
 // For a list of valid languages
 // see https://www.wikidata.org/w/api.php?action=help&modules=wbgetentities
@@ -59,7 +59,7 @@ export function validateSnakValue (property, datatype, value) {
   }
   if (value.value) value = value.value
 
-  const builderDatatype = datatypesToBuilderDatatypes(datatype)
+  const builderDatatype = normalizeDatatype(datatype)
 
   // eslint-disable-next-line import-x/namespace
   if (datatypeTests[builderDatatype] == null) {

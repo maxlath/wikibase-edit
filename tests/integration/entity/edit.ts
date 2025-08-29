@@ -1,11 +1,11 @@
 import config from 'config'
 import should from 'should'
-import { simplify } from 'wikibase-sdk'
-import getProperty from '#tests/integration/utils/get_property'
+import { simplify, type ItemId } from 'wikibase-sdk'
+import { getProperty } from '#tests/integration/utils/get_property'
 import { getSandboxItemId, getSandboxPropertyId, createItem } from '#tests/integration/utils/sandbox_entities'
 import { addClaim } from '#tests/integration/utils/sandbox_snaks'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString } from '#tests/unit/utils'
+import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 import { getEntity } from '../utils/utils.js'
 
@@ -22,6 +22,7 @@ describe('entity edit', function () {
       id,
       labels: { nl: label },
     })
+    assert('labels' in res.entity)
     res.entity.labels.nl.value.should.equal(label)
   })
 
@@ -44,7 +45,7 @@ describe('entity edit', function () {
     const resA = await wbEdit.entity.create(params)
     const newLabel = randomString()
     const resB = await wbEdit.entity.edit({
-      id: resA.entity.id,
+      id: resA.entity.id as ItemId,
       clear: true,
       labels: {
         en: newLabel,
@@ -52,6 +53,9 @@ describe('entity edit', function () {
     })
     resB.success.should.equal(1)
     const { entity } = resB
+    assert('labels' in entity)
+    assert('descriptions' in entity)
+    assert('aliases' in entity)
     entity.labels.should.deepEqual({ en: { language: 'en', value: newLabel } })
     entity.descriptions.should.deepEqual({})
     entity.aliases.should.deepEqual({})
@@ -70,6 +74,7 @@ describe('entity edit', function () {
       { rank: 'deprecated', value: 'buzz' },
     ]
     const res = await wbEdit.entity.edit({ id, claims })
+    assert('claims' in res.entity)
     const propertyClaims = res.entity.claims[propertyId].slice(-3)
     const simplifiedPropertyClaims = simplify.propertyClaims(propertyClaims, { keepRanks: true, keepNonTruthy: true })
     simplifiedPropertyClaims.should.deepEqual(claims[propertyId])
@@ -82,7 +87,7 @@ describe('entity edit', function () {
       aliases: { en: randomString() },
     })
     const resB = await wbEdit.entity.edit({
-      id: resA.entity.id,
+      id: resA.entity.id as ItemId,
       labels: { en: null },
       descriptions: { en: null },
       aliases: { en: null },

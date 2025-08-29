@@ -4,7 +4,7 @@ import { isGuid } from 'wikibase-sdk'
 import { getSandboxPropertyId, getSandboxItemId } from '#tests/integration/utils/sandbox_entities'
 import { shouldNotBeCalled } from '#tests/integration/utils/utils'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString } from '#tests/unit/utils'
+import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 
 const wbEdit = WBEdit(config)
@@ -23,7 +23,7 @@ describe('claim create', function () {
     res.success.should.equal(1)
     isGuid(res.claim.id).should.be.true()
     res.claim.rank.should.equal('normal')
-    res.claim.mainsnak.snaktype.should.equal('value')
+    assert(res.claim.mainsnak.snaktype === 'value')
     res.claim.mainsnak.datavalue.value.should.equal(value)
   })
 
@@ -36,7 +36,9 @@ describe('claim create', function () {
     res.success.should.equal(1)
     isGuid(res.claim.id).should.be.true()
     res.claim.rank.should.equal('normal')
-    res.claim.mainsnak.snaktype.should.equal('value')
+    assert(res.claim.mainsnak.snaktype === 'value')
+    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
+    assert('time' in res.claim.mainsnak.datavalue.value)
     res.claim.mainsnak.datavalue.value.time.should.equal('-0028-00-00T00:00:00Z')
   })
 

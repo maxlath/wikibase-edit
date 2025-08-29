@@ -1,5 +1,5 @@
 import config from 'config'
-import wbkFactory from 'wikibase-sdk'
+import wbkFactory, { type DataType } from 'wikibase-sdk'
 import { customFetch } from '#lib/request/fetch'
 import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
@@ -8,15 +8,15 @@ const wbk = wbkFactory({ instance: config.instance })
 const sandboxProperties = {}
 const wbEdit = WBEdit(config)
 
-export default async ({ datatype, reserved }) => {
+export async function getProperty ({ datatype, reserved }: { datatype: DataType, reserved?: boolean }) {
   if (!datatype) throw new Error('missing datatype')
   if (reserved) return createProperty(datatype)
-  const property = await getProperty(datatype)
+  const property = await _getProperty(datatype)
   sandboxProperties[datatype] = property
   return property
 }
 
-const getProperty = async datatype => {
+async function _getProperty (datatype: DataType) {
   const pseudoPropertyId = getPseudoPropertyId(datatype)
 
   const cachedPropertyId = sandboxProperties[pseudoPropertyId]
@@ -28,14 +28,14 @@ const getProperty = async datatype => {
   else return createProperty(datatype)
 }
 
-const findOnWikibase = async pseudoPropertyId => {
+async function findOnWikibase (pseudoPropertyId: string) {
   const url = wbk.searchEntities({ search: pseudoPropertyId, type: 'property' })
   const body = await customFetch(url).then(res => res.json())
   const firstWbResult = body.search[0]
   if (firstWbResult) return firstWbResult
 }
 
-const createProperty = async datatype => {
+async function createProperty (datatype: DataType) {
   const pseudoPropertyId = getPseudoPropertyId(datatype)
   const res = await wbEdit.entity.create({
     type: 'property',
@@ -49,4 +49,4 @@ const createProperty = async datatype => {
   return res.entity
 }
 
-const getPseudoPropertyId = datatype => `${datatype} sandbox property`
+const getPseudoPropertyId = (datatype: DataType) => `${datatype} sandbox property`

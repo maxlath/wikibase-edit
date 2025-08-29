@@ -1,4 +1,4 @@
-import fetchPropertiesDatatypes from './fetch_properties_datatypes.js'
+import { fetchPropertiesDatatypes } from './fetch_properties_datatypes.js'
 import { findClaimsProperties, findSnaksProperties } from './find_snaks_properties.js'
 
 export default (params, config) => {

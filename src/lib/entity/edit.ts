@@ -1,5 +1,5 @@
 import { omit } from 'lodash-es'
-import { isEntityId, type Entity, type EntityType, type Item, type ItemId, type Lexeme, type LexemeId, type MediaInfo, type MediaInfoId, type Property, type PropertyId, type SimplifiedClaims, type SimplifiedEntity } from 'wikibase-sdk'
+import { isEntityId, type Entity, type EntityType, type Item, type Lexeme, type MediaInfo, type Property, type SimplifiedClaims, type LooseSimplifiedItem, type LooseSimplifiedLexeme, type LooseSimplifiedMediaInfo, type LooseSimplifiedProperty } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { arrayIncludes, forceArray, objectEntries } from '../utils.js'
@@ -11,19 +11,21 @@ import type { PropertiesDatatypes } from '../properties/fetch_properties_datatyp
 import type { AbsoluteUrl } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
 
+export type EditableEntity = Item | Property | Lexeme | MediaInfo
+export type SimplifiedEditableEntity = LooseSimplifiedItem | LooseSimplifiedProperty | LooseSimplifiedLexeme | LooseSimplifiedMediaInfo
+
 interface EditEntityParamsBase {
-  id?: ItemId | PropertyId | LexemeId | MediaInfoId
   clear?: boolean
   create?: boolean
   reconciliation?: Reconciliation
 }
 
-type EditEntityRawModeParams = EditEntityParamsBase & Entity & {
+type EditEntityRawModeParams = EditEntityParamsBase & Partial<EditableEntity> & {
   rawMode: true
 }
 
-type EditEntitySimplifiedModeParams = EditEntityParamsBase & SimplifiedEntity & {
-  rawMode: false | undefined
+type EditEntitySimplifiedModeParams = EditEntityParamsBase & Partial<SimplifiedEditableEntity> & {
+  rawMode?: false
 }
 
 export type EditEntityParams = EditEntityRawModeParams | EditEntitySimplifiedModeParams
@@ -130,6 +132,7 @@ export async function editEntity (inputParams: EditEntityParams, properties: Pro
   }
 }
 
+// TODO: add support for lemmas, forms and senses
 const attributesPerEntityType = {
   aliases: [ 'item', 'property' ],
   claims: [ 'item', 'property', 'lexeme' ],

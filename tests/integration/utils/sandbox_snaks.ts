@@ -1,14 +1,25 @@
 import config from 'config'
-import { randomString } from '#tests/unit/utils'
+import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 import { getSandboxItemId, getSandboxPropertyId, getSandboxClaimId } from './sandbox_entities.js'
+import type { EditableEntity } from '../../../src/lib/entity/edit.js'
+import type { DataType, EntityId, Guid, PropertyId, SimplifiedClaim, SimplifiedQualifier, SimplifiedQualifiers, SimplifiedReference } from 'wikibase-sdk'
 
 const wbEdit = WBEdit(config)
 
-export const addClaim = async (params = {}) => {
+interface AddClaimParams {
+  id?: EditableEntity['id']
+  property?: PropertyId
+  datatype?: DataType
+  value?: SimplifiedClaim
+  qualifiers?: SimplifiedQualifiers
+}
+
+export async function addClaim (params: AddClaimParams = {}) {
   let { id, property, datatype = 'string', value = randomString(), qualifiers } = params
   id = id || (await getSandboxItemId())
   property = property || (await getSandboxPropertyId(datatype))
+  // @ts-expect-error
   const res = await wbEdit.entity.edit({
     id,
     claims: {
@@ -18,11 +29,19 @@ export const addClaim = async (params = {}) => {
       },
     },
   })
+  assert('claims' in res.entity)
   const claim = res.entity.claims[property].slice(-1)[0]
   return { id, property, claim, guid: claim.id }
 }
 
-export const addQualifier = async ({ guid, property, datatype, value }) => {
+interface AddQualifierParams {
+  guid?: Guid
+  property?: PropertyId
+  datatype?: DataType
+  value?: SimplifiedQualifier
+}
+
+export async function addQualifier ({ guid, property, datatype, value }: AddQualifierParams) {
   guid = guid || (await getSandboxClaimId())
   property = property || (await getSandboxPropertyId(datatype))
   const res = await wbEdit.qualifier.set({ guid, property, value })
@@ -31,7 +50,14 @@ export const addQualifier = async ({ guid, property, datatype, value }) => {
   return { guid, property, qualifier, hash }
 }
 
-export const addReference = async ({ guid, property, datatype, value }) => {
+interface AddReferenceParams {
+  guid?: Guid
+  property?: PropertyId
+  datatype?: DataType
+  value?: SimplifiedReference
+}
+
+export async function addReference ({ guid, property, datatype, value }: AddReferenceParams) {
   guid = guid || (await getSandboxClaimId())
   property = property || (await getSandboxPropertyId(datatype))
   const { reference } = await wbEdit.reference.set({ guid, property, value })

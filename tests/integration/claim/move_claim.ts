@@ -1,6 +1,6 @@
 import config from 'config'
 import should from 'should'
-import getProperty from '#tests/integration/utils/get_property'
+import { getProperty } from '#tests/integration/utils/get_property'
 import { createItem, getSomeEntityId, getSomeGuid } from '#tests/integration/utils/sandbox_entities'
 import { addClaim } from '#tests/integration/utils/sandbox_snaks'
 import { shouldNotBeCalled, getLastEditSummary } from '#tests/integration/utils/utils'
@@ -9,7 +9,7 @@ import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 
 const wbEdit = WBEdit(config)
-const { move: moveClaim } = wbEdit.claim
+const { move: moveClaims } = wbEdit.claim
 
 describe('move claim', function () {
   this.timeout(20 * 1000)
@@ -17,7 +17,7 @@ describe('move claim', function () {
 
   it('should reject missing guid', async () => {
     try {
-      await moveClaim({}).then(shouldNotBeCalled)
+      await moveClaims({}).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('missing claim guid or property claims id')
     }
@@ -25,7 +25,7 @@ describe('move claim', function () {
 
   it('should reject invalid guid', async () => {
     try {
-      await moveClaim({ guid: 123 }).then(shouldNotBeCalled)
+      await moveClaims({ guid: 123 }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('invalid claim guid')
     }
@@ -34,7 +34,7 @@ describe('move claim', function () {
   it('should reject missing entity id', async () => {
     try {
       const guid = await getSomeGuid()
-      await moveClaim({ guid }).then(shouldNotBeCalled)
+      await moveClaims({ guid }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('missing target entity id')
     }
@@ -43,7 +43,7 @@ describe('move claim', function () {
   it('should reject invalid entity id', async () => {
     try {
       const guid = await getSomeGuid()
-      await moveClaim({ guid, id: 'foo' }).then(shouldNotBeCalled)
+      await moveClaims({ guid, id: 'foo' }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('invalid target entity id')
     }
@@ -53,7 +53,7 @@ describe('move claim', function () {
     try {
       const guid = await getSomeGuid()
       const id = await getSomeEntityId()
-      await moveClaim({ guid, id }).then(shouldNotBeCalled)
+      await moveClaims({ guid, id }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('missing property id')
     }
@@ -63,7 +63,7 @@ describe('move claim', function () {
     try {
       const guid = await getSomeGuid()
       const id = await getSomeEntityId()
-      await moveClaim({ guid, id, property: '123' }).then(shouldNotBeCalled)
+      await moveClaims({ guid, id, property: '123' }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('invalid property id')
     }
@@ -73,7 +73,7 @@ describe('move claim', function () {
     const { id } = await createItem()
     const { guid, property: currentProperty } = await addClaim({ id, datatype: 'string', value: randomString() })
     const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
-    const [ res ] = await moveClaim({ guid, id, property: otherStringPropertyId })
+    const [ res ] = await moveClaims({ guid, id, property: otherStringPropertyId })
     const { entity } = res
     entity.id.should.equal(id)
     should(entity.claims[currentProperty]).not.be.ok()
@@ -86,7 +86,7 @@ describe('move claim', function () {
     const { guid, property: currentProperty } = await addClaim({ id, datatype: 'string', value: randomString() })
     const { guid: otherClaimGuid } = await addClaim({ id, property: currentProperty, value: randomString() })
     const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
-    const [ res ] = await moveClaim({ guid, id, property: otherStringPropertyId })
+    const [ res ] = await moveClaims({ guid, id, property: otherStringPropertyId })
     const { entity } = res
     entity.id.should.equal(id)
     entity.claims[currentProperty][0].id.should.equal(otherClaimGuid)
@@ -98,7 +98,7 @@ describe('move claim', function () {
     const { id } = await createItem()
     const { guid, property: currentProperty } = await addClaim({ id, datatype: 'string', value: randomString() })
     const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
-    const [ res ] = await moveClaim({ guid, id, property: otherStringPropertyId })
+    const [ res ] = await moveClaims({ guid, id, property: otherStringPropertyId })
     const summary = await getLastEditSummary(res)
     summary.split('*/')[1].trim()
     .should.equal(`moving a ${currentProperty} claim to ${otherStringPropertyId}`)
@@ -108,7 +108,7 @@ describe('move claim', function () {
     const { guid, id, property } = await addClaim({ datatype: 'string', value: randomString() })
     const { id: someUnconvertablePropertyId } = await getProperty({ datatype: 'wikibase-item' })
     try {
-      await moveClaim({ guid, id, property: someUnconvertablePropertyId }).then(shouldNotBeCalled)
+      await moveClaims({ guid, id, property: someUnconvertablePropertyId }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.startWith("properties datatype don't match")
       err.context.originPropertyId.should.equal(property)
@@ -119,7 +119,7 @@ describe('move claim', function () {
   it('should move a claim from one entity to another', async () => {
     const { guid, id, property } = await addClaim({ datatype: 'string', value: randomString() })
     const { id: otherItemId } = await createItem()
-    const res = await moveClaim({ guid, id: otherItemId, property })
+    const res = await moveClaims({ guid, id: otherItemId, property })
     const [ removeClaimRes, addClaimRes ] = res
     removeClaimRes.entity.id.should.equal(id)
     addClaimRes.entity.id.should.equal(otherItemId)
@@ -130,7 +130,7 @@ describe('move claim', function () {
     const { guid, property: currentProperty } = await addClaim({ id, datatype: 'string', value: randomString() })
     const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
     const newValue = randomString()
-    const [ res ] = await moveClaim({ guid, id, property: otherStringPropertyId, newValue })
+    const [ res ] = await moveClaims({ guid, id, property: otherStringPropertyId, newValue })
     const { entity } = res
     entity.id.should.equal(id)
     should(entity.claims[currentProperty]).not.be.ok()
@@ -275,7 +275,7 @@ const testTypeConversion = async ({ originalType, originalValue, targetType, tar
   itemId = itemId || (await createItem()).id
   const { guid } = await addClaim({ id: itemId, datatype: originalType, value: originalValue })
   const { id: otherPropertyId } = await getProperty({ datatype: targetType })
-  const [ { entity } ] = await moveClaim({ guid, id: itemId, property: otherPropertyId })
+  const [ { entity } ] = await moveClaims({ guid, id: itemId, property: otherPropertyId })
   const movedClaim = entity.claims[otherPropertyId].slice(-1)[0]
   movedClaim.mainsnak.datatype.should.equal(targetType)
   movedClaim.mainsnak.datavalue.value.should.deepEqual(targetValue)

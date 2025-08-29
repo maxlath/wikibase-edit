@@ -6,7 +6,7 @@ import { addBadge, type AddBadgeParams, type AddBadgeResponse } from './badge/ad
 import { removeBadge, type RemoveBadgeParams, type RemoveBadgeResponse } from './badge/remove.js'
 import { bundleWrapper } from './bundle_wrapper.js'
 import { createClaim, type CreateClaimParams, type CreateClaimResponse } from './claim/create.js'
-import { moveClaim, type MoveClaimParams, type MoveClaimResponse } from './claim/move.js'
+import { moveClaims, type MoveClaimParams, type MoveClaimResponse } from './claim/move.js'
 import { removeClaim, type RemoveClaimParams, type RemoveClaimResponse } from './claim/remove.js'
 import { setClaim, type SetClaimParams, type SetClaimResponse } from './claim/set.js'
 import { updateClaim, type UpdateClaimParams, type UpdateClaimResponse } from './claim/update.js'
@@ -82,7 +82,7 @@ export default function WBEdit (generalConfig: GeneralConfig) {
     claim: {
       create: bundleWrapper<CreateClaimParams, CreateClaimResponse>(createClaim, generalConfig, primaryAPI),
       update: bundleWrapper<UpdateClaimParams, UpdateClaimResponse>(updateClaim, generalConfig, primaryAPI),
-      move: bundleWrapper<MoveClaimParams, MoveClaimResponse>(moveClaim, generalConfig, primaryAPI),
+      move: bundleWrapper<MoveClaimParams, MoveClaimResponse>(moveClaims, generalConfig, primaryAPI),
     },
     qualifier: {
       update: bundleWrapper<UpdateQualifierParams, UpdateQualifierResponse>(updateQualifier, generalConfig, primaryAPI),

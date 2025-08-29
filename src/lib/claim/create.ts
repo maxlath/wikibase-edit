@@ -1,17 +1,21 @@
 import { newError } from '../error.js'
+import { hasSpecialSnaktype } from './special_snaktype.js'
+import type { EditableEntity } from '../entity/edit.js'
 import type { Reconciliation } from '../entity/validate_reconciliation_object.js'
 import type { WikibaseEditAPI } from '../index.js'
 import type { SerializedConfig } from '../types/config.js'
-import type { Claim, EntityId, PropertyId, Rank, SimplifiedClaim, SimplifiedQualifiers, SimplifiedReferences } from 'wikibase-sdk'
+import type { Claim, CustomSimplifiedClaim, PropertyId, Rank, SimplifiedClaim, SimplifiedQualifiers, SimplifiedReferences } from 'wikibase-sdk'
 
 export interface CreateClaimParams {
-  id: EntityId
+  id: EditableEntity['id']
   property: PropertyId
   value: SimplifiedClaim
   qualifiers?: SimplifiedQualifiers
   references?: SimplifiedReferences
   rank?: Rank
   reconciliation?: Reconciliation
+  summary?: string
+  baserevid?: number
 }
 
 export async function createClaim (params: CreateClaimParams, config: SerializedConfig, API: WikibaseEditAPI) {
@@ -20,8 +24,8 @@ export async function createClaim (params: CreateClaimParams, config: Serialized
 
   if (value == null) throw newError('missing value', 400, params)
 
-  const claim = { rank, qualifiers, references }
-  if (value.snaktype && value.snaktype !== 'value') {
+  const claim: Partial<CustomSimplifiedClaim> = { rank, qualifiers, references }
+  if (hasSpecialSnaktype(value)) {
     claim.snaktype = value.snaktype
   } else {
     claim.value = value
@@ -44,7 +48,8 @@ export async function createClaim (params: CreateClaimParams, config: Serialized
     reconciliation,
   }
 
-  // Using wbeditentity, as the endpoint is more complete, so we need to recover the summary
+  // Using wbeditentity, as the endpoint is more complete
+  // @ts-expect-error
   const { entity, success } = await API.entity.edit(data, config)
 
   const newClaim = entity[statementsKey][property].slice(-1)[0]

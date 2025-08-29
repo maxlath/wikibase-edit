@@ -77,7 +77,7 @@ export function arrayIncludes <T extends (string | number)> (array: readonly T[]
   return arrayT.includes(value)
 }
 
-export function objectEntries <Obj> (obj: Obj) {
+export function objectEntries <Obj extends object> (obj: Obj) {
   return Object.entries(obj) as ObjectEntries<Obj>
 }
 
@@ -85,6 +85,11 @@ export function objectFromEntries <K extends string, V> (entries: [ K, V ][]) {
   return Object.fromEntries(entries) as Record<K, V>
 }
 
-export function objectValues <Obj> (obj: Obj) {
+export function objectValues <Obj extends object> (obj: Obj) {
   return Object.values(obj) as Obj[keyof Obj][]
+}
+
+// Source: https://www.totaltypescript.com/tips/create-your-own-objectkeys-function-using-generics-and-the-keyof-operator
+export function objectKeys <Obj extends object> (obj: Obj): (keyof Obj)[] {
+  return Object.keys(obj) as (keyof Obj)[]
 }

@@ -1,14 +1,15 @@
-import { isPropertyId, type DataType, type PropertyId } from 'wikibase-sdk'
+import { isPropertyId, type DataType, type Property, type PropertyId, type WbGetEntitiesResponse } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import WBK from '../get_instance_wikibase_sdk.js'
 import getJson from '../request/get_json.js'
 import type { AbsoluteUrl } from '../types/common.js'
+import type { SerializedConfig } from '../types/config.js'
 
 export type PropertiesDatatypes = Record<PropertyId, DataType>
 
 const propertiesByInstance: Record<AbsoluteUrl, PropertiesDatatypes> = {}
 
-export default async (config, propertyIds = []) => {
+export async function fetchPropertiesDatatypes (config: SerializedConfig, propertyIds: PropertyId[] = []) {
   let { instance, properties } = config
 
   propertyIds.forEach(propertyId => {
@@ -27,21 +28,25 @@ export default async (config, propertyIds = []) => {
   const urls = WBK(instance).getManyEntities({ ids: missingPropertyIds, props: 'info' })
 
   const headers = { 'user-agent': config.userAgent }
-  const responses = await Promise.all(urls.map(url => getJson(url, { headers })))
+  const responses: WbGetEntitiesResponse[] = await Promise.all(urls.map(url => getJson(url, { headers })))
   const responsesEntities = responses.map(parseResponse)
-  const allEntities = Object.assign(...responsesEntities)
-  missingPropertyIds.forEach(addMissingProperty(allEntities, properties, instance))
+  const allEntities = Object.assign({}, ...responsesEntities)
+  missingPropertyIds.forEach(addMissingPropertyFactory(allEntities, properties, instance))
 }
 
 const notIn = object => key => object[key] == null
 
-const parseResponse = ({ entities, error }) => {
+type PropertiesByIds = Record<PropertyId, Property>
+
+function parseResponse ({ entities, error }: WbGetEntitiesResponse) {
   if (error) throw newError(error.info, 400, error)
-  return entities
+  return entities as PropertiesByIds
 }
 
-const addMissingProperty = (entities, properties, instance) => propertyId => {
-  const property = entities[propertyId]
-  if (!(property?.datatype)) throw newError('property not found', { propertyId, instance })
-  properties[propertyId] = property.datatype
+function addMissingPropertyFactory (entities: PropertiesByIds, properties: PropertiesDatatypes, instance: AbsoluteUrl) {
+  return function addMissingProperty (propertyId: PropertyId) {
+    const property = entities[propertyId]
+    if (!(property?.datatype)) throw newError('property not found', { propertyId, instance })
+    properties[propertyId] = property.datatype
+  }
 }

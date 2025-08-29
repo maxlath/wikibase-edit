@@ -1,7 +1,7 @@
 import { singleClaimBuilders as builders } from '../claim/builders.js'
 import { hasSpecialSnaktype } from '../claim/special_snaktype.js'
 import { newError } from '../error.js'
-import datatypesToBuilderDatatypes from '../properties/datatypes_to_builder_datatypes.js'
+import { normalizeDatatype } from '../properties/datatypes_to_builder_datatypes.js'
 import { validateGuid, validateHash, validateProperty, validateSnakValue } from '../validate.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
@@ -38,7 +38,7 @@ export function setQualifier (params: SetQualifierParams, properties: Properties
     data.snaktype = value.snaktype
   } else {
     data.snaktype = 'value'
-    const builderDatatype = datatypesToBuilderDatatypes(datatype) || datatype
+    const builderDatatype = normalizeDatatype(datatype) || datatype
     data.value = builders[builderDatatype](value, instance)
   }
 

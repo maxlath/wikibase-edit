@@ -1,6 +1,7 @@
 import 'should'
 import config from 'config'
 import WBEdit from '#root'
+import { assert } from '../../unit/utils'
 
 const wbEdit = WBEdit(config)
 
@@ -20,6 +21,7 @@ xdescribe('add badges', () => {
       badges: [ 'Q609' ],
     })
     res.success.should.equal(1)
+    assert('sitelinks' in res.entity)
     res.entity.sitelinks.dewiki.badges.should.deepEqual([ 'Q608', 'Q609' ])
   })
 
@@ -36,6 +38,7 @@ xdescribe('add badges', () => {
       badges: [ 'Q608' ],
     })
     res.success.should.equal(1)
+    assert('sitelinks' in res.entity)
     res.entity.sitelinks.dewiki.badges.should.deepEqual([ 'Q608' ])
   })
 })

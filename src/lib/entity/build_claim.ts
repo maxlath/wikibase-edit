@@ -2,14 +2,17 @@ import { entityEditBuilders as builders } from '../claim/builders.js'
 import { buildReferenceFactory, buildPropSnaksFactory } from '../claim/snak.js'
 import { hasSpecialSnaktype } from '../claim/special_snaktype.js'
 import { newError } from '../error.js'
-import datatypesToBuilderDatatypes from '../properties/datatypes_to_builder_datatypes.js'
+import { normalizeDatatype } from '../properties/datatypes_to_builder_datatypes.js'
 import { isString, isNumber, isPlainObject, map, forceArray } from '../utils.js'
 import { validateGuid, validateRank, validateSnakValue } from '../validate.js'
+import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
+import type { AbsoluteUrl } from '../types/common.js'
+import type { PropertyId, SimplifiedClaims } from 'wikibase-sdk'
 
-export default (property, properties, claimData, instance) => {
+export function buildClaim (property: PropertyId, properties: PropertiesDatatypes, claimData: SimplifiedClaims, instance: AbsoluteUrl) {
   const datatype = properties[property]
 
-  const builderDatatype = datatypesToBuilderDatatypes(datatype)
+  const builderDatatype = normalizeDatatype(datatype)
   const builder = builders[builderDatatype]
 
   const params = { properties, datatype, property, claimData, builder, instance }
@@ -22,13 +25,13 @@ export default (property, properties, claimData, instance) => {
   }
 }
 
-const simpleClaimBuilder = params => {
+function simpleClaimBuilder (params) {
   const { property, datatype, claimData: value, builder, instance } = params
   validateSnakValue(property, datatype, value)
   return builder(property, value, instance)
 }
 
-const fullClaimBuilder = params => {
+function fullClaimBuilder (params) {
   const { properties, datatype, property, claimData, builder, instance } = params
   validateClaimParameters(claimData)
   let { id, value, snaktype, rank, qualifiers, references, remove, reconciliation } = claimData
@@ -108,7 +111,7 @@ const validClaimParameters = [
 
 const validClaimParametersSet = new Set(validClaimParameters)
 
-const validateClaimParameters = claimData => {
+function validateClaimParameters (claimData) {
   for (const key in claimData) {
     if (!validClaimParametersSet.has(key)) {
       throw newError(`invalid claim parameter: ${key}`, { claimData, validClaimParameters })

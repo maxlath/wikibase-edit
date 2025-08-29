@@ -1,4 +1,4 @@
-import datatypesToBuilderDatatypes from '../properties/datatypes_to_builder_datatypes.js'
+import { normalizeDatatype } from '../properties/datatypes_to_builder_datatypes.js'
 import { flatten, forceArray, map, values } from '../utils.js'
 import { validateProperty, validateSnakValue } from '../validate.js'
 import { entityEditBuilders as builders } from './builders.js'
@@ -11,7 +11,7 @@ export function buildSnak (property: PropertyId, datatype: DataType, value: Simp
   if (value?.snaktype && value.snaktype !== 'value') {
     return { snaktype: value.snaktype, property }
   }
-  const builderDatatype = datatypesToBuilderDatatypes(datatype)
+  const builderDatatype = normalizeDatatype(datatype)
   return builders[builderDatatype](property, value, instance).mainsnak
 }
 

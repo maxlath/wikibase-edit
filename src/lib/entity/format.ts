@@ -1,7 +1,7 @@
 import { newError } from '../error.js'
-import { isString, forceArray, isntEmpty, flatten } from '../utils.js'
+import { isString, forceArray, isntEmpty, flatten, objectKeys } from '../utils.js'
 import { validateAliases, validateBadges, validateLabelOrDescription, validateLanguage, validateProperty, validateSite, validateSiteTitle } from '../validate.js'
-import buildClaim from './build_claim.js'
+import { buildClaim } from './build_claim.js'
 import reconcileClaim from './reconcile_claim.js'
 import type { Reconciliation } from './validate_reconciliation_object.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
@@ -23,7 +23,7 @@ function formatBadgesArray (badges: SitelinkBadges | string) {
 
 export function formatValues (name: string, values: string | string) {
   const obj = {}
-  Object.keys(values).forEach(lang => {
+  objectKeys(values).forEach(lang => {
     let value = values[lang]
     validateLanguage(lang)
     if (name === 'alias') {
@@ -40,13 +40,13 @@ export function formatValues (name: string, values: string | string) {
 
 export function formatClaims (claims: CustomSimplifiedClaims, properties: PropertiesDatatypes, instance: AbsoluteUrl, reconciliation: Reconciliation, existingClaims: SimplifiedClaims) {
   if (!properties) throw newError('expected properties')
-  return Object.keys(claims)
+  return objectKeys(claims)
   .reduce(formatClaimFactory(claims, properties, instance, reconciliation, existingClaims), {})
 }
 
 export function formatSitelinks (sitelinks: SimplifiedSitelinks) {
   const obj = {}
-  Object.keys(sitelinks).forEach(site => {
+  objectKeys(sitelinks).forEach(site => {
     validateSite(site)
     const title = sitelinks[site]
     if (title === null) {

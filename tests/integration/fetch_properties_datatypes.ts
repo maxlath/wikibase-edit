@@ -1,6 +1,6 @@
 import 'should'
 import config from 'config'
-import fetchPropertiesDatatypes from '#lib/properties/fetch_properties_datatypes'
+import { fetchPropertiesDatatypes } from '#lib/properties/fetch_properties_datatypes'
 import { getSandboxPropertyId } from '#tests/integration/utils/sandbox_entities'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { undesiredRes } from './utils/utils.js'

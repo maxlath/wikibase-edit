@@ -1,5 +1,5 @@
 import { validateGuid, validateProperty, validateSnakValue } from '../validate.js'
-import formatClaimValue from './format_claim_value.js'
+import { formatClaimValue } from './format_claim_value.js'
 import { buildSnak } from './snak.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
