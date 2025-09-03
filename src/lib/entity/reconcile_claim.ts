@@ -1,4 +1,4 @@
-import isEqual from 'lodash.isequal'
+import { isEqual } from 'lodash-es'
 import { simplifyReferences, simplifySnak } from 'wikibase-sdk'
 import isMatchingClaim from '../claim/is_matching_claim.js'
 import isMatchingSnak from '../claim/is_matching_snak.js'
