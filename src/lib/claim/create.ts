@@ -4,12 +4,12 @@ import type { EditableEntity } from '../entity/edit.js'
 import type { Reconciliation } from '../entity/validate_reconciliation_object.js'
 import type { WikibaseEditAPI } from '../index.js'
 import type { SerializedConfig } from '../types/config.js'
-import type { Claim, CustomSimplifiedClaim, PropertyId, Rank, SimplifiedClaim, SimplifiedQualifiers, SimplifiedReferences } from 'wikibase-sdk'
+import type { Claim, CustomSimplifiedClaim, CustomSimplifiedSnak, PropertyId, Rank, SimplifiedQualifiers, SimplifiedReferences } from 'wikibase-sdk'
 
 export interface CreateClaimParams {
   id: EditableEntity['id']
   property: PropertyId
-  value: SimplifiedClaim
+  value: CustomSimplifiedSnak['value']
   qualifiers?: SimplifiedQualifiers
   references?: SimplifiedReferences
   rank?: Rank

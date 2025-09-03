@@ -8,12 +8,12 @@ import type { Reconciliation } from '../entity/validate_reconciliation_object.js
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
-import type { EntityId, Guid, PropertyId, SimplifiedClaim, SimplifiedQualifiers } from 'wikibase-sdk'
+import type { EntityWithClaims, Guid, PropertyId, SimplifiedClaim, SimplifiedQualifiers } from 'wikibase-sdk'
 
 export interface RemoveClaimParams {
-  id?: EntityId
+  id?: EntityWithClaims['id']
   property?: PropertyId
-  guid?: Guid
+  guid?: Guid | Guid[]
   value?: SimplifiedClaim
   qualifiers: SimplifiedQualifiers
   reconciliation?: Reconciliation
@@ -26,17 +26,19 @@ export async function removeClaim (params: RemoveClaimParams, properties: Proper
     throw newError('missing guid or id/property/value', params)
   }
 
-  if (!guid) {
+  let guids: Guid[]
+  if (guid) {
+    guids = forceArray(guid)
+  } else {
     const existingClaims = await getEntityClaims(id, config)
     const claimData = { value, qualifiers }
     const claim = buildClaim(property, properties, claimData, instance)
     const { matchingQualifiers } = reconciliation
     const matchingClaims = existingClaims[property].filter(isMatchingClaim(claim, matchingQualifiers))
     if (matchingClaims.length === 0) throw newError('claim not found', params)
-    guid = matchingClaims.map(({ id }) => id)
+    guids = matchingClaims.map(({ id }) => id)
   }
 
-  const guids = forceArray(guid)
   guids.forEach(validateGuid)
 
   return {

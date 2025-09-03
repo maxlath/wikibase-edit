@@ -80,7 +80,7 @@ export interface GeneralConfig {
 }
 
 export interface RequestConfig extends GeneralConfig {
-  baserevid?: number
+  baserevid?: number | `${number}`
 }
 
 export interface SerializedConfig extends RequestConfig {

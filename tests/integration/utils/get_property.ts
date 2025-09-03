@@ -1,5 +1,5 @@
 import config from 'config'
-import wbkFactory, { type DataType } from 'wikibase-sdk'
+import wbkFactory, { type DataType, type Property } from 'wikibase-sdk'
 import { customFetch } from '#lib/request/fetch'
 import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
@@ -8,7 +8,7 @@ const wbk = wbkFactory({ instance: config.instance })
 const sandboxProperties = {}
 const wbEdit = WBEdit(config)
 
-export async function getProperty ({ datatype, reserved }: { datatype: DataType, reserved?: boolean }) {
+export async function getProperty ({ datatype, reserved }: { datatype: DataType, reserved?: boolean }): Promise<Property> {
   if (!datatype) throw new Error('missing datatype')
   if (reserved) return createProperty(datatype)
   const property = await _getProperty(datatype)
@@ -46,7 +46,7 @@ async function createProperty (datatype: DataType) {
       en: `${pseudoPropertyId} (${randomString()})`,
     },
   })
-  return res.entity
+  return res.entity as Property
 }
 
 const getPseudoPropertyId = (datatype: DataType) => `${datatype} sandbox property`

@@ -2,9 +2,9 @@ import { newError } from './error.js'
 import WBK from './get_instance_wikibase_sdk.js'
 import getJson from './request/get_json.js'
 import type { SerializedConfig } from './types/config.js'
-import type { EntityId, Props } from 'wikibase-sdk'
+import type { Claims, Entity, EntityWithClaims, EntityWithSitelinks, MediaInfo, Props, Statements } from 'wikibase-sdk'
 
-async function getEntity (id: EntityId, props: Props, config: SerializedConfig) {
+async function getEntity <T extends Entity> (id: T['id'], props: Props, config: SerializedConfig) {
   const { instance } = config
   const url = WBK(instance).getEntities({ ids: id, props })
   const headers = { 'user-agent': config.userAgent }
@@ -13,16 +13,16 @@ async function getEntity (id: EntityId, props: Props, config: SerializedConfig) 
   if (!entity || entity.missing != null) {
     throw newError('entity not found', { id, props, instance: config.instance })
   }
-  return entity
+  return entity as T
 }
 
-export async function getEntityClaims (id: EntityId, config: SerializedConfig) {
+export async function getEntityClaims <T extends EntityWithClaims> (id: T['id'], config: SerializedConfig) {
   const entity = await getEntity(id, 'claims', config)
   const { statementsKey } = config
-  return entity[statementsKey]
+  return entity[statementsKey] as (T extends MediaInfo ? Statements : Claims)
 }
 
-export async function getEntitySitelinks (id: EntityId, config: SerializedConfig) {
+export async function getEntitySitelinks <T extends EntityWithSitelinks> (id: T['id'], config: SerializedConfig) {
   const entity = await getEntity(id, 'sitelinks', config)
   return entity.sitelinks
 }

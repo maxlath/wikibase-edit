@@ -40,7 +40,7 @@ export function requestWrapper <Params extends object, Response extends object, 
     const { action, data } = await actionFn(params, config.properties, config.instance, config)
 
     const { summarySuffix } = config
-    let summary = params.summary || config.summary
+    let summary = 'summary' in params ? params.summary : config.summary
     if (summarySuffix) {
       if (typeof summary === 'string') {
         summary = `${summary.trim()} ${summarySuffix.trim()}`
@@ -49,13 +49,15 @@ export function requestWrapper <Params extends object, Response extends object, 
       }
     }
 
-    const baserevid = params.baserevid || config.baserevid
+    const baserevid = 'baserevid' in params ? params.baserevid : config.baserevid
 
     const extraData: Partial<Pick<SerializedConfig, 'summary' | 'baserevid'>> = {}
 
     if (isNonEmptyString(summary)) {
       extraData.summary = summary.trim()
     }
+
+    // @ts-expect-error
     if (baserevid != null) extraData.baserevid = baserevid
 
     if ('title' in data) {

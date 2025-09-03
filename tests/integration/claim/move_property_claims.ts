@@ -4,7 +4,7 @@ import { getProperty } from '#tests/integration/utils/get_property'
 import { createItem, getSomeEntityId } from '#tests/integration/utils/sandbox_entities'
 import { addClaim } from '#tests/integration/utils/sandbox_snaks'
 import { shouldNotBeCalled, getLastEditSummary } from '#tests/integration/utils/utils'
-import { randomString } from '#tests/unit/utils'
+import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 import type { PropertyClaimsId } from 'wikibase-sdk'
 
@@ -105,10 +105,11 @@ describe('move property claims', async () => {
     const { id } = await createItem()
     const { guid, property: currentPropertyId } = await addClaim({ id, datatype: 'string', value: randomString() })
     const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
-    const propertyClaimsId = `${id}#${currentPropertyId}`
+    const propertyClaimsId: PropertyClaimsId = `${id}#${currentPropertyId}`
     const res = await moveClaims({ propertyClaimsId, id, property: otherStringPropertyId })
     const { entity } = res[0]
     entity.id.should.equal(id)
+    assert('claims' in entity)
     should(entity.claims[currentPropertyId]).not.be.ok()
     const movedClaim = entity.claims[otherStringPropertyId][0]
     movedClaim.id.should.not.equal(guid)
@@ -118,7 +119,7 @@ describe('move property claims', async () => {
     const { id } = await createItem()
     const { property: currentPropertyId } = await addClaim({ id, datatype: 'string', value: randomString() })
     const { id: otherStringPropertyId } = await getProperty({ datatype: 'string', reserved: true })
-    const propertyClaimsId = `${id}#${currentPropertyId}`
+    const propertyClaimsId: PropertyClaimsId = `${id}#${currentPropertyId}`
     const res = await moveClaims({ propertyClaimsId, id, property: otherStringPropertyId })
     const summary = await getLastEditSummary(res[0])
     summary.split('*/')[1].trim().should.equal(`moving ${currentPropertyId} claims to ${otherStringPropertyId}`)
@@ -128,7 +129,7 @@ describe('move property claims', async () => {
     const value = Math.trunc(Math.random() * 1000)
     const { id: currentPropertyId } = await getProperty({ datatype: 'quantity', reserved: true })
     const { guid, id } = await addClaim({ property: currentPropertyId, value })
-    const propertyClaimsId = `${id}#${currentPropertyId}`
+    const propertyClaimsId: PropertyClaimsId = `${id}#${currentPropertyId}`
     const { id: otherItemId } = await createItem()
     const { id: otherStringPropertyId } = await getProperty({ datatype: 'quantity', reserved: true })
     const res = await moveClaims({ propertyClaimsId, id: otherItemId, property: otherStringPropertyId })
@@ -137,10 +138,15 @@ describe('move property claims', async () => {
     const { entity: newEntity } = addClaimsRes
     previousEntity.id.should.equal(id)
     newEntity.id.should.equal(otherItemId)
+    assert('claims' in previousEntity)
     should(previousEntity.claims[currentPropertyId]).not.be.ok()
     should(previousEntity.claims[otherStringPropertyId]).not.be.ok()
+    assert('claims' in newEntity)
     should(newEntity.claims[currentPropertyId]).not.be.ok()
-    newEntity.claims[otherStringPropertyId][0].mainsnak.datavalue.value.amount.should.equal(`+${value}`)
+    assert('datavalue' in newEntity.claims[otherStringPropertyId][0].mainsnak)
+    const { datavalue } = newEntity.claims[otherStringPropertyId][0].mainsnak
+    assert('value' in datavalue && typeof datavalue.value === 'object' && 'amount' in datavalue.value)
+    datavalue.value.amount.should.equal(`+${value}`)
     newEntity.claims[otherStringPropertyId][0].id.should.not.equal(guid)
   })
 
@@ -149,10 +155,13 @@ describe('move property claims', async () => {
     const { property: currentPropertyId } = await addClaim({ id, datatype: 'string', value: '123' })
     await addClaim({ id, property: currentPropertyId, value: '456' })
     const { id: otherPropertyId } = await getProperty({ datatype: 'quantity' })
-    const propertyClaimsId = `${id}#${currentPropertyId}`
+    const propertyClaimsId: PropertyClaimsId = `${id}#${currentPropertyId}`
     const [ { entity } ] = await moveClaims({ propertyClaimsId, id, property: otherPropertyId })
+    assert('claims' in entity)
     const movedClaims = entity.claims[otherPropertyId]
     movedClaims[0].mainsnak.datatype.should.equal('quantity')
+    assert('datavalue' in movedClaims[0].mainsnak)
+    assert('datavalue' in movedClaims[1].mainsnak)
     movedClaims[0].mainsnak.datavalue.value.should.deepEqual({ amount: '+123', unit: '1' })
     movedClaims[1].mainsnak.datatype.should.equal('quantity')
     movedClaims[1].mainsnak.datavalue.value.should.deepEqual({ amount: '+456', unit: '1' })

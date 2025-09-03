@@ -1,20 +1,21 @@
-import { isGuid, isEntityId, isPropertyId, getEntityIdFromGuid, type Guid, type PropertyClaimsId, type EntityId, type PropertyId, type SimplifiedClaim } from 'wikibase-sdk'
+import { isGuid, isEntityId, isPropertyId, getEntityIdFromGuid, type Guid, type PropertyClaimsId, type EntityId, type PropertyId, type SimplifiedClaim, type Claim, type Statement, type EntityWithClaims } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { formatClaimValue } from './format_claim_value.js'
 import { findClaimByGuid } from './helpers.js'
 import { propertiesDatatypesDontMatch } from './move_commons.js'
 import { buildSnak } from './snak.js'
-import type { EditEntityResponse } from '../entity/edit.js'
+import type { EditEntityParams, EditEntityResponse } from '../entity/edit.js'
 import type { WikibaseEditAPI } from '../index.js'
 import type { SerializedConfig } from '../types/config.js'
 
 export interface MoveClaimParams {
   guid?: Guid
   propertyClaimsId?: PropertyClaimsId
-  id?: EntityId
+  id?: EntityWithClaims['id']
   property?: PropertyId
   newValue?: SimplifiedClaim
+  summary?: string
   baserevid?: number
 }
 
@@ -22,13 +23,14 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
   const { guid, propertyClaimsId, id: targetEntityId, property: targetPropertyId, newValue, baserevid } = params
   const { instance } = config
 
-  let originEntityId, originPropertyId
+  let originEntityId: EntityWithClaims['id']
+  let originPropertyId: PropertyId
 
   if (guid) {
     if (!isGuid(guid)) throw newError('invalid claim guid', 400, params)
     originEntityId = getEntityIdFromGuid(guid)
   } else if (propertyClaimsId) {
-    ([ originEntityId, originPropertyId ] = propertyClaimsId.split('#'))
+    ([ originEntityId, originPropertyId ] = propertyClaimsId.split('#') as [ EntityWithClaims['id'], PropertyId ])
     if (!(isEntityId(originEntityId) && isPropertyId(originPropertyId))) {
       throw newError('invalid property claims id', 400, params)
     }
@@ -44,10 +46,9 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
 
   const claims = await getEntityClaims(originEntityId, config)
 
-  let movedClaims
+  let movedClaims: Claim[] | Statement[]
   if (guid) {
     const claim = findClaimByGuid(claims, guid)
-    if (!claim) throw newError('claim not found', 400, params)
     originPropertyId = claim.mainsnak.property
     movedClaims = [ claim ]
   } else {
@@ -59,6 +60,7 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
     throw newError("move operation wouldn't have any effect: same entity, same property", 400, params)
   }
 
+  // @ts-expect-error TODO: fix support for media info, which lack a datatype on snaks
   const { datatype: currentPropertyDatatype } = movedClaims[0].mainsnak
 
   if (propertyDatatype !== currentPropertyDatatype) {
@@ -71,7 +73,7 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
     })
   }
 
-  const currentEntityData = {
+  const currentEntityData: EditEntityParams = {
     rawMode: true,
     id: originEntityId,
     claims: movedClaims.map(claim => ({ id: claim.id, remove: true })),
@@ -82,7 +84,7 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
     delete claim.id
     if (newValue) {
       const value = formatClaimValue(propertyDatatype, newValue, instance)
-      claim.mainsnak = buildSnak(targetPropertyId, propertyDatatype, value)
+      claim.mainsnak = buildSnak(targetPropertyId, propertyDatatype, value, instance)
     } else {
       claim.mainsnak.property = targetPropertyId
     }

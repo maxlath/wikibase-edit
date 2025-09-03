@@ -1,8 +1,16 @@
 import { issues } from '../assets/metadata.js'
+import type { ErrorContext } from './error.js'
 
 const newIssueUrl = `${issues}/new`
 
-const newIssue = ({ template, title = ' ', body = ' ', context }) => {
+interface IssueParams {
+  template: string
+  title?: string
+  body?: string
+  context: ErrorContext
+}
+
+function newIssue ({ template, title = ' ', body = ' ', context }: IssueParams) {
   title = encodeURIComponent(title)
   if (context != null) {
     body += 'Context:\n```json\n' + JSON.stringify(context, null, 2) + '\n```\n'
@@ -11,7 +19,7 @@ const newIssue = ({ template, title = ' ', body = ' ', context }) => {
   return `Please open an issue at ${newIssueUrl}?template=${template}&title=${title}&body=${body}`
 }
 
-export const inviteToOpenAFeatureRequest = ({ title, body, context }) => {
+export function inviteToOpenAFeatureRequest ({ title, body, context }: Omit<IssueParams, 'template'>) {
   return newIssue({
     template: 'feature_request.md',
     title,

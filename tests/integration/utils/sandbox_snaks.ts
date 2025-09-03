@@ -3,7 +3,7 @@ import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 import { getSandboxItemId, getSandboxPropertyId, getSandboxClaimId } from './sandbox_entities.js'
 import type { EditableEntity } from '../../../src/lib/entity/edit.js'
-import type { DataType, EntityId, Guid, PropertyId, SimplifiedClaim, SimplifiedQualifier, SimplifiedQualifiers, SimplifiedReference } from 'wikibase-sdk'
+import type { DataType, Guid, PropertyId, SimplifiedClaim, SimplifiedQualifier, SimplifiedQualifiers, SimplifiedReference } from 'wikibase-sdk'
 
 const wbEdit = WBEdit(config)
 

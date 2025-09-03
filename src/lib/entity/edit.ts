@@ -18,6 +18,7 @@ interface EditEntityParamsBase {
   clear?: boolean
   create?: boolean
   reconciliation?: Reconciliation
+  summary?: string
 }
 
 type EditEntityRawModeParams = EditEntityParamsBase & Partial<EditableEntity> & {
