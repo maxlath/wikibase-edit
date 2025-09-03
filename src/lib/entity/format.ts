@@ -2,7 +2,7 @@ import { newError } from '../error.js'
 import { isString, forceArray, isntEmpty, flatten, objectKeys } from '../utils.js'
 import { validateAliases, validateBadges, validateLabelOrDescription, validateLanguage, validateProperty, validateSite, validateSiteTitle } from '../validate.js'
 import { buildClaim } from './build_claim.js'
-import reconcileClaim from './reconcile_claim.js'
+import { reconcileClaimFactory } from './reconcile_claim.js'
 import type { Reconciliation } from './validate_reconciliation_object.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
@@ -71,7 +71,7 @@ function formatClaimFactory (claims: CustomSimplifiedClaims, properties: Propert
     obj[property] = values.map(value => buildClaim(property, properties, value, instance))
     if (existingClaims?.[property] != null) {
       obj[property] = obj[property]
-      .map(reconcileClaim(reconciliation, existingClaims[property]))
+      .map(reconcileClaimFactory(reconciliation, existingClaims[property]))
       .filter(isntEmpty)
       obj[property] = flatten(obj[property])
       validateReconciledClaims(obj[property])

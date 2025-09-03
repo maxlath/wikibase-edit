@@ -1,7 +1,7 @@
 import { newError } from '../error.js'
-import isMatchingSnak from './is_matching_snak.js'
+import { isMatchingSnak } from './is_matching_snak.js'
 
-export default (property, propSnaks, searchedValue) => {
+export function findSnak (property, propSnaks, searchedValue) {
   if (!propSnaks) return
 
   const matchingSnaks = propSnaks.filter(snak => isMatchingSnak(snak, searchedValue))

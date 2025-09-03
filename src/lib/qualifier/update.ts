@@ -1,5 +1,5 @@
 import { getEntityIdFromGuid, type Guid, type PropertyId, type SimplifiedQualifier } from 'wikibase-sdk'
-import findSnak from '../claim/find_snak.js'
+import { findSnak } from '../claim/find_snak.js'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { flatten, values } from '../utils.js'

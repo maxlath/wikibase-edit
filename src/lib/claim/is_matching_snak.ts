@@ -4,7 +4,7 @@ import { inviteToOpenAFeatureRequest } from '../issues.js'
 import { isPlainObject, isString } from '../utils.js'
 import { parseUnit } from './quantity.js'
 
-export default (existingSnak, searchedValue) => {
+export function isMatchingSnak (existingSnak, searchedValue) {
   // Support both statements and qualifiers snaks
   existingSnak = existingSnak.mainsnak ? existingSnak.mainsnak : existingSnak
   // Support both a full snak object or just the datavalue.value object
@@ -25,7 +25,7 @@ export default (existingSnak, searchedValue) => {
 }
 
 const simpleValueComparison = (snak, searchedValue) => snak.datavalue?.value === searchedValue
-const entityValueComparison = (snak, searchedValue) => {
+function entityValueComparison (snak, searchedValue) {
   const { value } = snak.datavalue
   if (typeof searchedValue === 'string') {
     return value.id === searchedValue
@@ -118,7 +118,7 @@ const getUnit = snak => parseUnit(snak.datavalue.value.unit)
 
 const parseAmount = amount => isString(amount) ? parseFloat(amount) : amount
 
-const normalizeTime = (time, precison) => {
+function normalizeTime (time, precison) {
   time = time.replace(/^\+/, '')
   if (precison <= 11) {
     time = time

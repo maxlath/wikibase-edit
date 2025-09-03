@@ -1,7 +1,7 @@
 import { isGuid, getEntityIdFromGuid, type EntityId, type Guid, type PropertyId, type SimplifiedClaim, type Rank, type Claim } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
-import findSnak from './find_snak.js'
+import { findSnak } from './find_snak.js'
 import { findClaimByGuid, isGuidClaim, simplifyClaimForEdit } from './helpers.js'
 import type { WikibaseEditAPI } from '../index.js'
 import type { SerializedConfig } from '../types/config.js'

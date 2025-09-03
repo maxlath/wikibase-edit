@@ -1,59 +1,61 @@
 import { isEqual } from 'lodash-es'
 import { simplifyReferences, simplifySnak } from 'wikibase-sdk'
-import isMatchingClaim from '../claim/is_matching_claim.js'
-import isMatchingSnak from '../claim/is_matching_snak.js'
+import { isMatchingClaimFactory } from '../claim/is_matching_claim.js'
+import { isMatchingSnak } from '../claim/is_matching_snak.js'
 import { newError } from '../error.js'
 import { validateReconciliationObject } from './validate_reconciliation_object.js'
 
-export default (reconciliation, existingPropertyClaims) => claim => {
-  reconciliation = claim.reconciliation || reconciliation
-  if (!reconciliation) return claim
-  validateReconciliationObject(reconciliation, claim)
-  const { mode, matchingQualifiers, matchingReferences } = reconciliation
-  if (mode === 'skip-on-any-value') {
-    if (existingPropertyClaims.length > 0) {
-      console.warn(`[wikibase-edit] skipping claim: a claim already exists for that property\n${JSON.stringify({ claim, existingPropertyClaims })}`)
-      return
-    }
-  }
-
-  const existingClaims = existingPropertyClaims.filter(isMatchingClaim(claim, matchingQualifiers))
-
-  if (claim.remove) {
-    if (existingClaims.length > 0) {
-      return existingClaims.map(({ id }) => ({ id, remove: true }))
-    } else {
-      throw newError("can't remove claim: claim not found", claim)
-    }
-  }
-
-  if (existingClaims.length === 0) return claim
-
-  if (mode === 'skip-on-value-match') {
-    console.warn(`[wikibase-edit] skipping claim: a similar claim already exists\n${JSON.stringify({ claim, existingClaims })}`)
-  } else if (mode === 'merge') {
-    if (existingClaims.length > 1) {
-      throw newError('too many matching claims found', { claim, existingClaims })
-    }
-    const existingClaim = existingClaims[0]
-
-    if (claim.qualifiers != null) {
-      existingClaim.qualifiers = existingClaim.qualifiers || {}
-      addMissingQualifiers(existingClaim.qualifiers, claim.qualifiers)
-    }
-    if (claim.references != null) {
-      existingClaim.references = existingClaim.references || []
-      if (matchingReferences) {
-        mergeReferences(existingClaim.references, claim.references, matchingReferences)
-      } else {
-        const currentReference = simplifyReferences(existingClaim.references)
-        const newReferenceReference = claim.references.filter(isNewReference(currentReference))
-        existingClaim.references.push(...newReferenceReference)
+export function reconcileClaimFactory (reconciliation, existingPropertyClaims) {
+  return function reconcileClaim (claim) {
+    reconciliation = claim.reconciliation || reconciliation
+    if (!reconciliation) return claim
+    validateReconciliationObject(reconciliation, claim)
+    const { mode, matchingQualifiers, matchingReferences } = reconciliation
+    if (mode === 'skip-on-any-value') {
+      if (existingPropertyClaims.length > 0) {
+        console.warn(`[wikibase-edit] skipping claim: a claim already exists for that property\n${JSON.stringify({ claim, existingPropertyClaims })}`)
+        return
       }
     }
-    return existingClaim
-  } else {
-    throw newError('unexpected reconciliation mode', 500, { reconciliation })
+
+    const existingClaims = existingPropertyClaims.filter(isMatchingClaimFactory(claim, matchingQualifiers))
+
+    if (claim.remove) {
+      if (existingClaims.length > 0) {
+        return existingClaims.map(({ id }) => ({ id, remove: true }))
+      } else {
+        throw newError("can't remove claim: claim not found", claim)
+      }
+    }
+
+    if (existingClaims.length === 0) return claim
+
+    if (mode === 'skip-on-value-match') {
+      console.warn(`[wikibase-edit] skipping claim: a similar claim already exists\n${JSON.stringify({ claim, existingClaims })}`)
+    } else if (mode === 'merge') {
+      if (existingClaims.length > 1) {
+        throw newError('too many matching claims found', { claim, existingClaims })
+      }
+      const existingClaim = existingClaims[0]
+
+      if (claim.qualifiers != null) {
+        existingClaim.qualifiers = existingClaim.qualifiers || {}
+        addMissingQualifiers(existingClaim.qualifiers, claim.qualifiers)
+      }
+      if (claim.references != null) {
+        existingClaim.references = existingClaim.references || []
+        if (matchingReferences) {
+          mergeReferences(existingClaim.references, claim.references, matchingReferences)
+        } else {
+          const currentReference = simplifyReferences(existingClaim.references)
+          const newReferenceReference = claim.references.filter(isNewReference(currentReference))
+          existingClaim.references.push(...newReferenceReference)
+        }
+      }
+      return existingClaim
+    } else {
+      throw newError('unexpected reconciliation mode', 500, { reconciliation })
+    }
   }
 }
 

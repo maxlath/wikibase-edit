@@ -1,18 +1,20 @@
-import isMatchingSnak from './is_matching_snak.js'
+import { isMatchingSnak } from './is_matching_snak.js'
 
-export default (newClaim, matchingQualifiers) => existingClaim => {
-  const { mainsnak, qualifiers = {} } = existingClaim
-  if (!isMatchingSnak(mainsnak, newClaim.mainsnak)) return false
-  if (matchingQualifiers) {
-    for (const property of matchingQualifiers) {
-      const [ pid, option = 'all' ] = property.split(':')
-      if (newClaim.qualifiers[pid] != null && qualifiers[pid] == null) return false
-      if (newClaim.qualifiers[pid] == null && qualifiers[pid] != null) return false
-      const propertyQualifiersMatch = matchFunctions[option](newClaim.qualifiers[pid], qualifiers[pid])
-      if (!propertyQualifiersMatch) return false
+export function isMatchingClaimFactory (newClaim, matchingQualifiers) {
+  return function isMatchingClaim (existingClaim) {
+    const { mainsnak, qualifiers = {} } = existingClaim
+    if (!isMatchingSnak(mainsnak, newClaim.mainsnak)) return false
+    if (matchingQualifiers) {
+      for (const property of matchingQualifiers) {
+        const [ pid, option = 'all' ] = property.split(':')
+        if (newClaim.qualifiers[pid] != null && qualifiers[pid] == null) return false
+        if (newClaim.qualifiers[pid] == null && qualifiers[pid] != null) return false
+        const propertyQualifiersMatch = matchFunctions[option](newClaim.qualifiers[pid], qualifiers[pid])
+        if (!propertyQualifiersMatch) return false
+      }
     }
+    return true
   }
-  return true
 }
 
 const matchFunctions = {

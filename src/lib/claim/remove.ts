@@ -3,7 +3,7 @@ import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { forceArray } from '../utils.js'
 import { validateGuid } from '../validate.js'
-import isMatchingClaim from './is_matching_claim.js'
+import { isMatchingClaimFactory } from './is_matching_claim.js'
 import type { Reconciliation } from '../entity/validate_reconciliation_object.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
@@ -34,7 +34,7 @@ export async function removeClaim (params: RemoveClaimParams, properties: Proper
     const claimData = { value, qualifiers }
     const claim = buildClaim(property, properties, claimData, instance)
     const { matchingQualifiers } = reconciliation
-    const matchingClaims = existingClaims[property].filter(isMatchingClaim(claim, matchingQualifiers))
+    const matchingClaims = existingClaims[property].filter(isMatchingClaimFactory(claim, matchingQualifiers))
     if (matchingClaims.length === 0) throw newError('claim not found', params)
     guids = matchingClaims.map(({ id }) => id)
   }
