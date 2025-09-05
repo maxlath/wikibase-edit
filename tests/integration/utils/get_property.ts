@@ -1,5 +1,5 @@
 import config from 'config'
-import wbkFactory, { type DataType, type Property } from 'wikibase-sdk'
+import wbkFactory, { type Datatype, type Property } from 'wikibase-sdk'
 import { customFetch } from '#lib/request/fetch'
 import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
@@ -8,7 +8,7 @@ const wbk = wbkFactory({ instance: config.instance })
 const sandboxProperties = {}
 const wbEdit = WBEdit(config)
 
-export async function getProperty ({ datatype, reserved }: { datatype: DataType, reserved?: boolean }): Promise<Property> {
+export async function getProperty ({ datatype, reserved }: { datatype: Datatype, reserved?: boolean }): Promise<Property> {
   if (!datatype) throw new Error('missing datatype')
   if (reserved) return createProperty(datatype)
   const property = await _getProperty(datatype)
@@ -16,7 +16,7 @@ export async function getProperty ({ datatype, reserved }: { datatype: DataType,
   return property
 }
 
-async function _getProperty (datatype: DataType) {
+async function _getProperty (datatype: Datatype) {
   const pseudoPropertyId = getPseudoPropertyId(datatype)
 
   const cachedPropertyId = sandboxProperties[pseudoPropertyId]
@@ -35,7 +35,7 @@ async function findOnWikibase (pseudoPropertyId: string) {
   if (firstWbResult) return firstWbResult
 }
 
-async function createProperty (datatype: DataType) {
+async function createProperty (datatype: Datatype) {
   const pseudoPropertyId = getPseudoPropertyId(datatype)
   const res = await wbEdit.entity.create({
     type: 'property',
@@ -49,4 +49,4 @@ async function createProperty (datatype: DataType) {
   return res.entity as Property
 }
 
-const getPseudoPropertyId = (datatype: DataType) => `${datatype} sandbox property`
+const getPseudoPropertyId = (datatype: Datatype) => `${datatype} sandbox property`

@@ -1,21 +1,22 @@
 import { newError } from '../error.js'
-import { hasSpecialSnaktype } from './special_snaktype.js'
-import type { EditableEntity } from '../entity/edit.js'
+import { hasSpecialSnaktype, type SpecialSnak } from './special_snaktype.js'
 import type { Reconciliation } from '../entity/validate_reconciliation_object.js'
 import type { WikibaseEditAPI } from '../index.js'
+import type { BaseRevId } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
+import type { EditableEntity } from '../types/edit_entity.js'
 import type { Claim, CustomSimplifiedClaim, CustomSimplifiedSnak, PropertyId, Rank, SimplifiedQualifiers, SimplifiedReferences } from 'wikibase-sdk'
 
 export interface CreateClaimParams {
   id: EditableEntity['id']
   property: PropertyId
-  value: CustomSimplifiedSnak['value']
+  value: CustomSimplifiedSnak['value'] | SpecialSnak
   qualifiers?: SimplifiedQualifiers
   references?: SimplifiedReferences
   rank?: Rank
   reconciliation?: Reconciliation
   summary?: string
-  baserevid?: number
+  baserevid?: BaseRevId
 }
 
 export async function createClaim (params: CreateClaimParams, config: SerializedConfig, API: WikibaseEditAPI) {

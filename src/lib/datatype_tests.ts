@@ -2,7 +2,7 @@ import { isEntityId, isItemId } from 'wikibase-sdk'
 import { parseCalendar } from './claim/parse_calendar.js'
 import { parseUnit } from './claim/quantity.js'
 import { newError } from './error.js'
-import { isNonEmptyString, isNumber, isPlainObject, isStringNumber } from './utils.js'
+import { isNonEmptyString, isNumber, isStringNumber } from './utils.js'
 
 export const string = isNonEmptyString
 export const entity = isEntityId
@@ -11,9 +11,9 @@ export const entity = isEntityId
 export const time = time => {
   time = time.value || time
   let precision, calendar, calendarmodel
-  if (isPlainObject(time)) {
-    const dateObject = time;
-    ({ precision, calendar, calendarmodel, time } = time)
+  if (typeof time === 'object') {
+    const dateObject = time
+    ;({ precision, calendar, calendarmodel, time } = time)
     if (typeof precision === 'number' && (precision < 0 || precision > 14)) {
       return false
     }
@@ -67,7 +67,7 @@ export const monolingualtext = value => {
 // cf https://www.mediawiki.org/wiki/Wikibase/DataModel#Quantities
 export const quantity = amount => {
   amount = amount.value || amount
-  if (isPlainObject(amount)) {
+  if (typeof amount === 'object') {
     let unit
     ;({ unit, amount } = amount)
     if (unit && !isItemId(parseUnit(unit)) && unit !== '1') return false
@@ -78,7 +78,7 @@ export const quantity = amount => {
 }
 export const globecoordinate = obj => {
   obj = obj.value || obj
-  if (!isPlainObject(obj)) return false
+  if (typeof obj !== 'object') return false
   const { latitude, longitude, precision } = obj
   return isNumber(latitude) && isNumber(longitude) && isNumber(precision)
 }

@@ -2,7 +2,7 @@ import { findEntityTypeFromId } from 'wikibase-sdk'
 import { getTimeObject, type CustomTimeSnakDataValueValue } from './get_time_object.js'
 import { parseQuantity } from './quantity.js'
 import type { AbsoluteUrl } from '../types/common.js'
-import type { Claim, EntityId, MonolingualTextSnakDataValue, PropertyId, Snak, SnakDataValue, SnakType, WikibaseEntityIdSnakDataValue, SnakDataValueType, SnakDataValueByType } from 'wikibase-sdk'
+import type { Claim, EntityId, MonolingualTextSnakDataValue, PropertyId, Snak, SnakDataValue, SnakType, WikibaseEntityIdSnakDataValue, SnakDatavalueType, SnakDataValueByDatavalueType } from 'wikibase-sdk'
 
 // The difference in builders are due to the different expectations of the Wikibase API
 
@@ -75,7 +75,7 @@ function statementBase (pid: PropertyId, snaktype: SnakType): ClaimDraft {
   }
 }
 
-function valueStatementBase <T extends SnakDataValueType> (pid: PropertyId, type: T, value: SnakDataValueByType[T]['value']) {
+function valueStatementBase <T extends SnakDatavalueType> (pid: PropertyId, type: T, value: SnakDataValueByDatavalueType[T]['value']) {
   const statement = statementBase(pid, 'value')
   // @ts-expect-error
   statement.mainsnak.datavalue = { type, value }

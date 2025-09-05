@@ -1,6 +1,9 @@
 import { debug } from '../debug.js'
+import type { ContextualizedError } from '../error.js'
+import type { APIResponseError } from './request.js'
+import type { AbsoluteUrl } from '../types/common.js'
 
-export default async res => {
+export async function parseResponseBody (res: Response) {
   const raw = await res.text()
   let data
   try {
@@ -16,10 +19,10 @@ export default async res => {
   else return data
 }
 
-const requestError = (res, body) => {
+function requestError (res: Response, body: { error: APIResponseError }) {
   const { code, info } = body.error || {}
   const errMessage = `${code}: ${info}`
-  const err = new Error(errMessage)
+  const err: ContextualizedError = new Error(errMessage)
   err.name = code
   if (res.status === 200) {
     // Override false positive status code
@@ -27,10 +30,9 @@ const requestError = (res, body) => {
   } else {
     err.statusCode = res.status
   }
-  err.statusMessage = res.statusMessage
   err.headers = res.headers
   err.body = body
-  err.url = res.url
+  err.url = res.url as AbsoluteUrl
   if (res.url) err.stack += `\nurl: ${res.url}`
   if (res.status) err.stack += `\nresponse status: ${res.status}`
   if (body) err.stack += `\nresponse body: ${JSON.stringify(body)}`

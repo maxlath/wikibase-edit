@@ -1,4 +1,4 @@
-import type { DataType } from 'wikibase-sdk'
+import type { Datatype } from 'wikibase-sdk'
 
 const buildersByNormalizedDatatypes = {
   commonsmedia: 'string',
@@ -27,5 +27,5 @@ const allDashesPattern = /-/g
 
 export function normalizeDatatype (datatype: string) {
   const normalizedDatype = datatype.toLowerCase().replace(allDashesPattern, '')
-  return buildersByNormalizedDatatypes[normalizedDatype] as DataType
+  return buildersByNormalizedDatatypes[normalizedDatype] as Datatype
 }

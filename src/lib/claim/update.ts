@@ -1,18 +1,24 @@
-import { isGuid, getEntityIdFromGuid, type EntityId, type Guid, type PropertyId, type Rank, type Claim, type CustomSimplifiedSnak } from 'wikibase-sdk'
+import { isGuid, getEntityIdFromGuid, type Guid, type PropertyId, type Rank, type Claim, type CustomSimplifiedSnak } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { findSnak } from './find_snak.js'
 import { findClaimByGuid, isGuidClaim, simplifyClaimForEdit } from './helpers.js'
+import { hasSpecialSnaktype } from './special_snaktype.js'
+import type { EditEntitySimplifiedModeParams } from '../entity/edit.js'
 import type { WikibaseEditAPI } from '../index.js'
+import type { BaseRevId } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
+import type { EditableEntity } from '../types/edit_entity.js'
 
 export interface UpdateClaimParams {
-  id?: EntityId
-  guid?: Guid
+  id?: EditableEntity['id']
+  guid?: Guid<EditableEntity['id']>
   property: PropertyId
   oldValue?: CustomSimplifiedSnak['value']
   newValue: CustomSimplifiedSnak['value']
   rank?: Rank
+  summary?: string
+  baserevid?: BaseRevId
 }
 
 export async function updateClaim (params: UpdateClaimParams, config: SerializedConfig, API: WikibaseEditAPI) {
@@ -25,7 +31,7 @@ export async function updateClaim (params: UpdateClaimParams, config: Serialized
   }
 
   if (isGuid(guid)) {
-    id = getEntityIdFromGuid(guid)
+    id = getEntityIdFromGuid(guid) as EditableEntity['id']
   } else {
     const values = { oldValue, newValue }
     if (oldValue === newValue) {
@@ -43,7 +49,7 @@ export async function updateClaim (params: UpdateClaimParams, config: Serialized
     claim = findClaimByGuid(claims, guid)
     property = claim?.mainsnak.property
   } else {
-    claim = findSnak(property, claims[property], oldValue)
+    claim = findSnak(property, claims[property] as Claim[], oldValue)
   }
 
   if (!claim) {
@@ -57,7 +63,7 @@ export async function updateClaim (params: UpdateClaimParams, config: Serialized
   if (rank) simplifiedClaim.rank = rank
 
   if (newValue != null) {
-    if (newValue.snaktype && newValue.snaktype !== 'value') {
+    if (hasSpecialSnaktype(newValue)) {
       simplifiedClaim.snaktype = newValue.snaktype
       delete simplifiedClaim.value
     } else {
@@ -65,7 +71,7 @@ export async function updateClaim (params: UpdateClaimParams, config: Serialized
     }
   }
 
-  const data = {
+  const data: EditEntitySimplifiedModeParams = {
     id,
     [statementsKey]: {
       [property]: simplifiedClaim,

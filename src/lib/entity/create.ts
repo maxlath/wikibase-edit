@@ -5,7 +5,9 @@ import type { AbsoluteUrl } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
 import type { Entity } from 'wikibase-sdk'
 
-export async function createEntity (params: Omit<EditEntityParams, 'id'>, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig) {
+export type CreateEntityParams = Omit<EditEntityParams, 'id'>
+
+export async function createEntity (params: CreateEntityParams, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig) {
   if ('id' in params && params.id) {
     throw newError("a new entity can't already have an id", { id: params.id })
   }

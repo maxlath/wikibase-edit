@@ -1,5 +1,5 @@
 import { newError } from '../error.js'
-import { validateEntity, validateLanguage } from '../validate.js'
+import { validateEntityId, validateLanguage } from '../validate.js'
 import type { Entity, EntityId, WikimediaLanguageCode } from 'wikibase-sdk'
 
 export interface TermActionParams {
@@ -14,7 +14,7 @@ export function setLabelOrDescriptionFactory (name: string) {
     let { value } = params
     const action = `wbset${name}`
 
-    validateEntity(id)
+    validateEntityId(id)
     validateLanguage(language)
     if (value === undefined) throw newError(`missing ${name}`, params)
     if (value === null) value = ''

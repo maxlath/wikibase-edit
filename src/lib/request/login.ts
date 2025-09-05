@@ -1,7 +1,7 @@
 import { newError } from '../error.js'
 import { stringifyQuery } from '../utils.js'
 import { customFetch } from './fetch.js'
-import parseResponseBody from './parse_response_body.js'
+import { parseResponseBody } from './parse_response_body.js'
 import parseSessionCookies from './parse_session_cookies.js'
 
 const contentType = 'application/x-www-form-urlencoded'
@@ -50,7 +50,7 @@ const getSessionCookies = async (loginUrl, config, headers, loginCookies) => {
   const resCookies = res.headers.get('set-cookie')
 
   if (!resCookies) {
-    throw newError('login error', res.statusCode, { body: resBody })
+    throw newError('login error', res.status, { body: resBody })
   }
 
   if (!sessionCookiePattern.test(resCookies)) {

@@ -1,4 +1,4 @@
-import { validateGuid, validateProperty, validateSnakValue } from '../validate.js'
+import { validateGuid, validatePropertyId, validateSnakValue } from '../validate.js'
 import { formatClaimValue } from './format_claim_value.js'
 import { buildSnak } from './snak.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
@@ -16,7 +16,7 @@ export function setClaim (params: SetClaimParams, properties: PropertiesDatatype
   const datatype = properties[property]
 
   validateGuid(guid)
-  validateProperty(property)
+  validatePropertyId(property)
 
   // Format before testing validity to avoid throwing on type errors
   // that could be recovered
@@ -27,7 +27,7 @@ export function setClaim (params: SetClaimParams, properties: PropertiesDatatype
   const claim = {
     id: guid,
     type: 'statement',
-    mainsnak: buildSnak(property, datatype, value),
+    mainsnak: buildSnak(property, datatype, value, instance),
   }
 
   return { action: 'wbsetclaim', data: { claim: JSON.stringify(claim) } }

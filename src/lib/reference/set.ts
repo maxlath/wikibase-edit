@@ -1,8 +1,8 @@
 import { buildSnak, buildReferenceFactory } from '../claim/snak.js'
-import { validateGuid, validateHash, validateProperty, validateSnakValue } from '../validate.js'
+import { validateGuid, validateHash, validatePropertyId, validateSnakValue } from '../validate.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
-import type { Guid, Hash, PropertyId, Reference, SimplifiedReference, SimplifiedSnaks } from 'wikibase-sdk'
+import type { Guid, Hash, PropertyId, Reference, SimplifiedReference, SimplifiedSnaks, Snak, Snaks } from 'wikibase-sdk'
 
 export interface SetReferenceParams {
   guid: Guid
@@ -16,27 +16,28 @@ export interface SetReferenceParams {
 
 export function setReference (params: SetReferenceParams, properties: PropertiesDatatypes, instance: AbsoluteUrl) {
   const { guid, property, value, hash } = params
-  let { snaks } = params
-  if (snaks) {
-    snaks = buildReferenceFactory(properties, instance)(snaks).snaks
+  const inputSnaks = params.snaks
+  let snaks: Snaks | Snak[]
+  if (inputSnaks) {
+    snaks = buildReferenceFactory(properties, instance)(inputSnaks).snaks
   } else {
     // Legacy interface
     validateGuid(guid)
-    validateProperty(property)
+    validatePropertyId(property)
     const datatype = properties[property]
+    // @ts-expect-error
     validateSnakValue(property, datatype, value)
     snaks = {}
+    // @ts-expect-error
     snaks[property] = [ buildSnak(property, datatype, value, instance) ]
   }
+
+  if (hash) validateHash(hash)
 
   const data = {
     statement: guid,
     snaks: JSON.stringify(snaks),
-  }
-
-  if (hash) {
-    validateHash(hash)
-    data.reference = hash
+    reference: hash,
   }
 
   return { action: 'wbsetreference', data }

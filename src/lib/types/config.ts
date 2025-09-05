@@ -1,12 +1,16 @@
-import type { AbsoluteUrl } from './common'
+import type { AbsoluteUrl, BaseRevId, MaxLag, Tags } from './common.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes'
+import type { HttpRequestAgent } from '../request/fetch.js'
+import type { getAuthDataFactory } from '../request/get_auth_data.js'
+import type { ParsedTokenInfo } from '../request/get_final_token.js'
+import type { OverrideProperties } from 'type-fest'
 
-interface UsernameAndPassword {
+export interface UsernameAndPassword {
   username: string
   password: string
 }
 
-interface OAuthCredentials {
+export interface OAuthCredentials {
   oauth: {
     consumer_key: string
     consumer_secret: string
@@ -59,7 +63,7 @@ export interface GeneralConfig {
   /**
    * See https://www.mediawiki.org/wiki/Manual:Tags
    */
-  tags?: string[]
+  tags?: Tags
 
   /**
    * @default `wikidata-edit/${version} (https://github.com/maxlath/wikidata-edit)`
@@ -76,14 +80,27 @@ export interface GeneralConfig {
    * See https://www.mediawiki.org/wiki/Manual:Maxlag_parameter
    * @default 5
    */
-  maxlag?: number
+  maxlag?: MaxLag
+
+  /**
+   * If the Wikibase server returns a `maxlag` error, the request will automatically be re-executed after the amount of seconds recommended by the Wikibase server via the `Retry-After` header. This automatic retry can be disabled by setting `autoRetry` to `false` in the general config or the request config.
+   * @default true
+   */
+  autoRetry?: boolean
+
+  httpRequestAgent?: HttpRequestAgent
 }
 
 export interface RequestConfig extends GeneralConfig {
-  baserevid?: number | `${number}`
+  baserevid?: BaseRevId
 }
 
-export interface SerializedConfig extends RequestConfig {
+export type SerializedConfig = OverrideProperties<RequestConfig, {
+  credentials: RequestConfig['credentials'] & {
+    _getAuthData: ReturnType<typeof getAuthDataFactory>
+    _credentialsKey: string
+  }
+}> & {
   _validatedAndEnriched?: boolean
   instanceApiEndpoint: AbsoluteUrl
   properties: PropertiesDatatypes

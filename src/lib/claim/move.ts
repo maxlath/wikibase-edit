@@ -7,12 +7,13 @@ import { propertiesDatatypesDontMatch } from './move_commons.js'
 import { buildSnak } from './snak.js'
 import type { EditEntityRawModeParams, EditEntityResponse } from '../entity/edit.js'
 import type { WikibaseEditAPI } from '../index.js'
+import type { BaseRevId } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
 import type { EditableEntity } from '../types/edit_entity.js'
 
 // Disabling MediaInfo for now, has this function needs access to snaks datatypes
 // which aren't provided on MediaInfo statements
-type MovableEntityId = Exclude<EditableEntity['id'], MediaInfoId>
+export type MovableEntityId = Exclude<EditableEntity['id'], MediaInfoId>
 
 export interface MoveClaimParams {
   guid?: Guid<MovableEntityId>
@@ -21,7 +22,7 @@ export interface MoveClaimParams {
   property?: PropertyId
   newValue?: SimplifiedClaim
   summary?: string
-  baserevid?: number
+  baserevid?: BaseRevId
 }
 
 export async function moveClaims (params: MoveClaimParams, config: SerializedConfig, API: WikibaseEditAPI) {
@@ -74,6 +75,7 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
       originDatatype: currentPropertyDatatype,
       targetPropertyId,
       targetDatatype: propertyDatatype,
+      instance,
     })
   }
 
@@ -88,7 +90,7 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
     delete claim.id
     if (newValue) {
       const value = formatClaimValue(propertyDatatype, newValue, instance)
-      claim.mainsnak = buildSnak(targetPropertyId, propertyDatatype, value, instance)
+      claim.mainsnak = buildSnak(targetPropertyId, propertyDatatype, value, instance) as Claim['mainsnak']
     } else {
       claim.mainsnak.property = targetPropertyId
     }

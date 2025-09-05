@@ -1,11 +1,11 @@
-import { isPropertyId, type DataType, type Property, type PropertyId, type WbGetEntitiesResponse } from 'wikibase-sdk'
+import { isPropertyId, type Datatype, type Property, type PropertyId, type WbGetEntitiesResponse } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import WBK from '../get_instance_wikibase_sdk.js'
-import getJson from '../request/get_json.js'
+import { getJson } from '../request/get_json.js'
 import type { AbsoluteUrl } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
 
-export type PropertiesDatatypes = Record<PropertyId, DataType>
+export type PropertiesDatatypes = Record<PropertyId, Datatype>
 
 const propertiesByInstance: Record<AbsoluteUrl, PropertiesDatatypes> = {}
 

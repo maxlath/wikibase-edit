@@ -1,8 +1,8 @@
 import { newError } from '../error.js'
-import { isMatchingSnak } from './is_matching_snak.js'
-import type { CustomSimplifiedSnak, PropertyClaims, PropertyId } from 'wikibase-sdk'
+import { isMatchingSnak, type SearchedValue } from './is_matching_snak.js'
+import type { Claim, PropertyId, SnakBase } from 'wikibase-sdk'
 
-export function findSnak (property: PropertyId, propSnaks: PropertyClaims, searchedValue: CustomSimplifiedSnak['value']) {
+export function findSnak <T extends (Claim | SnakBase)> (property: PropertyId, propSnaks: T[], searchedValue: SearchedValue): T | void {
   if (!propSnaks) return
 
   const matchingSnaks = propSnaks.filter(snak => isMatchingSnak(snak, searchedValue))

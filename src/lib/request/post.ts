@@ -1,14 +1,18 @@
 import { newError } from '../error.js'
 import { buildUrl, wait } from '../utils.js'
-import request from './request.js'
+import { request } from './request.js'
+import type { HttpHeaders, HttpRequestAgent } from './fetch.js'
+import type { ParsedTokenInfo } from './get_final_token.js'
+import type { AbsoluteUrl, BaseRevId, MaxLag } from '../types/common.js'
+import type { OAuthCredentials, SerializedConfig } from '../types/config.js'
 
 export const defaultMaxlag = 5
 
-export default async (action, data, config) => {
+export async function post (action: string, data: PostData, config: SerializedConfig) {
   const { anonymous } = config
   const getAuthData = anonymous ? null : config.credentials._getAuthData
 
-  const tryActionPost = async () => {
+  async function tryActionPost () {
     if (anonymous) {
       return actionPost({ action, data, config })
     } else {
@@ -17,7 +21,7 @@ export default async (action, data, config) => {
     }
   }
 
-  const insistentRequest = async (attempt = 0) => {
+  async function insistentRequest (attempt = 0) {
     try {
       return await tryActionPost()
     } catch (err) {
@@ -35,10 +39,42 @@ export default async (action, data, config) => {
   return insistentRequest()
 }
 
-const actionPost = async ({ action, data, config, authData }) => {
+export interface PostData {
+  assert?: 'bot' | 'user'
+  token?: string
+  summary?: string
+  baserevid?: BaseRevId
+  tags?: string
+  maxlag?: MaxLag
+  title?: string
+}
+
+interface ActionPostParams {
+  action: string
+  data: PostData
+  config: SerializedConfig
+  authData?: ParsedTokenInfo
+}
+
+export interface PostQuery {
+  action: string
+  format: 'json'
+  bot?: boolean
+}
+
+interface PostParams {
+  url: AbsoluteUrl
+  headers: HttpHeaders
+  autoRetry?: boolean
+  httpRequestAgent?: HttpRequestAgent
+  oauth?: OAuthCredentials['oauth']
+  body: PostData
+}
+
+async function actionPost ({ action, data, config, authData }: ActionPostParams) {
   const { instanceApiEndpoint, userAgent, bot, summary, baserevid, tags, maxlag, anonymous } = config
 
-  const query = { action, format: 'json' }
+  const query: PostQuery = { action, format: 'json' }
 
   if (bot) {
     query.bot = true
@@ -47,10 +83,10 @@ const actionPost = async ({ action, data, config, authData }) => {
     data.assert = 'user'
   }
 
-  const params = {
+  const params: Partial<PostParams> = {
     url: buildUrl(instanceApiEndpoint, query),
     headers: {
-      'User-Agent': userAgent,
+      'user-agent': userAgent,
     },
     autoRetry: config.autoRetry,
     httpRequestAgent: config.httpRequestAgent,
@@ -61,7 +97,9 @@ const actionPost = async ({ action, data, config, authData }) => {
     // cf https://phabricator.wikimedia.org/T40417
     data.token = '+\\'
   } else {
-    params.oauth = config.credentials.oauth
+    if ('oauth' in config.credentials) {
+      params.oauth = config.credentials.oauth
+    }
     params.headers.cookie = authData.cookie
     data.token = authData.token
   }
@@ -74,7 +112,7 @@ const actionPost = async ({ action, data, config, authData }) => {
 
   params.body = data
 
-  const body = await request('post', params)
+  const body = await request('post', params as PostParams)
   if (body.error) {
     const errMessage = `action=${action} error: ${body.error.info}`
     const err = newError(errMessage, { params, body })
@@ -84,7 +122,7 @@ const actionPost = async ({ action, data, config, authData }) => {
   return body
 }
 
-const mayBeSolvedByTokenRefresh = err => {
+function mayBeSolvedByTokenRefresh (err) {
   if (!(err?.body?.error)) return false
   const errorCode = err.body.error.code || ''
   return tokenErrors.includes(errorCode)

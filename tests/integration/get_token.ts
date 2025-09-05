@@ -1,6 +1,6 @@
 import config from 'config'
 import should from 'should'
-import GetToken from '#lib/request/get_token'
+import { getTokenFactory } from '#lib/request/get_token'
 import { validateAndEnrichConfig } from '#lib/validate_and_enrich_config'
 import { undesiredRes, isBotPassword, shouldNotBeCalled } from '#tests/integration/utils/utils'
 
@@ -13,7 +13,7 @@ describe('get token', function () {
 
   it('should get token from username and password', async () => {
     const config = validateAndEnrichConfig({ instance, credentials: { username, password } })
-    const getToken = GetToken(config)
+    const getToken = getTokenFactory(config)
     getToken.should.be.a.Function()
     const { cookie, token } = await getToken()
     token.length.should.be.above(40)
@@ -25,7 +25,7 @@ describe('get token', function () {
 
   it('should get token from oauth', async () => {
     const config = validateAndEnrichConfig({ instance, credentials })
-    const getToken = GetToken(config)
+    const getToken = getTokenFactory(config)
     getToken.should.be.a.Function()
     const { token } = await getToken()
     token.length.should.be.above(40)
@@ -34,7 +34,7 @@ describe('get token', function () {
   // This test would need to run in a browser
   xit('should get token from browser session', async () => {
     const config = validateAndEnrichConfig({ instance, credentials: { browserSession: true } })
-    const getToken = GetToken(config)
+    const getToken = getTokenFactory(config)
     getToken.should.be.a.Function()
     await getToken()
     .then(shouldNotBeCalled)
@@ -47,7 +47,7 @@ describe('get token', function () {
   it('should reject on invalid username/password credentials', done => {
     const invalidCreds = { username: 'inva', password: 'lid' }
     const config = validateAndEnrichConfig({ instance, credentials: invalidCreds })
-    const getToken = GetToken(config)
+    const getToken = getTokenFactory(config)
     getToken.should.be.a.Function()
     getToken()
     .then(undesiredRes(done))
@@ -68,7 +68,7 @@ describe('get token', function () {
       },
     }
     const config = validateAndEnrichConfig({ instance, credentials: { oauth: invalidCreds } })
-    const getToken = GetToken(config)
+    const getToken = getTokenFactory(config)
     getToken.should.be.a.Function()
     getToken()
     .then(undesiredRes(done))

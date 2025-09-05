@@ -1,5 +1,7 @@
+import type { BaseRevId } from './common.js'
+import type { Reconciliation } from '../entity/validate_reconciliation_object.js'
 import type { OverrideProperties } from 'type-fest'
-import type { Claim, CustomSimplifiedSnak, Guid, Hash, Item, LanguageRecord, Lexeme, MediaInfo, Property, PropertyId, Rank, SimplifiedClaim, SimplifiedItem, SimplifiedLexeme, SimplifiedMediaInfo, SimplifiedProperty, SimplifiedPropertyQualifiers, SimplifiedPropertySnaks, SimplifiedQualifier, SimplifiedReference, SimplifiedReferenceSnak, SimplifiedSnak, SimplifiedTerm } from 'wikibase-sdk'
+import type { Claim, CustomSimplifiedClaim, CustomSimplifiedSnak, Guid, Hash, Item, LanguageRecord, Lexeme, MediaInfo, Property, PropertyId, Rank, SimplifiedItem, SimplifiedLexeme, SimplifiedMediaInfo, SimplifiedProperty, SimplifiedPropertyQualifiers, SimplifiedPropertySnaks, SimplifiedQualifier, SimplifiedReference, SimplifiedReferenceSnak, SimplifiedSnak, SimplifiedTerm, SnakDataValue } from 'wikibase-sdk'
 
 export type LooseCustomSimplifiedClaim = CustomSimplifiedSnak & {
   id?: Guid
@@ -8,10 +10,23 @@ export type LooseCustomSimplifiedClaim = CustomSimplifiedSnak & {
   references?: LooseSimplifiedReferences
 }
 
-type RemovableSimplifiedClaim = SimplifiedClaim & { remove?: boolean }
-type RemovableSimplifiedPropertyClaims = RemovableSimplifiedClaim[]
+export interface EditableClaimExtras {
+  remove?: boolean
+  reconciliation?: Reconciliation
+}
 
-export type LooseSimplifiedClaims = Record<PropertyId, RemovableSimplifiedPropertyClaims | RemovableSimplifiedClaim>
+export type EditableClaim = Partial<Claim> & EditableClaimExtras & {
+  id: Claim['id']
+}
+
+export type CustomSimplifiedEditableClaim = Partial<CustomSimplifiedClaim> & EditableClaimExtras & {
+  id: CustomSimplifiedClaim['id']
+}
+
+export type SimplifiedEditableClaim = string | number | (SnakDataValue['value'] & EditableClaimExtras) | CustomSimplifiedEditableClaim
+export type SimplifiedEditablePropertyClaims = SimplifiedEditableClaim[]
+
+export type LooseSimplifiedClaims = Record<PropertyId, SimplifiedEditablePropertyClaims | SimplifiedEditableClaim>
 export type LooseSimplifiedSnaks = Record<PropertyId, SimplifiedPropertySnaks | SimplifiedSnak>
 
 export type LooseSimplifiedQualifiers = Record<string, SimplifiedPropertyQualifiers | SimplifiedQualifier>
@@ -51,10 +66,8 @@ export type LooseSimplifiedEntity = LooseSimplifiedProperty | LooseSimplifiedIte
 
 export type LooseSimplifiedAliases = LanguageRecord<readonly SimplifiedTerm[] | SimplifiedTerm>
 
-type EditableClaim = Partial<Claim> & { id: Claim['id'], remove?: boolean }
-
 interface EditableEntityExtras {
-  baserevid?: number
+  baserevid?: BaseRevId
 }
 
 /** See https://www.wikidata.org/w/api.php?action=help&modules=wbeditentity */

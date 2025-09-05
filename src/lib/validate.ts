@@ -1,63 +1,65 @@
-import { isEntityId, isPropertyId, isGuid, isItemId } from 'wikibase-sdk'
+import { isEntityId, isPropertyId, isGuid, isItemId, type CustomSimplifiedClaim, type Sitelink, type EntityId, type PropertyId, type WikimediaLanguageCode, wikimediaLanguageCodes, ranks, type Datatype, type Guid, type Hash, type Rank, type SimplifiedSnak, type CustomSimplifiedSnak } from 'wikibase-sdk'
 import { hasSpecialSnaktype } from './claim/special_snaktype.js'
 import * as datatypeTests from './datatype_tests.js'
 import { newError } from './error.js'
 import { inviteToOpenAFeatureRequest } from './issues.js'
 import { normalizeDatatype } from './properties/datatypes_to_builder_datatypes.js'
-import { isPlainObject, isNonEmptyString, forceArray, isArray } from './utils.js'
-// For a list of valid languages
-// see https://www.wikidata.org/w/api.php?action=help&modules=wbgetentities
-const langRegex = /^\w{2,3}(-[\w-]{2,10})?$/
-const siteRegex = /^[a-z_]{2,20}$/
-const possibleRanks = [ 'normal', 'preferred', 'deprecated' ]
+import { isNonEmptyString, forceArray, isArray, setHas, arrayIncludes } from './utils.js'
+import type { EditableClaim } from './types/edit_entity.js'
 
-function validateStringValue (name, str) {
+const siteRegex = /^[a-z_]{2,20}$/
+const wikimediaLanguageCodesSet = new Set(wikimediaLanguageCodes)
+
+function validateStringValue (name: string, str: string | EditableClaim | CustomSimplifiedClaim | Sitelink) {
   if (str === null) return
-  if (isPlainObject(str)) {
-    if (str.remove === true) return
+  if (typeof str === 'object') {
+    if ('remove' in str && str.remove === true) return
     // Required by entity/edit.js validation:
     // values can be passed as objects to allow for flags (ex: 'remove=true')
-    if (str.value != null) str = str.value
+    if ('value' in str && str.value != null) str = str.value as string
     // title is the API key for sitelinks
-    if (str.title != null) str = str.title
+    else if ('title' in str && str.title != null) str = str.title
   }
   if (!(isNonEmptyString(str))) {
     throw newError(`invalid ${name}`, { str })
   }
 }
 
-export function validateEntity (entity) {
-  if (!isEntityId(entity)) {
-    throw newError('invalid entity', { entity })
+export function validateEntityId (entityId: string): asserts entityId is EntityId {
+  if (!isEntityId(entityId)) {
+    throw newError('invalid entity id', { entityId })
   }
 }
-export function validateProperty (property) {
-  if (!isNonEmptyString(property)) {
-    throw newError('missing property', { property })
+export function validatePropertyId (propertyId: unknown): asserts propertyId is PropertyId {
+  if (!isNonEmptyString(propertyId)) {
+    throw newError('missing property id', { propertyId })
   }
-  if (!isPropertyId(property)) {
-    throw newError('invalid property', { property })
+  if (!isPropertyId(propertyId)) {
+    throw newError('invalid property id', { propertyId })
   }
 }
-export function validateLanguage (language) {
-  if (!(isNonEmptyString(language) && langRegex.test(language))) {
+export function validateLanguage (language: unknown): asserts language is WikimediaLanguageCode {
+  if (!(isNonEmptyString(language) && setHas(wikimediaLanguageCodesSet, language))) {
     throw newError('invalid language', { language })
   }
 }
 export const validateLabelOrDescription = validateStringValue
-export function validateAliases (value, options = {}) {
+
+export function validateAliases (value: string | string[], options: { allowEmptyArray?: boolean } = {}) {
   const { allowEmptyArray = false } = options
   value = forceArray(value)
   if (!allowEmptyArray && value.length === 0) throw newError('empty alias array', { value })
   // Yes, it's not an label or a description, but it works the same
   value.forEach(validateStringValue.bind(null, 'alias'))
 }
-export function validateSnakValue (property, datatype, value) {
+export function validateSnakValue (property: PropertyId, datatype: Datatype, value: SimplifiedSnak | CustomSimplifiedSnak['value']) {
   if (hasSpecialSnaktype(value)) return
   if (value == null) {
     throw newError('missing snak value', { property, value })
   }
-  if (value.value) value = value.value
+  if (typeof value === 'object' && 'value' in value) {
+    value = value.value
+  }
 
   const builderDatatype = normalizeDatatype(datatype)
 
@@ -92,7 +94,7 @@ export function validateBadges (badges) {
     }
   }
 }
-export function validateGuid (guid) {
+export function validateGuid (guid: unknown): asserts guid is Guid {
   if (!isNonEmptyString(guid)) {
     throw newError('missing guid', { guid })
   }
@@ -101,15 +103,15 @@ export function validateGuid (guid) {
     throw newError('invalid guid', { guid })
   }
 }
-export function validateHash (hash) {
+export function validateHash (hash: string): asserts hash is Hash {
   // Couldn't find the hash length range
   // but it looks to be somewhere around 40 characters
   if (!/^[0-9a-f]{20,80}$/.test(hash)) {
     throw newError('invalid hash', { hash })
   }
 }
-export function validateRank (rank) {
-  if (!possibleRanks.includes(rank)) {
+export function validateRank (rank: string): asserts rank is Rank {
+  if (!arrayIncludes(ranks, rank)) {
     throw newError('invalid rank', { rank })
   }
 }

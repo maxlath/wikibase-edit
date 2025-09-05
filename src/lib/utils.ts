@@ -1,12 +1,13 @@
-import type { AbsoluteUrl } from './types/common'
+import type { PostData, PostQuery } from './request/post.js'
+import type { AbsoluteUrl } from './types/common.js'
 import type { ObjectEntries } from 'type-fest/source/entries.js'
 
 const stringNumberPattern = /^(-|\+)?\d+(\.\d+)?$/
 const signedStringNumberPattern = /^(-|\+)\d+(\.\d+)?$/
 
-type Query = Record<string, string | number>
+export type Query = Record<string, string | number>
 
-export function stringifyQuery (query: Query) {
+export function stringifyQuery (query: Query | PostQuery | PostData) {
   // @ts-expect-error
   return new URLSearchParams(query).toString()
 }
@@ -16,8 +17,8 @@ export function isNonEmptyString (str: unknown): str is NonEmptyString {
   return typeof str === 'string' && str.length > 0
 }
 
-export function buildUrl (base: AbsoluteUrl, query: Query) {
-  return `${base}?${stringifyQuery(query)}`
+export function buildUrl (base: AbsoluteUrl, query: Query | PostQuery) {
+  return `${base}?${stringifyQuery(query)}` as AbsoluteUrl
 }
 // helpers to simplify polymorphisms
 export function forceArray <T> (obj: T | T[]): T[] {
@@ -33,11 +34,13 @@ export function isStringNumber (str: string): str is `${number}` {
 
 type Sign = '-' | '+'
 type SignNumber = `${Sign}${number}`
-export function isSignedStringNumber (str: string): str is SignNumber {
-  return signedStringNumberPattern.test(str)
+export function isSignedStringNumber (str: unknown): str is SignNumber {
+  return typeof str === 'string' && signedStringNumberPattern.test(str)
 }
 export const isArray = (array: unknown) => array instanceof Array
-export function isPlainObject (obj: unknown): obj is object {
+
+type PlainObject = Exclude<object, null | unknown[]>
+export function isPlainObject (obj: unknown): obj is PlainObject {
   if (obj instanceof Array) return false
   if (obj === null) return false
   return typeof obj === 'object'
@@ -75,6 +78,12 @@ export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, m
 export function arrayIncludes <T extends (string | number)> (array: readonly T[], value: string | number): value is T {
   const arrayT: readonly (string | number)[] = array
   return arrayT.includes(value)
+}
+
+// Same as `arrayIncludes` but for sets
+export function setHas <T extends (string | number)> (set: Set<T>, value: string | number): value is T {
+  const setT: Set<string | number> = set
+  return setT.has(value)
 }
 
 export function objectEntries <Obj extends object> (obj: Obj) {

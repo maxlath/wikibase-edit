@@ -1,10 +1,12 @@
-import { simplifySnak, type Claim, type GlobeCoordinateSnakDataValue, type MonolingualTextSnakDataValue, type QuantitySnakDataValue, type Snak, type SnakBase, type SnakBaseWithValue, type Statement, type StringSnakDataValue, type TimeSnakDataValue, type WikibaseEntityIdSnakDataValue } from 'wikibase-sdk'
+import { simplifySnak, type Claim, type CustomSimplifiedSnak, type GlobeCoordinateSnakDataValue, type MonolingualTextSnakDataValue, type QuantitySnakDataValue, type SimplifiedSnak, type Snak, type SnakBase, type SnakBaseWithValue, type StringSnakDataValue, type TimeSnakDataValue, type WikibaseEntityIdSnakDataValue } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { inviteToOpenAFeatureRequest } from '../issues.js'
 import { isPlainObject, isString } from '../utils.js'
 import { parseUnit } from './quantity.js'
 
-export function isMatchingSnak (_existingSnak: Claim | Statement | Snak, _searchedValue: Snak | SnakBaseWithValue['datavalue']['value']) {
+export type SearchedValue = Snak | SnakBaseWithValue['datavalue']['value'] | CustomSimplifiedSnak['value'] | SimplifiedSnak
+
+export function isMatchingSnak (_existingSnak: Claim | SnakBase, _searchedValue: SearchedValue) {
   const existingSnak: SnakBase = 'mainsnak' in _existingSnak ? _existingSnak.mainsnak : _existingSnak
   if (typeof _searchedValue === 'object' && 'snaktype' in _searchedValue && _searchedValue.snaktype && (_searchedValue.snaktype !== 'value' || existingSnak.snaktype !== 'value')) {
     return existingSnak.snaktype === _searchedValue.snaktype

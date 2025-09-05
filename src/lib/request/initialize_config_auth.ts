@@ -1,6 +1,7 @@
 import { getAuthDataFactory } from './get_auth_data.js'
+import type { SerializedConfig } from '../types/config.js'
 
-export default config => {
+export function initializeConfigAuth (config: SerializedConfig) {
   if (!config) throw new Error('missing config')
   if (config.anonymous) return
 
@@ -14,9 +15,11 @@ export default config => {
   credentials._credentialsKey = credentialsKey
 }
 
-const getCredentialsKey = config => {
-  const { instance } = config
-  const { oauth, username, browserSession } = config.credentials
+function getCredentialsKey (config: SerializedConfig) {
+  const { instance, credentials } = config
+  const oauth = 'oauth' in credentials ? credentials.oauth : undefined
+  const username = 'username' in credentials ? credentials.username : undefined
+  const browserSession = 'browserSession' in credentials ? credentials.browserSession : undefined
   if (browserSession) return instance
   // Namespacing keys as a oauth.consumer_key could theoretically be a username
   return username ? `${instance}|u|${username}` : `${instance}|o|${oauth.consumer_key}`

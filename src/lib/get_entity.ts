@@ -1,6 +1,6 @@
 import { newError } from './error.js'
 import WBK from './get_instance_wikibase_sdk.js'
-import getJson from './request/get_json.js'
+import { getJson } from './request/get_json.js'
 import type { SerializedConfig } from './types/config.js'
 import type { Claims, Entity, EntityWithClaims, EntityWithSitelinks, MediaInfo, Props, Statements } from 'wikibase-sdk'
 

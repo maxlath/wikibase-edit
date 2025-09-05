@@ -1,10 +1,14 @@
+import type { AbsoluteUrl } from './types/common'
+
 export type ErrorContext = object
 
-interface ContextualizedError extends Error {
+export interface ContextualizedError extends Error {
   statusCode?: number
   context?: ErrorContext
   code?: string
   body?: unknown
+  headers?: Headers
+  url?: AbsoluteUrl
 }
 
 export function newError (message: string, statusCode?: number | ErrorContext, context?: ErrorContext) {

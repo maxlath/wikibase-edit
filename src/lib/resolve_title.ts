@@ -3,7 +3,7 @@
 // ex: P1 => Property:P1, Q1 => Q1 OR Item:Q1
 
 import { isEntityId } from 'wikibase-sdk'
-import getJson from './request/get_json.js'
+import { getJson } from './request/get_json.js'
 import type { AbsoluteUrl } from './types/common.js'
 
 let prefixesMapPromise

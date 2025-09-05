@@ -1,16 +1,21 @@
-import { isGuid, isPropertyId, isHash, getEntityIdFromGuid, type Guid, type PropertyId, type Hash, type Claim } from 'wikibase-sdk'
+import { isGuid, isPropertyId, isHash, getEntityIdFromGuid, type Guid, type PropertyId, type Hash, type Claim, type Qualifier, type StatementQualifier } from 'wikibase-sdk'
 import { findClaimByGuid } from '../claim/helpers.js'
 import { propertiesDatatypesDontMatch } from '../claim/move_commons.js'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
+import type { MovableEntityId } from '../claim/move.js'
+import type { EditEntityRawModeParams } from '../entity/edit.js'
 import type { WikibaseEditAPI } from '../index.js'
+import type { BaseRevId } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
 
 export interface MoveQualifierParams {
-  guid: Guid
+  guid: Guid<MovableEntityId>
   oldProperty: PropertyId
   newProperty: PropertyId
-  hash: Hash
+  hash?: Hash
+  summary?: string
+  baserevid?: BaseRevId
 }
 
 export async function moveQualifier (params: MoveQualifierParams, config: SerializedConfig, API: WikibaseEditAPI) {
@@ -27,21 +32,23 @@ export async function moveQualifier (params: MoveQualifierParams, config: Serial
 
   if (hash != null && !isHash(hash)) throw newError('invalid hash', 400, params)
 
-  const currentEntityId = getEntityIdFromGuid(guid)
+  const currentEntityId = getEntityIdFromGuid<MovableEntityId>(guid)
   const claims = await getEntityClaims(currentEntityId, config)
   const claim = findClaimByGuid(claims, guid)
 
   if (!claim) throw newError('claim not found', 400, params)
 
   if (!claim.qualifiers[oldProperty]) {
-    params.foundQualifiers = Object.keys(claim.qualifiers)
-    throw newError('no qualifiers found for this property', 400, params)
+    throw newError('no qualifiers found for this property', 400, {
+      ...params,
+      foundQualifiers: Object.keys(claim.qualifiers),
+    })
   }
 
   const originDatatype = config.properties[oldProperty]
   const targetDatatype = config.properties[newProperty]
 
-  const recoverDatatypesMismatch = movedSnaks => {
+  function recoverDatatypesMismatch (movedSnaks) {
     if (originDatatype !== targetDatatype) {
       propertiesDatatypesDontMatch({
         movedSnaks,
@@ -49,6 +56,7 @@ export async function moveQualifier (params: MoveQualifierParams, config: Serial
         originPropertyId: oldProperty,
         targetDatatype,
         targetPropertyId: newProperty,
+        instance: config.instance,
       })
     }
   }
@@ -56,8 +64,10 @@ export async function moveQualifier (params: MoveQualifierParams, config: Serial
   if (hash) {
     const qualifier = claim.qualifiers[oldProperty].find(findByHash(hash))
     if (!qualifier) {
-      params.foundHashes = claim.qualifiers[oldProperty].map(qualifier => qualifier.hash)
-      throw newError('qualifier not found', 400, params)
+      throw newError('qualifier not found', 400, {
+        ...params,
+        foundHashes: claim.qualifiers[oldProperty].map(qualifier => qualifier.hash),
+      })
     }
     recoverDatatypesMismatch([ qualifier ])
     claim.qualifiers[newProperty] = claim.qualifiers[newProperty] || []
@@ -73,12 +83,12 @@ export async function moveQualifier (params: MoveQualifierParams, config: Serial
 
   const { statementsKey } = config
 
-  const entityData = {
+  const entityData: EditEntityRawModeParams = {
     rawMode: true,
     id: currentEntityId,
     [statementsKey]: [ claim ],
-    summary: params.summary || config.summary || generateSummary(guid, oldProperty, newProperty, hash),
-    baserevid: params.baserevid || config.baserevid,
+    summary: 'summary' in params ? params.summary : (config.summary || generateSummary(guid, oldProperty, newProperty, hash)),
+    baserevid: 'baserevid' in params ? params.baserevid : config.baserevid,
   }
 
   const res = await API.entity.edit(entityData, config)
@@ -89,12 +99,12 @@ export async function moveQualifier (params: MoveQualifierParams, config: Serial
 const findByHash = hash => qualifier => qualifier.hash === hash
 const filterOutByHash = hash => qualifier => qualifier.hash !== hash
 
-const changeProperty = (newProperty, qualifier) => {
+function changeProperty (newProperty: PropertyId, qualifier: Qualifier | StatementQualifier) {
   qualifier.property = newProperty
   return qualifier
 }
 
-const generateSummary = (guid, oldProperty, newProperty, hash) => {
+function generateSummary (guid: Guid, oldProperty: PropertyId, newProperty: PropertyId, hash: Hash) {
   if (hash) {
     return `moving a ${oldProperty} qualifier of ${guid} to ${newProperty}`
   } else {

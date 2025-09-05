@@ -1,4 +1,4 @@
-import { simplifyClaim, type Claim, type Claims, type Guid, type Statement, type Statements } from 'wikibase-sdk'
+import { simplifyClaim, type Claim, type Claims, type CustomSimplifiedClaim, type Guid, type Statement, type Statements } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { flatten, values } from '../utils.js'
 
@@ -18,6 +18,8 @@ export function findClaimByGuid (claims: Claims | Statements, guid: Guid): Claim
   throw newError('claim not found', 400, { claims, guid })
 }
 
-export const isGuidClaim = guid => claim => claim.id === guid
+export const isGuidClaim = (guid: Guid) => (claim: Claim) => claim.id === guid
 
-export const simplifyClaimForEdit = claim => simplifyClaim(claim, simplifyOptions)
+export function simplifyClaimForEdit (claim: Claim) {
+  return simplifyClaim(claim, simplifyOptions) as CustomSimplifiedClaim
+}

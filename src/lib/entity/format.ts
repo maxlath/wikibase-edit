@@ -1,12 +1,13 @@
+import { flatten } from 'lodash-es'
 import { newError } from '../error.js'
-import { isString, forceArray, isntEmpty, flatten, objectKeys } from '../utils.js'
-import { validateAliases, validateBadges, validateLabelOrDescription, validateLanguage, validateProperty, validateSite, validateSiteTitle } from '../validate.js'
+import { isString, forceArray, isntEmpty, objectKeys } from '../utils.js'
+import { validateAliases, validateBadges, validateLabelOrDescription, validateLanguage, validatePropertyId, validateSite, validateSiteTitle } from '../validate.js'
 import { buildClaim } from './build_claim.js'
 import { reconcileClaimFactory } from './reconcile_claim.js'
 import type { Reconciliation } from './validate_reconciliation_object.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
-import type { CustomSimplifiedClaim, PropertyId, SimplifiedClaim, SimplifiedClaims, SimplifiedPropertyClaims, SimplifiedSitelinks, SimplifiedTerm, Sitelink, SitelinkBadges, SitelinkTitle, Term, WikimediaLanguageCode } from 'wikibase-sdk'
+import type { Claims, CustomSimplifiedClaim, PropertyId, SimplifiedClaim, SimplifiedPropertyClaims, SimplifiedSitelinks, SimplifiedTerm, Sitelink, SitelinkBadges, SitelinkTitle, Statements, Term, WikimediaLanguageCode } from 'wikibase-sdk'
 
 type CustomSimplifiedClaims = Record<PropertyId, SimplifiedPropertyClaims | SimplifiedClaim | CustomSimplifiedClaim[] | CustomSimplifiedClaim>
 
@@ -21,7 +22,7 @@ function formatBadgesArray (badges: SitelinkBadges | string) {
   return badgeArray
 }
 
-export function formatValues (name: string, values: string | string) {
+export function formatTermsObject (name: 'label' | 'description' | 'alias', values: Record<WikimediaLanguageCode, string | string[]>) {
   const obj = {}
   objectKeys(values).forEach(lang => {
     let value = values[lang]
@@ -31,6 +32,9 @@ export function formatValues (name: string, values: string | string) {
       validateAliases(value, { allowEmptyArray: true })
       obj[lang] = value.map(alias => buildLanguageValue(alias, lang))
     } else {
+      if (typeof value !== 'string') {
+        throw newError('expected a string', 400, { name, value })
+      }
       validateLabelOrDescription(name, value)
       obj[lang] = buildLanguageValue(value, lang)
     }
@@ -38,7 +42,7 @@ export function formatValues (name: string, values: string | string) {
   return obj
 }
 
-export function formatClaims (claims: CustomSimplifiedClaims, properties: PropertiesDatatypes, instance: AbsoluteUrl, reconciliation: Reconciliation, existingClaims: SimplifiedClaims) {
+export function formatClaims (claims: CustomSimplifiedClaims, properties: PropertiesDatatypes, instance: AbsoluteUrl, reconciliation: Reconciliation, existingClaims: Claims | Statements) {
   if (!properties) throw newError('expected properties')
   return objectKeys(claims)
   .reduce(formatClaimFactory(claims, properties, instance, reconciliation, existingClaims), {})
@@ -61,11 +65,11 @@ export function formatSitelinks (sitelinks: SimplifiedSitelinks) {
 }
 export const formatBadges = formatBadgesArray
 
-function formatClaimFactory (claims: CustomSimplifiedClaims, properties: PropertiesDatatypes, instance: AbsoluteUrl, reconciliation: Reconciliation, existingClaims: SimplifiedClaims) {
+function formatClaimFactory (claims: CustomSimplifiedClaims, properties: PropertiesDatatypes, instance: AbsoluteUrl, reconciliation: Reconciliation, existingClaims: Claims | Statements) {
   return function formatClaim (obj, property) {
     if (!properties) throw newError('expected properties')
     if (!instance) throw newError('expected instance')
-    validateProperty(property)
+    validatePropertyId(property)
     const values = forceArray(claims[property])
     obj[property] = obj[property] || []
     obj[property] = values.map(value => buildClaim(property, properties, value, instance))

@@ -8,7 +8,7 @@ import type { Reconciliation } from '../entity/validate_reconciliation_object.js
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
-import type { EntityWithClaims, Guid, PropertyId, SimplifiedClaim, SimplifiedQualifiers } from 'wikibase-sdk'
+import type { Claim, EntityWithClaims, Guid, PropertyId, SimplifiedClaim, SimplifiedQualifiers } from 'wikibase-sdk'
 
 export interface RemoveClaimParams {
   id?: EntityWithClaims['id']
@@ -32,7 +32,8 @@ export async function removeClaim (params: RemoveClaimParams, properties: Proper
   } else {
     const existingClaims = await getEntityClaims(id, config)
     const claimData = { value, qualifiers }
-    const claim = buildClaim(property, properties, claimData, instance)
+    // @ts-expect-error
+    const claim: Claim = buildClaim(property, properties, claimData, instance)
     const { matchingQualifiers } = reconciliation
     const matchingClaims = existingClaims[property].filter(isMatchingClaimFactory(claim, matchingQualifiers))
     if (matchingClaims.length === 0) throw newError('claim not found', params)

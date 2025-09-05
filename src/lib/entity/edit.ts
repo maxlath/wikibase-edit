@@ -1,29 +1,30 @@
 import { omit } from 'lodash-es'
-import { isEntityId, type EntityType, type Item, type Lexeme, type MediaInfo, type Property, type SimplifiedClaims, datatypes } from 'wikibase-sdk'
+import { isEntityId, type EntityType, type Item, type Lexeme, type MediaInfo, type Property, datatypes, type Claims, type Statements } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { arrayIncludes, forceArray, objectEntries } from '../utils.js'
-import { formatClaims, formatSitelinks, formatValues } from './format.js'
+import { formatClaims, formatSitelinks, formatTermsObject } from './format.js'
 import { isIdAliasPattern, resolveIdAlias } from './id_alias.js'
 import type { CreateEntityResponse } from './create.js'
 import type { Reconciliation } from './validate_reconciliation_object.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
-import type { AbsoluteUrl } from '../types/common.js'
+import type { AbsoluteUrl, BaseRevId } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
-import type { EditableEntity, EditableItem, EditableLexeme, EditableMediaInfo, EditableProperty, SimplifiedEditableEntity } from '../types/edit_entity.js'
+import type { EditableEntity, EditableItem, EditableLexeme, EditableMediaInfo, EditableProperty, LooseSimplifiedClaims, SimplifiedEditableEntity } from '../types/edit_entity.js'
 
 interface EditEntityParamsBase {
   clear?: boolean
   create?: boolean
   reconciliation?: Reconciliation
   summary?: string
+  baserevid?: BaseRevId
 }
 
 export type EditEntityRawModeParams = EditEntityParamsBase & Partial<EditableEntity> & {
   rawMode: true
 }
 
-type EditEntitySimplifiedModeParams = EditEntityParamsBase & Partial<SimplifiedEditableEntity> & {
+export type EditEntitySimplifiedModeParams = EditEntityParamsBase & Partial<SimplifiedEditableEntity> & {
   rawMode?: false
 }
 
@@ -64,7 +65,7 @@ export async function editEntity (inputParams: EditEntityParams, properties: Pro
   }
 
   let params: Partial<WbeditentityData> = { type, data: {} }
-  let existingClaims
+  let existingClaims: Claims | Statements
 
   if (create) {
     if (type === 'property') {
@@ -144,9 +145,9 @@ const attributesPerEntityType = {
 type HasSimplifiedInputFormatters = Exclude<keyof typeof attributesPerEntityType, 'claims' | 'statements'>
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 const simplifiedInputFormatters: Record<HasSimplifiedInputFormatters, Function> = {
-  aliases: formatValues.bind(null, 'alias'),
-  descriptions: formatValues.bind(null, 'description'),
-  labels: formatValues.bind(null, 'label'),
+  aliases: formatTermsObject.bind(null, 'alias'),
+  descriptions: formatTermsObject.bind(null, 'description'),
+  labels: formatTermsObject.bind(null, 'label'),
   sitelinks: formatSitelinks,
 }
 
@@ -166,7 +167,7 @@ function validateParameters (params: EditEntityParams) {
   }
 }
 
-function hasReconciliationSettings (reconciliation: Reconciliation, claims: SimplifiedClaims) {
+function hasReconciliationSettings (reconciliation: Reconciliation, claims: LooseSimplifiedClaims) {
   if (reconciliation != null) return true
   for (const property in claims) {
     for (const claim of forceArray(claims[property])) {

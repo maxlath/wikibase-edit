@@ -1,11 +1,12 @@
-import { getEntityIdFromGuid, type Guid, type PropertyId, type SimplifiedQualifier } from 'wikibase-sdk'
+import { getEntityIdFromGuid, type Claim, type Guid, type PropertyId, type SimplifiedQualifier, type Statement } from 'wikibase-sdk'
 import { findSnak } from '../claim/find_snak.js'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { flatten, values } from '../utils.js'
-import { validateGuid, validateProperty, validateSnakValue } from '../validate.js'
+import { validateGuid, validatePropertyId, validateSnakValue } from '../validate.js'
 import type { WikibaseEditAPI } from '../index.js'
 import type { SetQualifierResponse } from './set.js'
+import type { BaseRevId } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
 
 export interface UpdateQualifierParams {
@@ -13,13 +14,15 @@ export interface UpdateQualifierParams {
   property: PropertyId
   oldValue: SimplifiedQualifier
   newValue: SimplifiedQualifier
+  summary?: string
+  baserevid?: BaseRevId
 }
 
 export async function updateQualifier (params: UpdateQualifierParams, config: SerializedConfig, API: WikibaseEditAPI) {
   const { guid, property, oldValue, newValue } = params
 
   validateGuid(guid)
-  validateProperty(property)
+  validatePropertyId(property)
   const datatype = config.properties[property]
   validateSnakValue(property, datatype, oldValue)
   validateSnakValue(property, datatype, newValue)
@@ -35,18 +38,18 @@ export async function updateQualifier (params: UpdateQualifierParams, config: Se
     hash,
     property,
     value: newValue,
-    summary: params.summary || config.summary,
+    summary: 'summary' in params ? params.summary : config.summary,
     baserevid: params.baserevid || config.baserevid,
   }, config)
 }
 
-const getSnakHash = async (guid, property, oldValue, config) => {
+async function getSnakHash (guid: Guid, property: PropertyId, oldValue: SimplifiedQualifier, config) {
   const entityId = getEntityIdFromGuid(guid)
   const claims = await getEntityClaims(entityId, config)
   const claim = findClaim(claims, guid)
 
-  if (!claim) throw newError('claim not found', 400, guid)
-  if (!claim.qualifiers) throw newError('claim qualifiers not found', 400, guid)
+  if (!claim) throw newError('claim not found', 400, { guid })
+  if (!claim.qualifiers) throw newError('claim qualifiers not found', 400, { guid })
 
   const propSnaks = claim.qualifiers[property]
 
@@ -59,9 +62,9 @@ const getSnakHash = async (guid, property, oldValue, config) => {
   return qualifier.hash
 }
 
-const findClaim = (claims, guid) => {
-  claims = flatten(values(claims))
-  for (const claim of claims) {
+function findClaim <T extends (Claim | Statement)> (claims: Record<PropertyId, T[]>, guid: Guid): T | void {
+  const flattenedClaims = flatten(values(claims))
+  for (const claim of flattenedClaims) {
     if (claim.id === guid) return claim
   }
 }

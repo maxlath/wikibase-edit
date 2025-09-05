@@ -1,4 +1,4 @@
-import type { PropertiesDatatypes } from '../../src/lib/properties/fetch_properties_datatypes'
+import type { PropertiesDatatypes } from '#lib/properties/fetch_properties_datatypes'
 
 export const randomString = () => Math.random().toString(36).slice(2, 10)
 export const randomNumber = (length = 5) => Math.trunc(Math.random() * Math.pow(10, length))

@@ -1,15 +1,30 @@
-import { stringifyQuery, wait } from '../utils.js'
+import { stringifyQuery, wait, type Query } from '../utils.js'
 import checkKnownIssues from './check_known_issues.js'
-import { customFetch } from './fetch.js'
+import { customFetch, type HttpHeaders, type HttpMethod, type HttpRequestAgent } from './fetch.js'
 import { getSignatureHeaders } from './oauth.js'
-import parseResponseBody from './parse_response_body.js'
+import { parseResponseBody } from './parse_response_body.js'
+import type { PostData } from './post.js'
+import type { AbsoluteUrl } from '../types/common.js'
+import type { OAuthCredentials } from '../types/config.js'
 
 const timeout = 30000
 
-export default async (verb, params) => {
+export interface RequestParams {
+  url: AbsoluteUrl
+  body?: Query | PostData
+  oauth?: OAuthCredentials['oauth']
+  headers?: HttpHeaders
+  autoRetry?: boolean
+  httpRequestAgent?: HttpRequestAgent
+}
+
+export async function request (verb: HttpMethod, params: RequestParams) {
   const method = verb || 'get'
   const { url, body, oauth: oauthTokens, headers, autoRetry = true, httpRequestAgent } = params
-  const maxlag = body?.maxlag
+  let maxlag
+  if (typeof body === 'object' && 'maxlag' in body) {
+    maxlag = body.maxlag
+  }
   let attempts = 1
 
   let bodyStr
@@ -18,7 +33,7 @@ export default async (verb, params) => {
     headers['Content-Type'] = 'application/x-www-form-urlencoded'
   }
 
-  const tryRequest = async () => {
+  async function tryRequest () {
     if (oauthTokens) {
       const signatureHeaders = getSignatureHeaders({
         url,
@@ -51,7 +66,12 @@ export default async (verb, params) => {
   return tryRequest()
 }
 
-const errorIsWorthARetry = err => {
+export interface APIResponseError {
+  code: string
+  info: string
+}
+
+function errorIsWorthARetry (err) {
   if (errorsWorthARetry.has(err.name) || errorsWorthARetry.has(err.type) || errorsCodeWorthARetry.has(err.code || err.cause?.code)) return true
   // failed-save might be a recoverable error from the server
   // See https://github.com/maxlath/wikibase-cli/issues/150
@@ -82,13 +102,13 @@ const nonRecoverableFailedSaveMessageNames = new Set([
 ])
 
 const defaultRetryDelay = 5
-const getRetryDelay = headers => {
+function getRetryDelay (headers) {
   const retryAfterSeconds = headers?.['retry-after']
   if (/^\d+$/.test(retryAfterSeconds)) return parseInt(retryAfterSeconds)
   else return defaultRetryDelay
 }
 
-const retryWarn = (verb, url, err, delaySeconds, attempts, maxlag) => {
+function retryWarn (verb, url, err, delaySeconds, attempts, maxlag) {
   verb = verb.toUpperCase()
   const maxlagStr = typeof maxlag === 'number' ? `${maxlag}s` : maxlag
   console.warn(`[wikibase-edit][WARNING] ${verb} ${url}

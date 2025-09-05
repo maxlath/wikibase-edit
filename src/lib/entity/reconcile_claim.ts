@@ -1,13 +1,15 @@
 import { isEqual } from 'lodash-es'
-import { simplifyReferences, simplifySnak } from 'wikibase-sdk'
+import { simplifyReferences, simplifySnak, type PropertyClaims, type PropertyStatements } from 'wikibase-sdk'
 import { isMatchingClaimFactory } from '../claim/is_matching_claim.js'
 import { isMatchingSnak } from '../claim/is_matching_snak.js'
 import { newError } from '../error.js'
-import { validateReconciliationObject } from './validate_reconciliation_object.js'
+import { validateReconciliationObject, type Reconciliation } from './validate_reconciliation_object.js'
+import type { CustomSimplifiedEditableClaim } from '../types/edit_entity.js'
 
-export function reconcileClaimFactory (reconciliation, existingPropertyClaims) {
-  return function reconcileClaim (claim) {
-    reconciliation = claim.reconciliation || reconciliation
+// Ignoring MediaInfo statements weirdness here, as it doesn't rely on snaks datatypes
+export function reconcileClaimFactory (reconciliation: Reconciliation, existingPropertyClaims: PropertyClaims | PropertyStatements) {
+  return function reconcileClaim (claim: CustomSimplifiedEditableClaim): CustomSimplifiedEditableClaim | CustomSimplifiedEditableClaim[] | void {
+    reconciliation = 'reconciliation' in claim ? claim.reconciliation : reconciliation
     if (!reconciliation) return claim
     validateReconciliationObject(reconciliation, claim)
     const { mode, matchingQualifiers, matchingReferences } = reconciliation
@@ -49,9 +51,11 @@ export function reconcileClaimFactory (reconciliation, existingPropertyClaims) {
         } else {
           const currentReference = simplifyReferences(existingClaim.references)
           const newReferenceReference = claim.references.filter(isNewReference(currentReference))
+          // @ts-expect-error
           existingClaim.references.push(...newReferenceReference)
         }
       }
+      // @ts-expect-error
       return existingClaim
     } else {
       throw newError('unexpected reconciliation mode', 500, { reconciliation })
@@ -59,7 +63,7 @@ export function reconcileClaimFactory (reconciliation, existingPropertyClaims) {
   }
 }
 
-const addMissingQualifiers = (existingQualifiers, newQualifiers) => {
+function addMissingQualifiers (existingQualifiers, newQualifiers) {
   for (const property in newQualifiers) {
     existingQualifiers[property] = existingQualifiers[property] || []
     existingQualifiers[property].push(...newQualifiers[property])
@@ -73,10 +77,10 @@ const isNewReference = currentReference => reference => {
   })
 }
 
-const mergeReferences = (existingReferences, newReferences, matchingReferences) => {
+function mergeReferences (existingReferences, newReferences, matchingReferences) {
   const addedReferences = []
   for (const newReference of newReferences) {
-    const newReferenceSnaks = aggregateReferenceSnaks(newReference.snaks)
+    const newReferenceSnaks = aggregateReferenceSnaks(newReference.snaks, false)
     const matchingReference = existingReferences.find(isMatchingReference(newReferenceSnaks, matchingReferences))
     if (matchingReference) {
       mergeMatchingReference(matchingReference, newReferenceSnaks)
@@ -87,7 +91,7 @@ const mergeReferences = (existingReferences, newReferences, matchingReferences) 
   existingReferences.push(...addedReferences)
 }
 
-const mergeMatchingReference = (matchingReference, newReferenceSnaks) => {
+function mergeMatchingReference (matchingReference, newReferenceSnaks) {
   for (const property in newReferenceSnaks) {
     if (property in matchingReference.snaks) {
       const existingPropertySnaks = matchingReference.snaks[property]
@@ -123,7 +127,7 @@ const methodNameByOption = {
   all: 'every',
 }
 
-const aggregateReferenceSnaks = (snaksArray, simplify) => {
+function aggregateReferenceSnaks (snaksArray, simplify) {
   return snaksArray.reduce((aggregatedSnaks, snak) => {
     const { property } = snak
     aggregatedSnaks[property] = aggregatedSnaks[property] || []
@@ -133,6 +137,6 @@ const aggregateReferenceSnaks = (snaksArray, simplify) => {
   }, {})
 }
 
-const hasSomeMatch = (existingPropertySnaks, snak) => {
+function hasSomeMatch (existingPropertySnaks, snak) {
   return existingPropertySnaks.some(existingSnak => isMatchingSnak(existingSnak, snak))
 }

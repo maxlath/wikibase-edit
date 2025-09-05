@@ -2,15 +2,15 @@ import config from 'config'
 import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 import { getSandboxItemId, getSandboxPropertyId, getSandboxClaimId } from './sandbox_entities.js'
-import type { EditableEntity } from '../../../src/lib/entity/edit.js'
-import type { DataType, Guid, PropertyId, SimplifiedClaim, SimplifiedQualifier, SimplifiedQualifiers, SimplifiedReference } from 'wikibase-sdk'
+import type { EditableEntity } from '../../../src/lib/types/edit_entity.js'
+import type { Datatype, Guid, PropertyId, SimplifiedClaim, SimplifiedQualifier, SimplifiedQualifiers, SimplifiedReference } from 'wikibase-sdk'
 
 const wbEdit = WBEdit(config)
 
 interface AddClaimParams {
   id?: EditableEntity['id']
   property?: PropertyId
-  datatype?: DataType
+  datatype?: Datatype
   value?: SimplifiedClaim
   qualifiers?: SimplifiedQualifiers
 }
@@ -37,7 +37,7 @@ export async function addClaim (params: AddClaimParams = {}) {
 interface AddQualifierParams {
   guid?: Guid
   property?: PropertyId
-  datatype?: DataType
+  datatype?: Datatype
   value?: SimplifiedQualifier
 }
 
@@ -53,7 +53,7 @@ export async function addQualifier ({ guid, property, datatype, value }: AddQual
 interface AddReferenceParams {
   guid?: Guid
   property?: PropertyId
-  datatype?: DataType
+  datatype?: Datatype
   value?: SimplifiedReference
 }
 

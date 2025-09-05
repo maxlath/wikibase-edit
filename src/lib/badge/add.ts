@@ -2,21 +2,21 @@ import { formatBadges } from '../entity/format.js'
 import { newError } from '../error.js'
 import { getEntitySitelinks } from '../get_entity.js'
 import { uniq } from '../utils.js'
-import { validateEntity, validateSite } from '../validate.js'
+import { validateEntityId, validateSite } from '../validate.js'
 import type { WikibaseEditAPI } from '../index.js'
 import type { SetSitelinkResponse } from '../sitelink/set.js'
 import type { SerializedConfig } from '../types/config.js'
-import type { EntityId, ItemId } from 'wikibase-sdk'
+import type { EntityWithSitelinks, ItemId } from 'wikibase-sdk'
 
 export interface AddBadgeParams {
-  id: EntityId
+  id: EntityWithSitelinks['id']
   site: string
   badges: ItemId | ItemId[]
 }
 
 export async function addBadge (params: AddBadgeParams, config: SerializedConfig, API: WikibaseEditAPI) {
   let { id, site, badges } = params
-  validateEntity(id)
+  validateEntityId(id)
   validateSite(site)
   badges = formatBadges(badges)
 

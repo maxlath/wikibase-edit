@@ -7,9 +7,9 @@ import { isString, isNumber, isPlainObject, map, forceArray } from '../utils.js'
 import { validateGuid, validateRank, validateSnakValue } from '../validate.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
-import type { PropertyId, SimplifiedClaims } from 'wikibase-sdk'
+import type { PropertyId, SimplifiedClaim } from 'wikibase-sdk'
 
-export function buildClaim (property: PropertyId, properties: PropertiesDatatypes, claimData: SimplifiedClaims, instance: AbsoluteUrl) {
+export function buildClaim (property: PropertyId, properties: PropertiesDatatypes, claimData: SimplifiedClaim, instance: AbsoluteUrl) {
   const datatype = properties[property]
 
   const builderDatatype = normalizeDatatype(datatype)
