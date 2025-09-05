@@ -1,5 +1,5 @@
 import { omit } from 'lodash-es'
-import { isEntityId, type Entity, type EntityType, type Item, type Lexeme, type MediaInfo, type Property, type SimplifiedClaims, type LooseSimplifiedItem, type LooseSimplifiedLexeme, type LooseSimplifiedMediaInfo, type LooseSimplifiedProperty } from 'wikibase-sdk'
+import { isEntityId, type EntityType, type Item, type Lexeme, type MediaInfo, type Property, type SimplifiedClaims, datatypes } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { arrayIncludes, forceArray, objectEntries } from '../utils.js'
@@ -10,9 +10,7 @@ import type { Reconciliation } from './validate_reconciliation_object.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
-
-export type EditableEntity = Item | Property | Lexeme | MediaInfo
-export type SimplifiedEditableEntity = LooseSimplifiedItem | LooseSimplifiedProperty | LooseSimplifiedLexeme | LooseSimplifiedMediaInfo
+import type { EditableEntity, EditableItem, EditableLexeme, EditableMediaInfo, EditableProperty, SimplifiedEditableEntity } from '../types/edit_entity.js'
 
 interface EditEntityParamsBase {
   clear?: boolean
@@ -21,7 +19,7 @@ interface EditEntityParamsBase {
   summary?: string
 }
 
-type EditEntityRawModeParams = EditEntityParamsBase & Partial<EditableEntity> & {
+export type EditEntityRawModeParams = EditEntityParamsBase & Partial<EditableEntity> & {
   rawMode: true
 }
 
@@ -40,7 +38,7 @@ const editableTypes = [
   // 'sense',
 ] as const
 
-interface WbeditentityDataBase <T extends Entity> {
+interface WbeditentityDataBase <T extends EditableEntity> {
   type: T['type']
   new?: T['type']
   clear?: boolean
@@ -48,10 +46,10 @@ interface WbeditentityDataBase <T extends Entity> {
   data: Partial<T>
 }
 
-type WbeditentityItemData = WbeditentityDataBase<Item>
-type WbeditentityPropertyData = WbeditentityDataBase<Property>
-type WbeditentityLexemeData = WbeditentityDataBase<Lexeme>
-type WbeditentityMediaInfoData = WbeditentityDataBase<MediaInfo>
+type WbeditentityItemData = WbeditentityDataBase<EditableItem>
+type WbeditentityPropertyData = WbeditentityDataBase<EditableProperty>
+type WbeditentityLexemeData = WbeditentityDataBase<EditableLexeme>
+type WbeditentityMediaInfoData = WbeditentityDataBase<EditableMediaInfo>
 type WbeditentityData = WbeditentityItemData | WbeditentityPropertyData | WbeditentityLexemeData | WbeditentityMediaInfoData
 
 export async function editEntity (inputParams: EditEntityParams, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig) {
@@ -71,7 +69,7 @@ export async function editEntity (inputParams: EditEntityParams, properties: Pro
   if (create) {
     if (type === 'property') {
       if (!datatype) throw newError('missing property datatype', { datatype })
-      if (!datatypes.has(datatype)) {
+      if (!datatypesSet.has(datatype)) {
         throw newError('invalid property datatype', { datatype, knownDatatypes: datatypes })
       }
       params = {
@@ -152,27 +150,7 @@ const simplifiedInputFormatters: Record<HasSimplifiedInputFormatters, Function> 
   sitelinks: formatSitelinks,
 }
 
-const datatypes = new Set([
-  'commonsMedia',
-  'edtf',
-  'external-id',
-  'geo-shape',
-  'globe-coordinate',
-  // datatype from https://github.com/ProfessionalWiki/WikibaseLocalMedia
-  'localMedia',
-  'math',
-  'monolingualtext',
-  'musical-notation',
-  'quantity',
-  'string',
-  'tabular-data',
-  'time',
-  'url',
-  'wikibase-form',
-  'wikibase-item',
-  'wikibase-property',
-  'wikibase-lexeme',
-])
+const datatypesSet = new Set(datatypes)
 
 const allowedParameters = new Set([
   'id', 'create', 'type', 'datatype', 'clear', 'rawMode', 'summary', 'baserevid',

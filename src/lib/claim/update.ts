@@ -1,4 +1,4 @@
-import { isGuid, getEntityIdFromGuid, type EntityId, type Guid, type PropertyId, type SimplifiedClaim, type Rank, type Claim } from 'wikibase-sdk'
+import { isGuid, getEntityIdFromGuid, type EntityId, type Guid, type PropertyId, type Rank, type Claim, type CustomSimplifiedSnak } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { findSnak } from './find_snak.js'
@@ -7,12 +7,12 @@ import type { WikibaseEditAPI } from '../index.js'
 import type { SerializedConfig } from '../types/config.js'
 
 export interface UpdateClaimParams {
-  id: EntityId
-  guid: Guid
+  id?: EntityId
+  guid?: Guid
   property: PropertyId
-  oldValue: SimplifiedClaim
-  newValue: SimplifiedClaim
-  rank: Rank
+  oldValue?: CustomSimplifiedSnak['value']
+  newValue: CustomSimplifiedSnak['value']
+  rank?: Rank
 }
 
 export async function updateClaim (params: UpdateClaimParams, config: SerializedConfig, API: WikibaseEditAPI) {

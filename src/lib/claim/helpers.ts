@@ -1,4 +1,4 @@
-import { simplifyClaim, type Claims, type Guid, type Statements } from 'wikibase-sdk'
+import { simplifyClaim, type Claim, type Claims, type Guid, type Statement, type Statements } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { flatten, values } from '../utils.js'
 
@@ -11,7 +11,7 @@ const simplifyOptions = {
   keepRichValues: true,
 }
 
-export function findClaimByGuid (claims: Claims | Statements, guid: Guid) {
+export function findClaimByGuid (claims: Claims | Statements, guid: Guid): Claim | Statement {
   for (const claim of flatten(values(claims))) {
     if (claim.id.toLowerCase() === guid.toLowerCase()) return claim
   }

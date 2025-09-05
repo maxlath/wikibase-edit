@@ -1,18 +1,23 @@
-import { isGuid, isEntityId, isPropertyId, getEntityIdFromGuid, type Guid, type PropertyClaimsId, type EntityId, type PropertyId, type SimplifiedClaim, type Claim, type Statement, type EntityWithClaims } from 'wikibase-sdk'
+import { isGuid, isEntityId, isPropertyId, getEntityIdFromGuid, type Guid, type PropertyClaimsId, type PropertyId, type SimplifiedClaim, type Claim, type Statement, type MediaInfoId } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { formatClaimValue } from './format_claim_value.js'
 import { findClaimByGuid } from './helpers.js'
 import { propertiesDatatypesDontMatch } from './move_commons.js'
 import { buildSnak } from './snak.js'
-import type { EditEntityParams, EditEntityResponse } from '../entity/edit.js'
+import type { EditEntityRawModeParams, EditEntityResponse } from '../entity/edit.js'
 import type { WikibaseEditAPI } from '../index.js'
 import type { SerializedConfig } from '../types/config.js'
+import type { EditableEntity } from '../types/edit_entity.js'
+
+// Disabling MediaInfo for now, has this function needs access to snaks datatypes
+// which aren't provided on MediaInfo statements
+type MovableEntityId = Exclude<EditableEntity['id'], MediaInfoId>
 
 export interface MoveClaimParams {
-  guid?: Guid
+  guid?: Guid<MovableEntityId>
   propertyClaimsId?: PropertyClaimsId
-  id?: EntityWithClaims['id']
+  id?: MovableEntityId
   property?: PropertyId
   newValue?: SimplifiedClaim
   summary?: string
@@ -23,14 +28,14 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
   const { guid, propertyClaimsId, id: targetEntityId, property: targetPropertyId, newValue, baserevid } = params
   const { instance } = config
 
-  let originEntityId: EntityWithClaims['id']
+  let originEntityId: MovableEntityId
   let originPropertyId: PropertyId
 
   if (guid) {
     if (!isGuid(guid)) throw newError('invalid claim guid', 400, params)
-    originEntityId = getEntityIdFromGuid(guid)
+    originEntityId = getEntityIdFromGuid(guid) as MovableEntityId
   } else if (propertyClaimsId) {
-    ([ originEntityId, originPropertyId ] = propertyClaimsId.split('#') as [ EntityWithClaims['id'], PropertyId ])
+    ([ originEntityId, originPropertyId ] = propertyClaimsId.split('#') as [ MovableEntityId, PropertyId ])
     if (!(isEntityId(originEntityId) && isPropertyId(originPropertyId))) {
       throw newError('invalid property claims id', 400, params)
     }
@@ -46,13 +51,13 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
 
   const claims = await getEntityClaims(originEntityId, config)
 
-  let movedClaims: Claim[] | Statement[]
+  let movedClaims: Claim[]
   if (guid) {
-    const claim = findClaimByGuid(claims, guid)
+    const claim = findClaimByGuid(claims, guid) as Claim
     originPropertyId = claim.mainsnak.property
     movedClaims = [ claim ]
   } else {
-    movedClaims = claims[originPropertyId]
+    movedClaims = claims[originPropertyId] as Claim[]
     if (!movedClaims) throw newError('no property claims found', 400, params)
   }
 
@@ -60,7 +65,6 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
     throw newError("move operation wouldn't have any effect: same entity, same property", 400, params)
   }
 
-  // @ts-expect-error TODO: fix support for media info, which lack a datatype on snaks
   const { datatype: currentPropertyDatatype } = movedClaims[0].mainsnak
 
   if (propertyDatatype !== currentPropertyDatatype) {
@@ -73,10 +77,10 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
     })
   }
 
-  const currentEntityData: EditEntityParams = {
+  const currentEntityData: EditEntityRawModeParams = {
     rawMode: true,
     id: originEntityId,
-    claims: movedClaims.map(claim => ({ id: claim.id, remove: true })),
+    claims: movedClaims.map((claim: Claim | Statement) => ({ id: claim.id, remove: true })),
     summary: params.summary || config.summary || generateCurrentEntitySummary(guid, originEntityId, originPropertyId, targetEntityId, targetPropertyId),
   }
 
@@ -97,7 +101,7 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
     return [ res ]
   } else {
     if (baserevid) throw newError('commands editing multiple entities can not have a baserevid', 400, params)
-    const targetEntityData = {
+    const targetEntityData: EditEntityRawModeParams = {
       rawMode: true,
       id: targetEntityId,
       claims: movedClaims,
