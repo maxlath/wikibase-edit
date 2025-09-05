@@ -5,7 +5,7 @@ import { getSandboxItemId, getSandboxPropertyId, getReservedItemId } from '#test
 import { addClaim, addReference } from '#tests/integration/utils/sandbox_snaks'
 import { shouldNotBeCalled } from '#tests/integration/utils/utils'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString, randomNumber } from '#tests/unit/utils'
+import { randomString, randomNumber, assert } from '#tests/unit/utils'
 import WBEdit from '#root'
 
 const wbEdit = WBEdit(config)
@@ -84,6 +84,7 @@ describe('claim update', function () {
       const { guid, property } = await addClaim({ datatype: 'string', value: oldValue })
       const res = await updateClaim({ guid, property, newValue })
       res.claim.id.should.equal(guid)
+      assert('datavalue' in res.claim.mainsnak)
       res.claim.mainsnak.datavalue.value.should.equal(newValue)
     })
   })
@@ -104,6 +105,7 @@ describe('claim update', function () {
       const data = { id, claims: {} }
       data.claims[property] = claim
       const resA = await editEntity(data)
+      assert('claims' in resA.entity)
       const resAClaim = resA.entity.claims[property].slice(-1)[0]
       const guid = resAClaim.id
       const resB = await updateClaim({ id, property, oldValue, newValue })

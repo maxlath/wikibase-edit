@@ -1,5 +1,5 @@
 import config from 'config'
-import wbkFactory, { type Claim, type DataType, type Entity, type EntityId, type Guid, type Item, type Lexeme, type Property, type SimplifiedEntity } from 'wikibase-sdk'
+import wbkFactory, { type Claim, type Entity, type EntityId, type Guid, type Item, type SimplifiedEntity, type Datatype, type EntityWithClaims } from 'wikibase-sdk'
 import { customFetch } from '#lib/request/fetch'
 import type { addClaim as addClaimT } from '#tests/integration/utils/sandbox_snaks'
 import { randomString } from '#tests/unit/utils'
@@ -40,12 +40,12 @@ export async function getRefreshedEntity (id: EntityId) {
 }
 
 let claimPromise: Promise<Claim>
-export function getSandboxClaim (datatype: DataType = 'string') {
+export function getSandboxClaim (datatype: Datatype = 'string') {
   claimPromise ??= _getSandboxClaim(datatype)
   return claimPromise
 }
 
-async function _getSandboxClaim (datatype: DataType) {
+async function _getSandboxClaim (datatype: Datatype) {
   const [ item, propertyId ] = await Promise.all([
     getSandboxItem(),
     getSandboxPropertyId(datatype),
@@ -58,10 +58,13 @@ async function _getSandboxClaim (datatype: DataType) {
 
 export async function getRefreshedClaim (guid: Guid) {
   const id = getEntityIdFromGuid(guid)
-  const { claims } = (await getRefreshedEntity(id)) as EntityWithClaims
-  for (const propertyClaims of objectValues(claims)) {
-    for (const claim of propertyClaims) {
-      if (claim.id === guid) return claim
+  const entity: EntityWithClaims = await getRefreshedEntity(id)
+  if ('claims' in entity) {
+    const { claims } = entity
+    for (const propertyClaims of objectValues(claims)) {
+      for (const claim of propertyClaims) {
+        if (claim.id === guid) return claim
+      }
     }
   }
   throw new Error(`claim not found: ${guid}`)
@@ -72,7 +75,7 @@ export async function getSandboxItemId () {
   return item.id
 }
 
-export async function getSandboxPropertyId (datatype: DataType) {
+export async function getSandboxPropertyId (datatype: Datatype) {
   const property = await getProperty({ datatype })
   return property.id
 }
