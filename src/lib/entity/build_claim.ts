@@ -3,7 +3,7 @@ import { buildReferenceFactory, buildPropSnaksFactory } from '../claim/snak.js'
 import { hasSpecialSnaktype } from '../claim/special_snaktype.js'
 import { newError } from '../error.js'
 import { normalizeDatatype } from '../properties/datatypes_to_builder_datatypes.js'
-import { isString, isNumber, isPlainObject, map, forceArray } from '../utils.js'
+import { isString, isNumber, isPlainObject, mapValues, forceArray } from '../utils.js'
 import { validateGuid, validateRank, validateSnakValue } from '../validate.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
@@ -67,7 +67,7 @@ function fullClaimBuilder (params) {
   }
 
   if (qualifiers) {
-    claim.qualifiers = map(qualifiers, buildPropSnaksFactory(properties, instance))
+    claim.qualifiers = mapValues(qualifiers, buildPropSnaksFactory(properties, instance))
   }
 
   if (references) {

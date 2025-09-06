@@ -1,5 +1,6 @@
+import { flatten, values } from 'lodash-es'
 import { normalizeDatatype } from '../properties/datatypes_to_builder_datatypes.js'
-import { flatten, forceArray, map, values } from '../utils.js'
+import { forceArray, mapValues } from '../utils.js'
 import { validatePropertyId, validateSnakValue } from '../validate.js'
 import { entityEditBuilders as builders } from './builders.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
@@ -19,7 +20,7 @@ export function buildReferenceFactory (properties: PropertiesDatatypes, instance
   return function buildReference (reference: SimplifiedReference) {
     const hash = 'hash' in reference ? reference.hash : undefined
     const referenceSnaks = 'snaks' in reference ? reference.snaks : reference
-    const snaksPerProperty = map(referenceSnaks, buildPropSnaksFactory(properties, instance))
+    const snaksPerProperty = mapValues(referenceSnaks, buildPropSnaksFactory(properties, instance))
     const snaks = flatten(values(snaksPerProperty)) as Snak[]
     return { snaks, hash }
   }

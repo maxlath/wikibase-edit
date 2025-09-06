@@ -1,6 +1,6 @@
+import { flatten, values } from 'lodash-es'
 import { simplifyClaim, type Claim, type Claims, type CustomSimplifiedClaim, type Guid, type Statement, type Statements } from 'wikibase-sdk'
 import { newError } from '../error.js'
-import { flatten, values } from '../utils.js'
 
 const simplifyOptions = {
   keepIds: true,

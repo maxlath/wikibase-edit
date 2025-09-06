@@ -1,9 +1,9 @@
 // Doc https://www.wikidata.org/w/api.php?action=help&modules=wbsetsitelink
 
+import { difference } from 'lodash-es'
 import { formatBadges } from '../entity/format.js'
 import { newError } from '../error.js'
 import { getEntitySitelinks } from '../get_entity.js'
-import { difference } from '../utils.js'
 import { validateEntityId, validateSite } from '../validate.js'
 import type { WikibaseEditAPI } from '../index.js'
 import type { SetSitelinkResponse } from '../sitelink/set.js'

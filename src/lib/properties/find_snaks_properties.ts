@@ -1,4 +1,5 @@
-import { forceArray, uniq } from '../utils.js'
+import { uniq } from 'lodash-es'
+import { forceArray } from '../utils.js'
 
 export const findClaimsProperties = claims => {
   if (!claims) return []

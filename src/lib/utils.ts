@@ -48,10 +48,7 @@ export function isPlainObject (obj: unknown): obj is PlainObject {
 export function isntEmpty (value: unknown): value is Exclude<unknown, null | undefined> {
   return value != null
 }
-export function flatten <T> (arrays: (T | T[])[]): T[] {
-  return [].concat(...arrays)
-}
-export function map (obj, fn) {
+export function mapValues (obj, fn) {
   function aggregator (index, key) {
     index[key] = fn(key, obj[key])
     return index
@@ -59,17 +56,6 @@ export function map (obj, fn) {
   return Object.keys(obj).reduce(aggregator, {})
 }
 
-export function values <Obj> (obj: Obj) {
-  return Object.values(obj) as Obj[keyof Obj][]
-}
-
-export function uniq <T> (array: T[]) {
-  return Array.from(new Set(array))
-}
-
-export function difference <A, B> (values: A[], excluded: B[]): Exclude<A, B> {
-  return values.filter(value => !arrayIncludes(excluded, value))
-}
 export const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 // Work around the TS2345 error when using Array include method
