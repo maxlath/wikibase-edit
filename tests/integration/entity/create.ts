@@ -4,6 +4,7 @@ import { getSandboxPropertyId } from '#tests/integration/utils/sandbox_entities'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
+import type { EditEntitySimplifiedModeParams } from '../../../src/lib/entity/edit'
 
 const wbEdit = WBEdit(config)
 
@@ -18,7 +19,7 @@ describe('entity create', function () {
       labels: {
         en: randomString(),
       },
-    })
+    } as EditEntitySimplifiedModeParams)
     res.success.should.equal(1)
     res.entity.type.should.equal('property')
   })
@@ -39,7 +40,7 @@ describe('entity create', function () {
       descriptions: { en: randomString() },
       aliases: { en: randomString() },
       claims,
-    })
+    } as EditEntitySimplifiedModeParams)
     res.success.should.equal(1)
   })
 })

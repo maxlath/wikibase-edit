@@ -3,7 +3,7 @@ import { editEntity, type EditEntityParams } from './edit.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
-import type { Entity } from 'wikibase-sdk'
+import type { Item, Lexeme, Property } from 'wikibase-sdk'
 
 export type CreateEntityParams = Omit<EditEntityParams, 'id'>
 
@@ -16,6 +16,8 @@ export async function createEntity (params: CreateEntityParams, properties: Prop
 }
 
 export interface CreateEntityResponse {
-  entity: Entity
+  // Leaving MediaInfo aside to not have to deal with claims/statements inconsistencies
+  // (see https://phabricator.wikimedia.org/T149410) but it should still work for MediaInfo
+  entity: Item | Property | Lexeme
   success: 1
 }

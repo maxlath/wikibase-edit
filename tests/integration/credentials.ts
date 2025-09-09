@@ -4,10 +4,11 @@ import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 import { undesiredRes, shouldNotBeCalled, rethrowShouldNotBeCalledErrors } from './utils/utils.js'
+import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
 
 const { instance, credentials } = config
 
-const params = () => ({ labels: { en: randomString() } })
+const params = () => ({ labels: { en: randomString() } } as EditEntitySimplifiedModeParams)
 
 describe('credentials', function () {
   this.timeout(20 * 1000)

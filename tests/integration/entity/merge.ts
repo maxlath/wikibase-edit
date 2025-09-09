@@ -1,5 +1,6 @@
 import 'should'
 import config from 'config'
+import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
@@ -14,8 +15,8 @@ describe('entity merge', function () {
   // https://phabricator.wikimedia.org/T232925
   xit('should merge two items', async () => {
     const [ res1, res2 ] = await Promise.all([
-      wbEdit.entity.create({ labels: { en: randomString() } }),
-      wbEdit.entity.create({ labels: { en: randomString() } }),
+      wbEdit.entity.create({ labels: { en: randomString() } } as EditEntitySimplifiedModeParams),
+      wbEdit.entity.create({ labels: { en: randomString() } } as EditEntitySimplifiedModeParams),
     ])
     const { id: from } = res1.entity
     const { id: to } = res2.entity

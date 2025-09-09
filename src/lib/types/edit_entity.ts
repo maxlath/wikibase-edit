@@ -1,90 +1,106 @@
 import type { BaseRevId } from './common.js'
+import type { EditableSnakValue } from './snaks.js'
+import type { SpecialSnak } from '../claim/special_snaktype.js'
 import type { Reconciliation } from '../entity/validate_reconciliation_object.js'
 import type { OverrideProperties } from 'type-fest'
-import type { Claim, CustomSimplifiedClaim, CustomSimplifiedSnak, Guid, Hash, Item, LanguageRecord, Lexeme, MediaInfo, Property, PropertyId, Rank, SimplifiedItem, SimplifiedLexeme, SimplifiedMediaInfo, SimplifiedProperty, SimplifiedPropertyQualifiers, SimplifiedPropertySnaks, SimplifiedQualifier, SimplifiedReference, SimplifiedReferenceSnak, SimplifiedSnak, SimplifiedTerm, SnakDataValue } from 'wikibase-sdk'
-
-export type LooseCustomSimplifiedClaim = CustomSimplifiedSnak & {
-  id?: Guid
-  rank?: Rank
-  qualifiers?: LooseSimplifiedQualifiers
-  references?: LooseSimplifiedReferences
-}
+import type { Claim, Guid, Hash, Item, LanguageRecord, Lexeme, MediaInfo, Property, PropertyId, Rank, SimplifiedItem, SimplifiedLexeme, SimplifiedMediaInfo, SimplifiedProperty, SimplifiedPropertySnaks, SimplifiedReference, SimplifiedSnak, SimplifiedTerm, Site, SitelinkBadges, SitelinkTitle, SnakType } from 'wikibase-sdk'
 
 export interface EditableClaimExtras {
   remove?: boolean
   reconciliation?: Reconciliation
 }
 
+export interface CustomSimplifiedEditableSnak {
+  value: EditableSnakValue
+  snaktype?: SnakType
+  hash?: Hash
+}
+
+export type SimplifiedEditableSnak = string | number | CustomSimplifiedEditableSnak | EditableSnakValue | SpecialSnak
+export type SimpifiedEditableQualifier = SimplifiedEditableSnak
+
+export interface CustomSimplifiedEditableClaim extends EditableClaimExtras {
+  id?: Guid
+  value?: EditableSnakValue
+  rank?: Rank
+  qualifiers?: SimplifiedEditableQualifiers
+  references?: SimplifiedEditableReferences
+  snaktype?: SnakType
+}
+
 export type EditableClaim = Partial<Claim> & EditableClaimExtras & {
   id: Claim['id']
 }
 
-export type CustomSimplifiedEditableClaim = Partial<CustomSimplifiedClaim> & EditableClaimExtras & {
-  id: CustomSimplifiedClaim['id']
-}
-
-export type SimplifiedEditableClaim = string | number | (SnakDataValue['value'] & EditableClaimExtras) | CustomSimplifiedEditableClaim
+export type SimplifiedEditableClaim = string | number | (EditableSnakValue & EditableClaimExtras) | CustomSimplifiedEditableClaim
 export type SimplifiedEditablePropertyClaims = SimplifiedEditableClaim[]
 
-export type LooseSimplifiedClaims = Record<PropertyId, SimplifiedEditablePropertyClaims | SimplifiedEditableClaim>
-export type LooseSimplifiedSnaks = Record<PropertyId, SimplifiedPropertySnaks | SimplifiedSnak>
+export type SimplifiedEditableClaims = Record<PropertyId, SimplifiedEditablePropertyClaims | SimplifiedEditableClaim>
+export type SimplifiedEditableSnaks = Record<PropertyId, SimplifiedPropertySnaks | SimplifiedSnak>
 
-export type LooseSimplifiedQualifiers = Record<string, SimplifiedPropertyQualifiers | SimplifiedQualifier>
+export type SimplifiedEditableQualifiers = Record<string, SimplifiedEditableSnak[] | SimplifiedEditableSnak>
 
-export type LooseSimplifiedReferenceSnaks = Record<PropertyId, SimplifiedReferenceSnak | SimplifiedReferenceSnak[]>
+export type SimplifiedEditableReferenceSnaks = Record<PropertyId, SimplifiedEditableSnak | SimplifiedEditableSnak[]>
 
-export interface LooseRichSimplifiedReferenceSnaks {
-  snaks: LooseSimplifiedReferenceSnaks
+export interface SimplifiedEditableRichReferenceSnaks {
+  snaks: SimplifiedEditableReferenceSnaks
   hash: Hash
 }
 
-export type LooseSimplifiedReference = SimplifiedReference | LooseSimplifiedReferenceSnaks | LooseRichSimplifiedReferenceSnaks
+export type SimplifiedEditableReference = EditableSnakValue | SimplifiedReference | SimplifiedEditableReferenceSnaks | SimplifiedEditableRichReferenceSnaks
 
-export type LooseSimplifiedReferences = SimplifiedReference[] | LooseSimplifiedReference[] | LooseSimplifiedReference
+export type SimplifiedEditableReferences = SimplifiedReference[] | SimplifiedEditableReference[] | SimplifiedEditableReference
 
-export type LooseSimplifiedClaim = string | number | LooseCustomSimplifiedClaim
+export interface CustomSimplifiedEditableSitelinks {
+  title?: SitelinkTitle
+  remove?: boolean
+  badges?: SitelinkBadges
+  url?: string
+}
 
-export type LooseSimplifiedItem = OverrideProperties<SimplifiedItem, {
-  aliases?: LooseSimplifiedAliases
-  claims?: LooseSimplifiedClaims
+export type SimplifiedEditableSitelinks = Record<Site, SitelinkTitle | CustomSimplifiedEditableSitelinks | null>
+
+export type SimplifiedEditableItem = OverrideProperties<SimplifiedItem, {
+  aliases?: SimplifiedEditableAliases
+  claims?: SimplifiedEditableClaims
+  sitelinks?: SimplifiedEditableSitelinks
 }>
 
-export type LooseSimplifiedProperty = OverrideProperties<SimplifiedProperty, {
-  aliases?: LooseSimplifiedAliases
-  claims?: LooseSimplifiedClaims
+export type SimplifiedEditableProperty = OverrideProperties<SimplifiedProperty, {
+  aliases?: SimplifiedEditableAliases
+  claims?: SimplifiedEditableClaims
 }>
 
-export type LooseSimplifiedLexeme = OverrideProperties<SimplifiedLexeme, {
-  claims?: LooseSimplifiedClaims
+export type SimplifiedEditableLexeme = OverrideProperties<SimplifiedLexeme, {
+  claims?: SimplifiedEditableClaims
 }>
 
-export type LooseSimplifiedMediaInfo = OverrideProperties<SimplifiedMediaInfo, {
-  statements?: LooseSimplifiedClaims
+export type SimplifiedEditableMediaInfo = OverrideProperties<SimplifiedMediaInfo, {
+  statements?: SimplifiedEditableClaims
 }>
 
-export type LooseSimplifiedEntity = LooseSimplifiedProperty | LooseSimplifiedItem | LooseSimplifiedLexeme | LooseSimplifiedMediaInfo
-
-export type LooseSimplifiedAliases = LanguageRecord<readonly SimplifiedTerm[] | SimplifiedTerm>
+export type SimplifiedEditableAliases = LanguageRecord<readonly SimplifiedTerm[] | SimplifiedTerm>
 
 interface EditableEntityExtras {
   baserevid?: BaseRevId
 }
 
 /** See https://www.wikidata.org/w/api.php?action=help&modules=wbeditentity */
-export type EditableItem = OverrideProperties<Item, {
+export type RawEditableItem = OverrideProperties<Item, {
   claims?: EditableClaim[]
 }> & EditableEntityExtras
-export type EditableProperty = OverrideProperties<Property, {
+export type RawEditableProperty = OverrideProperties<Property, {
   claims?: EditableClaim[]
 }> & EditableEntityExtras
-export type EditableLexeme = OverrideProperties<Lexeme, {
+export type RawEditableLexeme = OverrideProperties<Lexeme, {
   claims?: EditableClaim[]
 }> & EditableEntityExtras
 /** See https://commons.wikimedia.org/w/api.php?action=help&modules=wbeditentity */
-export type EditableMediaInfo = Omit<MediaInfo, 'statements'> & {
+export type RawEditableMediaInfo = Omit<MediaInfo, 'statements'> & {
   claims?: EditableClaim[]
 } & EditableEntityExtras
 
-export type EditableEntity = (EditableItem | EditableProperty | EditableLexeme | EditableMediaInfo) & EditableEntityExtras
+/** An entity where claim.remove can be set */
+export type RawEditableEntity = (RawEditableItem | RawEditableProperty | RawEditableLexeme | RawEditableMediaInfo) & EditableEntityExtras
 
-export type SimplifiedEditableEntity = (LooseSimplifiedItem | LooseSimplifiedProperty | LooseSimplifiedLexeme | LooseSimplifiedMediaInfo) & EditableEntityExtras
+export type SimplifiedEditableEntity = (SimplifiedEditableItem | SimplifiedEditableProperty | SimplifiedEditableLexeme | SimplifiedEditableMediaInfo) & EditableEntityExtras

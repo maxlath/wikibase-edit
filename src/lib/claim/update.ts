@@ -1,4 +1,4 @@
-import { isGuid, getEntityIdFromGuid, type Guid, type PropertyId, type Rank, type Claim, type CustomSimplifiedSnak } from 'wikibase-sdk'
+import { isGuid, getEntityIdFromGuid, type Guid, type PropertyId, type Rank, type Claim } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { findSnak } from './find_snak.js'
@@ -8,14 +8,14 @@ import type { EditEntitySimplifiedModeParams } from '../entity/edit.js'
 import type { WikibaseEditAPI } from '../index.js'
 import type { BaseRevId } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
-import type { EditableEntity } from '../types/edit_entity.js'
+import type { RawEditableEntity, SimplifiedEditableSnak } from '../types/edit_entity.js'
 
 export interface UpdateClaimParams {
-  id?: EditableEntity['id']
-  guid?: Guid<EditableEntity['id']>
-  property: PropertyId
-  oldValue?: CustomSimplifiedSnak['value']
-  newValue: CustomSimplifiedSnak['value']
+  id?: RawEditableEntity['id']
+  guid?: Guid<RawEditableEntity['id']>
+  property?: PropertyId
+  oldValue?: SimplifiedEditableSnak
+  newValue?: SimplifiedEditableSnak
   rank?: Rank
   summary?: string
   baserevid?: BaseRevId
@@ -31,7 +31,7 @@ export async function updateClaim (params: UpdateClaimParams, config: Serialized
   }
 
   if (isGuid(guid)) {
-    id = getEntityIdFromGuid(guid) as EditableEntity['id']
+    id = getEntityIdFromGuid(guid) as RawEditableEntity['id']
   } else {
     const values = { oldValue, newValue }
     if (oldValue === newValue) {
@@ -67,6 +67,7 @@ export async function updateClaim (params: UpdateClaimParams, config: Serialized
       simplifiedClaim.snaktype = newValue.snaktype
       delete simplifiedClaim.value
     } else {
+      // @ts-expect-error
       simplifiedClaim.value = newValue
     }
   }

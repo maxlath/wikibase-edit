@@ -62,8 +62,7 @@ export function requestWrapper <Params extends object, Response extends object, 
 
     if ('title' in data) {
       const title = await resolveTitle(data.title, config.instanceApiEndpoint)
-      data.title = title
-      return post(action, data, config) as Response
+      return post(action, { ...data, title }, config) as Response
     } else {
       return post(action, data, config) as Response
     }

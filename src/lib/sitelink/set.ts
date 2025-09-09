@@ -30,6 +30,7 @@ export function setSitelink ({ id, site, title, badges }) {
   }
 
   if (badges != null) {
+    // @ts-expect-error
     params.data.badges = formatBadges(badges).join('|')
   }
 

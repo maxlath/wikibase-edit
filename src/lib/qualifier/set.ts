@@ -5,12 +5,13 @@ import { normalizeDatatype } from '../properties/datatypes_to_builder_datatypes.
 import { validateGuid, validateHash, validatePropertyId, validateSnakValue } from '../validate.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl, BaseRevId } from '../types/common.js'
-import type { Claim, Guid, Hash, PropertyId, SimplifiedQualifier, SnakType } from 'wikibase-sdk'
+import type { SimpifiedEditableQualifier } from '../types/edit_entity.js'
+import type { Claim, Guid, Hash, PropertyId, SnakType } from 'wikibase-sdk'
 
 export interface SetQualifierParams {
   guid: Guid
   property: PropertyId
-  value: SimplifiedQualifier
+  value: SimpifiedEditableQualifier
   hash?: Hash
   summary?: string
   baserevid?: BaseRevId
@@ -21,7 +22,7 @@ export interface WbsetqualifierData {
   property: PropertyId
   snakhash?: Hash
   snaktype?: SnakType
-  value?: SimplifiedQualifier
+  value?: SimpifiedEditableQualifier
 }
 
 export function setQualifier (params: SetQualifierParams, properties: PropertiesDatatypes, instance: AbsoluteUrl) {

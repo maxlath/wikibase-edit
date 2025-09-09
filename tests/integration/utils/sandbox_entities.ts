@@ -1,10 +1,12 @@
 import config from 'config'
-import wbkFactory, { type Claim, type Entity, type EntityId, type Guid, type Item, type SimplifiedEntity, type Datatype, type EntityWithClaims } from 'wikibase-sdk'
+import wbkFactory, { type Claim, type Entity, type Guid, type Item, type Datatype, type EntityWithClaims, type ItemId } from 'wikibase-sdk'
 import { customFetch } from '#lib/request/fetch'
+import type { AbsoluteUrl } from '#lib/types/common'
+import type { SimplifiedEditableEntity } from '#lib/types/edit_entity'
+import { objectValues } from '#lib/utils'
 import type { addClaim as addClaimT } from '#tests/integration/utils/sandbox_snaks'
 import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
-import { objectValues } from '../../../src/lib/utils.js'
 import { getProperty } from './get_property.js'
 
 const wbk = wbkFactory({ instance: config.instance })
@@ -18,7 +20,7 @@ async function lateRequire () {
 }
 setTimeout(lateRequire, 0)
 
-async function createEntity (data: Partial<SimplifiedEntity> = {}) {
+async function createEntity (data: Partial<SimplifiedEditableEntity> = {}) {
   // @ts-expect-error
   data.labels = data.labels || { en: randomString() }
   const { entity } = await wbEdit.entity.create(data)
@@ -33,10 +35,10 @@ export function getSandboxItem () {
   return sandboxItemPromise
 }
 
-export async function getRefreshedEntity (id: EntityId) {
-  const url = wbk.getEntities({ ids: id })
+export async function getRefreshedEntity <T extends Entity = Item> (id: T['id']) {
+  const url = wbk.getEntities({ ids: id }) as AbsoluteUrl
   const res = await customFetch(url).then(res => res.json())
-  return res.entities[id] as Entity
+  return res.entities[id] as T
 }
 
 let claimPromise: Promise<Claim>
@@ -53,7 +55,7 @@ async function _getSandboxClaim (datatype: Datatype) {
   const propertyClaims = item.claims[propertyId]
   if (propertyClaims) return propertyClaims[0]
   const res = await wbEdit.claim.create({ id: item.id, property: propertyId, value: randomString() })
-  return res.claim
+  return res.claim as Claim & { id: Guid<ItemId> }
 }
 
 export async function getRefreshedClaim (guid: Guid) {
@@ -90,13 +92,13 @@ export async function createItem (data = {}) {
   return entity as Item
 }
 
-let someEntityIdPromise: Promise<EntityId>
-export async function getSomeEntityId () {
+let someEntityIdPromise: Promise<ItemId>
+export async function getSomeItemId () {
   someEntityIdPromise ??= getSandboxItemId()
   return someEntityIdPromise
 }
 
-let someGuid: Guid
+let someGuid: Guid<ItemId>
 export async function getSomeGuid () {
   if (someGuid) return someGuid
   const { guid } = await addClaim({ datatype: 'string', value: randomString() })

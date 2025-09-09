@@ -2,16 +2,17 @@ import { buildSnak, buildReferenceFactory } from '../claim/snak.js'
 import { validateGuid, validateHash, validatePropertyId, validateSnakValue } from '../validate.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
-import type { Guid, Hash, PropertyId, Reference, SimplifiedReference, SimplifiedSnaks, Snak, Snaks } from 'wikibase-sdk'
+import type { SimplifiedEditableReference, SimplifiedEditableSnaks } from '../types/edit_entity.js'
+import type { Guid, Hash, PropertyId, Reference, Snak, Snaks } from 'wikibase-sdk'
 
 export interface SetReferenceParams {
   guid: Guid
   hash?: Hash
-  snaks?: SimplifiedSnaks
+  snaks?: SimplifiedEditableSnaks
   /** @deprecated use the `snaks` object instead, to be able to set a single reference with several snaks  */
   property: PropertyId
   /** @deprecated use the `snaks` object instead, to be able to set a single reference with several snaks  */
-  value?: SimplifiedReference
+  value?: SimplifiedEditableReference
 }
 
 export function setReference (params: SetReferenceParams, properties: PropertiesDatatypes, instance: AbsoluteUrl) {

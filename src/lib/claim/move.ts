@@ -9,11 +9,11 @@ import type { EditEntityRawModeParams, EditEntityResponse } from '../entity/edit
 import type { WikibaseEditAPI } from '../index.js'
 import type { BaseRevId } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
-import type { EditableEntity } from '../types/edit_entity.js'
+import type { RawEditableEntity } from '../types/edit_entity.js'
 
 // Disabling MediaInfo for now, has this function needs access to snaks datatypes
 // which aren't provided on MediaInfo statements
-export type MovableEntityId = Exclude<EditableEntity['id'], MediaInfoId>
+export type MovableEntityId = Exclude<RawEditableEntity['id'], MediaInfoId>
 
 export interface MoveClaimParams {
   guid?: Guid<MovableEntityId>

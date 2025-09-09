@@ -2,7 +2,6 @@ import type { AbsoluteUrl, BaseRevId, MaxLag, Tags } from './common.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes'
 import type { HttpRequestAgent } from '../request/fetch.js'
 import type { getAuthDataFactory } from '../request/get_auth_data.js'
-import type { ParsedTokenInfo } from '../request/get_final_token.js'
 import type { OverrideProperties } from 'type-fest'
 
 export interface UsernameAndPassword {
@@ -24,7 +23,7 @@ export interface GeneralConfig {
    * A Wikibase instance
    * @example https://www.wikidata.org
    */
-  instance: AbsoluteUrl
+  instance?: AbsoluteUrl
 
   /**
    * The instance script path, used to find the API endpoint
@@ -38,7 +37,7 @@ export interface GeneralConfig {
    *
    * You may generate a dedicated password with tailored rights on the wikibase instance /wiki/Special:BotPasswords
    */
-  credentials?: UsernameAndPassword | OAuthCredentials
+  credentials?: UsernameAndPassword | OAuthCredentials | { browserSession: true }
 
   /**
    * Flag to activate the 'anonymous' mode

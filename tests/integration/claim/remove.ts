@@ -3,9 +3,10 @@ import config from 'config'
 import { getSandboxPropertyId } from '#tests/integration/utils/sandbox_entities'
 import { addClaim } from '#tests/integration/utils/sandbox_snaks'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString } from '#tests/unit/utils'
+import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 import { shouldNotBeCalled } from '../utils/utils.js'
+import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
 
 const wbEdit = WBEdit(config)
 
@@ -33,6 +34,7 @@ describe('claim create', function () {
 
   it('should remove a claim by matching value', async () => {
     const { guid, id, property, claim } = await addClaim({ datatype: 'string', value: randomString() })
+    assert('datavalue' in claim.mainsnak)
     const value = claim.mainsnak.datavalue.value
     const res = await wbEdit.claim.remove({ id, property, value })
     res.success.should.equal(1)
@@ -132,7 +134,7 @@ const createEntity = claims => {
   return wbEdit.entity.create({
     labels: { en: randomString() },
     claims,
-  })
+  } as EditEntitySimplifiedModeParams)
 }
 
 const getGuids = (entity, propertyId) => entity.claims[propertyId].map(claim => claim.id)

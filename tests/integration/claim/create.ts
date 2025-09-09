@@ -6,6 +6,7 @@ import { shouldNotBeCalled } from '#tests/integration/utils/utils'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
+import type { SpecialSnak } from '../../../src/lib/claim/special_snaktype'
 
 const wbEdit = WBEdit(config)
 
@@ -71,6 +72,9 @@ describe('claim create', function () {
         { [property]: value },
       ],
     })
+    assert('datavalue' in res.claim.qualifiers[property][0])
+    assert('datavalue' in res.claim.references[0].snaks[property][0])
+    assert('datavalue' in res.claim.references[1].snaks[property][0])
     res.claim.qualifiers[property][0].datavalue.value.should.equal(value)
     res.claim.references[0].snaks[property][0].datavalue.value.should.equal(value)
     res.claim.references[1].snaks[property][0].datavalue.value.should.equal(value)
@@ -83,6 +87,10 @@ describe('claim create', function () {
     ])
     const value = { time: '2500000', precision: 4 }
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
+    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
+    assert('time' in res.claim.mainsnak.datavalue.value)
+    assert('precision' in res.claim.mainsnak.datavalue.value)
     res.claim.mainsnak.datavalue.value.time.should.equal('+2500000-00-00T00:00:00Z')
     res.claim.mainsnak.datavalue.value.precision.should.equal(4)
   })
@@ -95,6 +103,9 @@ describe('claim create', function () {
     ])
     const value = { time: '1802-02-04T11:22:33Z', precision: 14 }
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
+    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
+    assert('time' in res.claim.mainsnak.datavalue.value)
     res.claim.mainsnak.datavalue.value.time.should.equal('+1802-02-04T11:22:33Z')
     res.claim.mainsnak.datavalue.value.precision.should.equal(14)
   })
@@ -106,6 +117,9 @@ describe('claim create', function () {
     ])
     const value = { time: '1402-11-12', calendar: 'julian' }
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
+    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
+    assert('time' in res.claim.mainsnak.datavalue.value)
     res.claim.mainsnak.datavalue.value.time.should.equal('+1402-11-12T00:00:00Z')
     res.claim.mainsnak.datavalue.value.calendarmodel.should.equal('http://www.wikidata.org/entity/Q1985786')
   })
@@ -131,6 +145,9 @@ describe('claim create', function () {
     ])
     const value = 'foo'
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
+    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
+    assert('time' in res.claim.mainsnak.datavalue.value)
     res.claim.mainsnak.datavalue.value.should.equal('foo')
   })
 
@@ -141,6 +158,9 @@ describe('claim create', function () {
     ])
     const value = { text: 'bulgroz', language: 'fr' }
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
+    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
+    assert('text' in res.claim.mainsnak.datavalue.value)
     res.claim.mainsnak.datavalue.value.text.should.equal('bulgroz')
     res.claim.mainsnak.datavalue.value.language.should.equal('fr')
   })
@@ -152,6 +172,8 @@ describe('claim create', function () {
     ])
     const value = 'http://foo.bar'
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
+    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
     res.claim.mainsnak.datavalue.value.should.equal(value)
   })
 
@@ -162,6 +184,9 @@ describe('claim create', function () {
     ])
     const value = 9000
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
+    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
+    assert('amount' in res.claim.mainsnak.datavalue.value)
     res.claim.mainsnak.datavalue.value.amount.should.equal('+9000')
     res.claim.mainsnak.datavalue.value.unit.should.equal('1')
   })
@@ -173,6 +198,9 @@ describe('claim create', function () {
     ])
     const value = -9000
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
+    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
+    assert('amount' in res.claim.mainsnak.datavalue.value)
     res.claim.mainsnak.datavalue.value.amount.should.equal('-9000')
     res.claim.mainsnak.datavalue.value.unit.should.equal('1')
   })
@@ -184,6 +212,9 @@ describe('claim create', function () {
     ])
     const value = '9001'
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
+    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
+    assert('amount' in res.claim.mainsnak.datavalue.value)
     res.claim.mainsnak.datavalue.value.amount.should.equal('+9001')
     res.claim.mainsnak.datavalue.value.unit.should.equal('1')
   })
@@ -195,6 +226,9 @@ describe('claim create', function () {
     ])
     const value = '-9001'
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
+    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
+    assert('amount' in res.claim.mainsnak.datavalue.value)
     res.claim.mainsnak.datavalue.value.amount.should.equal('-9001')
     res.claim.mainsnak.datavalue.value.unit.should.equal('1')
   })
@@ -206,6 +240,9 @@ describe('claim create', function () {
     ])
     const value = { amount: 9002, unit: 'Q7727', lowerBound: 9001, upperBound: 9013 }
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
+    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
+    assert('amount' in res.claim.mainsnak.datavalue.value)
     res.claim.mainsnak.datavalue.value.amount.should.equal('+9002')
     res.claim.mainsnak.datavalue.value.lowerBound.should.equal('+9001')
     res.claim.mainsnak.datavalue.value.upperBound.should.equal('+9013')
@@ -219,7 +256,9 @@ describe('claim create', function () {
     ])
     const value = { latitude: 45.758, longitude: 4.84138, precision: 1 / 360 }
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
     const createdValue = res.claim.mainsnak.datavalue.value
+    assert(typeof createdValue === 'object' && 'latitude' in createdValue)
     createdValue.latitude.should.equal(value.latitude)
     createdValue.longitude.should.equal(value.longitude)
     createdValue.precision.should.equal(value.precision)
@@ -232,6 +271,7 @@ describe('claim create', function () {
     ])
     const value = 'Data:United Kingdom.map'
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
     res.claim.mainsnak.datavalue.value.should.equal(value)
   })
 
@@ -242,6 +282,7 @@ describe('claim create', function () {
     ])
     const value = 'Data:Sandbox/TheDJ/DJ.tab'
     const res = await wbEdit.claim.create({ id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
     res.claim.mainsnak.datavalue.value.should.equal(value)
   })
 
@@ -252,7 +293,7 @@ describe('claim create', function () {
       getSandboxItemId(),
       getSandboxPropertyId('url'),
     ])
-    const value = { snaktype: 'novalue' }
+    const value: SpecialSnak = { snaktype: 'novalue' }
     const res = await wbEdit.claim.create({ id, property, value })
     res.claim.mainsnak.snaktype.should.equal('novalue')
   })
@@ -262,7 +303,7 @@ describe('claim create', function () {
       getSandboxItemId(),
       getSandboxPropertyId('url'),
     ])
-    const value = { snaktype: 'somevalue' }
+    const value: SpecialSnak = { snaktype: 'somevalue' }
     const res = await wbEdit.claim.create({ id, property, value })
     res.claim.mainsnak.snaktype.should.equal('somevalue')
   })

@@ -10,7 +10,7 @@ import type { Reconciliation } from './validate_reconciliation_object.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl, BaseRevId } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
-import type { EditableEntity, EditableItem, EditableLexeme, EditableMediaInfo, EditableProperty, LooseSimplifiedClaims, SimplifiedEditableEntity } from '../types/edit_entity.js'
+import type { RawEditableEntity, RawEditableItem, RawEditableLexeme, RawEditableMediaInfo, RawEditableProperty, SimplifiedEditableClaims, SimplifiedEditableEntity } from '../types/edit_entity.js'
 
 interface EditEntityParamsBase {
   clear?: boolean
@@ -20,7 +20,7 @@ interface EditEntityParamsBase {
   baserevid?: BaseRevId
 }
 
-export type EditEntityRawModeParams = EditEntityParamsBase & Partial<EditableEntity> & {
+export type EditEntityRawModeParams = EditEntityParamsBase & Partial<RawEditableEntity> & {
   rawMode: true
 }
 
@@ -39,7 +39,7 @@ const editableTypes = [
   // 'sense',
 ] as const
 
-interface WbeditentityDataBase <T extends EditableEntity> {
+interface WbeditentityDataBase <T extends RawEditableEntity> {
   type: T['type']
   new?: T['type']
   clear?: boolean
@@ -47,13 +47,13 @@ interface WbeditentityDataBase <T extends EditableEntity> {
   data: Partial<T>
 }
 
-type WbeditentityItemData = WbeditentityDataBase<EditableItem>
-type WbeditentityPropertyData = WbeditentityDataBase<EditableProperty>
-type WbeditentityLexemeData = WbeditentityDataBase<EditableLexeme>
-type WbeditentityMediaInfoData = WbeditentityDataBase<EditableMediaInfo>
+type WbeditentityItemData = WbeditentityDataBase<RawEditableItem>
+type WbeditentityPropertyData = WbeditentityDataBase<RawEditableProperty>
+type WbeditentityLexemeData = WbeditentityDataBase<RawEditableLexeme>
+type WbeditentityMediaInfoData = WbeditentityDataBase<RawEditableMediaInfo>
 type WbeditentityData = WbeditentityItemData | WbeditentityPropertyData | WbeditentityLexemeData | WbeditentityMediaInfoData
 
-export async function editEntity (inputParams: EditEntityParams, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig) {
+export async function editEntity <P extends EditEntityParams = EditEntitySimplifiedModeParams> (inputParams: P, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig) {
   validateParameters(inputParams)
 
   let { id } = inputParams
@@ -167,7 +167,7 @@ function validateParameters (params: EditEntityParams) {
   }
 }
 
-function hasReconciliationSettings (reconciliation: Reconciliation, claims: LooseSimplifiedClaims) {
+function hasReconciliationSettings (reconciliation: Reconciliation, claims: SimplifiedEditableClaims) {
   if (reconciliation != null) return true
   for (const property in claims) {
     for (const claim of forceArray(claims[property])) {

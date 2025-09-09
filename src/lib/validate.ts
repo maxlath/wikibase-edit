@@ -1,11 +1,11 @@
-import { isEntityId, isPropertyId, isGuid, isItemId, type CustomSimplifiedClaim, type Sitelink, type EntityId, type PropertyId, type WikimediaLanguageCode, wikimediaLanguageCodes, ranks, type Datatype, type Guid, type Hash, type Rank, type SimplifiedSnak, type CustomSimplifiedSnak } from 'wikibase-sdk'
+import { isEntityId, isPropertyId, isGuid, isItemId, type CustomSimplifiedClaim, type Sitelink, type EntityId, type PropertyId, type WikimediaLanguageCode, wikimediaLanguageCodes, ranks, type Datatype, type Guid, type Hash, type Rank } from 'wikibase-sdk'
 import { hasSpecialSnaktype } from './claim/special_snaktype.js'
 import * as datatypeTests from './datatype_tests.js'
 import { newError } from './error.js'
 import { inviteToOpenAFeatureRequest } from './issues.js'
 import { normalizeDatatype } from './properties/datatypes_to_builder_datatypes.js'
 import { isNonEmptyString, forceArray, isArray, setHas, arrayIncludes } from './utils.js'
-import type { EditableClaim } from './types/edit_entity.js'
+import type { EditableClaim, SimplifiedEditableSnak } from './types/edit_entity.js'
 
 const siteRegex = /^[a-z_]{2,20}$/
 const wikimediaLanguageCodesSet = new Set(wikimediaLanguageCodes)
@@ -52,7 +52,7 @@ export function validateAliases (value: string | string[], options: { allowEmpty
   // Yes, it's not an label or a description, but it works the same
   value.forEach(validateStringValue.bind(null, 'alias'))
 }
-export function validateSnakValue (property: PropertyId, datatype: Datatype, value: SimplifiedSnak | CustomSimplifiedSnak['value']) {
+export function validateSnakValue (property: PropertyId, datatype: Datatype, value: SimplifiedEditableSnak) {
   if (hasSpecialSnaktype(value)) return
   if (value == null) {
     throw newError('missing snak value', { property, value })

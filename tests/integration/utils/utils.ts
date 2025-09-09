@@ -1,41 +1,57 @@
 import config from 'config'
 import { yellow } from 'tiny-chalk'
-import { WBK } from 'wikibase-sdk'
+import { WBK, type EntityId } from 'wikibase-sdk'
+import { newError } from '#lib/error'
 import { customFetch } from '#lib/request/fetch'
 import { resolveTitle } from '#lib/resolve_title'
+import type { AbsoluteUrl } from '#lib/types/common'
 
 const { instance } = config
 
 const wbk = WBK({ instance })
 
-const getRevisions = async ({ id, customInstance, limit, props }) => {
-  customInstance = customInstance || instance
-  const title = await resolveTitle(id, `${customInstance}/w/api.php`)
-  const customWbk = WBK({ instance: customInstance })
-  const url = customWbk.getRevisions({ ids: title, limit, props })
-  const { query } = await customFetch(url).then(res => res.json())
-  return Object.values(query.pages)[0].revisions
+export interface GetRevisionsParams {
+  id: EntityId
+  customInstance?: AbsoluteUrl
+  limit?: number
+  props?: string | string[]
 }
 
-export async function getLastRevision (id, customInstance) {
+async function getRevisions ({ id, customInstance, limit, props }) {
+  customInstance = customInstance || instance
+  const title = await resolveTitle(id, `${customInstance}/w/api.php` as AbsoluteUrl)
+  const customWbk = WBK({ instance: customInstance })
+  const url = customWbk.getRevisions({ ids: title, limit, prop: props }) as AbsoluteUrl
+  const { query } = await customFetch(url).then(res => res.json())
+  const page = Object.values(query.pages)[0]
+  if (!(typeof page === 'object' && 'revisions' in page)) {
+    throw newError('revisions not found', 400, { id, url, page })
+  }
+  return page.revisions
+}
+
+export async function getLastRevision (id: EntityId, customInstance?: AbsoluteUrl) {
   const revisions = await getRevisions({ id, customInstance, limit: 1, props: [ 'comment', 'tags' ] })
   return revisions[0]
 }
 
 export const wait = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-export const getEntity = async id => {
-  const url = wbk.getEntities({ ids: id })
+export async function getEntity (id: EntityId) {
+  const url = wbk.getEntities({ ids: id }) as AbsoluteUrl
   const { entities } = await customFetch(url).then(res => res.json())
   return entities[id]
 }
 
-export const getEntityHistory = async (id, customInstance) => {
+export async function getEntityHistory (id: EntityId, customInstance?: AbsoluteUrl) {
+// @ts-expect-error
   const revisions = await getRevisions({ id, customInstance })
+  // @ts-expect-error
   return revisions.sort(chronologically)
 }
 
-export const getLastEditSummary = async id => {
+export async function getLastEditSummary (id: EntityId) {
+  // @ts-expect-error
   if (typeof id === 'object' && id.entity) id = id.entity.id
   const revision = await getLastRevision(id)
   return revision.comment
@@ -48,7 +64,7 @@ export const undesiredRes = done => res => {
 }
 
 // Same but for async/await tests that don't use done
-export const shouldNotBeCalled = res => {
+export function shouldNotBeCalled (res) {
   console.warn(yellow('undesired positive res:'), res)
   const err = new Error('function was expected not to be called')
   err.name = 'shouldNotBeCalled'
@@ -56,7 +72,7 @@ export const shouldNotBeCalled = res => {
   throw err
 }
 
-export const rethrowShouldNotBeCalledErrors = err => {
+export function rethrowShouldNotBeCalledErrors (err) {
   if (err.name === 'shouldNotBeCalled') throw err
 }
 

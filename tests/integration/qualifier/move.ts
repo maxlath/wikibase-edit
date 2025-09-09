@@ -26,6 +26,7 @@ describe('qualifier move', function () {
   it('should reject missing old property', async () => {
     try {
       const guid = await getSomeGuid()
+      // @ts-expect-error
       await moveQualifier({ guid }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('missing old property')
@@ -35,6 +36,7 @@ describe('qualifier move', function () {
   it('should reject missing new property', async () => {
     try {
       const { guid, property: oldProperty } = await addQualifier({ datatype: 'string', value: randomString() })
+      // @ts-expect-error
       await moveQualifier({ guid, oldProperty }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('missing new property')

@@ -1,13 +1,15 @@
 import { flatten, values } from 'lodash-es'
+import { newError } from '../error.js'
 import { normalizeDatatype } from '../properties/datatypes_to_builder_datatypes.js'
 import { forceArray, mapValues } from '../utils.js'
 import { validatePropertyId, validateSnakValue } from '../validate.js'
 import { entityEditBuilders as builders } from './builders.js'
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
-import type { PropertyId, SimplifiedReference, SimplifiedClaim, Datatype, SimplifiedSnak, Snak } from 'wikibase-sdk'
+import type { SimplifiedEditableSnak, SimplifiedEditableClaim, SimplifiedEditableReference } from '../types/edit_entity.js'
+import type { PropertyId, Datatype, Snak } from 'wikibase-sdk'
 
-export function buildSnak (property: PropertyId, datatype: Datatype, value: SimplifiedClaim, instance: AbsoluteUrl) {
+export function buildSnak (property: PropertyId, datatype: Datatype, value: SimplifiedEditableSnak | SimplifiedEditableClaim, instance: AbsoluteUrl) {
   const datavalueValue = (typeof value === 'object' && 'value' in value) ? value.value : value
   if (typeof value === 'object' && 'snaktype' in value && value?.snaktype && value.snaktype !== 'value') {
     return { snaktype: value.snaktype, property }
@@ -17,7 +19,8 @@ export function buildSnak (property: PropertyId, datatype: Datatype, value: Simp
 }
 
 export function buildReferenceFactory (properties: PropertiesDatatypes, instance: AbsoluteUrl) {
-  return function buildReference (reference: SimplifiedReference) {
+  return function buildReference (reference: SimplifiedEditableReference) {
+    if (typeof reference !== 'object') throw newError('expected reference object', 500, { reference })
     const hash = 'hash' in reference ? reference.hash : undefined
     const referenceSnaks = 'snaks' in reference ? reference.snaks : reference
     const snaksPerProperty = mapValues(referenceSnaks, buildPropSnaksFactory(properties, instance))
@@ -27,7 +30,7 @@ export function buildReferenceFactory (properties: PropertiesDatatypes, instance
 }
 
 export function buildPropSnaksFactory (properties: PropertiesDatatypes, instance: AbsoluteUrl) {
-  return function buildPropSnaks (prop: PropertyId, propSnakValues: SimplifiedSnak[]) {
+  return function buildPropSnaks (prop: PropertyId, propSnakValues: SimplifiedEditableSnak[]) {
     validatePropertyId(prop)
     return forceArray(propSnakValues).map(snakValue => {
       const datatype = properties[prop]

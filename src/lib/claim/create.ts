@@ -4,15 +4,16 @@ import type { Reconciliation } from '../entity/validate_reconciliation_object.js
 import type { WikibaseEditAPI } from '../index.js'
 import type { BaseRevId } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
-import type { EditableEntity } from '../types/edit_entity.js'
-import type { Claim, CustomSimplifiedClaim, CustomSimplifiedSnak, PropertyId, Rank, SimplifiedQualifiers, SimplifiedReferences } from 'wikibase-sdk'
+import type { RawEditableEntity, CustomSimplifiedEditableClaim, SimplifiedEditableQualifiers, SimplifiedEditableReferences } from '../types/edit_entity.js'
+import type { EditableSnakValue } from '../types/snaks.js'
+import type { Claim, PropertyId, Rank } from 'wikibase-sdk'
 
 export interface CreateClaimParams {
-  id: EditableEntity['id']
+  id: RawEditableEntity['id']
   property: PropertyId
-  value: CustomSimplifiedSnak['value'] | SpecialSnak
-  qualifiers?: SimplifiedQualifiers
-  references?: SimplifiedReferences
+  value: EditableSnakValue | SpecialSnak
+  qualifiers?: SimplifiedEditableQualifiers
+  references?: SimplifiedEditableReferences
   rank?: Rank
   reconciliation?: Reconciliation
   summary?: string
@@ -25,7 +26,7 @@ export async function createClaim (params: CreateClaimParams, config: Serialized
 
   if (value == null) throw newError('missing value', 400, params)
 
-  const claim: Partial<CustomSimplifiedClaim> = { rank, qualifiers, references }
+  const claim: Partial<CustomSimplifiedEditableClaim> = { rank, qualifiers, references }
   if (hasSpecialSnaktype(value)) {
     claim.snaktype = value.snaktype
   } else {
@@ -53,7 +54,7 @@ export async function createClaim (params: CreateClaimParams, config: Serialized
   // @ts-expect-error
   const { entity, success } = await API.entity.edit(data, config)
 
-  const newClaim = entity[statementsKey][property].slice(-1)[0]
+  const newClaim: Claim = entity[statementsKey][property].slice(-1)[0]
   // Mimick claim actions responses
   return { claim: newClaim, success }
 }

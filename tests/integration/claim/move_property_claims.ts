@@ -1,7 +1,7 @@
 import config from 'config'
 import should from 'should'
 import { getProperty } from '#tests/integration/utils/get_property'
-import { createItem, getSomeEntityId } from '#tests/integration/utils/sandbox_entities'
+import { createItem, getSomeItemId } from '#tests/integration/utils/sandbox_entities'
 import { addClaim } from '#tests/integration/utils/sandbox_snaks'
 import { shouldNotBeCalled, getLastEditSummary } from '#tests/integration/utils/utils'
 import { assert, randomString } from '#tests/unit/utils'
@@ -47,7 +47,7 @@ describe('move property claims', async () => {
 
   it('should reject missing property', async () => {
     try {
-      const id = await getSomeEntityId()
+      const id = await getSomeItemId()
       await moveClaims({ propertyClaimsId: somePropertyClaimsId, id }).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('missing property id')
@@ -56,7 +56,7 @@ describe('move property claims', async () => {
 
   it('should reject invalid property', async () => {
     try {
-      const id = await getSomeEntityId()
+      const id = await getSomeItemId()
       // @ts-expect-error
       await moveClaims({ propertyClaimsId: somePropertyClaimsId, id, property: '123' }).then(shouldNotBeCalled)
     } catch (err) {

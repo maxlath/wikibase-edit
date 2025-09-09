@@ -34,7 +34,7 @@ import type { GeneralConfig, RequestConfig } from './types/config.js'
 /**
  * See https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md#config
  */
-export default function WBEdit (generalConfig: GeneralConfig) {
+export default function WBEdit (generalConfig: GeneralConfig = {}) {
   if (typeof generalConfig !== 'object') {
     throw newError('invalid general config object', { generalConfig, type: typeof generalConfig })
   }

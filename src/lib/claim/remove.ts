@@ -8,14 +8,15 @@ import type { Reconciliation } from '../entity/validate_reconciliation_object.js
 import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
 import type { AbsoluteUrl } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
-import type { Claim, EntityWithClaims, Guid, PropertyId, SimplifiedClaim, SimplifiedQualifiers } from 'wikibase-sdk'
+import type { SimplifiedEditableQualifiers } from '../types/edit_entity.js'
+import type { Claim, EntityWithClaims, Guid, PropertyId, SimplifiedClaim } from 'wikibase-sdk'
 
 export interface RemoveClaimParams {
   id?: EntityWithClaims['id']
   property?: PropertyId
   guid?: Guid | Guid[]
   value?: SimplifiedClaim
-  qualifiers: SimplifiedQualifiers
+  qualifiers?: SimplifiedEditableQualifiers
   reconciliation?: Reconciliation
 }
 

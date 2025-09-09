@@ -67,7 +67,7 @@ describe('get token', function () {
         token_secret: 'd',
       },
     }
-    const config = validateAndEnrichConfig({ instance, credentials: { oauth: invalidCreds } })
+    const config = validateAndEnrichConfig({ instance, credentials: invalidCreds })
     const getToken = getTokenFactory(config)
     getToken.should.be.a.Function()
     getToken()

@@ -2,7 +2,7 @@ import 'should'
 import config from 'config'
 import { getSandboxClaim } from '#tests/integration/utils/sandbox_entities'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString } from '#tests/unit/utils'
+import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 
 const wbEdit = WBEdit(config)
@@ -16,6 +16,7 @@ describe('claim set', function () {
     const { property } = claim.mainsnak
     const value = randomString()
     const res = await wbEdit.claim.set({ guid: claim.id, property, value })
+    assert('datavalue' in res.claim.mainsnak)
     res.claim.mainsnak.datavalue.value.should.equal(value)
   })
 })

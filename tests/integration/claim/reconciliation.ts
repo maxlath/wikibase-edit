@@ -17,6 +17,7 @@ describe('reconciliation: general', function () {
       getReservedItemId(),
       getSandboxPropertyId('string'),
     ])
+    // @ts-expect-error
     await wbEdit.claim.create({ id, property, value: 'foo', reconciliationz: {} })
     .then(shouldNotBeCalled)
     .catch(err => {
@@ -28,6 +29,7 @@ describe('reconciliation: general', function () {
       claims: {
         [property]: 'foo',
       },
+      // @ts-expect-error
       reconciliationz: {},
     })
     .then(shouldNotBeCalled)
@@ -40,6 +42,7 @@ describe('reconciliation: general', function () {
       claims: {
         [property]: {
           value: 'foo',
+          // @ts-expect-error
           reconciliationz: {},
         },
       },

@@ -50,8 +50,8 @@ export function reconcileClaimFactory (reconciliation: Reconciliation, existingP
           mergeReferences(existingClaim.references, claim.references, matchingReferences)
         } else {
           const currentReference = simplifyReferences(existingClaim.references)
-          const newReferenceReference = claim.references.filter(isNewReference(currentReference))
           // @ts-expect-error
+          const newReferenceReference = claim.references.filter(isNewReference(currentReference))
           existingClaim.references.push(...newReferenceReference)
         }
       }

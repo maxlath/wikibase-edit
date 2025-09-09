@@ -8,7 +8,7 @@ import type { OAuthCredentials, SerializedConfig } from '../types/config.js'
 
 export const defaultMaxlag = 5
 
-export async function post (action: string, data: PostData, config: SerializedConfig) {
+export async function post (action: string, data: object, config: SerializedConfig) {
   const { anonymous } = config
   const getAuthData = anonymous ? null : config.credentials._getAuthData
 

@@ -1,6 +1,7 @@
 import config from 'config'
 import should from 'should'
-import { simplify, type ItemId } from 'wikibase-sdk'
+import { simplify, type ItemId, type SimplifiedSitelinkWithBadges } from 'wikibase-sdk'
+import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
 import { getProperty } from '#tests/integration/utils/get_property'
 import { getSandboxItemId, getSandboxPropertyId, createItem } from '#tests/integration/utils/sandbox_entities'
 import { addClaim } from '#tests/integration/utils/sandbox_snaks'
@@ -42,7 +43,7 @@ describe('entity edit', function () {
       aliases: { en: randomString() },
       claims,
     }
-    const resA = await wbEdit.entity.create(params)
+    const resA = await wbEdit.entity.create(params as EditEntitySimplifiedModeParams)
     const newLabel = randomString()
     const resB = await wbEdit.entity.edit({
       id: resA.entity.id as ItemId,
@@ -85,7 +86,7 @@ describe('entity edit', function () {
       labels: { en: randomString() },
       descriptions: { en: randomString() },
       aliases: { en: randomString() },
-    })
+    } as EditEntitySimplifiedModeParams)
     const resB = await wbEdit.entity.edit({
       id: resA.entity.id as ItemId,
       labels: { en: null },
@@ -101,13 +102,14 @@ describe('entity edit', function () {
     const { entity } = await wbEdit.entity.create({
       labels: { en: randomString() },
       aliases: { en: aliasA },
-    })
+    } as EditEntitySimplifiedModeParams)
     const resB = await wbEdit.entity.edit({
       id: entity.id,
       aliases: {
         en: { value: aliasB, add: true },
       },
-    })
+    } as EditEntitySimplifiedModeParams)
+    assert('aliases' in resB.entity)
     simplify.aliases(resB.entity.aliases).en.should.deepEqual([ aliasA, aliasB ])
   })
 
@@ -120,18 +122,21 @@ describe('entity edit', function () {
       id,
       sitelinks: {
         frwiki: yearArticleTitle,
-        dewiki: { title: yearArticleTitle, badges: [ 'Q608', 'Q609' ] },
+        dewiki: { title: yearArticleTitle, badges: [ 'Q608', 'Q609' ] } as SimplifiedSitelinkWithBadges,
       },
-    })
+    } as EditEntitySimplifiedModeParams)
+    assert('sitelinks' in res.entity)
     res.entity.sitelinks.frwiki.title.should.equal(yearArticleTitle)
     res.entity.sitelinks.dewiki.title.should.equal(yearArticleTitle)
     const res2 = await wbEdit.entity.edit({
       id,
+      // @ts-expect-error
       sitelinks: {
         frwiki: { title: yearArticleTitle, remove: true },
         dewiki: null,
       },
     })
+    assert('sitelinks' in res2.entity)
     should(res2.entity.sitelinks.frwiki).not.be.ok()
     should(res2.entity.sitelinks.dewiki).not.be.ok()
   })
@@ -156,9 +161,12 @@ describe('entity edit', function () {
         labels,
         claims: [ removedClaim, claim ],
       })
+      assert('labels' in res.entity)
       res.entity.labels.en.value.should.equal(labelB)
       should(res.entity.claims[property]).not.be.ok()
-      res.entity.claims[otherStringPropertyId][0].mainsnak.datavalue.value.should.equal(claimValueB)
+      const { mainsnak } = res.entity.claims[otherStringPropertyId][0]
+      assert('datavalue' in mainsnak)
+      mainsnak.datavalue.value.should.equal(claimValueB)
     })
   })
 })

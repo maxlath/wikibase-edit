@@ -30,7 +30,7 @@ describe('multi users edits', function () {
   })
 })
 
-const addAlias = async (wbEdit, id, reqConfig) => {
+async function addAlias (wbEdit, id, reqConfig) {
   return wbEdit.alias.add({
     id,
     language: 'la',

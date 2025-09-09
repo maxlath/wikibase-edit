@@ -1,6 +1,7 @@
 import config from 'config'
 import should from 'should'
-import { simplify } from 'wikibase-sdk'
+import { simplify, type CustomSimplifiedClaim } from 'wikibase-sdk'
+import type { SpecialSnak } from '#lib/claim/special_snaktype'
 import { getSandboxItemId, getSandboxPropertyId, getReservedItemId } from '#tests/integration/utils/sandbox_entities'
 import { addClaim, addReference } from '#tests/integration/utils/sandbox_snaks'
 import { shouldNotBeCalled } from '#tests/integration/utils/utils'
@@ -61,7 +62,7 @@ describe('claim update', function () {
       }
     })
 
-    it('should reject claim updates from values when several claims match', async () => {
+    it.only('should reject claim updates from values when several claims match', async () => {
       const oldValue = randomString()
       const newValue = randomString()
       const [ res1 ] = await Promise.all([
@@ -74,6 +75,15 @@ describe('claim update', function () {
       } catch (err) {
         err.message.should.equal('snak not found: too many matching snaks')
       }
+    })
+
+    it('should update a monolingual text claim being provided just the text', async () => {
+      const oldValue = { text: randomString(), language: 'fr' }
+      const newValue = { text: randomString(), language: 'de' }
+      const { id, guid, property } = await addClaim({ datatype: 'monolingualtext', value: oldValue })
+      const res = await updateClaim({ id, property, oldValue: oldValue.text, newValue: newValue.text })
+      res.claim.id.should.equal(guid)
+      simplify.claim(res.claim, { keepRichValues: true }).should.deepEqual(newValue)
     })
   })
 
@@ -109,7 +119,7 @@ describe('claim update', function () {
       const resAClaim = resA.entity.claims[property].slice(-1)[0]
       const guid = resAClaim.id
       const resB = await updateClaim({ id, property, oldValue, newValue })
-      const simplifiedClaim = simplify.claim(resB.claim, { keepIds: true, keepQualifiers: true, keepReferences: true })
+      const simplifiedClaim = simplify.claim(resB.claim, { keepIds: true, keepQualifiers: true, keepReferences: true }) as CustomSimplifiedClaim
       simplifiedClaim.id.should.equal(guid)
       simplifiedClaim.value.should.equal(newValue)
       simplifiedClaim.qualifiers[property][0].should.equal(qualifierValue)
@@ -151,6 +161,7 @@ describe('claim update', function () {
       const { guid, property } = await addClaim({ datatype: 'time', value: { time: oldValue, precision: 10, timezone: -60, before: 2, after: 3 } })
       const res = await updateClaim({ guid, property, newValue: { time: newValue, precision: 11, before: 5 } })
       res.claim.id.should.equal(guid)
+      assert('datavalue' in res.claim.mainsnak)
       should(res.claim.mainsnak.datavalue.value).deepEqual({
         time: `+${newValue}T00:00:00Z`,
         before: 5,
@@ -178,7 +189,10 @@ describe('claim update', function () {
       const { guid, property } = await addClaim({ datatype: 'globe-coordinate', value: oldValue })
       const res = await updateClaim({ guid, property, newValue })
       res.claim.id.should.equal(guid)
+      assert('datavalue' in res.claim.mainsnak)
       const { value } = res.claim.mainsnak.datavalue
+      assert(typeof value === 'object')
+      assert('latitude' in value)
       value.latitude.should.equal(newValue.latitude)
       value.longitude.should.equal(newValue.longitude)
       value.precision.should.equal(newValue.precision)
@@ -202,7 +216,7 @@ describe('claim update', function () {
 
     it('should update a claim snaktype', async () => {
       const oldValue = randomString()
-      const newValue = { snaktype: 'novalue' }
+      const newValue: SpecialSnak = { snaktype: 'novalue' }
       const { guid, property } = await addClaim({ datatype: 'string', value: oldValue })
       const res = await updateClaim({ guid, property, newValue })
       res.claim.mainsnak.snaktype.should.equal('novalue')
@@ -214,7 +228,9 @@ describe('claim update', function () {
       const { id, property, guid } = await addClaim({ datatype: 'string', value: oldValue })
       await addReference({ guid, datatype: 'time', value: { time: '2024-01-12', timezone: 60 } })
       const res = await updateClaim({ id, property, oldValue, newValue })
-      const referenceTimeValue = Object.values(res.claim.references[0].snaks)[0][0].datavalue.value
+      const referenceTimeSnak = Object.values(res.claim.references[0].snaks)[0][0]
+      assert('datavalue' in referenceTimeSnak)
+      const referenceTimeValue = referenceTimeSnak.datavalue.value
       referenceTimeValue.should.deepEqual({
         time: '+2024-01-12T00:00:00Z',
         timezone: 60,

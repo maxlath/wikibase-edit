@@ -3,7 +3,7 @@ import config from 'config'
 import { simplify } from 'wikibase-sdk'
 import { getSandboxPropertyId, getReservedItemId } from '#tests/integration/utils/sandbox_entities'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString } from '#tests/unit/utils'
+import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 
 const wbEdit = WBEdit(config)
@@ -25,6 +25,7 @@ describe('reconciliation: merge mode', function () {
         mode: 'merge',
       },
     })
+    assert('datavalue' in res.claim.mainsnak)
     res.claim.mainsnak.datavalue.value.should.equal('foo')
   })
 
@@ -43,6 +44,7 @@ describe('reconciliation: merge mode', function () {
       },
     })
     res2.claim.id.should.equal(res.claim.id)
+    assert('datavalue' in res2.claim.mainsnak)
     res2.claim.mainsnak.datavalue.value.should.equal('foo')
   })
 
@@ -64,8 +66,13 @@ describe('reconciliation: merge mode', function () {
       },
     })
     res2.claim.id.should.equal(res.claim.id)
+    assert('datavalue' in res2.claim.mainsnak)
+    assert(typeof res2.claim.mainsnak.datavalue.value === 'object' && 'id' in res2.claim.mainsnak.datavalue.value)
     res2.claim.mainsnak.datavalue.value.id.should.equal(value)
-    res2.claim.qualifiers[property][0].datavalue.value.id.should.equal(qualifierValue)
+    const qualifier = res2.claim.qualifiers[property][0]
+    assert('datavalue' in qualifier)
+    assert(typeof qualifier.datavalue.value === 'object' && 'id' in qualifier.datavalue.value)
+    qualifier.datavalue.value.id.should.equal(qualifierValue)
   })
 
   it('should not re-add an existing monolingual text statement', async () => {
@@ -86,8 +93,14 @@ describe('reconciliation: merge mode', function () {
       },
     })
     res2.claim.id.should.equal(res.claim.id)
+    assert('datavalue' in res2.claim.mainsnak)
+    assert(typeof res2.claim.mainsnak.datavalue.value === 'object')
+    assert('text' in res2.claim.mainsnak.datavalue.value)
     res2.claim.mainsnak.datavalue.value.text.should.equal(value.text)
     res2.claim.mainsnak.datavalue.value.language.should.equal(value.language)
+    assert('datavalue' in res2.claim.qualifiers[property][0])
+    assert(typeof res2.claim.qualifiers[property][0].datavalue.value === 'object')
+    assert('text' in res2.claim.qualifiers[property][0].datavalue.value)
     res2.claim.qualifiers[property][0].datavalue.value.text.should.equal(qualifierValue.text)
     res2.claim.qualifiers[property][0].datavalue.value.language.should.equal(qualifierValue.language)
   })
@@ -137,7 +150,9 @@ describe('reconciliation: merge mode', function () {
       reconciliation: { mode: 'merge' },
     })
     res2.claim.id.should.equal(res.claim.id)
+    // @ts-expect-error
     res2.claim.qualifiers[property].map(simplify.qualifier).should.deepEqual([ 'bar', 'buzz' ])
+    // @ts-expect-error
     res2.claim.qualifiers[property2].map(simplify.qualifier).should.deepEqual([ 123 ])
   })
 
