@@ -171,6 +171,7 @@ export default ts.config([
     '**/eslint.config.js',
     './local',
     './browser-demo',
+    './dist'
   ]),
 ])
 
