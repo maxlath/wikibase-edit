@@ -22,6 +22,7 @@ import type { setQualifier } from './qualifier/set.js'
 import type { removeReference } from './reference/remove.js'
 import type { setReference } from './reference/set.js'
 import type { setSitelink } from './sitelink/set.js'
+import type { BaseRevId } from './types/common.js'
 import type { GeneralConfig, RequestConfig, SerializedConfig } from './types/config.js'
 
 type ActionFunction = typeof addAlias | typeof removeAlias | typeof setAlias | typeof removeClaim | typeof setClaim | typeof setDescription | typeof createEntity | typeof deleteEntity | typeof editEntity | typeof mergeEntity | typeof setLabel | typeof removeQualifier | typeof setQualifier | typeof removeReference | typeof setReference | typeof setSitelink
@@ -57,14 +58,13 @@ export function requestWrapper <Params extends object, Response extends object, 
       extraData.summary = summary.trim()
     }
 
-    // @ts-expect-error
-    if (baserevid != null) extraData.baserevid = baserevid
+    if (baserevid != null) extraData.baserevid = baserevid as BaseRevId
 
     if ('title' in data) {
       const title = await resolveTitle(data.title, config.instanceApiEndpoint)
-      return post(action, { ...data, title }, config) as Response
+      return post(action, { ...data, ...extraData, title }, config) as Response
     } else {
-      return post(action, data, config) as Response
+      return post(action, { ...data, ...extraData }, config) as Response
     }
   }
 }

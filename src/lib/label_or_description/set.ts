@@ -1,7 +1,7 @@
 import { newError } from '../error.js'
 import { validateEntityId, validateLanguage } from '../validate.js'
 import type { BaseRevId } from '../types/common.js'
-import type { Entity, EntityId, WikimediaLanguageCode } from 'wikibase-sdk'
+import type { EntityId, EntityWithLabels, WikimediaLanguageCode } from 'wikibase-sdk'
 
 export interface TermActionParams {
   id: EntityId
@@ -30,6 +30,6 @@ export function setLabelOrDescriptionFactory (name: string) {
 }
 
 export interface TermActionResponse {
-  entity: Entity
+  entity: EntityWithLabels
   success: 1
 }

@@ -1,11 +1,11 @@
 import config from 'config'
-import { assert, randomString } from '#tests/unit/utils'
-import WBEdit from '#root'
-import { getSandboxItemId, getSandboxPropertyId, getSandboxClaimId } from './sandbox_entities.js'
 import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
 import type { SetQualifierParams } from '#lib/qualifier/set'
 import type { SetReferenceParams } from '#lib/reference/set'
 import type { SimplifiedEditableClaim, SimplifiedEditableQualifiers } from '#lib/types/edit_entity'
+import { assert, randomString } from '#tests/unit/utils'
+import WBEdit from '#root'
+import { getSandboxItemId, getSandboxPropertyId, getSandboxClaimId } from './sandbox_entities.js'
 import type { Datatype, Guid, ItemId, PropertyId } from 'wikibase-sdk'
 
 const wbEdit = WBEdit(config)

@@ -126,9 +126,9 @@ export async function editEntity <P extends EditEntityParams = EditEntitySimplif
   return {
     action: 'wbeditentity',
     data: {
-      ...params,
-      // stringify as it will be passed as form data
-      data: JSON.stringify(omit(params.data, 'type')),
+      ...omit(params, 'type', 'data'),
+      // Stringify as it will be passed as form data
+      data: JSON.stringify(params.data),
     },
   }
 }

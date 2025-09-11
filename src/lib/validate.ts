@@ -10,7 +10,7 @@ import type { EditableClaim, SimplifiedEditableSnak } from './types/edit_entity.
 const siteRegex = /^[a-z_]{2,20}$/
 const wikimediaLanguageCodesSet = new Set(wikimediaLanguageCodes)
 
-function validateStringValue (name: string, str: string | EditableClaim | CustomSimplifiedClaim | Sitelink) {
+function validateStringValue (name: string, str: string | EditableClaim | CustomSimplifiedClaim | Sitelink | null) {
   if (str === null) return
   if (typeof str === 'object') {
     if ('remove' in str && str.remove === true) return

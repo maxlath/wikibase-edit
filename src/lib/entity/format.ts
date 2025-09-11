@@ -22,7 +22,7 @@ function formatBadgesArray (badges: SitelinkBadges | string) {
   return badgeArray
 }
 
-export function formatTermsObject (name: 'label' | 'description' | 'alias', values: Record<WikimediaLanguageCode, string | string[]>) {
+export function formatTermsObject (name: 'label' | 'description' | 'alias', values: Record<WikimediaLanguageCode, string | string[] | null>) {
   const obj = {}
   objectKeys(values).forEach(lang => {
     let value = values[lang]
@@ -32,8 +32,8 @@ export function formatTermsObject (name: 'label' | 'description' | 'alias', valu
       validateAliases(value, { allowEmptyArray: true })
       obj[lang] = value.map(alias => buildLanguageValue(alias, lang))
     } else {
-      if (typeof value !== 'string') {
-        throw newError('expected a string', 400, { name, value })
+      if (value instanceof Array) {
+        throw new Error(`invalid value: ${JSON.stringify(value)} (${typeof value})`)
       }
       validateLabelOrDescription(name, value)
       obj[lang] = buildLanguageValue(value, lang)
@@ -91,7 +91,7 @@ interface EditedTerm {
   remove?: boolean
 }
 
-function buildLanguageValue (value: SimplifiedTerm | Term, language) {
+function buildLanguageValue (value: SimplifiedTerm | Term | null, language: WikimediaLanguageCode) {
   // Re-building an object to avoid passing any undesired key/value
   const valueObj: Partial<EditedTerm> = { language }
   if (isString(value)) {

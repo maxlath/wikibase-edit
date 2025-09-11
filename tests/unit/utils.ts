@@ -23,7 +23,7 @@ export const properties: PropertiesDatatypes = {
 }
 
 export function assert (condition: boolean): asserts condition {
-  if (!condition) throw new Error('not true')
+  if (!condition) throw new Error('assertion failed')
 }
 
 export const someInstance = 'http://example.org'

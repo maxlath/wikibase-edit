@@ -147,8 +147,6 @@ describe('claim create', function () {
     const value = 'foo'
     const res = await wbEdit.claim.create({ id, property, value })
     assert('datavalue' in res.claim.mainsnak)
-    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
-    assert('time' in res.claim.mainsnak.datavalue.value)
     res.claim.mainsnak.datavalue.value.should.equal('foo')
   })
 
@@ -174,7 +172,6 @@ describe('claim create', function () {
     const value = 'http://foo.bar'
     const res = await wbEdit.claim.create({ id, property, value })
     assert('datavalue' in res.claim.mainsnak)
-    assert(typeof res.claim.mainsnak.datavalue.value === 'object')
     res.claim.mainsnak.datavalue.value.should.equal(value)
   })
 
