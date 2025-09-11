@@ -1,6 +1,7 @@
 import 'should'
 import { setReference } from '#lib/reference/set'
 import { guid, properties, hash, someInstance } from '#tests/unit/utils'
+import type { SpecialSnak } from '../../../src/lib/claim/special_snaktype'
 import type { PropertyId } from 'wikibase-sdk'
 
 describe('reference set', () => {
@@ -56,7 +57,7 @@ describe('reference set', () => {
       P2: 'Q1',
       P7: [
         'http://foo.bar',
-        { snaktype: 'somevalue' },
+        { snaktype: 'somevalue' } as SpecialSnak,
       ],
     }
     const params = { guid, snaks }

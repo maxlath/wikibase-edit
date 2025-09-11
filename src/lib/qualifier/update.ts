@@ -1,5 +1,5 @@
 import { flatten, values } from 'lodash-es'
-import { getEntityIdFromGuid, type Claim, type Guid, type PropertyId, type SimplifiedQualifier, type Statement } from 'wikibase-sdk'
+import { getEntityIdFromGuid, type Claim, type Guid, type PropertyId, type Statement } from 'wikibase-sdk'
 import { findSnak } from '../claim/find_snak.js'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
@@ -44,7 +44,7 @@ export async function updateQualifier (params: UpdateQualifierParams, config: Se
   }, config)
 }
 
-async function getSnakHash (guid: Guid, property: PropertyId, oldValue: SimplifiedQualifier, config) {
+async function getSnakHash (guid: Guid, property: PropertyId, oldValue: SimpifiedEditableQualifier, config) {
   const entityId = getEntityIdFromGuid(guid)
   const claims = await getEntityClaims(entityId, config)
   const claim = findClaim(claims, guid)

@@ -7,6 +7,7 @@ import { undesiredRes } from '#tests/integration/utils/utils'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString, randomNumber, assert } from '#tests/unit/utils'
 import WBEdit from '#root'
+import type { SpecialSnak } from '../../../src/lib/claim/special_snaktype'
 
 const wbEdit = WBEdit(config)
 const updateQualifier = wbEdit.qualifier.update
@@ -69,6 +70,8 @@ describe('qualifier update', function () {
     const res = await updateQualifier({ guid, property, oldValue, newValue })
     const qualifier = res.claim.qualifiers[property].slice(-1)[0]
     assert('datavalue' in qualifier)
+    assert(typeof qualifier.datavalue.value === 'object')
+    assert('id' in qualifier.datavalue.value)
     qualifier.datavalue.value.id.should.deepEqual(newValue)
   })
 
@@ -191,8 +194,8 @@ describe('qualifier update', function () {
   })
 
   it('should update a qualifier with a special snaktype', async () => {
-    const oldValue = { snaktype: 'novalue' }
-    const newValue = { snaktype: 'somevalue' }
+    const oldValue: SpecialSnak = { snaktype: 'novalue' }
+    const newValue: SpecialSnak = { snaktype: 'somevalue' }
     const { guid, property, qualifier } = await addQualifier({ datatype: 'string', value: oldValue })
     qualifier.snaktype.should.equal('novalue')
     const res = await updateQualifier({ guid, property, oldValue, newValue })

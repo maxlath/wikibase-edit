@@ -7,6 +7,7 @@ import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 import type { SpecialSnak } from '../../../src/lib/claim/special_snaktype'
+import type { CustomEditableTimeSnakValue } from '../../../src/lib/types/snaks'
 
 const wbEdit = WBEdit(config)
 
@@ -115,7 +116,7 @@ describe('claim create', function () {
       getSandboxItemId(),
       getSandboxPropertyId('time'),
     ])
-    const value = { time: '1402-11-12', calendar: 'julian' }
+    const value: CustomEditableTimeSnakValue = { time: '1402-11-12', calendar: 'julian' }
     const res = await wbEdit.claim.create({ id, property, value })
     assert('datavalue' in res.claim.mainsnak)
     assert(typeof res.claim.mainsnak.datavalue.value === 'object')

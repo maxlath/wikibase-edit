@@ -1,6 +1,7 @@
 import 'should'
 import config from 'config'
 import WBEdit from '#root'
+import { assert } from '../../unit/utils'
 
 const wbEdit = WBEdit(config)
 
@@ -33,6 +34,7 @@ xdescribe('set sitelink', () => {
     })
     res.success.should.equal(1)
     res.entity.id.should.equal('Q224124')
+    assert('removed' in res.entity.sitelinks.eswiki)
     res.entity.sitelinks.eswiki.removed.should.equal('')
   })
 })

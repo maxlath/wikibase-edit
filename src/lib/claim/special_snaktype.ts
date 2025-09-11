@@ -1,10 +1,7 @@
 import { newError } from '../error.js'
 
 export interface SpecialSnak {
-  // snaktype: 'novalue' | 'somevalue'
-  // Using a looser type, as literal values then required to set readonly flags to be valid
-  // ex: { snaktype: 'novalue } as const
-  snaktype: string
+  snaktype: 'novalue' | 'somevalue'
 }
 
 export function hasSpecialSnaktype (value: unknown): value is SpecialSnak {
