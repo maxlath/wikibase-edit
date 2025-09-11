@@ -7,7 +7,7 @@ const language = 'fr'
 describe('label', () => {
   it('should throw if not passed an entity', () => {
   // @ts-expect-error
-    setLabel.bind(null, {}).should.throw('invalid entity')
+    setLabel.bind(null, {}).should.throw('invalid entity id')
   })
 
   it('should throw if not passed a language', () => {

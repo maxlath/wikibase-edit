@@ -33,15 +33,23 @@ export function setReference (params: SetReferenceParams, properties: Properties
     snaks[property] = [ buildSnak(property, datatype, value, instance) ]
   }
 
-  if (hash) validateHash(hash)
-
-  const data = {
+  const data: SetReferenceData = {
     statement: guid,
     snaks: JSON.stringify(snaks),
-    reference: hash,
+  }
+
+  if (hash) {
+    validateHash(hash)
+    data.reference = hash
   }
 
   return { action: 'wbsetreference', data }
+}
+
+interface SetReferenceData {
+  statement: Guid
+  snaks: string
+  reference?: Hash
 }
 
 export interface SetReferenceResponse {

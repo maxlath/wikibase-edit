@@ -14,8 +14,7 @@ describe('set sitelink', () => {
     data.id.should.equal('Q123')
     data.linksite.should.equal('frwiki')
     data.linktitle.should.equal('Septembre')
-    assert('badges' in data)
-    should(data.badges).not.be.ok()
+    assert(!('badges' in data))
   })
 
   it('should reject without title', () => {

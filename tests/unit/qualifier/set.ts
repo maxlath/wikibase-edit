@@ -17,9 +17,9 @@ describe('qualifier set', () => {
     setQualifier.bind(null, params).should.throw('invalid guid')
   })
 
-  it('should rejected if not passed a property', () => {
+  it('should rejected if not passed a property id', () => {
     const params = { guid }
-    setQualifier.bind(null, params).should.throw('missing property')
+    setQualifier.bind(null, params).should.throw('missing property id')
   })
 
   it('should rejected if not passed a value', () => {

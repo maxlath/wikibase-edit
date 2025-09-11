@@ -16,8 +16,8 @@ describe('reference set', () => {
     .should.throw('invalid guid')
   })
 
-  it('should rejected if not passed a property', () => {
-    setReference.bind(null, { guid }, properties).should.throw('missing property')
+  it('should rejected if not passed a property id', () => {
+    setReference.bind(null, { guid }, properties).should.throw('missing property id')
   })
 
   it('should rejected if not passed a reference value', () => {

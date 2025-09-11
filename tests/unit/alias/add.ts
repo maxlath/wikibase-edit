@@ -5,9 +5,9 @@ import { assert, randomString, someEntityId } from '#tests/unit/utils'
 const language = 'it'
 
 describe('alias add', () => {
-  it('should reject if not passed an entity', () => {
+  it('should reject if not passed an entity id', () => {
     // @ts-expect-error
-    addAlias.bind(null, {}).should.throw('invalid entity')
+    addAlias.bind(null, {}).should.throw('invalid entity id')
   })
 
   it('should reject if not passed a language', () => {

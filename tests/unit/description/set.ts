@@ -7,7 +7,7 @@ const language = 'fr'
 describe('description', () => {
   it('should throw if not passed an entity', () => {
     // @ts-expect-error
-    setDescription.bind(null, {}).should.throw('invalid entity')
+    setDescription.bind(null, {}).should.throw('invalid entity id')
   })
 
   it('should throw if not passed a language', () => {
