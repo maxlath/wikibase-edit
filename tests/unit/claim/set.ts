@@ -1,6 +1,6 @@
 import 'should'
 import { setClaim } from '#lib/claim/set'
-import { guid, sandboxStringProp as property, properties } from '#tests/unit/utils'
+import { guid, sandboxStringProp as property, properties, someInstance } from '#tests/unit/utils'
 
 describe('claim set', () => {
   it('should set the action to wbsetclaim', () => {
@@ -8,7 +8,7 @@ describe('claim set', () => {
       guid,
       property,
       value: 'foo',
-    }, properties)
+    }, properties, someInstance)
     action.should.equal('wbsetclaim')
   })
 
@@ -17,7 +17,7 @@ describe('claim set', () => {
       guid,
       property,
       value: 'foo',
-    }, properties)
+    }, properties, someInstance)
     JSON.parse(data.claim).should.deepEqual({
       id: guid,
       type: 'statement',

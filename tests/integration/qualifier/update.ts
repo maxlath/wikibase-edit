@@ -5,7 +5,7 @@ import { getSandboxPropertyId, getSandboxClaimId, getSandboxItemId, createItem }
 import { addQualifier } from '#tests/integration/utils/sandbox_snaks'
 import { undesiredRes } from '#tests/integration/utils/utils'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString, randomNumber } from '#tests/unit/utils'
+import { randomString, randomNumber, assert } from '#tests/unit/utils'
 import WBEdit from '#root'
 
 const wbEdit = WBEdit(config)
@@ -23,6 +23,7 @@ describe('qualifier update', function () {
     const { guid, property } = await addQualifier({ datatype: 'string', value: oldValue })
     const res = await updateQualifier({ guid, property, oldValue, newValue })
     const updatedQualifier = res.claim.qualifiers[property].slice(-1)[0]
+    assert('datavalue' in updatedQualifier)
     updatedQualifier.datavalue.value.should.deepEqual(newValue)
   })
 
@@ -67,6 +68,7 @@ describe('qualifier update', function () {
     const { guid, property } = await addQualifier({ datatype: 'wikibase-item', value: oldValue })
     const res = await updateQualifier({ guid, property, oldValue, newValue })
     const qualifier = res.claim.qualifiers[property].slice(-1)[0]
+    assert('datavalue' in qualifier)
     qualifier.datavalue.value.id.should.deepEqual(newValue)
   })
 
@@ -76,6 +78,7 @@ describe('qualifier update', function () {
     const { guid, property } = await addQualifier({ datatype: 'monolingualtext', value: oldValue })
     const res = await updateQualifier({ guid, property, oldValue, newValue })
     const qualifier = res.claim.qualifiers[property].slice(-1)[0]
+    assert('datavalue' in qualifier)
     qualifier.datavalue.value.should.deepEqual(newValue)
   })
 
@@ -177,7 +180,10 @@ describe('qualifier update', function () {
     const { guid, property } = await addQualifier({ datatype: 'globe-coordinate', value: oldValue })
     const res = await updateQualifier({ guid, property, oldValue, newValue })
     const qualifier = res.claim.qualifiers[property].slice(-1)[0]
+    assert('datavalue' in qualifier)
     const { value } = qualifier.datavalue
+    assert(typeof value === 'object')
+    assert('latitude' in value)
     value.latitude.should.equal(newValue.latitude)
     value.longitude.should.equal(newValue.longitude)
     value.precision.should.equal(newValue.precision)

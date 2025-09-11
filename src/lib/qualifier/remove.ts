@@ -4,7 +4,7 @@ import type { Guid, Hash } from 'wikibase-sdk'
 
 export interface RemoveQualifierParams {
   guid: Guid
-  hash?: Hash
+  hash?: Hash | Hash[]
 }
 
 export function removeQualifier (params: RemoveQualifierParams) {

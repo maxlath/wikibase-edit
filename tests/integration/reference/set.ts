@@ -2,7 +2,7 @@ import 'should'
 import config from 'config'
 import { getSandboxClaimId, getSandboxPropertyId, getRefreshedClaim } from '#tests/integration/utils/sandbox_entities'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString } from '#tests/unit/utils'
+import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
 
 const wbEdit = WBEdit(config)
@@ -20,6 +20,7 @@ describe('reference set', function () {
     const value = randomString()
     const res = await setReference({ guid, property, value })
     res.success.should.equal(1)
+    assert('datavalue' in res.reference.snaks[property][0])
     res.reference.snaks[property][0].datavalue.value.should.equal(value)
   })
 
@@ -41,7 +42,11 @@ describe('reference set', function () {
     const res = await setReference({ guid, snaks })
     res.success.should.equal(1)
     res.reference.snaks[stringProperty][0].snaktype.should.equal('novalue')
+    assert('datavalue' in res.reference.snaks[stringProperty][1])
+    assert('datavalue' in res.reference.snaks[quantityProperty][0])
     res.reference.snaks[stringProperty][1].datavalue.value.should.equal(stringValue)
+    assert(typeof res.reference.snaks[quantityProperty][0].datavalue.value === 'object')
+    assert('amount' in res.reference.snaks[quantityProperty][0].datavalue.value)
     res.reference.snaks[quantityProperty][0].datavalue.value.amount.should.equal(`+${quantityValue}`)
   })
 
@@ -65,7 +70,11 @@ describe('reference set', function () {
       [quantityProperty]: quantityValue,
     }
     const res2 = await setReference({ guid, hash, snaks: updatedSnaks }, { summary: 'here' })
+    assert('datavalue' in res2.reference.snaks[stringProperty][0])
+    assert('datavalue' in res2.reference.snaks[quantityProperty][0])
     res2.reference.snaks[stringProperty][0].datavalue.value.should.equal(stringValue)
+    assert(typeof res2.reference.snaks[quantityProperty][0].datavalue.value === 'object')
+    assert('amount' in res2.reference.snaks[quantityProperty][0].datavalue.value)
     res2.reference.snaks[quantityProperty][0].datavalue.value.amount.should.equal(`+${quantityValue}`)
     const claim = await getRefreshedClaim(guid)
     claim.references.length.should.equal(initialClaim.references.length + 1)

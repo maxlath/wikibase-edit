@@ -1,13 +1,8 @@
 import { isPlainObject } from '../utils.js'
-import { parseCalendar, type CalendarAlias } from './parse_calendar.js'
-import type { TimeSnakDataValue } from 'wikibase-sdk'
+import { parseCalendar } from './parse_calendar.js'
+import type { CustomEditableTimeSnakValue } from '../types/snaks.js'
 
-type TimeSnakDataValueValue = TimeSnakDataValue['value']
-export interface CustomTimeSnakDataValueValue extends TimeSnakDataValueValue {
-  calendar: CalendarAlias
-}
-
-export function getTimeObject (value: CustomTimeSnakDataValueValue | string | number) {
+export function getTimeObject (value: CustomEditableTimeSnakValue | string | number) {
   let time, precision, calendar, calendarmodel, timezone, before, after
   if (isPlainObject(value)) {
     ({ time, precision, calendar, calendarmodel, timezone, before, after } = value)

@@ -1,19 +1,22 @@
 import 'should'
 import { addAlias } from '#lib/alias/add'
-import { randomString, someEntityId } from '#tests/unit/utils'
+import { assert, randomString, someEntityId } from '#tests/unit/utils'
 
 const language = 'it'
 
 describe('alias add', () => {
   it('should reject if not passed an entity', () => {
+    // @ts-expect-error
     addAlias.bind(null, {}).should.throw('invalid entity')
   })
 
   it('should reject if not passed a language', () => {
+    // @ts-expect-error
     addAlias.bind(null, { id: someEntityId }).should.throw('invalid language')
   })
 
   it('should reject if not passed an alias', () => {
+    // @ts-expect-error
     addAlias.bind(null, { id: someEntityId, language }).should.throw('empty alias array')
   })
 
@@ -21,6 +24,7 @@ describe('alias add', () => {
     const value = randomString()
     const { action, data } = addAlias({ id: someEntityId, language, value })
     action.should.equal('wbsetaliases')
+    assert('add' in data)
     data.add.should.deepEqual(value)
   })
 
@@ -28,6 +32,7 @@ describe('alias add', () => {
     const value = [ randomString(), randomString() ]
     const { action, data } = addAlias({ id: someEntityId, language, value })
     action.should.equal('wbsetaliases')
+    assert('add' in data)
     data.add.should.equal(value.join('|'))
   })
 })

@@ -53,6 +53,7 @@ type WbeditentityLexemeData = WbeditentityDataBase<RawEditableLexeme>
 type WbeditentityMediaInfoData = WbeditentityDataBase<RawEditableMediaInfo>
 type WbeditentityData = WbeditentityItemData | WbeditentityPropertyData | WbeditentityLexemeData | WbeditentityMediaInfoData
 
+// TODO: split function between raw and simplified mode, to simplify input typing
 export async function editEntity <P extends EditEntityParams = EditEntitySimplifiedModeParams> (inputParams: P, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig) {
   validateParameters(inputParams)
 

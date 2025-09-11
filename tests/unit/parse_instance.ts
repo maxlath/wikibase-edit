@@ -1,5 +1,6 @@
 import 'should'
 import parseInstance from '#lib/parse_instance'
+import type { SerializedConfig } from '../../src/lib/types/config'
 
 const instance = 'https://hello.bla'
 const apiEndpoint = `${instance}/w/api.php`
@@ -19,8 +20,8 @@ describe('parseInstance', () => {
   })
 
   it('should allow to customize the script path', () => {
-    const configA = { instance, wgScriptPath: 'foo' }
-    const configB = { instance, wgScriptPath: '/foo' }
+    const configA: Partial<SerializedConfig> = { instance, wgScriptPath: 'foo' }
+    const configB: Partial<SerializedConfig> = { instance, wgScriptPath: '/foo' }
     parseInstance(configA)
     configA.instanceApiEndpoint.should.equal(`${instance}/foo/api.php`)
     parseInstance(configB)

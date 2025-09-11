@@ -1,19 +1,22 @@
 import 'should'
 import { removeAlias } from '#lib/alias/remove'
-import { randomString, someEntityId } from '#tests/unit/utils'
+import { assert, randomString, someEntityId } from '#tests/unit/utils'
 
 const language = 'it'
 
 describe('alias remove', () => {
   it('should reject if not passed an entity', () => {
+    // @ts-expect-error
     removeAlias.bind(null, {}).should.throw('invalid entity')
   })
 
   it('should reject if not passed a language', () => {
+    // @ts-expect-error
     removeAlias.bind(null, { id: someEntityId }).should.throw('invalid language')
   })
 
   it('should reject if not passed an alias', () => {
+    // @ts-expect-error
     removeAlias.bind(null, { id: someEntityId, language }).should.throw('empty alias array')
   })
 
@@ -23,6 +26,7 @@ describe('alias remove', () => {
     const value = randomString()
     const { action, data } = removeAlias({ id: someEntityId, language, value })
     action.should.equal('wbsetaliases')
+    assert('remove' in data)
     data.remove.should.equal(value)
   })
 
@@ -30,6 +34,7 @@ describe('alias remove', () => {
     const value = [ randomString(), randomString() ]
     const { action, data } = removeAlias({ id: someEntityId, language, value })
     action.should.equal('wbsetaliases')
+    assert('remove' in data)
     data.remove.should.equal(value.join('|'))
   })
 })

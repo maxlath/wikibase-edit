@@ -6,14 +6,17 @@ const language = 'fr'
 
 describe('label', () => {
   it('should throw if not passed an entity', () => {
+  // @ts-expect-error
     setLabel.bind(null, {}).should.throw('invalid entity')
   })
 
   it('should throw if not passed a language', () => {
+  // @ts-expect-error
     setLabel.bind(null, { id: someEntityId }).should.throw('invalid language')
   })
 
   it('should throw if not passed a label', () => {
+  // @ts-expect-error
     setLabel.bind(null, { id: someEntityId, language }).should.throw('missing label')
   })
 

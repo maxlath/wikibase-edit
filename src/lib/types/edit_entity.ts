@@ -3,7 +3,7 @@ import type { EditableSnakValue } from './snaks.js'
 import type { SpecialSnak } from '../claim/special_snaktype.js'
 import type { Reconciliation } from '../entity/validate_reconciliation_object.js'
 import type { OverrideProperties } from 'type-fest'
-import type { Claim, Guid, Hash, Item, LanguageRecord, Lexeme, MediaInfo, Property, PropertyId, Rank, SimplifiedItem, SimplifiedLexeme, SimplifiedMediaInfo, SimplifiedProperty, SimplifiedPropertySnaks, SimplifiedReference, SimplifiedSnak, SimplifiedTerm, Site, SitelinkBadges, SitelinkTitle, SnakType } from 'wikibase-sdk'
+import type { Claim, Guid, Hash, Item, LanguageRecord, Lexeme, MediaInfo, Property, PropertyId, Rank, SimplifiedItem, SimplifiedLexeme, SimplifiedMediaInfo, SimplifiedProperty, SimplifiedReference, SimplifiedTerm, Site, SitelinkBadges, SitelinkTitle, SnakType } from 'wikibase-sdk'
 
 export interface EditableClaimExtras {
   remove?: boolean
@@ -18,6 +18,8 @@ export interface CustomSimplifiedEditableSnak {
 
 export type SimplifiedEditableSnak = string | number | CustomSimplifiedEditableSnak | EditableSnakValue | SpecialSnak
 export type SimpifiedEditableQualifier = SimplifiedEditableSnak
+
+export type SimplifiedEditablePropertySnaks = SimplifiedEditableSnak[]
 
 export interface CustomSimplifiedEditableClaim extends EditableClaimExtras {
   id?: Guid
@@ -36,7 +38,7 @@ export type SimplifiedEditableClaim = string | number | (EditableSnakValue & Edi
 export type SimplifiedEditablePropertyClaims = SimplifiedEditableClaim[]
 
 export type SimplifiedEditableClaims = Record<PropertyId, SimplifiedEditablePropertyClaims | SimplifiedEditableClaim>
-export type SimplifiedEditableSnaks = Record<PropertyId, SimplifiedPropertySnaks | SimplifiedSnak>
+export type SimplifiedEditableSnaks = Record<PropertyId, SimplifiedEditablePropertySnaks | SimplifiedEditableSnak>
 
 export type SimplifiedEditableQualifiers = Record<string, SimplifiedEditableSnak[] | SimplifiedEditableSnak>
 

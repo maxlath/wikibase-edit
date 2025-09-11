@@ -5,8 +5,10 @@ import { getSomeGuid } from '#tests/integration/utils/sandbox_entities'
 import { addClaim, addQualifier } from '#tests/integration/utils/sandbox_snaks'
 import { shouldNotBeCalled, getLastEditSummary } from '#tests/integration/utils/utils'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString } from '#tests/unit/utils'
+import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
+import type { SimplifiedEditableSnak } from '../../../src/lib/types/edit_entity'
+import type { Datatype } from 'wikibase-sdk'
 
 const wbEdit = WBEdit(config)
 const { move: moveQualifier } = wbEdit.qualifier
@@ -17,6 +19,7 @@ describe('qualifier move', function () {
 
   it('should reject missing guid', async () => {
     try {
+      // @ts-expect-error
       await moveQualifier({}).then(shouldNotBeCalled)
     } catch (err) {
       err.message.should.equal('missing claim guid')
@@ -51,6 +54,8 @@ describe('qualifier move', function () {
     const { id: newProperty } = await getProperty({ datatype: 'string', reserved: true })
     const { claim } = await moveQualifier({ guid, oldProperty, newProperty })
     should(claim.qualifiers[oldProperty]).not.be.ok()
+    assert('datavalue' in claim.qualifiers[newProperty][0])
+    assert('datavalue' in claim.qualifiers[newProperty][1])
     claim.qualifiers[newProperty][0].datavalue.value.should.equal(valueA)
     claim.qualifiers[newProperty][1].datavalue.value.should.equal(valueB)
   })
@@ -62,6 +67,8 @@ describe('qualifier move', function () {
     await addQualifier({ guid, property: oldProperty, value: valueB })
     const { id: newProperty } = await getProperty({ datatype: 'string', reserved: true })
     const { claim } = await moveQualifier({ guid, hash, oldProperty, newProperty })
+    assert('datavalue' in claim.qualifiers[oldProperty][0])
+    assert('datavalue' in claim.qualifiers[newProperty][0])
     claim.qualifiers[oldProperty][0].datavalue.value.should.equal(valueB)
     claim.qualifiers[newProperty][0].datavalue.value.should.equal(valueA)
   })
@@ -208,11 +215,19 @@ describe('qualifier move', function () {
   })
 })
 
-const testTypeConversion = async ({ originalType, originalValue, targetType, targetValue }) => {
+interface TestTypeConversionParams {
+  originalType: Datatype
+  originalValue: SimplifiedEditableSnak
+  targetType: Datatype
+  targetValue?: SimplifiedEditableSnak
+}
+
+async function testTypeConversion ({ originalType, originalValue, targetType, targetValue }: TestTypeConversionParams) {
   const { id: oldProperty } = await getProperty({ datatype: originalType })
   const { id: newProperty } = await getProperty({ datatype: targetType })
   const { guid, hash } = await addQualifier({ property: oldProperty, value: originalValue })
   const { claim } = await moveQualifier({ guid, hash, oldProperty, newProperty })
   const movedQualifier = claim.qualifiers[newProperty].slice(-1)[0]
+  assert('datavalue' in movedQualifier)
   movedQualifier.datavalue.value.should.deepEqual(targetValue)
 }

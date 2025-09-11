@@ -7,6 +7,8 @@ import { getProperty } from './utils/get_property.js'
 import { getSandboxItemId, getSandboxPropertyId, createItem } from './utils/sandbox_entities.js'
 import { addClaim, addQualifier } from './utils/sandbox_snaks.js'
 import { getLastEditSummary } from './utils/utils.js'
+import type { RequestConfig } from '../../src/lib/types/config.js'
+import type { ItemId } from 'wikibase-sdk'
 
 const { instance, credentials } = config
 const params = summary => ({ summary, labels: { en: randomString() } })
@@ -116,7 +118,8 @@ describe('summary', function () {
       const { guid, property } = await addQualifier({ datatype: 'string', value: oldValue })
       const summary = randomString()
       await wbEdit.qualifier.update({ guid, property, oldValue, newValue, summary })
-      const comment = await getLastEditSummary(guid.split('$')[0])
+      const id = guid.split('$')[0] as ItemId
+      const comment = await getLastEditSummary(id)
       comment.should.endWith(summary)
     })
 
@@ -128,13 +131,14 @@ describe('summary', function () {
       const { id: newProperty } = await getProperty({ datatype: 'string', reserved: true })
       const summary = randomString()
       await wbEdit.qualifier.move({ guid, hash, oldProperty, newProperty, summary })
-      const comment = await getLastEditSummary(guid.split('$')[0])
+      const id = guid.split('$')[0] as ItemId
+      const comment = await getLastEditSummary(id)
       comment.should.endWith(summary)
     })
   })
 })
 
-const postAndGetEditSummary = (wbEdit, reqConfig, paramsArg) => {
+function postAndGetEditSummary (wbEdit: ReturnType<typeof WBEdit>, reqConfig?: RequestConfig, paramsArg?) {
   return wbEdit.entity.create(params(paramsArg), reqConfig)
   .then(getLastEditSummary)
 }

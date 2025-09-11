@@ -8,12 +8,13 @@ import type { WikibaseEditAPI } from '../index.js'
 import type { SetQualifierResponse } from './set.js'
 import type { BaseRevId } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
+import type { SimpifiedEditableQualifier } from '../types/edit_entity.js'
 
 export interface UpdateQualifierParams {
   guid: Guid
   property: PropertyId
-  oldValue: SimplifiedQualifier
-  newValue: SimplifiedQualifier
+  oldValue: SimpifiedEditableQualifier
+  newValue: SimpifiedEditableQualifier
   summary?: string
   baserevid?: BaseRevId
 }

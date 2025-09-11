@@ -7,6 +7,7 @@ export interface TermActionParams {
   id: EntityId
   language: WikimediaLanguageCode
   value: string
+  summary?: string
   baserevid?: BaseRevId
 }
 

@@ -1,7 +1,8 @@
 import { findEntityTypeFromId } from 'wikibase-sdk'
-import { getTimeObject, type CustomTimeSnakDataValueValue } from './get_time_object.js'
+import { getTimeObject } from './get_time_object.js'
 import { parseQuantity } from './quantity.js'
 import type { AbsoluteUrl } from '../types/common.js'
+import type { CustomEditableTimeSnakValue } from '../types/snaks.js'
 import type { Claim, EntityId, MonolingualTextSnakDataValue, PropertyId, Snak, SnakDataValue, SnakType, WikibaseEntityIdSnakDataValue, SnakDatavalueType, SnakDataValueByDatavalueType } from 'wikibase-sdk'
 
 // The difference in builders are due to the different expectations of the Wikibase API
@@ -13,7 +14,7 @@ export const singleClaimBuilders = {
   entity (entityId: EntityId) {
     return JSON.stringify(buildEntitySnakDataValue(entityId))
   },
-  time (value: CustomTimeSnakDataValueValue | string | number) {
+  time (value: CustomEditableTimeSnakValue | string | number) {
     return JSON.stringify(getTimeObject(value))
   },
   // Property type specific builders

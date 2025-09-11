@@ -10,7 +10,7 @@ export interface SetReferenceParams {
   hash?: Hash
   snaks?: SimplifiedEditableSnaks
   /** @deprecated use the `snaks` object instead, to be able to set a single reference with several snaks  */
-  property: PropertyId
+  property?: PropertyId
   /** @deprecated use the `snaks` object instead, to be able to set a single reference with several snaks  */
   value?: SimplifiedEditableReference
 }

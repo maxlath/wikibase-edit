@@ -1,6 +1,7 @@
 import should from 'should'
 import { setSitelink } from '#lib/sitelink/set'
 import { shouldNotBeCalled } from '#tests/integration/utils/utils'
+import { assert } from '../utils'
 
 describe('set sitelink', () => {
   it('should return wbsetsitelink params', () => {
@@ -13,11 +14,13 @@ describe('set sitelink', () => {
     data.id.should.equal('Q123')
     data.linksite.should.equal('frwiki')
     data.linktitle.should.equal('Septembre')
+    assert('badges' in data)
     should(data.badges).not.be.ok()
   })
 
   it('should reject without title', () => {
     try {
+      // @ts-expect-error
       const res = setSitelink({
         id: 'Q123',
         site: 'frwiki',
@@ -52,6 +55,7 @@ describe('set sitelink', () => {
     data.id.should.equal('Q123')
     data.linksite.should.equal('frwiki')
     data.linktitle.should.equal('Septembre')
+    assert('badges' in data)
     data.badges.should.equal('Q17437796|Q17437798')
   })
 
@@ -66,6 +70,7 @@ describe('set sitelink', () => {
     data.id.should.equal('Q123')
     data.linksite.should.equal('frwiki')
     data.linktitle.should.equal('Septembre')
+    assert('badges' in data)
     data.badges.should.equal('Q17437796|Q17437798')
   })
 })

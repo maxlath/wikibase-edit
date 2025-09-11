@@ -1,7 +1,7 @@
 import config from 'config'
 import { yellow } from 'tiny-chalk'
-import { WBK, type EntityId } from 'wikibase-sdk'
-import { newError } from '#lib/error'
+import { WBK, type Entity, type EntityId } from 'wikibase-sdk'
+import { newError, type ContextualizedError } from '#lib/error'
 import { customFetch } from '#lib/request/fetch'
 import { resolveTitle } from '#lib/resolve_title'
 import type { AbsoluteUrl } from '#lib/types/common'
@@ -50,9 +50,8 @@ export async function getEntityHistory (id: EntityId, customInstance?: AbsoluteU
   return revisions.sort(chronologically)
 }
 
-export async function getLastEditSummary (id: EntityId) {
-  // @ts-expect-error
-  if (typeof id === 'object' && id.entity) id = id.entity.id
+export async function getLastEditSummary (_id: EntityId | { entity: Entity }) {
+  const id = typeof _id === 'string' ? _id : _id.entity.id
   const revision = await getLastRevision(id)
   return revision.comment
 }
@@ -66,7 +65,7 @@ export const undesiredRes = done => res => {
 // Same but for async/await tests that don't use done
 export function shouldNotBeCalled (res) {
   console.warn(yellow('undesired positive res:'), res)
-  const err = new Error('function was expected not to be called')
+  const err: ContextualizedError = new Error('function was expected not to be called')
   err.name = 'shouldNotBeCalled'
   err.context = { res }
   throw err

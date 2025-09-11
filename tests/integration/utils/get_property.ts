@@ -3,6 +3,8 @@ import wbkFactory, { type Datatype, type Property } from 'wikibase-sdk'
 import { customFetch } from '#lib/request/fetch'
 import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
+import type { EditEntitySimplifiedModeParams } from '../../../src/lib/entity/edit'
+import type { AbsoluteUrl } from '../../../src/lib/types/common'
 
 const wbk = wbkFactory({ instance: config.instance })
 const sandboxProperties = {}
@@ -29,7 +31,7 @@ async function _getProperty (datatype: Datatype) {
 }
 
 async function findOnWikibase (pseudoPropertyId: string) {
-  const url = wbk.searchEntities({ search: pseudoPropertyId, type: 'property' })
+  const url = wbk.searchEntities({ search: pseudoPropertyId, type: 'property' }) as AbsoluteUrl
   const body = await customFetch(url).then(res => res.json())
   const firstWbResult = body.search[0]
   if (firstWbResult) return firstWbResult
@@ -45,7 +47,7 @@ async function createProperty (datatype: Datatype) {
       // already exist but wasn't found due to a problem in ElasticSearch
       en: `${pseudoPropertyId} (${randomString()})`,
     },
-  })
+  } as EditEntitySimplifiedModeParams)
   return res.entity as Property
 }
 
