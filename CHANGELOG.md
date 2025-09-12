@@ -1,6 +1,14 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 8.0.0 - 2025-09-12
+* **BREAKING CHANGE**: converted code base to TypeScript, which required to change some file paths; breaking submodules imports (ex `import { resolveTitle } from  'wikibase-edit/lib/resolve_title.js'` won't work anymore).
+* **BREAKING CHANGE**: Remove deprecated function aliases:
+  * `claim.add` => `claim.create`
+  * `qualifier.add` => `qualifier.set`
+  * `reference.add` => `reference.set`
+* Exporting types
+
 ## 7.2.0 - 2024-11-04
 * Add support for [Extended Date/Time Format](https://github.com/ProfessionalWiki/WikibaseEdtf), thank to [@larjohn's PR](https://github.com/maxlath/wikibase-edit/pull/84)
 
