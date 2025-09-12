@@ -62,7 +62,7 @@ describe('claim update', function () {
       }
     })
 
-    it.only('should reject claim updates from values when several claims match', async () => {
+    it('should reject claim updates from values when several claims match', async () => {
       const oldValue = randomString()
       const newValue = randomString()
       const [ res1 ] = await Promise.all([
@@ -79,11 +79,11 @@ describe('claim update', function () {
 
     it('should update a monolingual text claim being provided just the text', async () => {
       const oldValue = { text: randomString(), language: 'fr' }
-      const newValue = { text: randomString(), language: 'de' }
+      const newValueText = randomString()
       const { id, guid, property } = await addClaim({ datatype: 'monolingualtext', value: oldValue })
-      const res = await updateClaim({ id, property, oldValue: oldValue.text, newValue: newValue.text })
+      const res = await updateClaim({ id, property, oldValue: oldValue.text, newValue: newValueText })
       res.claim.id.should.equal(guid)
-      simplify.claim(res.claim, { keepRichValues: true }).should.deepEqual(newValue)
+      simplify.claim(res.claim, { keepRichValues: true }).should.deepEqual({ text: newValueText, language: oldValue.language })
     })
   })
 

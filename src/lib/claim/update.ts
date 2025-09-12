@@ -1,4 +1,4 @@
-import { isGuid, getEntityIdFromGuid, type Guid, type PropertyId, type Rank, type Claim } from 'wikibase-sdk'
+import { isGuid, getEntityIdFromGuid, type Guid, type PropertyId, type Rank, type Claim, type Snak } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { findSnak } from './find_snak.js'
@@ -9,6 +9,7 @@ import type { WikibaseEditAPI } from '../index.js'
 import type { BaseRevId } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
 import type { RawEditableEntity, SimplifiedEditableSnak } from '../types/edit_entity.js'
+import type { EditableMonolingualTextSnakValue, EditableSnakValue } from '../types/snaks.js'
 
 export interface UpdateClaimParams {
   id?: RawEditableEntity['id']
@@ -67,8 +68,7 @@ export async function updateClaim (params: UpdateClaimParams, config: Serialized
       simplifiedClaim.snaktype = newValue.snaktype
       delete simplifiedClaim.value
     } else {
-      // @ts-expect-error
-      simplifiedClaim.value = newValue
+      simplifiedClaim.value = formatUpdatedClaimValue(newValue, claim.mainsnak)
     }
   }
 
@@ -87,6 +87,19 @@ export async function updateClaim (params: UpdateClaimParams, config: Serialized
   const updatedClaim = entity[statementsKey][property].find(isGuidClaim(guid))
   // Mimick claim actions responses
   return { claim: updatedClaim, success }
+}
+
+function formatUpdatedClaimValue (newValue: SimplifiedEditableSnak, updatedSnak: Snak) {
+  if (!('datavalue' in updatedSnak)) {
+    throw newError('expected snak to have datavalue', 500, { snak: updatedSnak })
+  }
+  const { type } = updatedSnak.datavalue
+  if (type === 'monolingualtext' && typeof newValue === 'string') {
+    const { language } = updatedSnak.datavalue.value
+    return { text: newValue, language } as EditableMonolingualTextSnakValue
+  } else {
+    return newValue as EditableSnakValue
+  }
 }
 
 export interface UpdateClaimResponse {

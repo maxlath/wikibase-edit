@@ -52,7 +52,11 @@ const comparatorsByDatavalueType = {
   monolingualtext: (snak: SnakBaseWithValue & { datavalue: MonolingualTextSnakDataValue }, searchedValue: MonolingualTextSnakDataValue['value']) => {
     const value = snak.datavalue.value
     const { text, language } = value
-    return language === searchedValue.language && text === searchedValue.text
+    if (typeof searchedValue === 'string') {
+      return text === searchedValue
+    } else {
+      return language === searchedValue.language && text === searchedValue.text
+    }
   },
   quantity: (snak: (SnakBaseWithValue & { datavalue: QuantitySnakDataValue }), searchedValue: QuantitySnakDataValue['value'] | number) => {
     const value = snak.datavalue.value

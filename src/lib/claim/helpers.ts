@@ -1,6 +1,7 @@
 import { flatten, values } from 'lodash-es'
-import { simplifyClaim, type Claim, type Claims, type CustomSimplifiedClaim, type Guid, type Statement, type Statements } from 'wikibase-sdk'
+import { simplifyClaim, type Claim, type Claims, type Guid, type Statement, type Statements } from 'wikibase-sdk'
 import { newError } from '../error.js'
+import type { CustomSimplifiedEditableClaim } from '../types/edit_entity.js'
 
 const simplifyOptions = {
   keepIds: true,
@@ -21,5 +22,5 @@ export function findClaimByGuid (claims: Claims | Statements, guid: Guid): Claim
 export const isGuidClaim = (guid: Guid) => (claim: Claim) => claim.id === guid
 
 export function simplifyClaimForEdit (claim: Claim) {
-  return simplifyClaim(claim, simplifyOptions) as CustomSimplifiedClaim
+  return simplifyClaim(claim, simplifyOptions) as Required<CustomSimplifiedEditableClaim>
 }
