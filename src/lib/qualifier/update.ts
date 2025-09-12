@@ -1,6 +1,7 @@
 import { flatten, values } from 'lodash-es'
 import { getEntityIdFromGuid, type Claim, type Guid, type PropertyId, type Statement } from 'wikibase-sdk'
 import { findSnak } from '../claim/find_snak.js'
+import { formatUpdatedSnakValue } from '../claim/update.js'
 import { newError } from '../error.js'
 import { getEntityClaims } from '../get_entity.js'
 import { validateGuid, validatePropertyId, validateSnakValue } from '../validate.js'
@@ -8,13 +9,13 @@ import type { WikibaseEditAPI } from '../index.js'
 import type { SetQualifierResponse } from './set.js'
 import type { BaseRevId } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
-import type { SimpifiedEditableQualifier } from '../types/edit_entity.js'
+import type { EditableSnakValue } from '../types/snaks.js'
 
 export interface UpdateQualifierParams {
   guid: Guid
   property: PropertyId
-  oldValue: SimpifiedEditableQualifier
-  newValue: SimpifiedEditableQualifier
+  oldValue: EditableSnakValue
+  newValue: EditableSnakValue
   summary?: string
   baserevid?: BaseRevId
 }
@@ -26,25 +27,29 @@ export async function updateQualifier (params: UpdateQualifierParams, config: Se
   validatePropertyId(property)
   const datatype = config.properties[property]
   validateSnakValue(property, datatype, oldValue)
-  validateSnakValue(property, datatype, newValue)
 
   if (oldValue === newValue) {
     throw newError('same value', 400, { oldValue, newValue })
   }
 
-  // Get current value snak hash
-  const hash = await getSnakHash(guid, property, oldValue, config)
+  const qualifier = await getSnak(guid, property, oldValue, config)
+  const { hash } = qualifier
+
+  const formattedNewValue = formatUpdatedSnakValue(newValue, qualifier)
+
+  validateSnakValue(property, datatype, formattedNewValue)
+
   return API.qualifier.set({
     guid,
     hash,
     property,
-    value: newValue,
+    value: formattedNewValue,
     summary: 'summary' in params ? params.summary : config.summary,
     baserevid: params.baserevid || config.baserevid,
   }, config)
 }
 
-async function getSnakHash (guid: Guid, property: PropertyId, oldValue: SimpifiedEditableQualifier, config) {
+async function getSnak (guid: Guid, property: PropertyId, oldValue: UpdateQualifierParams['oldValue'], config: SerializedConfig) {
   const entityId = getEntityIdFromGuid(guid)
   const claims = await getEntityClaims(entityId, config)
   const claim = findClaim(claims, guid)
@@ -60,7 +65,7 @@ async function getSnakHash (guid: Guid, property: PropertyId, oldValue: Simpifie
     const actualValues = propSnaks ? propSnaks.map(getSnakValue) : null
     throw newError('qualifier not found', 400, { guid, property, expectedValue: oldValue, actualValues })
   }
-  return qualifier.hash
+  return qualifier
 }
 
 function findClaim <T extends (Claim | Statement)> (claims: Record<PropertyId, T[]>, guid: Guid): T | void {

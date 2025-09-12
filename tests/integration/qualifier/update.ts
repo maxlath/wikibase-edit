@@ -85,6 +85,16 @@ describe('qualifier update', function () {
     qualifier.datavalue.value.should.deepEqual(newValue)
   })
 
+  it('should update a monolingual text claim being provided just the text', async () => {
+    const oldValue = { text: randomString(), language: 'fr' }
+    const newValueText = randomString()
+    const { guid, property } = await addQualifier({ datatype: 'monolingualtext', value: oldValue })
+    const res = await updateQualifier({ guid, property, oldValue, newValue: newValueText })
+    const qualifier = res.claim.qualifiers[property].slice(-1)[0]
+    assert('datavalue' in qualifier)
+    qualifier.datavalue.value.should.deepEqual({ text: newValueText, language: oldValue.language })
+  })
+
   it('should update a quantity claim with a unit', async () => {
     const oldValue = { amount: randomNumber(), unit: 'Q1' }
     const newValue = { amount: randomNumber(), unit: 'Q2' }

@@ -1,5 +1,5 @@
 import { newError } from '../error.js'
-import { hasSpecialSnaktype, type SpecialSnak } from './special_snaktype.js'
+import { hasSpecialSnaktype } from './special_snaktype.js'
 import type { Reconciliation } from '../entity/validate_reconciliation_object.js'
 import type { WikibaseEditAPI } from '../index.js'
 import type { BaseRevId } from '../types/common.js'
@@ -11,7 +11,7 @@ import type { Claim, PropertyId, Rank } from 'wikibase-sdk'
 export interface CreateClaimParams {
   id: RawEditableEntity['id']
   property: PropertyId
-  value: EditableSnakValue | SpecialSnak
+  value: EditableSnakValue
   qualifiers?: SimplifiedEditableQualifiers
   references?: SimplifiedEditableReferences
   rank?: Rank

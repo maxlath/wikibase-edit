@@ -1,6 +1,5 @@
 import type { BaseRevId } from './common.js'
 import type { EditableSnakValue } from './snaks.js'
-import type { SpecialSnak } from '../claim/special_snaktype.js'
 import type { Reconciliation } from '../entity/validate_reconciliation_object.js'
 import type { OverrideProperties } from 'type-fest'
 import type { Claim, Guid, Hash, Item, LanguageRecord, Lexeme, MediaInfo, Property, PropertyId, Rank, SimplifiedItem, SimplifiedLexeme, SimplifiedMediaInfo, SimplifiedProperty, SimplifiedReference, SimplifiedTerm, Site, SitelinkBadges, SitelinkTitle, SnakType } from 'wikibase-sdk'
@@ -16,7 +15,7 @@ export interface CustomSimplifiedEditableSnak {
   hash?: Hash
 }
 
-export type SimplifiedEditableSnak = string | number | CustomSimplifiedEditableSnak | EditableSnakValue | SpecialSnak
+export type SimplifiedEditableSnak = string | number | CustomSimplifiedEditableSnak | EditableSnakValue
 export type SimpifiedEditableQualifier = SimplifiedEditableSnak
 
 export type SimplifiedEditablePropertySnaks = SimplifiedEditableSnak[]
