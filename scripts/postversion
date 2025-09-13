@@ -8,9 +8,11 @@ export const name = \"\(.name)\"
 export const version = \"\(.version)\"
 export const homepage = \"\(.homepage)\"
 export const issues = \"\(.bugs.url)\"
-"' -cr > ./assets/metadata.js
+"' -cr > ./src/assets/metadata.ts
 
-git add --force ./assets/metadata.js
+eslint --fix ./src/assets/metadata.ts
+
+git add --force ./src/assets/metadata.ts
 git commit --amend --no-edit
 
 version=$(cat package.json | jq .version -cr)
