@@ -61,24 +61,24 @@ export interface CustomSimplifiedEditableSitelinks {
 
 export type SimplifiedEditableSitelinks = Record<Site, SitelinkTitle | CustomSimplifiedEditableSitelinks | null>
 
-export type SimplifiedEditableItem = OverrideProperties<SimplifiedItem, {
-  aliases?: SimplifiedEditableAliases
-  claims?: SimplifiedEditableClaims
-  sitelinks?: SimplifiedEditableSitelinks
-}>
+export type SimplifiedEditableItem = Partial<OverrideProperties<SimplifiedItem, {
+  aliases: SimplifiedEditableAliases
+  claims: SimplifiedEditableClaims
+  sitelinks: SimplifiedEditableSitelinks
+}>>
 
-export type SimplifiedEditableProperty = OverrideProperties<SimplifiedProperty, {
-  aliases?: SimplifiedEditableAliases
-  claims?: SimplifiedEditableClaims
-}>
+export type SimplifiedEditableProperty = Partial<OverrideProperties<SimplifiedProperty, {
+  aliases: SimplifiedEditableAliases
+  claims: SimplifiedEditableClaims
+}>>
 
-export type SimplifiedEditableLexeme = OverrideProperties<SimplifiedLexeme, {
-  claims?: SimplifiedEditableClaims
-}>
+export type SimplifiedEditableLexeme = Partial<OverrideProperties<SimplifiedLexeme, {
+  claims: SimplifiedEditableClaims
+}>>
 
-export type SimplifiedEditableMediaInfo = OverrideProperties<SimplifiedMediaInfo, {
-  statements?: SimplifiedEditableClaims
-}>
+export type SimplifiedEditableMediaInfo = Partial<OverrideProperties<SimplifiedMediaInfo, {
+  statements: SimplifiedEditableClaims
+}>>
 
 export type SimplifiedEditableAliases = LanguageRecord<readonly SimplifiedTerm[] | SimplifiedTerm>
 
