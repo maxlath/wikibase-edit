@@ -106,3 +106,7 @@ export default function WBEdit (generalConfig: GeneralConfig = {}) {
 }
 
 export type WikibaseEditAPI = ReturnType<typeof WBEdit>
+
+export * from './types/config.js'
+export * from './types/edit_entity.js'
+export * from './types/snaks.js'
