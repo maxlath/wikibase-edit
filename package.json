@@ -1,6 +1,6 @@
 {
   "name": "wikibase-edit",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "description": "Edit Wikibase from NodeJS",
   "type": "module",
   "main": "./dist/src/lib/index.js",
