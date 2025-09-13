@@ -3,7 +3,7 @@
   "version": "8.0.0",
   "description": "Edit Wikibase from NodeJS",
   "type": "module",
-  "main": "./dist/lib/index.js",
+  "main": "./dist/src/lib/index.js",
   "exports": {
     ".": {
       "types": "./dist/src/lib/index.d.ts",
