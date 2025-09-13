@@ -7,7 +7,7 @@ import { getProperty } from './utils/get_property.js'
 import { getSandboxItemId, getSandboxPropertyId, createItem } from './utils/sandbox_entities.js'
 import { addClaim, addQualifier } from './utils/sandbox_snaks.js'
 import { getLastEditSummary } from './utils/utils.js'
-import type { RequestConfig } from '../../src/lib/types/config.js'
+import type { RequestConfig } from '#lib/types/config'
 import type { ItemId } from 'wikibase-sdk'
 
 const { instance, credentials } = config

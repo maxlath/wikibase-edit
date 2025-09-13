@@ -3,8 +3,8 @@ import wbkFactory, { type Datatype, type Property } from 'wikibase-sdk'
 import { customFetch } from '#lib/request/fetch'
 import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
-import type { EditEntitySimplifiedModeParams } from '../../../src/lib/entity/edit'
-import type { AbsoluteUrl } from '../../../src/lib/types/common'
+import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
+import type { AbsoluteUrl } from '#lib/types/common'
 
 const wbk = wbkFactory({ instance: config.instance })
 const sandboxProperties = {}

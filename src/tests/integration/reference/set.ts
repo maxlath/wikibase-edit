@@ -4,7 +4,7 @@ import { getSandboxClaimId, getSandboxPropertyId, getRefreshedClaim } from '#tes
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
-import type { SpecialSnak } from '../../../src/lib/claim/special_snaktype'
+import type { SpecialSnak } from '#lib/claim/special_snaktype'
 
 const wbEdit = WBEdit(config)
 const setReference = wbEdit.reference.set

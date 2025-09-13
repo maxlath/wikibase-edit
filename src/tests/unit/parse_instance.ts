@@ -1,6 +1,6 @@
 import 'should'
 import parseInstance from '#lib/parse_instance'
-import type { SerializedConfig } from '../../src/lib/types/config'
+import type { SerializedConfig } from '#lib/types/config'
 
 const instance = 'https://hello.bla'
 const apiEndpoint = `${instance}/w/api.php`

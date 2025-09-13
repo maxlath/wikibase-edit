@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": ".",
+    "rootDir": "./src",
     "outDir": "./dist",
     "target": "es2022",
     "module": "esnext",
@@ -41,14 +41,13 @@
   },
   "include": [
     "src/**/*",
-    "tests/**/*",
   ],
   "paths": {
     "#lib/*": [
       "./src/lib/*.js",
     ],
     "#tests/*": [
-      "./tests/*.js",
+      "./src/tests/*.js",
     ],
   },
 }

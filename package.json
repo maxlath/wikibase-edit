@@ -8,6 +8,10 @@
     ".": {
       "types": "./dist/src/lib/index.d.ts",
       "import": "./dist/src/lib/index.js"
+    },
+    "#*": {
+      "lib": "./dist/src/lib/*.js",
+      "tests": "./dist/src/tests/*.js"
     }
   },
   "files": [
@@ -20,8 +24,8 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "mocha $MOCHA_OPTIONS tests/unit/*.ts tests/unit/*/*.ts",
-    "test:integration": "mocha $MOCHA_OPTIONS tests/integration/*.ts tests/integration/*/*.ts",
+    "test:unit": "mocha $MOCHA_OPTIONS src/tests/unit/*.ts src/tests/unit/*/*.ts",
+    "test:integration": "mocha $MOCHA_OPTIONS src/tests/integration/*.ts src/tests/integration/*/*.ts",
     "prepublishOnly": "npm run lint && MOCHA_OPTIONS='' npm test",
     "prepack": "npm run build && npm run lint && npm test",
     "postpublish": "git push --tags",
@@ -85,7 +89,7 @@
   },
   "imports": {
     "#lib/*": "./src/lib/*.js",
-    "#tests/*": "./tests/*.js",
+    "#tests/*": "./src/tests/*.js",
     "#root": "./src/lib/index.js"
   }
 }
