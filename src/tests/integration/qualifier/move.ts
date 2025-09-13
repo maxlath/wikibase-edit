@@ -1,5 +1,6 @@
 import config from 'config'
 import should from 'should'
+import type { SimplifiedEditableSnak } from '#lib/types/edit_entity'
 import { getProperty } from '#tests/integration/utils/get_property'
 import { getSomeGuid } from '#tests/integration/utils/sandbox_entities'
 import { addClaim, addQualifier } from '#tests/integration/utils/sandbox_snaks'
@@ -7,7 +8,6 @@ import { shouldNotBeCalled, getLastEditSummary } from '#tests/integration/utils/
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
-import type { SimplifiedEditableSnak } from '#lib/types/edit_entity'
 import type { Datatype } from 'wikibase-sdk'
 
 const wbEdit = WBEdit(config)

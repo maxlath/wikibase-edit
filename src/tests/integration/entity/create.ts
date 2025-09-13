@@ -1,10 +1,10 @@
 import 'should'
 import config from 'config'
+import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
 import { getSandboxPropertyId } from '#tests/integration/utils/sandbox_entities'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
-import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
 
 const wbEdit = WBEdit(config)
 

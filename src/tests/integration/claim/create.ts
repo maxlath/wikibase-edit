@@ -1,13 +1,13 @@
 import 'should'
 import config from 'config'
 import { isGuid } from 'wikibase-sdk'
+import type { SpecialSnak } from '#lib/claim/special_snaktype'
+import type { CustomEditableTimeSnakValue } from '#lib/types/snaks'
 import { getSandboxPropertyId, getSandboxItemId } from '#tests/integration/utils/sandbox_entities'
 import { shouldNotBeCalled } from '#tests/integration/utils/utils'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import { assert, randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
-import type { SpecialSnak } from '#lib/claim/special_snaktype'
-import type { CustomEditableTimeSnakValue } from '#lib/types/snaks'
 
 const wbEdit = WBEdit(config)
 

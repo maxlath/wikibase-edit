@@ -1,10 +1,10 @@
 import config from 'config'
 import wbkFactory, { type Datatype, type Property } from 'wikibase-sdk'
+import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
 import { customFetch } from '#lib/request/fetch'
+import type { AbsoluteUrl } from '#lib/types/common'
 import { randomString } from '#tests/unit/utils'
 import WBEdit from '#root'
-import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
-import type { AbsoluteUrl } from '#lib/types/common'
 
 const wbk = wbkFactory({ instance: config.instance })
 const sandboxProperties = {}

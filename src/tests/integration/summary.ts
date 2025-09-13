@@ -1,5 +1,6 @@
 import 'should'
 import config from 'config'
+import type { RequestConfig } from '#lib/types/config'
 import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
 import WBEdit from '#root'
 import { randomString } from '../unit/utils.js'
@@ -7,7 +8,6 @@ import { getProperty } from './utils/get_property.js'
 import { getSandboxItemId, getSandboxPropertyId, createItem } from './utils/sandbox_entities.js'
 import { addClaim, addQualifier } from './utils/sandbox_snaks.js'
 import { getLastEditSummary } from './utils/utils.js'
-import type { RequestConfig } from '#lib/types/config'
 import type { ItemId } from 'wikibase-sdk'
 
 const { instance, credentials } = config
