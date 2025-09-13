@@ -22,7 +22,7 @@
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "mocha $MOCHA_OPTIONS tests/unit/*.ts tests/unit/*/*.ts",
     "test:integration": "mocha $MOCHA_OPTIONS tests/integration/*.ts tests/integration/*/*.ts",
-    "prepublishOnly": "npm run lint && npm test",
+    "prepublishOnly": "npm run lint && MOCHA_OPTIONS='' npm test",
     "prepack": "npm run build && npm run lint && npm test",
     "postpublish": "git push --tags",
     "postversion": "./scripts/postversion",
