@@ -84,6 +84,7 @@ export async function moveQualifier (params: MoveQualifierParams, config: Serial
   const { statementsKey } = config
 
   const entityData: EditEntityRawModeParams = {
+    rawMode: true,
     id: currentEntityId,
     [statementsKey]: [ claim ],
     summary: 'summary' in params ? params.summary : (config.summary || generateSummary(guid, oldProperty, newProperty, hash)),

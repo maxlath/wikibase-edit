@@ -156,6 +156,7 @@ describe('entity edit', function () {
       claim.mainsnak.property = otherStringPropertyId
       claim.mainsnak.datavalue.value = claimValueB
       const res = await wbEdit.entity._rawEdit({
+        rawMode: true,
         id,
         labels,
         claims: [ removedClaim, claim ],

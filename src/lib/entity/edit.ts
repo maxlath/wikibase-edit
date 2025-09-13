@@ -20,7 +20,7 @@ interface EditEntityParamsBase {
   baserevid?: BaseRevId
 }
 
-export type EditEntityRawModeParams = EditEntityParamsBase & Partial<RawEditableEntity>
+export type EditEntityRawModeParams = EditEntityParamsBase & Partial<RawEditableEntity> & { rawMode: true }
 export type EditEntitySimplifiedModeParams = EditEntityParamsBase & Partial<SimplifiedEditableEntity>
 export type EditEntityParams = EditEntityRawModeParams | EditEntitySimplifiedModeParams
 
@@ -48,19 +48,20 @@ type WbeditentityMediaInfoData = WbeditentityDataBase<RawEditableMediaInfo>
 type WbeditentityData = WbeditentityItemData | WbeditentityPropertyData | WbeditentityLexemeData | WbeditentityMediaInfoData
 
 export async function editEntity (inputParams: EditEntitySimplifiedModeParams, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig) {
-  return _editEntity(inputParams, properties, instance, config, false)
+  return _editEntity(inputParams, properties, instance, config)
 }
 
 export async function _rawEditEntity (inputParams: EditEntityRawModeParams, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig) {
-  return _editEntity(inputParams, properties, instance, config, true)
+  return _editEntity(inputParams, properties, instance, config)
 }
 
-async function _editEntity <P extends EditEntityParams> (inputParams: P, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig, rawMode = false) {
+async function _editEntity (inputParams: EditEntitySimplifiedModeParams | EditEntityRawModeParams, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig) {
   validateParameters(inputParams)
 
   let { id } = inputParams
   const { create, type = 'item', clear, reconciliation } = inputParams
   const datatype = 'datatype' in inputParams ? inputParams.datatype : undefined
+  const rawMode = 'rawMode' in inputParams ? inputParams.rawMode : false
 
   if (!arrayIncludes(editableTypes, type)) {
     throw newError('invalid entity type', { type })

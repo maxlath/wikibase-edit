@@ -1,9 +1,10 @@
-import { isPropertyId, type Datatype, type Property, type PropertyId, type WbGetEntitiesResponse } from 'wikibase-sdk'
 import { newError } from '../error.js'
 import WBK from '../get_instance_wikibase_sdk.js'
 import { getJson } from '../request/get_json.js'
+import { validatePropertyId } from '../validate.js'
 import type { AbsoluteUrl } from '../types/common.js'
 import type { SerializedConfig } from '../types/config.js'
+import type { Datatype, Property, PropertyId, WbGetEntitiesResponse } from 'wikibase-sdk'
 
 export type PropertiesDatatypes = Record<PropertyId, Datatype>
 
@@ -12,9 +13,7 @@ const propertiesByInstance: Record<AbsoluteUrl, PropertiesDatatypes> = {}
 export async function fetchPropertiesDatatypes (config: SerializedConfig, propertyIds: PropertyId[] = []) {
   let { instance, properties } = config
 
-  propertyIds.forEach(propertyId => {
-    if (!isPropertyId(propertyId)) throw newError('invalid property id', { propertyId })
-  })
+  propertyIds.forEach(validatePropertyId)
 
   if (!properties) {
     propertiesByInstance[instance] = propertiesByInstance[instance] || {}

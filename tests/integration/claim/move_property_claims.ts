@@ -24,7 +24,7 @@ describe('move property claims', async () => {
       // @ts-expect-error
       await moveClaims({ propertyClaimsId: 'Q1~P31' }).then(shouldNotBeCalled)
     } catch (err) {
-      err.message.should.equal('invalid property id')
+      err.message.should.equal('missing property id')
     }
   })
 

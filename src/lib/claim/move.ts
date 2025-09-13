@@ -80,6 +80,7 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
   }
 
   const currentEntityData: EditEntityRawModeParams = {
+    rawMode: true,
     id: originEntityId,
     claims: movedClaims.map((claim: Claim | Statement) => ({ id: claim.id, remove: true })),
     summary: params.summary || config.summary || generateCurrentEntitySummary(guid, originEntityId, originPropertyId, targetEntityId, targetPropertyId),
@@ -103,6 +104,7 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
   } else {
     if (baserevid) throw newError('commands editing multiple entities can not have a baserevid', 400, params)
     const targetEntityData: EditEntityRawModeParams = {
+      rawMode: true,
       id: targetEntityId,
       claims: movedClaims,
       summary: params.summary || config.summary || generateTargetEntitySummary(guid, originEntityId, originPropertyId, targetEntityId, targetPropertyId),

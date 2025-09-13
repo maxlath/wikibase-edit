@@ -1,5 +1,5 @@
 import { newError } from './error.js'
-import fetchUsedPropertiesDatatypes from './properties/fetch_used_properties_datatypes.js'
+import { fetchUsedPropertiesDatatypes } from './properties/fetch_used_properties_datatypes.js'
 import { initializeConfigAuth } from './request/initialize_config_auth.js'
 import { post } from './request/post.js'
 import { resolveTitle } from './resolve_title.js'

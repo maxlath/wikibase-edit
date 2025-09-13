@@ -1,5 +1,5 @@
 import { newError } from './error.js'
-import fetchUsedPropertiesDatatypes from './properties/fetch_used_properties_datatypes.js'
+import { fetchUsedPropertiesDatatypes } from './properties/fetch_used_properties_datatypes.js'
 import { validateAndEnrichConfig } from './validate_and_enrich_config.js'
 import type { addBadge } from './badge/add.js'
 import type { removeBadge } from './badge/remove.js'

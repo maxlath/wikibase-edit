@@ -88,3 +88,7 @@ export function objectValues <Obj extends object> (obj: Obj) {
 export function objectKeys <Obj extends object> (obj: Obj): (keyof Obj)[] {
   return Object.keys(obj) as (keyof Obj)[]
 }
+
+export function hasTruthy (params: object, attribute: string): params is Exclude<{ [attribute]: unknown }, { [attribute]: false | undefined | null | 0 | '' }> {
+  return attribute in params && params[attribute]
+}
