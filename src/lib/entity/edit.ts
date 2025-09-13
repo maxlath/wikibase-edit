@@ -20,14 +20,8 @@ interface EditEntityParamsBase {
   baserevid?: BaseRevId
 }
 
-export type EditEntityRawModeParams = EditEntityParamsBase & Partial<RawEditableEntity> & {
-  rawMode: true
-}
-
-export type EditEntitySimplifiedModeParams = EditEntityParamsBase & Partial<SimplifiedEditableEntity> & {
-  rawMode?: false
-}
-
+export type EditEntityRawModeParams = EditEntityParamsBase & Partial<RawEditableEntity>
+export type EditEntitySimplifiedModeParams = EditEntityParamsBase & Partial<SimplifiedEditableEntity>
 export type EditEntityParams = EditEntityRawModeParams | EditEntitySimplifiedModeParams
 
 const editableTypes = [
@@ -53,12 +47,19 @@ type WbeditentityLexemeData = WbeditentityDataBase<RawEditableLexeme>
 type WbeditentityMediaInfoData = WbeditentityDataBase<RawEditableMediaInfo>
 type WbeditentityData = WbeditentityItemData | WbeditentityPropertyData | WbeditentityLexemeData | WbeditentityMediaInfoData
 
-// TODO: split function between raw and simplified mode, to simplify input typing
-export async function editEntity <P extends EditEntityParams = EditEntitySimplifiedModeParams> (inputParams: P, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig) {
+export async function editEntity (inputParams: EditEntitySimplifiedModeParams, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig) {
+  return _editEntity(inputParams, properties, instance, config, false)
+}
+
+export async function _rawEditEntity (inputParams: EditEntityRawModeParams, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig) {
+  return _editEntity(inputParams, properties, instance, config, true)
+}
+
+async function _editEntity <P extends EditEntityParams> (inputParams: P, properties: PropertiesDatatypes, instance: AbsoluteUrl, config: SerializedConfig, rawMode = false) {
   validateParameters(inputParams)
 
   let { id } = inputParams
-  const { create, type = 'item', clear, rawMode, reconciliation } = inputParams
+  const { create, type = 'item', clear, reconciliation } = inputParams
   const datatype = 'datatype' in inputParams ? inputParams.datatype : undefined
 
   if (!arrayIncludes(editableTypes, type)) {

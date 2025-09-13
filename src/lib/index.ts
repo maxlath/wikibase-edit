@@ -13,7 +13,7 @@ import { updateClaim, type UpdateClaimParams, type UpdateClaimResponse } from '.
 import { setDescription } from './description/set.js'
 import { createEntity, type CreateEntityParams, type CreateEntityResponse } from './entity/create.js'
 import { deleteEntity, type DeleteEntityParams, type DeleteEntityResponse } from './entity/delete.js'
-import { editEntity, type EditEntityParams, type EditEntityResponse } from './entity/edit.js'
+import { editEntity, _rawEditEntity, type EditEntityResponse, type EditEntityRawModeParams, type EditEntitySimplifiedModeParams } from './entity/edit.js'
 import { mergeEntity, type MergeEntityParams, type MergeEntityResponse } from './entity/merge.js'
 import { newError } from './error.js'
 import { setLabel } from './label/set.js'
@@ -67,9 +67,10 @@ export default function WBEdit (generalConfig: GeneralConfig = {}) {
     },
     entity: {
       create: requestWrapper<CreateEntityParams, CreateEntityResponse>(createEntity, generalConfig),
-      edit: requestWrapper<EditEntityParams, EditEntityResponse>(editEntity, generalConfig),
+      edit: requestWrapper<EditEntitySimplifiedModeParams, EditEntityResponse>(editEntity, generalConfig),
       merge: requestWrapper<MergeEntityParams, MergeEntityResponse>(mergeEntity, generalConfig),
       delete: requestWrapper<DeleteEntityParams, DeleteEntityResponse>(deleteEntity, generalConfig),
+      _rawEdit: requestWrapper<EditEntityRawModeParams, EditEntityResponse>(_rawEditEntity, generalConfig),
     },
     sitelink: {
       set: requestWrapper<SetSitelinkParams, SetSitelinkResponse>(setSitelink, generalConfig),

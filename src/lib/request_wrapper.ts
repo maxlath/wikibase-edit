@@ -14,7 +14,7 @@ import type { setClaim } from './claim/set.js'
 import type { setDescription } from './description/set.js'
 import type { createEntity } from './entity/create.js'
 import type { deleteEntity } from './entity/delete.js'
-import type { editEntity } from './entity/edit.js'
+import type { _rawEditEntity, editEntity } from './entity/edit.js'
 import type { mergeEntity } from './entity/merge.js'
 import type { setLabel } from './label/set.js'
 import type { removeQualifier } from './qualifier/remove.js'
@@ -25,7 +25,7 @@ import type { setSitelink } from './sitelink/set.js'
 import type { BaseRevId } from './types/common.js'
 import type { GeneralConfig, RequestConfig, SerializedConfig } from './types/config.js'
 
-type ActionFunction = typeof addAlias | typeof removeAlias | typeof setAlias | typeof removeClaim | typeof setClaim | typeof setDescription | typeof createEntity | typeof deleteEntity | typeof editEntity | typeof mergeEntity | typeof setLabel | typeof removeQualifier | typeof setQualifier | typeof removeReference | typeof setReference | typeof setSitelink
+type ActionFunction = typeof addAlias | typeof removeAlias | typeof setAlias | typeof removeClaim | typeof setClaim | typeof setDescription | typeof createEntity | typeof deleteEntity | typeof editEntity | typeof mergeEntity | typeof setLabel | typeof removeQualifier | typeof setQualifier | typeof removeReference | typeof setReference | typeof setSitelink | typeof _rawEditEntity
 
 // Params could be captured with Parameters<ActionFunction>[0], but the resulting typing isn't great
 export function requestWrapper <Params extends object, Response extends object, F extends ActionFunction = ActionFunction> (actionFn: F, generalConfig: GeneralConfig) {

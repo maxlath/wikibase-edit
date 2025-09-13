@@ -80,7 +80,6 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
   }
 
   const currentEntityData: EditEntityRawModeParams = {
-    rawMode: true,
     id: originEntityId,
     claims: movedClaims.map((claim: Claim | Statement) => ({ id: claim.id, remove: true })),
     summary: params.summary || config.summary || generateCurrentEntitySummary(guid, originEntityId, originPropertyId, targetEntityId, targetPropertyId),
@@ -99,18 +98,17 @@ export async function moveClaims (params: MoveClaimParams, config: SerializedCon
   if (originEntityId === targetEntityId) {
     currentEntityData.claims.push(...movedClaims)
     currentEntityData.baserevid = baserevid
-    const res = await API.entity.edit(currentEntityData, config)
+    const res = await API.entity._rawEdit(currentEntityData, config)
     return [ res ]
   } else {
     if (baserevid) throw newError('commands editing multiple entities can not have a baserevid', 400, params)
     const targetEntityData: EditEntityRawModeParams = {
-      rawMode: true,
       id: targetEntityId,
       claims: movedClaims,
       summary: params.summary || config.summary || generateTargetEntitySummary(guid, originEntityId, originPropertyId, targetEntityId, targetPropertyId),
     }
-    const removeClaimsRes = await API.entity.edit(currentEntityData, config)
-    const addClaimsRes = await API.entity.edit(targetEntityData, config)
+    const removeClaimsRes = await API.entity._rawEdit(currentEntityData, config)
+    const addClaimsRes = await API.entity._rawEdit(targetEntityData, config)
     return [ removeClaimsRes, addClaimsRes ]
   }
 }

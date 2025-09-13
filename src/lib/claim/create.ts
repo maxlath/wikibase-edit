@@ -51,7 +51,6 @@ export async function createClaim (params: CreateClaimParams, config: Serialized
   }
 
   // Using wbeditentity, as the endpoint is more complete
-  // @ts-expect-error
   const { entity, success } = await API.entity.edit(data, config)
 
   const newClaim: Claim = entity[statementsKey][property].slice(-1)[0]

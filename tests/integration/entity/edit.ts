@@ -155,8 +155,7 @@ describe('entity edit', function () {
       const removedClaim = { id: guid, remove: true }
       claim.mainsnak.property = otherStringPropertyId
       claim.mainsnak.datavalue.value = claimValueB
-      const res = await wbEdit.entity.edit({
-        rawMode: true,
+      const res = await wbEdit.entity._rawEdit({
         id,
         labels,
         claims: [ removedClaim, claim ],
