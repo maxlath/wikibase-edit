@@ -1,5 +1,5 @@
-import type { CalendarAlias } from '../claim/parse_calendar'
-import type { SpecialSnak } from '../claim/special_snaktype'
+import type { CalendarAlias } from '#lib/claim/parse_calendar'
+import type { SpecialSnak } from '#lib/claim/special_snaktype'
 import type { GlobeCoordinateSnakDataValue, MonolingualTextSnakDataValue, StringSnakDataValue, TimeSnakDataValue, WikibaseEntityIdSnakDataValue } from 'wikibase-sdk'
 
 export type CustomEditableGlobeCoordinateSnakValue = Pick<GlobeCoordinateSnakDataValue['value'], 'latitude' | 'longitude'> & Partial<Omit<GlobeCoordinateSnakDataValue['value'], 'latitude' | 'longitude'>>

@@ -1,4 +1,4 @@
-import type { AbsoluteUrl } from '../types/common'
+import type { AbsoluteUrl } from '#lib/types/common'
 
 const wdUrlBase = 'http://www.wikidata.org/entity/'
 const gregorian = `${wdUrlBase}Q1985727`
