@@ -4,6 +4,11 @@
   "description": "Edit Wikibase from NodeJS",
   "type": "module",
   "main": "./dist/src/lib/index.js",
+  "imports": {
+    "#lib/*": "./dist/lib/*.js",
+    "#tests/*": "./tests/*.js",
+    "#root": "./dist/lib/index.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/src/lib/index.d.ts",
@@ -82,10 +87,5 @@
   },
   "engines": {
     "node": ">= 18"
-  },
-  "imports": {
-    "#lib/*": "./src/lib/*.js",
-    "#tests/*": "./tests/*.js",
-    "#root": "./src/lib/index.js"
   }
 }
