@@ -104,7 +104,7 @@ async function _editEntity (inputParams: EditEntitySimplifiedModeParams | EditEn
 
   for (const [ attribute, types ] of objectEntries(attributesPerEntityType)) {
     if (arrayIncludes(types, params.type)) {
-      if (attribute in inputParams) {
+      if (attribute in inputParams && inputParams[attribute] != null) {
         const inputParam = inputParams[attribute]
         if (rawMode) {
           params.data[attribute] = inputParam
