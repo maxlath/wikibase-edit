@@ -43,7 +43,17 @@ export async function customFetch (url: AbsoluteUrl, { timeout, ...options }: Cu
       body: obfuscateBody({ url, body }),
     })
   }
-  return fetchWithTimeout(url, options, timeout)
+  try {
+    return await fetchWithTimeout(url, options, timeout)
+  } catch (err) {
+    if (err.type === 'aborted') {
+      const rephrasedErr = new Error('request timeout')
+      rephrasedErr.cause = err
+      throw rephrasedErr
+    } else {
+      throw err
+    }
+  }
 }
 
 // Based on https://stackoverflow.com/questions/46946380/fetch-api-request-timeout#57888548
