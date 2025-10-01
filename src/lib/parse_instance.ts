@@ -1,3 +1,4 @@
+import { getStatementsKey } from 'wikibase-sdk'
 import { newError } from './error.js'
 
 export default config => {
@@ -19,8 +20,4 @@ export default config => {
 
   config.instanceApiEndpoint = `${config.instance}/${wgScriptPath}/api.php`
   config.statementsKey = getStatementsKey(instance)
-}
-
-export function getStatementsKey (instance) {
-  return instance.includes('commons.wikimedia.org') ? 'statements' : 'claims'
 }
