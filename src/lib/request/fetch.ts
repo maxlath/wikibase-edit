@@ -36,6 +36,7 @@ export type HttpRequestAgent = HttpAgent | HttpsAgent
 
 export async function customFetch (url: AbsoluteUrl, { timeout, ...options }: CustomFetchOptions = {}) {
   options.agent = options.agent || agent
+  options.headers['accept-encoding'] = 'gzip,deflate'
   if (debugMode) {
     const { method = 'get', headers, body } = options
     debug('request', method.toUpperCase(), url, {
