@@ -69,7 +69,7 @@ function fetchWithTimeout (url: AbsoluteUrl, options: CustomFetchOptions, timeou
   })
   const timeout = setTimeout(() => controller.abort(), timeoutMs)
   return promise.finally(() => clearTimeout(timeout))
-};
+}
 
 function obfuscateHeaders (headers: HttpHeaders) {
   const obfuscatedHeadersEntries = Object.entries(headers).map(([ name, value ]) => [ name.toLowerCase(), value ])

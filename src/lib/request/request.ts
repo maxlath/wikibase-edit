@@ -18,8 +18,8 @@ export interface RequestParams {
   httpRequestAgent?: HttpRequestAgent
 }
 
-export async function request (verb: HttpMethod, params: RequestParams) {
-  const method = verb || 'get'
+export async function request (method: HttpMethod, params: RequestParams) {
+  method ??= 'get'
   const { url, body, oauth: oauthTokens, headers, autoRetry = true, httpRequestAgent } = params
   let maxlag
   if (typeof body === 'object' && 'maxlag' in body) {
@@ -52,7 +52,7 @@ export async function request (verb: HttpMethod, params: RequestParams) {
       if (autoRetry === false) throw err
       if (errorIsWorthARetry(err)) {
         const delaySeconds = getRetryDelay(err.headers) * attempts
-        retryWarn(verb, url, err, delaySeconds, attempts++, maxlag)
+        retryWarn(method, url, err, delaySeconds, attempts++, maxlag)
         await wait(delaySeconds * 1000)
         return tryRequest()
       } else {
@@ -72,13 +72,14 @@ export interface APIResponseError {
 }
 
 function errorIsWorthARetry (err) {
-  if (errorsWorthARetry.has(err.name) || errorsWorthARetry.has(err.type) || errorsCodeWorthARetry.has(err.code || err.cause?.code)) return true
+  if (errorsWorthARetry.has(err.name) || errorsWorthARetry.has(err.type) || errorsCodeWorthARetry.has(err.code)) return true
   // failed-save might be a recoverable error from the server
   // See https://github.com/maxlath/wikibase-cli/issues/150
   if (err.name === 'failed-save') {
     const { messages } = err.body.error
     return !messages.some(isNonRecoverableFailedSave)
   }
+  if (err.cause) return errorIsWorthARetry(err.cause)
   return false
 }
 
@@ -93,6 +94,9 @@ const errorsWorthARetry = new Set([
 
 const errorsCodeWorthARetry = new Set([
   'ECONNREFUSED',
+  'ENETUNREACH',
+  'ENOTFOUND',
+  'ETIMEDOUT',
   'UND_ERR_CONNECT_TIMEOUT',
 ])
 
@@ -108,10 +112,10 @@ function getRetryDelay (headers) {
   else return defaultRetryDelay
 }
 
-function retryWarn (verb, url, err, delaySeconds, attempts, maxlag) {
-  verb = verb.toUpperCase()
+function retryWarn (method, url, err, delaySeconds, attempts, maxlag) {
+  method = method.toUpperCase()
   const maxlagStr = typeof maxlag === 'number' ? `${maxlag}s` : maxlag
-  console.warn(`[wikibase-edit][WARNING] ${verb} ${url}
-    ${err.message}
+  console.warn(`[wikibase-edit][WARNING] ${method} ${url}
+    ${err.message}${err.cause ? ` (cause: ${err.cause.message})` : ''}
     retrying in ${delaySeconds}s (attempt: ${attempts}, maxlag: ${maxlagStr})`)
 }
