@@ -1,8 +1,7 @@
-// Log full objects
-require('util').inspect.defaultOptions.depth = null
+import { inspect } from 'node:util'
+inspect.defaultOptions.depth = null
 
-module.exports = {
-  // initConfig
+export default {
   instance: 'http://localhost:8181',
   statementsKey: 'claims',
   credentials: {
