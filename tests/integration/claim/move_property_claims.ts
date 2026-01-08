@@ -1,11 +1,11 @@
 import config from 'config'
 import should from 'should'
-import { getProperty } from '#tests/integration/utils/get_property'
-import { createItem, getSomeItemId } from '#tests/integration/utils/sandbox_entities'
-import { addClaim } from '#tests/integration/utils/sandbox_snaks'
-import { shouldNotBeCalled, getLastEditSummary } from '#tests/integration/utils/utils'
-import { assert, randomString } from '#tests/unit/utils'
-import WBEdit from '#root'
+import WBEdit from '../../../src/lib/index.js'
+import { assert, randomString } from '../../unit/utils.js'
+import { getProperty } from '../utils/get_property.js'
+import { createItem, getSomeItemId } from '../utils/sandbox_entities.js'
+import { addClaim } from '../utils/sandbox_snaks.js'
+import { shouldNotBeCalled, getLastEditSummary } from '../utils/utils.js'
 import type { PropertyClaimsId } from 'wikibase-sdk'
 
 const wbEdit = WBEdit(config)

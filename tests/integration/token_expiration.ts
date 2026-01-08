@@ -1,10 +1,10 @@
 import 'should'
 import config from 'config'
-import { getSandboxItemId } from '#tests/integration/utils/sandbox_entities'
-import { wait } from '#tests/integration/utils/utils'
-import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString } from '#tests/unit/utils'
-import WBEdit from '#root'
+import WBEdit from '../../src/lib/index.js'
+import { randomString } from '../unit/utils.js'
+import { getSandboxItemId } from './utils/sandbox_entities.js'
+import { wait } from './utils/utils.js'
+import { waitForInstance } from './utils/wait_for_instance.js'
 
 const { instance, credentials, credentialsAlt } = config
 const language = 'fr'

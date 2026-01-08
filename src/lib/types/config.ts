@@ -1,7 +1,7 @@
-import type { PropertiesDatatypes } from '#lib/properties/fetch_properties_datatypes'
-import type { HttpRequestAgent } from '#lib/request/fetch'
-import type { getAuthDataFactory } from '#lib/request/get_auth_data'
-import type { AbsoluteUrl, BaseRevId, MaxLag, Tags } from '#lib/types/common'
+import type { PropertiesDatatypes } from '../properties/fetch_properties_datatypes.js'
+import type { HttpRequestAgent } from '../request/fetch.js'
+import type { getAuthDataFactory } from '../request/get_auth_data.js'
+import type { AbsoluteUrl, BaseRevId, MaxLag, Tags } from '../types/common.js'
 import type { OverrideProperties } from 'type-fest'
 
 export interface UsernameAndPassword {
@@ -24,6 +24,9 @@ export interface GeneralConfig {
    * @example https://www.wikidata.org
    */
   instance?: AbsoluteUrl
+
+  /** @deprecated */
+  wikibaseInstance?: AbsoluteUrl
 
   /**
    * The instance script path, used to find the API endpoint

@@ -1,6 +1,6 @@
 import 'should'
 import nock from 'nock'
-import { request } from '#lib/request/request'
+import { request } from '../../src/lib/request/request.js'
 import { shouldNotBeCalled, rethrowShouldNotBeCalledErrors } from '../integration/utils/utils.js'
 
 describe('request', () => {

@@ -1,13 +1,12 @@
 import config from 'config'
 import wbkFactory, { type Claim, type Entity, type Guid, type Item, type Datatype, type EntityWithClaims, type ItemId } from 'wikibase-sdk'
-import { customFetch } from '#lib/request/fetch'
-import type { AbsoluteUrl } from '#lib/types/common'
-import type { SimplifiedEditableEntity } from '#lib/types/edit_entity'
-import { objectValues } from '#lib/utils'
-import type { addClaim as addClaimT } from '#tests/integration/utils/sandbox_snaks'
-import { randomString } from '#tests/unit/utils'
-import WBEdit from '#root'
+import WBEdit, { type SimplifiedEditableEntity } from '../../../src/lib/index.js'
+import { customFetch } from '../../../src/lib/request/fetch.js'
+import { objectValues } from '../../../src/lib/utils.js'
+import { randomString } from '../../unit/utils.js'
 import { getProperty } from './get_property.js'
+import type { AbsoluteUrl } from '../../../src/lib/types/common.js'
+import type { addClaim as addClaimT } from '../utils/sandbox_snaks.js'
 
 const wbk = wbkFactory({ instance: config.instance })
 const { getEntityIdFromGuid } = wbk
@@ -16,7 +15,7 @@ const wbEdit = WBEdit(config)
 // Working around the circular dependency
 let addClaim: typeof addClaimT
 async function lateRequire () {
-  ({ addClaim } = await import('#tests/integration/utils/sandbox_snaks'))
+  ({ addClaim } = await import('./sandbox_snaks.js'))
 }
 setTimeout(lateRequire, 0)
 

@@ -1,6 +1,6 @@
 import 'should'
-import { setLabel } from '#lib/label/set'
-import { randomString, someEntityId } from '#tests/unit/utils'
+import { setLabel } from '../../../src/lib/label/set.js'
+import { randomString, someEntityId } from '../utils.js'
 
 const language = 'fr'
 

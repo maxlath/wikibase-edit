@@ -1,9 +1,9 @@
 import config from 'config'
 import should from 'should'
-import { getSandboxItemId, getRefreshedEntity } from '#tests/integration/utils/sandbox_entities'
-import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString } from '#tests/unit/utils'
-import WBEdit from '#root'
+import WBEdit from '../../../src/lib/index.js'
+import { randomString } from '../../unit/utils.js'
+import { getSandboxItemId, getRefreshedEntity } from '../utils/sandbox_entities.js'
+import { waitForInstance } from '../utils/wait_for_instance.js'
 
 const wbEdit = WBEdit(config)
 const language = 'fr'

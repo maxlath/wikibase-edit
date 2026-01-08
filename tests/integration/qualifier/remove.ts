@@ -1,9 +1,9 @@
 import 'should'
 import config from 'config'
-import { addQualifier } from '#tests/integration/utils/sandbox_snaks'
-import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString } from '#tests/unit/utils'
-import WBEdit from '#root'
+import WBEdit from '../../../src/lib/index.js'
+import { randomString } from '../../unit/utils.js'
+import { addQualifier } from '../utils/sandbox_snaks.js'
+import { waitForInstance } from '../utils/wait_for_instance.js'
 
 const wbEdit = WBEdit(config)
 const removeQualifier = wbEdit.qualifier.remove

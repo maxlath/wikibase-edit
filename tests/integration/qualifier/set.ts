@@ -1,9 +1,9 @@
 import 'should'
 import config from 'config'
-import { getSandboxClaimId, getSandboxPropertyId } from '#tests/integration/utils/sandbox_entities'
-import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { assert, randomString } from '#tests/unit/utils'
-import WBEdit from '#root'
+import WBEdit from '../../../src/lib/index.js'
+import { assert, randomString } from '../../unit/utils.js'
+import { getSandboxClaimId, getSandboxPropertyId } from '../utils/sandbox_entities.js'
+import { waitForInstance } from '../utils/wait_for_instance.js'
 
 const wbEdit = WBEdit(config)
 const setQualifier = wbEdit.qualifier.set

@@ -1,9 +1,9 @@
 import 'should'
 import config from 'config'
-import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
-import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString } from '#tests/unit/utils'
-import WBEdit from '#root'
+import WBEdit from '../../../src/lib/index.js'
+import { randomString } from '../../unit/utils.js'
+import { waitForInstance } from '../utils/wait_for_instance.js'
+import type { EditEntitySimplifiedModeParams } from '../../../src/lib/entity/edit.js'
 
 const wbEdit = WBEdit(config)
 

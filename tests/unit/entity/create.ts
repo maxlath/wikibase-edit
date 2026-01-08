@@ -1,8 +1,8 @@
 import 'should'
 import config from 'config'
-import { createEntity as _createEntity } from '#lib/entity/create'
-import { shouldNotBeCalled } from '#tests/integration/utils/utils'
-import { randomString, properties } from '#tests/unit/utils'
+import { createEntity as _createEntity } from '../../../src/lib/entity/create.js'
+import { shouldNotBeCalled } from '../../integration/utils/utils.js'
+import { randomString, properties } from '../utils.js'
 
 const { instance } = config
 

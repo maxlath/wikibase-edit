@@ -1,11 +1,11 @@
 import 'should'
 import config from 'config'
-import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
-import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
+import WBEdit from '../../../src/lib/index.js'
+import { assert, randomString } from '../../unit/utils.js'
+import { waitForInstance } from '../utils/wait_for_instance.js'
+import type { EditEntitySimplifiedModeParams } from '../../../src/lib/entity/edit.js'
 // Use credentialsAlt as the OAuth token might miss the permission to delete pages
 // thus getting a 'permissiondenied' error
-import { assert, randomString } from '#tests/unit/utils'
-import WBEdit from '#root'
 
 const { instance, credentialsAlt } = config
 

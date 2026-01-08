@@ -1,6 +1,6 @@
 import 'should'
-import parseInstance from '#lib/parse_instance'
-import type { SerializedConfig } from '../../src/lib/types/config'
+import { parseInstance } from '../../src/lib/parse_instance.js'
+import type { RequestConfig, SerializedConfig } from '../../src/lib/types/config.js'
 
 const instance = 'https://hello.bla'
 const apiEndpoint = `${instance}/w/api.php`
@@ -13,8 +13,8 @@ describe('parseInstance', () => {
   it('should return an instance and sparql endpoint', () => {
     const configA = { instance }
     const configB = { instance: apiEndpoint }
-    parseInstance(configA)
-    parseInstance(configB)
+    parseInstance(configA as RequestConfig)
+    parseInstance(configB as RequestConfig)
     configA.instance.should.equal(instance)
     configB.instance.should.equal(instance)
   })

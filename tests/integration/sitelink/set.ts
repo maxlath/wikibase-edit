@@ -1,7 +1,7 @@
 import 'should'
 import config from 'config'
-import WBEdit from '#root'
-import { assert } from '../../unit/utils'
+import WBEdit from '../../../src/lib/index.js'
+import { assert } from '../../unit/utils.js'
 
 const wbEdit = WBEdit(config)
 

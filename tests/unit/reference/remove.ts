@@ -1,6 +1,6 @@
 import 'should'
-import { removeReference } from '#lib/reference/remove'
-import { guid, hash } from '#tests/unit/utils'
+import { removeReference } from '../../../src/lib/reference/remove.js'
+import { guid, hash } from '../utils.js'
 
 describe('reference remove', () => {
   it('should set the action to wbremovereferences', () => {

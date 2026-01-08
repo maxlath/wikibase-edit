@@ -1,6 +1,6 @@
 import 'should'
-import { removeQualifier } from '#lib/qualifier/remove'
-import { guid, hash } from '#tests/unit/utils'
+import { removeQualifier } from '../../../src/lib/qualifier/remove.js'
+import { guid, hash } from '../utils.js'
 
 describe('qualifier remove', () => {
   it('should set the action to wbremoveclaims', () => {

@@ -1,9 +1,9 @@
 import base64 from 'crypto-js/enc-base64.js'
 import hmacSHA1 from 'crypto-js/hmac-sha1.js'
 import OAuth from 'oauth-1.0a'
-import type { HttpMethod } from '#lib/request/fetch'
-import type { AbsoluteUrl } from '#lib/types/common'
-import type { OAuthCredentials } from '#lib/types/config'
+import type { HttpMethod } from '../request/fetch.js'
+import type { AbsoluteUrl } from '../types/common.js'
+import type { OAuthCredentials } from '../types/config.js'
 
 const hashFunction = (baseString: string, key: string) => base64.stringify(hmacSHA1(baseString, key))
 

@@ -1,7 +1,7 @@
 import config from 'config'
 import { yellow, grey } from 'tiny-chalk'
-import { customFetch } from '#lib/request/fetch'
-import { wait } from '#tests/integration/utils/utils'
+import { customFetch } from '../../../src/lib/request/fetch.js'
+import { wait } from '../utils/utils.js'
 
 const { instance } = config
 

@@ -1,4 +1,4 @@
-import type { PropertiesDatatypes } from '#lib/properties/fetch_properties_datatypes'
+import type { PropertiesDatatypes } from '../../src/lib/properties/fetch_properties_datatypes.js'
 import type { Guid, Hash, ItemId, PropertyId } from 'wikibase-sdk'
 
 export const randomString = () => Math.random().toString(36).slice(2, 10)

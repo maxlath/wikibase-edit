@@ -1,12 +1,12 @@
 import config from 'config'
 import should from 'should'
-import { getProperty } from '#tests/integration/utils/get_property'
-import { createItem, getSomeItemId, getSomeGuid } from '#tests/integration/utils/sandbox_entities'
-import { addClaim } from '#tests/integration/utils/sandbox_snaks'
-import { shouldNotBeCalled, getLastEditSummary } from '#tests/integration/utils/utils'
-import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { assert, randomString } from '#tests/unit/utils'
-import WBEdit from '#root'
+import WBEdit from '../../../src/lib/index.js'
+import { assert, randomString } from '../../unit/utils.js'
+import { getProperty } from '../utils/get_property.js'
+import { createItem, getSomeItemId, getSomeGuid } from '../utils/sandbox_entities.js'
+import { addClaim } from '../utils/sandbox_snaks.js'
+import { shouldNotBeCalled, getLastEditSummary } from '../utils/utils.js'
+import { waitForInstance } from '../utils/wait_for_instance.js'
 
 const wbEdit = WBEdit(config)
 const { move: moveClaims } = wbEdit.claim

@@ -1,6 +1,6 @@
 import 'should'
 import config from 'config'
-import WBEdit from '#root'
+import WBEdit from '../../src/lib/index.js'
 import { randomString } from '../unit/utils.js'
 import { getLastRevision } from './utils/utils.js'
 

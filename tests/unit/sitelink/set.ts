@@ -1,7 +1,7 @@
 import should from 'should'
-import { setSitelink } from '#lib/sitelink/set'
-import { shouldNotBeCalled } from '#tests/integration/utils/utils'
-import { assert } from '../utils'
+import { setSitelink } from '../../../src/lib/sitelink/set.js'
+import { shouldNotBeCalled } from '../../integration/utils/utils.js'
+import { assert } from '../utils.js'
 
 describe('set sitelink', () => {
   it('should return wbsetsitelink params', () => {

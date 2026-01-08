@@ -1,6 +1,6 @@
 import 'should'
-import { setAlias } from '#lib/alias/set'
-import { assert, randomString, someEntityId } from '#tests/unit/utils'
+import { setAlias } from '../../../src/lib/alias/set.js'
+import { assert, randomString, someEntityId } from '../utils.js'
 
 const language = 'it'
 

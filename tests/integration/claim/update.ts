@@ -1,13 +1,13 @@
 import config from 'config'
 import should from 'should'
 import { simplify, type CustomSimplifiedClaim } from 'wikibase-sdk'
-import type { SpecialSnak } from '#lib/claim/special_snaktype'
-import { getSandboxItemId, getSandboxPropertyId, getReservedItemId } from '#tests/integration/utils/sandbox_entities'
-import { addClaim, addReference } from '#tests/integration/utils/sandbox_snaks'
-import { shouldNotBeCalled } from '#tests/integration/utils/utils'
-import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString, randomNumber, assert } from '#tests/unit/utils'
-import WBEdit from '#root'
+import WBEdit from '../../../src/lib/index.js'
+import { randomString, randomNumber, assert } from '../../unit/utils'
+import { getSandboxItemId, getSandboxPropertyId, getReservedItemId } from '../utils/sandbox_entities.js'
+import { addClaim, addReference } from '../utils/sandbox_snaks.js'
+import { shouldNotBeCalled } from '../utils/utils.js'
+import { waitForInstance } from '../utils/wait_for_instance.js'
+import type { SpecialSnak } from '../../../src/lib/claim/special_snaktype.js'
 
 const wbEdit = WBEdit(config)
 const updateClaim = wbEdit.claim.update

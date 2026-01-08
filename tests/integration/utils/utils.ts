@@ -1,10 +1,10 @@
 import config from 'config'
 import { yellow } from 'tiny-chalk'
 import { WBK, type Entity, type EntityId } from 'wikibase-sdk'
-import { newError, type ContextualizedError } from '#lib/error'
-import { customFetch } from '#lib/request/fetch'
-import { resolveTitle } from '#lib/resolve_title'
-import type { AbsoluteUrl } from '#lib/types/common'
+import { newError, type ContextualizedError } from '../../../src/lib/error.js'
+import { customFetch } from '../../../src/lib/request/fetch.js'
+import { resolveTitle } from '../../../src/lib/resolve_title.js'
+import type { AbsoluteUrl } from '../../../src/lib/types/common.js'
 
 const { instance } = config
 

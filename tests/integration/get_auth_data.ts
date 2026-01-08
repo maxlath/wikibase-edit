@@ -1,8 +1,8 @@
 import config from 'config'
 import should from 'should'
-import { getAuthDataFactory } from '#lib/request/get_auth_data'
-import { validateAndEnrichConfig } from '#lib/validate_and_enrich_config'
-import { isBotPassword } from '#tests/integration/utils/utils'
+import { getAuthDataFactory } from '../../src/lib/request/get_auth_data.js'
+import { validateAndEnrichConfig } from '../../src/lib/validate_and_enrich_config.js'
+import { isBotPassword } from './utils/utils.js'
 
 const { instance, credentials, credentialsAlt } = config
 

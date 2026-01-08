@@ -1,6 +1,6 @@
 import 'should'
-import { setClaim } from '#lib/claim/set'
-import { guid, sandboxStringProp as property, properties, someInstance } from '#tests/unit/utils'
+import { setClaim } from '../../../src/lib/claim/set.js'
+import { guid, sandboxStringProp as property, properties, someInstance } from '../utils.js'
 
 describe('claim set', () => {
   it('should set the action to wbsetclaim', () => {

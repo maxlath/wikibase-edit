@@ -1,7 +1,9 @@
 import { getStatementsKey } from 'wikibase-sdk'
 import { newError } from './error.js'
+import type { AbsoluteUrl } from './types/common.js'
+import type { RequestConfig } from './types/config.js'
 
-export default config => {
+export function parseInstance (config: RequestConfig) {
   if (!config) throw newError('missing config object')
 
   let { instance, wikibaseInstance } = config
@@ -16,8 +18,10 @@ export default config => {
 
   config.instance = instance
     .replace(/\/$/, '')
-    .replace(`/${wgScriptPath}/api.php`, '')
+    .replace(`/${wgScriptPath}/api.php`, '') as AbsoluteUrl
 
-  config.instanceApiEndpoint = `${config.instance}/${wgScriptPath}/api.php`
+  // @ts-expect-error preparing SerializedConfig
+  config.instanceApiEndpoint = `${config.instance}/${wgScriptPath}/api.php` as AbsoluteUrl
+  // @ts-expect-error preparing SerializedConfig
   config.statementsKey = getStatementsKey(instance)
 }

@@ -1,4 +1,4 @@
-import { validateAliases, validateEntityId, validateLanguage } from '#lib/validate'
+import { validateAliases, validateEntityId, validateLanguage } from '../validate.js'
 import type { Aliases, EntityId, EntityType, WikimediaLanguageCode } from 'wikibase-sdk'
 
 export interface AliasActionParams {

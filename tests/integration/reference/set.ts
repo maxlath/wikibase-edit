@@ -1,10 +1,10 @@
 import 'should'
 import config from 'config'
-import { getSandboxClaimId, getSandboxPropertyId, getRefreshedClaim } from '#tests/integration/utils/sandbox_entities'
-import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { assert, randomString } from '#tests/unit/utils'
-import WBEdit from '#root'
-import type { SpecialSnak } from '../../../src/lib/claim/special_snaktype'
+import WBEdit from '../../../src/lib/index.js'
+import { assert, randomString } from '../../unit/utils.js'
+import { getSandboxClaimId, getSandboxPropertyId, getRefreshedClaim } from '../utils/sandbox_entities.js'
+import { waitForInstance } from '../utils/wait_for_instance.js'
+import type { SpecialSnak } from '../../../src/lib/claim/special_snaktype.js'
 
 const wbEdit = WBEdit(config)
 const setReference = wbEdit.reference.set

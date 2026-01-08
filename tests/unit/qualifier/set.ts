@@ -1,7 +1,7 @@
 import 'should'
 import config from 'config'
-import { setQualifier as _setQualifier } from '#lib/qualifier/set'
-import { guid, hash, properties } from '#tests/unit/utils'
+import { setQualifier as _setQualifier } from '../../../src/lib/qualifier/set.js'
+import { guid, hash, properties } from '../utils.js'
 
 const { instance } = config
 

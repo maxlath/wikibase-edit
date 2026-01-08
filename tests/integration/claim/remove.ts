@@ -1,12 +1,12 @@
 import 'should'
 import config from 'config'
-import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
-import { getSandboxPropertyId } from '#tests/integration/utils/sandbox_entities'
-import { addClaim } from '#tests/integration/utils/sandbox_snaks'
-import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { assert, randomString } from '#tests/unit/utils'
-import WBEdit from '#root'
+import WBEdit from '../../../src/lib/index.js'
+import { assert, randomString } from '../../unit/utils.js'
+import { getSandboxPropertyId } from '../utils/sandbox_entities.js'
+import { addClaim } from '../utils/sandbox_snaks.js'
 import { shouldNotBeCalled } from '../utils/utils.js'
+import { waitForInstance } from '../utils/wait_for_instance.js'
+import type { EditEntitySimplifiedModeParams } from '../../../src/lib/entity/edit.js'
 
 const wbEdit = WBEdit(config)
 

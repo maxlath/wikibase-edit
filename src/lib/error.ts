@@ -1,4 +1,4 @@
-import type { AbsoluteUrl } from '#lib/types/common'
+import type { AbsoluteUrl } from './types/common.js'
 
 export type ErrorContext = object
 

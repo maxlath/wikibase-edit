@@ -1,6 +1,6 @@
 import 'should'
-import { setDescription } from '#lib/description/set'
-import { randomString, someEntityId } from '#tests/unit/utils'
+import { setDescription } from '../../../src/lib/description/set.js'
+import { randomString, someEntityId } from '../utils.js'
 
 const language = 'fr'
 

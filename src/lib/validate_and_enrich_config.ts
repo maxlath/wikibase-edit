@@ -1,6 +1,6 @@
 import { name, version, homepage } from '../assets/metadata.js'
 import { newError } from './error.js'
-import parseInstance from './parse_instance.js'
+import { parseInstance } from './parse_instance.js'
 import { forceArray } from './utils.js'
 import type { GeneralConfig, RequestConfig, SerializedConfig } from './types/config.js'
 

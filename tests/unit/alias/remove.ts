@@ -1,6 +1,6 @@
 import 'should'
-import { removeAlias } from '#lib/alias/remove'
-import { assert, randomString, someEntityId } from '#tests/unit/utils'
+import { removeAlias } from '../../../src/lib/alias/remove.js'
+import { assert, randomString, someEntityId } from '../utils.js'
 
 const language = 'it'
 

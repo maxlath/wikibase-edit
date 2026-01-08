@@ -1,10 +1,10 @@
 import 'should'
 import config from 'config'
-import type { EditEntitySimplifiedModeParams } from '#lib/entity/edit'
-import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import { randomString } from '#tests/unit/utils'
-import WBEdit from '#root'
-import { undesiredRes, shouldNotBeCalled, rethrowShouldNotBeCalledErrors } from './utils/utils.js'
+import WBEdit from '../../src/lib/index.js'
+import { randomString } from '../unit/utils.js'
+import { rethrowShouldNotBeCalledErrors, shouldNotBeCalled, undesiredRes } from './utils/utils.js'
+import { waitForInstance } from './utils/wait_for_instance.js'
+import type { EditEntitySimplifiedModeParams } from '../../src/lib/entity/edit.js'
 
 const { instance, credentials } = config
 

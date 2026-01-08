@@ -1,8 +1,8 @@
 import config from 'config'
 import should from 'should'
-import { getTokenFactory } from '#lib/request/get_token'
-import { validateAndEnrichConfig } from '#lib/validate_and_enrich_config'
-import { undesiredRes, isBotPassword, shouldNotBeCalled } from '#tests/integration/utils/utils'
+import { getTokenFactory } from '../../src/lib/request/get_token.js'
+import { validateAndEnrichConfig } from '../../src/lib/validate_and_enrich_config.js'
+import { undesiredRes, isBotPassword, shouldNotBeCalled } from './utils/utils.js'
 
 const { instance, credentials, credentialsAlt } = config
 

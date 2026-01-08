@@ -42,13 +42,5 @@
   "include": [
     "src/**/*",
     "tests/**/*",
-  ],
-  "paths": {
-    "#lib/*": [
-      "./src/lib/*.js",
-    ],
-    "#tests/*": [
-      "./tests/*.js",
-    ],
-  },
+  ]
 }

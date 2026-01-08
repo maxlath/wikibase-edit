@@ -1,6 +1,6 @@
 import 'should'
-import { deleteEntity } from '#lib/entity/delete'
-import { someEntityId as id } from '#tests/unit/utils'
+import { deleteEntity } from '../../../src/lib/entity/delete.js'
+import { someEntityId as id } from '../utils.js'
 
 describe('entity delete', () => {
   it('should set the action to delete', () => {

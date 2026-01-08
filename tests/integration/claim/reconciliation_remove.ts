@@ -1,10 +1,10 @@
 import 'should'
 import config from 'config'
 import { simplify } from 'wikibase-sdk'
-import { getSandboxPropertyId, getReservedItemId } from '#tests/integration/utils/sandbox_entities'
-import { waitForInstance } from '#tests/integration/utils/wait_for_instance'
-import WBEdit from '#root'
+import WBEdit from '../../../src/lib/index.js'
+import { getSandboxPropertyId, getReservedItemId } from '../utils/sandbox_entities.js'
 import { shouldNotBeCalled } from '../utils/utils.js'
+import { waitForInstance } from '../utils/wait_for_instance.js'
 
 const wbEdit = WBEdit(config)
 

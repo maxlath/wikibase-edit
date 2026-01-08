@@ -1,6 +1,6 @@
 import 'should'
-import { removeClaim } from '#lib/claim/remove'
-import { guid, guid2 } from '#tests/unit/utils'
+import { removeClaim } from '../../../src/lib/claim/remove.js'
+import { guid, guid2 } from '../utils.js'
 
 describe('claim remove', () => {
   it('should set the action to wbremoveclaims', async () => {
