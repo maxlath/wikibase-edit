@@ -9,7 +9,11 @@ import type { OAuthCredentials, SerializedConfig } from '../types/config.js'
 export const defaultMaxlag = 5
 
 export async function post (action: string, data: object, config: SerializedConfig) {
-  const { anonymous } = config
+  const { anonymous, dry } = config
+  if (dry) {
+    console.trace('[wikibase-edit] dry mode: skipped edit', { action, data })
+    return
+  }
   const getAuthData = anonymous ? null : config.credentials._getAuthData
 
   async function tryActionPost () {

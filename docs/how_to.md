@@ -148,6 +148,10 @@ const generalConfig = {
   // See https://www.mediawiki.org/wiki/Manual:Maxlag_parameter
   // Default: 5
   maxlag: 2
+
+  // Disable actually editing the Wikibase instance. Can be useful for testing purposes.
+  // Default: false
+  dry: true
 }
 
 

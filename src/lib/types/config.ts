@@ -91,6 +91,11 @@ export interface GeneralConfig {
   autoRetry?: boolean
 
   httpRequestAgent?: HttpRequestAgent
+
+  /**
+   * Disable actually editing the Wikibase instance. Can be useful for testing purposes.
+   */
+  dry?: boolean
 }
 
 export interface RequestConfig extends GeneralConfig {
