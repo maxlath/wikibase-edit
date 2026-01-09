@@ -1,6 +1,9 @@
 # CHANGELOG
 *versions follow [SemVer](http://semver.org)*
 
+## 8.1.0 - 2025-09-12
+* Add `config.dry` flag, to disable actually editing the Wikibase instance. Can be useful for testing purposes.
+
 ## 8.0.0 - 2025-09-12
 * **BREAKING CHANGE**: converted code base to TypeScript, which required to change some file paths; breaking submodules imports (ex `import { resolveTitle } from  'wikibase-edit/lib/resolve_title.js'` won't work anymore).
 * **BREAKING CHANGE**: Remove deprecated function aliases:
