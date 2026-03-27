@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maxlath/wikibase-edit.git"
+    "url": "https://codeberg.org/maxlath/wikibase-edit"
   },
   "keywords": [
     "wikibase",
@@ -44,9 +44,9 @@
   "author": "maxlath",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/maxlath/wikibase-edit/issues"
+    "url": "https://codeberg.org/maxlath/wikibase-edit/issues"
   },
-  "homepage": "https://github.com/maxlath/wikibase-edit",
+  "homepage": "https://codeberg.org/maxlath/wikibase-edit",
   "dependencies": {
     "@types/lodash-es": "^4.17.12",
     "cross-fetch": "^4.1.0",
