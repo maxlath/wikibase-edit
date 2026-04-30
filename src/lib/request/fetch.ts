@@ -4,21 +4,6 @@ import type { AbsoluteUrl } from '../types/common.js'
 import type { Agent as HttpAgent } from 'node:http'
 import type { Agent as HttpsAgent } from 'node:https'
 
-const isNode = globalThis.process?.versions?.node != null
-
-let agent
-
-if (isNode) {
-  // Using a custom agent to set keepAlive=true
-  // https://nodejs.org/api/http.html#http_class_http_agent
-  // https://github.com/bitinn/node-fetch#custom-agent
-  const http = await import('node:http')
-  const https = await import('node:https')
-  const httpAgent = new http.Agent({ keepAlive: true })
-  const httpsAgent = new https.Agent({ keepAlive: true })
-  agent = ({ protocol }) => protocol === 'http:' ? httpAgent : httpsAgent
-}
-
 export type HttpHeaderKey = 'content-type' | 'cookie' | 'user-agent'
 export type HttpHeaders = Partial<Record<HttpHeaderKey, string>>
 export type HttpMethodLowerCased = 'get' | 'post' | 'put' | 'delete'
@@ -35,7 +20,6 @@ export interface CustomFetchOptions {
 export type HttpRequestAgent = HttpAgent | HttpsAgent
 
 export async function customFetch (url: AbsoluteUrl, { timeout, ...options }: CustomFetchOptions = {}) {
-  options.agent = options.agent || agent
   options.headers ??= {}
   options.headers['accept-encoding'] = 'gzip,deflate'
   if (debugMode) {
