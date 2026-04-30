@@ -20,8 +20,8 @@ This project has received a [Wikimedia Project Grant](https://meta.wikimedia.org
 ## Summary
 - [Changelog](CHANGELOG.md)
 - [Install](#install)
-- [How-To](https://github.com/maxlath/wikibase-edit/blob/main/docs/how_to.md)
-- [Development setup](https://github.com/maxlath/wikibase-edit/blob/main/docs/development_setup.md)
+- [How-To](https://codeberg.org/maxlath/wikibase-edit/src/branch/main/docs/how_to.md)
+- [Development setup](https://codeberg.org/maxlath/wikibase-edit/src/branch/main/docs/development_setup.md)
 - [Contributing](#contributing)
 - [See Also](#see-also)
 - [You may also like](#you-may-also-like)
@@ -49,11 +49,11 @@ See [Development](docs/development.md) doc
 ## Contributing
 
 Code contributions and propositions are very welcome, here are some design constraints you should be aware of:
-* `wikibase-edit` focuses on exposing Wikibase write operations. Features about getting and parsing data should rather go to [`wikibase-sdk`](https://github.com/maxlath/wikibase-sdk)
+* `wikibase-edit` focuses on exposing Wikibase write operations. Features about getting and parsing data should rather go to [`wikibase-sdk`](https://codeberg.org/maxlath/wikibase-sdk)
 
 ## See Also
-* [wikibase-sdk](https://github.com/maxlath/wikibase-sdk): a javascript tool suite to query and work with any Wikibase data, heavily used by wikibase-edit and wikibase-cli
-* [wikibase-cli](https://github.com/maxlath/wikibase-cli): The friendly command-line interface to Wikibase
+* [wikibase-sdk](https://codeberg.org/maxlath/wikibase-sdk): a javascript tool suite to query and work with any Wikibase data, heavily used by wikibase-edit and wikibase-cli
+* [wikibase-cli](https://codeberg.org/maxlath/wikibase-cli): The friendly command-line interface to Wikibase
 * [wikibase-dump-filter](https://npmjs.com/package/wikibase-dump-filter): Filter and format a newline-delimited JSON stream of Wikibase entities
 * [wikidata-subset-search-engine](https://github.com/inventaire/entities-search-engine/tree/wikidata-subset-search-engine): Tools to setup an ElasticSearch instance fed with subsets of Wikidata
 * [wikidata-taxonomy](https://github.com/nichtich/wikidata-taxonomy): Command-line tool to extract taxonomies from Wikidata
