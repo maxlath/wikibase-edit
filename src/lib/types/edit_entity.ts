@@ -52,14 +52,15 @@ export type SimplifiedEditableReference = EditableSnakValue | SimplifiedReferenc
 
 export type SimplifiedEditableReferences = SimplifiedReference[] | SimplifiedEditableReference[] | SimplifiedEditableReference
 
-export interface CustomSimplifiedEditableSitelinks {
+export interface CustomSimplifiedEditableSitelink {
   title?: SitelinkTitle
   remove?: boolean
   badges?: SitelinkBadges
   url?: string
 }
 
-export type SimplifiedEditableSitelinks = Record<Site, SitelinkTitle | CustomSimplifiedEditableSitelinks | null>
+export type SimplifiedEditableSitelinks = Record<Site, SitelinkTitle | CustomSimplifiedEditableSitelink | null>
+export type CustomSimplifiedEditableSitelinks = Record<Site, CustomSimplifiedEditableSitelink | null>
 
 export type SimplifiedEditableItem = Partial<OverrideProperties<SimplifiedItem, {
   aliases: SimplifiedEditableAliases
