@@ -130,7 +130,6 @@ describe('entity edit', function () {
     res.entity.sitelinks.dewiki.title.should.equal(yearArticleTitle)
     const res2 = await wbEdit.entity.edit({
       id,
-      // @ts-expect-error
       sitelinks: {
         frwiki: { title: yearArticleTitle, remove: true },
         dewiki: null,
