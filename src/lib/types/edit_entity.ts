@@ -59,8 +59,8 @@ export interface CustomSimplifiedEditableSitelink {
   url?: string
 }
 
-export type SimplifiedEditableSitelinks = Record<Site, SitelinkTitle | CustomSimplifiedEditableSitelink | null>
-export type CustomSimplifiedEditableSitelinks = Record<Site, CustomSimplifiedEditableSitelink | null>
+export type SimplifiedEditableSitelinks = Partial<Record<Site, SitelinkTitle | CustomSimplifiedEditableSitelink | null>>
+export type CustomSimplifiedEditableSitelinks = Partial<Record<Site, CustomSimplifiedEditableSitelink | null>>
 
 export type SimplifiedEditableItem = Partial<OverrideProperties<SimplifiedItem, {
   aliases: SimplifiedEditableAliases
