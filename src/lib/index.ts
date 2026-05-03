@@ -110,3 +110,5 @@ export type WikibaseEditAPI = ReturnType<typeof WBEdit>
 export * from './types/config.js'
 export * from './types/edit_entity.js'
 export * from './types/snaks.js'
+export type * from './entity/create.js'
+export type * from './entity/edit.js'
