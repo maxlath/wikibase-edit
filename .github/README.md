@@ -1,1 +1,1 @@
-## ⚠<fe0f> This repository was moved to Codeberg 👉 https://codeberg.org/maxlath/wikibase-edit
+## ⚠️ This repository was moved to Codeberg 👉 https://codeberg.org/maxlath/wikibase-edit
